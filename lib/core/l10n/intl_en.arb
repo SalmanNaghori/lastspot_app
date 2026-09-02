@@ -1,0 +1,100 @@
+{
+  "@@locale": "en",
+  "appName": "LastSpot",
+  "@appName": {
+    "description": "The name of the application"
+  },
+  "appDescription": "On-Demand Sports & Activity Partner Finder",
+  "updateNow": "Update Now",
+  "maybeLater": "Maybe Later",
+  "maintenanceMode": "Maintenance Mode",
+  "requestToJoin": "Request to Join Match",
+  "publishSpot": "PUBLISH SPOT TO FEED",
+  "searchHint": "Search turfs, sports, players...",
+  "urgentMatches": "URGENT MATCHES (STARTING TODAY)",
+  "recentPosts": "RECENT POSTS",
+  "openGroundMap": "Open Ground Map ↗",
+  "viewSpot": "View Spot",
+  "spotsNeeded": "{count} SPOTS",
+  "@spotsNeeded": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "spotNeeded": "{count} SPOT",
+  "@spotNeeded": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "hostPrefix": "Host: {name}",
+  "@hostPrefix": {
+    "placeholders": {
+      "name": {}
+    }
+  },
+  "homeTab": "Home",
+  "myMatchesTab": "My Matches",
+  "profileTab": "Profile",
+  "hostMatchTitle": "Host a Match",
+  "selectSportCategory": "Select Sport Category*",
+  "playersNeeded": "Players Needed*",
+  "schedule": "Schedule*",
+  "datePrefix": "Date: ",
+  "timePrefix": "Time: ",
+  "venueDetails": "Venue Details*",
+  "venueNameHint": "Venue Name: e.g. Decathlon Sports Turf",
+  "mapsLinkHint": "https://maps.app.goo.gl/... [Paste]",
+  "mapsGuidance": "Users will tap this to get turn-by-turn directions directly in Google Maps.",
+  "additionalGuidelines": "Additional Guidelines (Optional)",
+  "matchOverviewTitle": "Match Overview",
+  "statusActiveNeeded": "Status: Active • Needed: {count} Players",
+  "@statusActiveNeeded": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "hostedBy": "Hosted by {name}",
+  "@hostedBy": {
+    "placeholders": {
+      "name": {}
+    }
+  },
+  "locationAndDirections": "LOCATION & DIRECTIONS",
+  "tapForNavigation": "Tap below for live navigation",
+  "openInMaps": "🧭 Open in Google / Apple Maps ↗",
+  "confirmedPlayers": "CONFIRMED PLAYERS ({current}/{total})",
+  "@confirmedPlayers": {
+    "placeholders": {
+      "current": {},
+      "total": {}
+    }
+  },
+  "safetyAndConduct": "SAFETY & CONDUCT",
+  "reportActivity": "🚩 Report this activity or host",
+  "manageMatchRequests": "Manage Match Requests",
+  "openSpotsRemaining": "Open Spots Remaining: {current} / {total}",
+  "@openSpotsRemaining": {
+    "placeholders": {
+      "current": {},
+      "total": {}
+    }
+  },
+  "pendingRequests": "PENDING REQUESTS ({count})",
+  "@pendingRequests": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "reject": "❌ Reject",
+  "accept": "✅ Accept",
+  "openMatchChat": "💬 Open Match Group Chat",
+  "login": "Login",
+  "signup": "Sign Up",
+  "email": "Email",
+  "password": "Password",
+  "fullName": "Full Name",
+  "forgotPassword": "Forgot Password?",
+  "createAccount": "Create Account",
+  "joinCommunity": "Join the community and play."
+}

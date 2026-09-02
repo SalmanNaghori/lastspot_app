@@ -1,0 +1,11 @@
+// Flutter App FVM Rules
+
+// ============================================================
+// FLUTTER VERSION MANAGEMENT (FVM) RULES — ALWAYS ENFORCE
+// ============================================================
+//
+// 1. ALWAYS use `fvm flutter` instead of `flutter` for all CLI commands.
+// 2. ALWAYS use `fvm dart` instead of `dart` for all CLI commands.
+// 3. DO NOT run standard `flutter pub get` or `flutter run`. ALWAYS prefix with `fvm`.
+// 4. The required Flutter version for this project is strictly defined in the `.fvmrc` file.
+// 5. Ensure the IDE is configured to use the `.fvm/flutter_sdk` path.
