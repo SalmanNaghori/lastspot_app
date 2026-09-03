@@ -8,19 +8,26 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
   final GetCategoriesUseCase _getCategoriesUseCase;
 
   CategoryBloc({required GetCategoriesUseCase getCategoriesUseCase})
-      : _getCategoriesUseCase = getCategoriesUseCase,
-        super(CategoryInitial()) {
+    : _getCategoriesUseCase = getCategoriesUseCase,
+      super(CategoryInitial()) {
     on<LoadCategoriesEvent>(_onLoadCategories);
   }
 
   Future<void> _onLoadCategories(
-      LoadCategoriesEvent event, Emitter<CategoryState> emit) async {
+    LoadCategoriesEvent event,
+    Emitter<CategoryState> emit,
+  ) async {
     emit(CategoryLoading());
     try {
       final categories = await _getCategoriesUseCase();
       emit(CategoryLoaded(categories));
     } catch (e, st) {
-      log('Error loading categories', name: 'CategoryBloc', error: e, stackTrace: st);
+      log(
+        'Error loading categories',
+        name: 'CategoryBloc',
+        error: e,
+        stackTrace: st,
+      );
       emit(const CategoryError('Failed to load categories'));
     }
   }

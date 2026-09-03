@@ -26,15 +26,17 @@ class StartupUpdateRequired extends StartupState {
   final VersionMessage messageData;
   final String storeUrl;
   final bool isForced;
+  final String? latestVersion;
 
   const StartupUpdateRequired({
     required this.messageData,
     required this.storeUrl,
     required this.isForced,
+    this.latestVersion,
   });
 
   @override
-  List<Object?> get props => [messageData, storeUrl, isForced];
+  List<Object?> get props => [messageData, storeUrl, isForced, latestVersion];
 }
 
 class StartupSuccess extends StartupState {}

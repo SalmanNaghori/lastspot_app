@@ -10,10 +10,7 @@ abstract class AuthRepository {
   });
 
   /// Signs in an existing user with email and password.
-  Future<void> signIn({
-    required String email,
-    required String password,
-  });
+  Future<void> signIn({required String email, required String password});
 
   /// Signs out the current user.
   Future<void> signOut();

@@ -5,8 +5,8 @@ import '../datasources/category_remote_datasource.dart';
 class CategoryRepositoryImpl implements CategoryRepository {
   final CategoryRemoteDataSource _remoteDataSource;
 
-  CategoryRepositoryImpl({required CategoryRemoteDataSource remoteDataSource}) 
-      : _remoteDataSource = remoteDataSource;
+  CategoryRepositoryImpl({required CategoryRemoteDataSource remoteDataSource})
+    : _remoteDataSource = remoteDataSource;
 
   @override
   Future<List<CategoryEntity>> getActiveCategories() async {

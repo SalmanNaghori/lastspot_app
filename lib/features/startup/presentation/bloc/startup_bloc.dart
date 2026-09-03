@@ -1,23 +1,32 @@
 import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:pub_semver/pub_semver.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import '../../../../core/utils/shared_prefs_util.dart';
 import 'startup_event.dart';
 import 'startup_state.dart';
 import '../../data/models/app_settings_model.dart';
 
 class StartupBloc extends Bloc<StartupEvent, StartupState> {
   final SupabaseClient _supabaseClient;
+  final SharedPrefsUtil _prefs;
 
-  StartupBloc({required SupabaseClient supabaseClient})
-      : _supabaseClient = supabaseClient,
-        super(StartupInitial()) {
+  StartupBloc({
+    required SupabaseClient supabaseClient,
+    required SharedPrefsUtil prefs,
+  }) : _supabaseClient = supabaseClient,
+       _prefs = prefs,
+       super(StartupInitial()) {
     on<StartupInitialCheckRequested>(_onInitialCheckRequested);
+    on<StartupUpdateSkipped>(_onUpdateSkipped);
   }
 
   Future<void> _onInitialCheckRequested(
-      StartupInitialCheckRequested event, Emitter<StartupState> emit) async {
+    StartupInitialCheckRequested event,
+    Emitter<StartupState> emit,
+  ) async {
     emit(StartupLoading());
 
     try {
@@ -44,7 +53,7 @@ class StartupBloc extends Bloc<StartupEvent, StartupState> {
       // Get current app version
       final packageInfo = await PackageInfo.fromPlatform();
       final currentVersionString = packageInfo.version;
-      
+
       // Basic fallback if semver parsing fails
       Version currentVersion;
       try {
@@ -55,21 +64,23 @@ class StartupBloc extends Bloc<StartupEvent, StartupState> {
 
       // 2. Check Global Maintenance
       if (appSettings.maintenanceMode.globalMaintenance) {
-        emit(StartupMaintenanceMode(
-          title: appSettings.maintenanceMode.globalTitle,
-          message: appSettings.maintenanceMode.globalMessage,
-        ));
+        emit(
+          StartupMaintenanceMode(
+            title: appSettings.maintenanceMode.globalTitle,
+            message: appSettings.maintenanceMode.globalMessage,
+          ),
+        );
         return;
       }
 
       // 3. Check Targeted Maintenance
       for (var rule in appSettings.maintenanceMode.targetedRules) {
-        if (rule.isActive && (rule.platform == 'all' || rule.platform == platform)) {
+        if (rule.isActive &&
+            (rule.platform == 'all' || rule.platform == platform)) {
           if (rule.affectedVersions.contains(currentVersionString)) {
-            emit(StartupMaintenanceMode(
-              title: rule.title,
-              message: rule.message,
-            ));
+            emit(
+              StartupMaintenanceMode(title: rule.title, message: rule.message),
+            );
             return;
           }
         }
@@ -88,15 +99,22 @@ class StartupBloc extends Bloc<StartupEvent, StartupState> {
       bool isBelowMin = currentVersion.compareTo(minSupportedVersion) < 0;
 
       if (isBlocked || isBelowMin) {
-        final messageData = vc.versionMessages[currentVersionString] ??
+        final messageData =
+            vc.versionMessages[currentVersionString] ??
             vc.versionMessages['default'] ??
-            VersionMessage(title: 'Update Required', message: 'Please update.', releaseNotes: []);
-        
-        emit(StartupUpdateRequired(
-          messageData: messageData,
-          storeUrl: vc.storeUrl,
-          isForced: true,
-        ));
+            VersionMessage(
+              title: 'Update Required',
+              message: 'Please update.',
+              releaseNotes: [],
+            );
+
+        emit(
+          StartupUpdateRequired(
+            messageData: messageData,
+            storeUrl: vc.storeUrl,
+            isForced: true,
+          ),
+        );
         return;
       }
 
@@ -108,17 +126,31 @@ class StartupBloc extends Bloc<StartupEvent, StartupState> {
         latestVersion = Version(1, 0, 0);
       }
 
-      if (currentVersion.compareTo(latestVersion) < 0) {
-        final messageData = vc.versionMessages[currentVersionString] ??
-            vc.versionMessages['default'] ??
-            VersionMessage(title: 'Update Available', message: 'A new version is available.', releaseNotes: []);
-        
-        emit(StartupUpdateRequired(
-          messageData: messageData,
-          storeUrl: vc.storeUrl,
-          isForced: false,
-        ));
-        return;
+      // In debug mode during local development, do not show soft update dialog
+      if (!kDebugMode && currentVersion.compareTo(latestVersion) < 0) {
+        await _prefs.reload();
+        final skippedVersion = _prefs.getSkippedUpdateVersion();
+
+        if (skippedVersion != latestVersion.toString()) {
+          final messageData =
+              vc.versionMessages[currentVersionString] ??
+              vc.versionMessages['default'] ??
+              VersionMessage(
+                title: 'Update Available',
+                message: 'A new version is available.',
+                releaseNotes: [],
+              );
+
+          emit(
+            StartupUpdateRequired(
+              messageData: messageData,
+              storeUrl: vc.storeUrl,
+              isForced: false,
+              latestVersion: latestVersion.toString(),
+            ),
+          );
+          return;
+        }
       }
 
       // 6. Success
@@ -127,5 +159,15 @@ class StartupBloc extends Bloc<StartupEvent, StartupState> {
       // If offline or error, allow boot but log error (or emit error state based on requirements)
       emit(StartupSuccess()); // Failing open for MVP
     }
+  }
+
+  Future<void> _onUpdateSkipped(
+    StartupUpdateSkipped event,
+    Emitter<StartupState> emit,
+  ) async {
+    try {
+      await _prefs.setSkippedUpdateVersion(event.version);
+    } catch (_) {}
+    emit(StartupSuccess());
   }
 }

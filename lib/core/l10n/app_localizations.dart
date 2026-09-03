@@ -388,6 +388,12 @@ abstract class AppLocalizations {
   /// **'Full Name'**
   String get fullName;
 
+  /// No description provided for @yourName.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Name'**
+  String get yourName;
+
   /// No description provided for @forgotPassword.
   ///
   /// In en, this message translates to:
@@ -405,6 +411,474 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Join the community and play.'**
   String get joinCommunity;
+
+  /// No description provided for @navHome.
+  ///
+  /// In en, this message translates to:
+  /// **'Home'**
+  String get navHome;
+
+  /// No description provided for @navExplore.
+  ///
+  /// In en, this message translates to:
+  /// **'Explore'**
+  String get navExplore;
+
+  /// No description provided for @navCreate.
+  ///
+  /// In en, this message translates to:
+  /// **'Create'**
+  String get navCreate;
+
+  /// No description provided for @navActivities.
+  ///
+  /// In en, this message translates to:
+  /// **'Activities'**
+  String get navActivities;
+
+  /// No description provided for @navProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile'**
+  String get navProfile;
+
+  /// No description provided for @explorePlaceholderText.
+  ///
+  /// In en, this message translates to:
+  /// **'Discover activities near you'**
+  String get explorePlaceholderText;
+
+  /// No description provided for @activitiesEmptyMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Your activities will appear here.\nActivities you create or join will appear here.'**
+  String get activitiesEmptyMessage;
+
+  /// No description provided for @exploreActivitiesAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Explore Activities'**
+  String get exploreActivitiesAction;
+
+  /// No description provided for @logoutDialogTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Log out?'**
+  String get logoutDialogTitle;
+
+  /// No description provided for @logoutDialogMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'ll need to sign in again to access your LastSpot account.'**
+  String get logoutDialogMessage;
+
+  /// No description provided for @cancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get cancel;
+
+  /// No description provided for @logout.
+  ///
+  /// In en, this message translates to:
+  /// **'Log Out'**
+  String get logout;
+
+  /// No description provided for @editProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Profile'**
+  String get editProfile;
+
+  /// No description provided for @profileSectionActivity.
+  ///
+  /// In en, this message translates to:
+  /// **'My Activity'**
+  String get profileSectionActivity;
+
+  /// No description provided for @profileSectionAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Account'**
+  String get profileSectionAccount;
+
+  /// No description provided for @profileSectionLegal.
+  ///
+  /// In en, this message translates to:
+  /// **'Legal'**
+  String get profileSectionLegal;
+
+  /// No description provided for @myRequests.
+  ///
+  /// In en, this message translates to:
+  /// **'My Requests'**
+  String get myRequests;
+
+  /// No description provided for @myActivities.
+  ///
+  /// In en, this message translates to:
+  /// **'My Activities'**
+  String get myActivities;
+
+  /// No description provided for @notifications.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications'**
+  String get notifications;
+
+  /// No description provided for @settings.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get settings;
+
+  /// No description provided for @helpSupport.
+  ///
+  /// In en, this message translates to:
+  /// **'Help & Support'**
+  String get helpSupport;
+
+  /// No description provided for @privacyPolicy.
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy Policy'**
+  String get privacyPolicy;
+
+  /// No description provided for @termsConditions.
+  ///
+  /// In en, this message translates to:
+  /// **'Terms & Conditions'**
+  String get termsConditions;
+
+  /// No description provided for @statCreated.
+  ///
+  /// In en, this message translates to:
+  /// **'Created'**
+  String get statCreated;
+
+  /// No description provided for @statJoined.
+  ///
+  /// In en, this message translates to:
+  /// **'Joined'**
+  String get statJoined;
+
+  /// No description provided for @statCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed'**
+  String get statCompleted;
+
+  /// No description provided for @goodMorning.
+  ///
+  /// In en, this message translates to:
+  /// **'Good morning,'**
+  String get goodMorning;
+
+  /// No description provided for @goodAfternoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Good afternoon,'**
+  String get goodAfternoon;
+
+  /// No description provided for @goodEvening.
+  ///
+  /// In en, this message translates to:
+  /// **'Good evening,'**
+  String get goodEvening;
+
+  /// No description provided for @whatAreYouUpTo.
+  ///
+  /// In en, this message translates to:
+  /// **'What are you up for today?'**
+  String get whatAreYouUpTo;
+
+  /// No description provided for @urgentMatchesSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Join nearby activities before they fill up!'**
+  String get urgentMatchesSubtitle;
+
+  /// No description provided for @viewAll.
+  ///
+  /// In en, this message translates to:
+  /// **'View All'**
+  String get viewAll;
+
+  /// No description provided for @popularSports.
+  ///
+  /// In en, this message translates to:
+  /// **'Popular Sports'**
+  String get popularSports;
+
+  /// No description provided for @popularSportsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Find your favorite sport and join the action'**
+  String get popularSportsSubtitle;
+
+  /// No description provided for @nearbyActivities.
+  ///
+  /// In en, this message translates to:
+  /// **'Nearby Activities'**
+  String get nearbyActivities;
+
+  /// No description provided for @spotsLeft.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} SPOTS LEFT'**
+  String spotsLeft(Object count);
+
+  /// No description provided for @oneSpotLeft.
+  ///
+  /// In en, this message translates to:
+  /// **'1 SPOT LEFT'**
+  String get oneSpotLeft;
+
+  /// No description provided for @perPerson.
+  ///
+  /// In en, this message translates to:
+  /// **'per person'**
+  String get perPerson;
+
+  /// No description provided for @filterCricket.
+  ///
+  /// In en, this message translates to:
+  /// **'Cricket'**
+  String get filterCricket;
+
+  /// No description provided for @filterFootball.
+  ///
+  /// In en, this message translates to:
+  /// **'Football'**
+  String get filterFootball;
+
+  /// No description provided for @filterBadminton.
+  ///
+  /// In en, this message translates to:
+  /// **'Badminton'**
+  String get filterBadminton;
+
+  /// No description provided for @filterTennis.
+  ///
+  /// In en, this message translates to:
+  /// **'Tennis'**
+  String get filterTennis;
+
+  /// No description provided for @verifiedHost.
+  ///
+  /// In en, this message translates to:
+  /// **'Host'**
+  String get verifiedHost;
+
+  /// No description provided for @noSpotsFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No active spots found.\nBe the first to create one!'**
+  String get noSpotsFound;
+
+  /// No description provided for @validationTitleLocationCategory.
+  ///
+  /// In en, this message translates to:
+  /// **'Title, Location, and Category are required.'**
+  String get validationTitleLocationCategory;
+
+  /// No description provided for @activityGeneratedSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Activity generated successfully!'**
+  String get activityGeneratedSuccess;
+
+  /// No description provided for @generateActivity.
+  ///
+  /// In en, this message translates to:
+  /// **'Generate Activity'**
+  String get generateActivity;
+
+  /// No description provided for @activityImages.
+  ///
+  /// In en, this message translates to:
+  /// **'Activity Images'**
+  String get activityImages;
+
+  /// No description provided for @category.
+  ///
+  /// In en, this message translates to:
+  /// **'Category'**
+  String get category;
+
+  /// No description provided for @selectCategory.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a category'**
+  String get selectCategory;
+
+  /// No description provided for @failedToLoadCategories.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load categories'**
+  String get failedToLoadCategories;
+
+  /// No description provided for @activityTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Activity Title'**
+  String get activityTitle;
+
+  /// No description provided for @activityTitleHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Sunday Morning Football'**
+  String get activityTitleHint;
+
+  /// No description provided for @description.
+  ///
+  /// In en, this message translates to:
+  /// **'Description'**
+  String get description;
+
+  /// No description provided for @descriptionHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Share some details about this activity...'**
+  String get descriptionHint;
+
+  /// No description provided for @location.
+  ///
+  /// In en, this message translates to:
+  /// **'Location'**
+  String get location;
+
+  /// No description provided for @locationHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Central Park Turf'**
+  String get locationHint;
+
+  /// No description provided for @date.
+  ///
+  /// In en, this message translates to:
+  /// **'Date'**
+  String get date;
+
+  /// No description provided for @time.
+  ///
+  /// In en, this message translates to:
+  /// **'Time'**
+  String get time;
+
+  /// No description provided for @maxParticipants.
+  ///
+  /// In en, this message translates to:
+  /// **'Max Participants'**
+  String get maxParticipants;
+
+  /// No description provided for @pricePerPerson.
+  ///
+  /// In en, this message translates to:
+  /// **'Price per person (\$)'**
+  String get pricePerPerson;
+
+  /// No description provided for @acceptTerms.
+  ///
+  /// In en, this message translates to:
+  /// **'I accept the Terms & Conditions'**
+  String get acceptTerms;
+
+  /// No description provided for @acceptTermsError.
+  ///
+  /// In en, this message translates to:
+  /// **'Please accept the Terms & Conditions'**
+  String get acceptTermsError;
+
+  /// No description provided for @confirmPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Password'**
+  String get confirmPassword;
+
+  /// No description provided for @loginSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Find your activity partner instantly.'**
+  String get loginSubtitle;
+
+  /// No description provided for @dontHaveAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Don\'t have an account? Sign up'**
+  String get dontHaveAccount;
+
+  /// No description provided for @sendResetLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Send Reset Link'**
+  String get sendResetLink;
+
+  /// No description provided for @passwordResetSent.
+  ///
+  /// In en, this message translates to:
+  /// **'Password reset link sent to your email!'**
+  String get passwordResetSent;
+
+  /// No description provided for @resetPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset Password'**
+  String get resetPassword;
+
+  /// No description provided for @resetPasswordDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your email address and we\'ll send you a link to reset your password.'**
+  String get resetPasswordDesc;
+
+  /// No description provided for @settingsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get settingsTitle;
+
+  /// No description provided for @themeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Theme'**
+  String get themeTitle;
+
+  /// No description provided for @themeSystem.
+  ///
+  /// In en, this message translates to:
+  /// **'System Default'**
+  String get themeSystem;
+
+  /// No description provided for @themeLight.
+  ///
+  /// In en, this message translates to:
+  /// **'Light'**
+  String get themeLight;
+
+  /// No description provided for @themeDark.
+  ///
+  /// In en, this message translates to:
+  /// **'Dark'**
+  String get themeDark;
+
+  /// No description provided for @languageTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get languageTitle;
+
+  /// No description provided for @languageEnglish.
+  ///
+  /// In en, this message translates to:
+  /// **'English'**
+  String get languageEnglish;
+
+  /// No description provided for @languageFrench.
+  ///
+  /// In en, this message translates to:
+  /// **'French'**
+  String get languageFrench;
 }
 
 class _AppLocalizationsDelegate

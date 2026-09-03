@@ -1,4 +1,4 @@
-import '../entities/spot_entity.dart';
+import '../entities/request_entity.dart';
 import '../repositories/spot_repository.dart';
 
 class GetSpotDetailsUseCase {
@@ -6,7 +6,7 @@ class GetSpotDetailsUseCase {
 
   GetSpotDetailsUseCase(this._repository);
 
-  Future<SpotEntity> call(String spotId) async {
+  Future<RequestEntity> call(String spotId) async {
     return _repository.getSpotDetails(spotId);
   }
 }

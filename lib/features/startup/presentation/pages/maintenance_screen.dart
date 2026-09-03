@@ -1,7 +1,4 @@
-import 'package:flutter/material.dart';
-import '../../../../core/constants/app_color.dart';
-import '../../../../core/constants/dimensions.dart';
-import '../../../../core/widgets/responsive_layout.dart';
+import 'package:lastspot_app/core/base_import.dart';
 
 class MaintenanceScreen extends StatelessWidget {
   final String title;

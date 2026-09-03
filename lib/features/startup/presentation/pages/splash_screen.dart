@@ -1,7 +1,5 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
-import '../../../../core/constants/app_color.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:lastspot_app/core/base_import.dart';
 import '../bloc/startup_bloc.dart';
 import '../bloc/startup_event.dart';
 import '../bloc/startup_state.dart';
@@ -26,15 +24,15 @@ class _SplashScreenState extends State<SplashScreen> {
       listener: (context, state) {
         if (state is StartupSuccess) {
           // Proceed to Auth check (we will handle auth routing next)
-          context.go('/auth-check');
+          context.go(AppRoutes.authCheck);
         } else if (state is StartupMaintenanceMode) {
-          context.go('/maintenance', extra: {
-            'title': state.title,
-            'message': state.message,
-          });
+          context.go(
+            AppRoutes.maintenance,
+            extra: {'title': state.title, 'message': state.message},
+          );
         } else if (state is StartupUpdateRequired) {
           if (state.isForced) {
-            context.go('/force-update', extra: state);
+            context.go(AppRoutes.forceUpdate, extra: state);
           } else {
             // Soft update: show dialog, then proceed
             _showSoftUpdateDialog(context, state);
@@ -44,19 +42,20 @@ class _SplashScreenState extends State<SplashScreen> {
       child: const Scaffold(
         backgroundColor: AppColor.primaryColor,
         body: Center(
-          child: CircularProgressIndicator(
-            color: AppColor.whiteColor,
-          ),
+          child: CircularProgressIndicator(color: AppColor.whiteColor),
         ),
       ),
     );
   }
 
-  void _showSoftUpdateDialog(BuildContext context, StartupUpdateRequired state) {
+  void _showSoftUpdateDialog(
+    BuildContext context,
+    StartupUpdateRequired state,
+  ) {
     showDialog(
       context: context,
-      barrierDismissible: true,
-      builder: (context) {
+      barrierDismissible: false,
+      builder: (dialogContext) {
         return AlertDialog(
           title: Text(state.messageData.title),
           content: Column(
@@ -71,19 +70,31 @@ class _SplashScreenState extends State<SplashScreen> {
           actions: [
             TextButton(
               onPressed: () {
-                Navigator.pop(context);
-                context.go('/auth-check'); // Proceed anyway
+                final startupBloc = context.read<StartupBloc>();
+                Navigator.pop(dialogContext);
+                if (state.latestVersion != null) {
+                  startupBloc.add(StartupUpdateSkipped(state.latestVersion!));
+                } else {
+                  context.go(AppRoutes.authCheck);
+                }
               },
               child: const Text('Maybe Later'),
             ),
             ElevatedButton(
-              onPressed: () {
-                // Launch store url
-                // Note: using url_launcher requires careful handling
-                // We'll leave it as a placeholder for the actual launch logic
-                // LaunchHelper.launchUrl(state.storeUrl);
-                Navigator.pop(context);
-                context.go('/auth-check');
+              onPressed: () async {
+                final startupBloc = context.read<StartupBloc>();
+                Navigator.pop(dialogContext);
+                if (state.storeUrl.isNotEmpty) {
+                  final uri = Uri.tryParse(state.storeUrl);
+                  if (uri != null && await canLaunchUrl(uri)) {
+                    await launchUrl(uri, mode: LaunchMode.externalApplication);
+                  }
+                }
+                if (state.latestVersion != null) {
+                  startupBloc.add(StartupUpdateSkipped(state.latestVersion!));
+                } else if (context.mounted) {
+                  context.go(AppRoutes.authCheck);
+                }
               },
               child: const Text('Update Now'),
             ),

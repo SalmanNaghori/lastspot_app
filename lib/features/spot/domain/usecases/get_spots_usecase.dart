@@ -1,4 +1,4 @@
-import '../entities/spot_entity.dart';
+import '../entities/request_entity.dart';
 import '../repositories/spot_repository.dart';
 
 class GetSpotsUseCase {
@@ -6,7 +6,7 @@ class GetSpotsUseCase {
 
   GetSpotsUseCase(this._repository);
 
-  Future<List<SpotEntity>> call({String? category}) async {
-    return _repository.getFeedSpots(category: category);
+  Future<List<RequestEntity>> call({String? category}) async {
+    return _repository.getFeedPosts(categoryId: category);
   }
 }

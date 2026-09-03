@@ -4,7 +4,8 @@ import '../datasources/auth_remote_datasource.dart';
 class AuthRepositoryImpl implements AuthRepository {
   final AuthRemoteDataSource _remoteDataSource;
 
-  AuthRepositoryImpl({required AuthRemoteDataSource remoteDataSource}) : _remoteDataSource = remoteDataSource;
+  AuthRepositoryImpl({required AuthRemoteDataSource remoteDataSource})
+    : _remoteDataSource = remoteDataSource;
 
   @override
   String? getCurrentUserId() => _remoteDataSource.getCurrentUserId();
@@ -15,14 +16,15 @@ class AuthRepositoryImpl implements AuthRepository {
     required String password,
     required String fullName,
   }) async {
-    return _remoteDataSource.signUp(email: email, password: password, fullName: fullName);
+    return _remoteDataSource.signUp(
+      email: email,
+      password: password,
+      fullName: fullName,
+    );
   }
 
   @override
-  Future<void> signIn({
-    required String email,
-    required String password,
-  }) async {
+  Future<void> signIn({required String email, required String password}) async {
     return _remoteDataSource.signIn(email: email, password: password);
   }
 
@@ -37,7 +39,11 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<void> verifyOtp({required String email, required String token, required String type}) async {
+  Future<void> verifyOtp({
+    required String email,
+    required String token,
+    required String type,
+  }) async {
     return _remoteDataSource.verifyOtp(email: email, token: token, type: type);
   }
 

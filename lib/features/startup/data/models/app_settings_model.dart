@@ -8,7 +8,10 @@ class AppSettingsModel {
   });
 
   factory AppSettingsModel.fromJson(
-      Map<String, dynamic> vcJson, Map<String, dynamic> mmJson, String platform) {
+    Map<String, dynamic> vcJson,
+    Map<String, dynamic> mmJson,
+    String platform,
+  ) {
     return AppSettingsModel(
       versionControl: VersionControl.fromJson(vcJson[platform] ?? {}),
       maintenanceMode: MaintenanceMode.fromJson(mmJson),
@@ -32,9 +35,12 @@ class VersionControl {
   });
 
   factory VersionControl.fromJson(Map<String, dynamic> json) {
-    final messagesJson = json['version_messages'] as Map<String, dynamic>? ?? {};
-    final messages = messagesJson.map((key, value) =>
-        MapEntry(key, VersionMessage.fromJson(value as Map<String, dynamic>)));
+    final messagesJson =
+        json['version_messages'] as Map<String, dynamic>? ?? {};
+    final messages = messagesJson.map(
+      (key, value) =>
+          MapEntry(key, VersionMessage.fromJson(value as Map<String, dynamic>)),
+    );
 
     return VersionControl(
       latestVersion: json['latest_version'] ?? '1.0.0',

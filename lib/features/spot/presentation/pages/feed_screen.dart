@@ -1,13 +1,15 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
-import 'package:lastspot_app/core/l10n/app_localizations.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:lastspot_app/core/base_import.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
-import '../../../../core/constants/app_color.dart';
-import '../../../../core/constants/dimensions.dart';
 import '../bloc/feed_bloc.dart';
-import '../widgets/post_card.dart';
+import '../widgets/home_app_bar.dart';
+import '../widgets/home_greeting_banner.dart';
+import '../widgets/home_search_bar.dart';
+import '../widgets/home_section_header.dart';
+import '../widgets/home_spot_card.dart';
+import '../widgets/popular_sports_grid.dart';
+import '../widgets/sport_filter_chips.dart';
+import '../widgets/feed_skeleton_loading.dart';
 
 class FeedScreen extends StatefulWidget {
   const FeedScreen({super.key});
@@ -17,7 +19,6 @@ class FeedScreen extends StatefulWidget {
 }
 
 class _FeedScreenState extends State<FeedScreen> {
-  int _currentIndex = 0;
   String? _selectedCategory;
 
   @override
@@ -26,205 +27,247 @@ class _FeedScreenState extends State<FeedScreen> {
     context.read<FeedBloc>().add(LoadFeedEvent());
   }
 
-  void _onCategorySelected(String category) {
-    setState(() {
-      _selectedCategory = _selectedCategory == category ? null : category;
-    });
-    context.read<FeedBloc>().add(LoadFeedEvent(category: _selectedCategory));
+  void _onCategorySelected(String? category) {
+    setState(() => _selectedCategory = category);
+    context.read<FeedBloc>().add(LoadFeedEvent(category: category));
   }
 
-  Future<void> _launchMap(String url) async {
-    final uri = Uri.parse(url);
-    if (await canLaunchUrl(uri)) {
-      await launchUrl(uri);
-    }
-  }
+  void _onSpotTap(String postId) => context.push(AppRoutes.spotDetailsPath(postId));
+
+  void _onNotificationTap() => context.push(AppRoutes.notifications);
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
+    final loc = context.loc;
+    final currentUser = Supabase.instance.client.auth.currentUser;
+    final userName = currentUser?.userMetadata?['full_name'] as String?;
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(l10n.appName, style: const TextStyle(fontWeight: FontWeight.bold)),
-        actions: [IconButton(icon: const Icon(Icons.notifications_outlined), onPressed: () {})],
-      ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Search Bar
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: Dimensions.r16.dynamicW, vertical: Dimensions.r8.dynamicH),
-            child: TextField(
-              decoration: InputDecoration(
-                hintText: l10n.searchHint,
-                prefixIcon: const Icon(Icons.search),
-                filled: true,
-                fillColor: context.surfaceColor,
-                contentPadding: EdgeInsets.symmetric(vertical: Dimensions.r12.dynamicH),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(Dimensions.r12.dynamicR),
-                  borderSide: BorderSide(color: context.borderColor),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(Dimensions.r12.dynamicR),
-                  borderSide: BorderSide(color: context.borderColor),
-                ),
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: AppTheme.systemUiOverlayStyle(context),
+      child: Scaffold(
+        backgroundColor: context.backgroundColor,
+        appBar: HomeAppBar(onNotificationTap: _onNotificationTap),
+        body: NestedScrollView(
+          headerSliverBuilder: (context, innerBoxIsScrolled) => [
+            SliverToBoxAdapter(
+              child: _HomeHeader(
+                userName: userName,
+                selectedCategory: _selectedCategory,
+                onCategorySelected: _onCategorySelected,
               ),
             ),
-          ),
+          ],
+          body: BlocBuilder<FeedBloc, FeedState>(
+            builder: (context, state) {
+              if (state is FeedLoading) {
+                return const FeedSkeletonLoading();
+              }
 
-          // Categories
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            padding: EdgeInsets.symmetric(horizontal: Dimensions.r16.dynamicW, vertical: Dimensions.r8.dynamicH),
-            child: Row(
-              children: [
-                _CategoryPill(
-                  title: '🏏 Cricket',
-                  isSelected: _selectedCategory == 'Cricket',
-                  onTap: () => _onCategorySelected('Cricket'),
-                ),
-                SizedBox(width: Dimensions.r8.dynamicW),
-                _CategoryPill(
-                  title: '⚽ Football',
-                  isSelected: _selectedCategory == 'Football',
-                  onTap: () => _onCategorySelected('Football'),
-                ),
-                SizedBox(width: Dimensions.r8.dynamicW),
-                _CategoryPill(
-                  title: '🏸 Badminton',
-                  isSelected: _selectedCategory == 'Badminton',
-                  onTap: () => _onCategorySelected('Badminton'),
-                ),
-              ],
-            ),
-          ),
-
-          // Feed Content
-          Expanded(
-            child: BlocBuilder<FeedBloc, FeedState>(
-              builder: (context, state) {
-                if (state is FeedLoading) {
-                  return const Center(child: CircularProgressIndicator());
-                } else if (state is FeedError) {
-                  return Center(
-                    child: Text(state.message, style: TextStyle(color: AppColor.errorColor)),
-                  );
-                } else if (state is FeedLoaded) {
-                  if (state.posts.isEmpty) {
-                    return Center(child: Text('No active spots found.'));
-                  }
-
-                  final urgentPosts = state.posts
-                      .where((p) => p.matchTime.difference(DateTime.now()).inHours < 24)
-                      .toList();
-                  final recentPosts = state.posts.where((p) => !urgentPosts.contains(p)).toList();
-
-                  return ListView(
-                    padding: EdgeInsets.all(Dimensions.r16.dynamicW),
-                    children: [
-                      if (urgentPosts.isNotEmpty) ...[
-                        Text(
-                          l10n.urgentMatches,
-                          style: Theme.of(
-                            context,
-                          ).textTheme.labelMedium?.copyWith(fontWeight: FontWeight.bold, color: context.textSecondary),
-                        ),
-                        SizedBox(height: Dimensions.r12.dynamicH),
-                        ...urgentPosts.map(
-                          (post) => PostCard(
-                            post: post,
-                            onTap: () => context.push('/spot/${post.id}'),
-                            onMapTap: () {
-                              if (post.googleMapsUrl != null) {
-                                _launchMap(post.googleMapsUrl!);
-                              }
-                            },
-                          ),
+              if (state is FeedError) {
+                return Center(
+                  child: Padding(
+                    padding: EdgeInsets.all(Dimensions.r24.dynamicW),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.wifi_off_outlined,
+                          size: Dimensions.r32.dynamicH * 1.75,
+                          color: context.textSecondary,
                         ),
                         SizedBox(height: Dimensions.r16.dynamicH),
-                      ],
-
-                      if (recentPosts.isNotEmpty) ...[
                         Text(
-                          l10n.recentPosts,
-                          style: Theme.of(
-                            context,
-                          ).textTheme.labelMedium?.copyWith(fontWeight: FontWeight.bold, color: context.textSecondary),
+                          state.message,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(fontSize: Dimensions.r14.dynamicSP, color: context.textSecondary),
                         ),
-                        SizedBox(height: Dimensions.r12.dynamicH),
-                        ...recentPosts.map(
-                          (post) => PostCard(
-                            post: post,
-                            onTap: () => context.push('/spot/${post.id}'),
-                            onMapTap: () {
-                              if (post.googleMapsUrl != null) {
-                                _launchMap(post.googleMapsUrl!);
-                              }
-                            },
+                        SizedBox(height: Dimensions.r24.dynamicH),
+                        FilledButton.icon(
+                          onPressed: () => context.read<FeedBloc>().add(LoadFeedEvent(category: _selectedCategory)),
+                          icon: const Icon(Icons.refresh),
+                          label: const Text('Try again'),
+                          style: FilledButton.styleFrom(backgroundColor: AppColor.primaryColor),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              }
+
+              if (state is FeedLoaded) {
+                if (state.posts.isEmpty) {
+                  return _EmptyFeed(loc: loc);
+                }
+
+                final urgentPosts = state.posts
+                    .where((p) => p.eventDateTime.difference(DateTime.now()).inHours < 24)
+                    .toList();
+                final recentPosts = state.posts.where((p) => !urgentPosts.contains(p)).toList();
+
+                return CustomScrollView(
+                  slivers: [
+                    // ── Urgent Matches ──────────────────────────
+                    if (urgentPosts.isNotEmpty) ...[
+                      SliverToBoxAdapter(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(height: Dimensions.r20.dynamicH),
+                            HomeSectionHeader(
+                              title: 'Urgent Matches',
+                              subtitle: loc.urgentMatchesSubtitle,
+                              viewAllLabel: loc.viewAll,
+                              onViewAll: () {},
+                              leadingIcon: const Text('🔥', style: TextStyle(fontSize: 20)),
+                            ),
+                            SizedBox(height: Dimensions.r16.dynamicH),
+                          ],
+                        ),
+                      ),
+                      SliverPadding(
+                        padding: EdgeInsets.symmetric(horizontal: Dimensions.r16.dynamicW),
+                        sliver: SliverList(
+                          delegate: SliverChildBuilderDelegate(
+                            (context, index) =>
+                                HomeSpotCard(spot: urgentPosts[index], onTap: () => _onSpotTap(urgentPosts[index].id)),
+                            childCount: urgentPosts.length,
                           ),
                         ),
-                      ],
+                      ),
                     ],
-                  );
-                }
-                return const SizedBox.shrink();
-              },
-            ),
+
+                    // ── Popular Sports ──────────────────────────
+                    SliverToBoxAdapter(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(height: Dimensions.r8.dynamicH),
+                          HomeSectionHeader(
+                            title: loc.popularSports,
+                            subtitle: loc.popularSportsSubtitle,
+                            leadingIcon: const Text('🏆', style: TextStyle(fontSize: 20)),
+                          ),
+                          SizedBox(height: Dimensions.r14.dynamicH),
+                          PopularSportsGrid(onSportTap: _onCategorySelected),
+                          SizedBox(height: Dimensions.r24.dynamicH),
+                        ],
+                      ),
+                    ),
+
+                    // ── Nearby / Recent Activities ───────────────
+                    if (recentPosts.isNotEmpty) ...[
+                      SliverToBoxAdapter(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            HomeSectionHeader(
+                              title: loc.nearbyActivities,
+                              viewAllLabel: loc.viewAll,
+                              onViewAll: () {},
+                              leadingIcon: Icon(
+                                Icons.location_on,
+                                color: AppColor.primaryColor,
+                                size: Dimensions.r20.dynamicH,
+                              ),
+                            ),
+                            SizedBox(height: Dimensions.r16.dynamicH),
+                          ],
+                        ),
+                      ),
+                      SliverPadding(
+                        padding: EdgeInsets.symmetric(horizontal: Dimensions.r16.dynamicW),
+                        sliver: SliverList(
+                          delegate: SliverChildBuilderDelegate(
+                            (context, index) =>
+                                HomeSpotCard(spot: recentPosts[index], onTap: () => _onSpotTap(recentPosts[index].id)),
+                            childCount: recentPosts.length,
+                          ),
+                        ),
+                      ),
+                    ],
+
+                    // Bottom padding
+                    SliverToBoxAdapter(child: SizedBox(height: Dimensions.r32.dynamicH)),
+                  ],
+                );
+              }
+
+              return const SizedBox.shrink();
+            },
           ),
-        ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          await context.push('/create-spot');
-          if (context.mounted) {
-            context.read<FeedBloc>().add(LoadFeedEvent());
-          }
-        },
-        backgroundColor: AppColor.primaryColor,
-        child: const Icon(Icons.add, color: AppColor.whiteColor),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentIndex,
-        onTap: (index) => setState(() => _currentIndex = index),
-        selectedItemColor: AppColor.primaryColor,
-        unselectedItemColor: context.textSecondary,
-        backgroundColor: context.surfaceColor,
-        items: [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: l10n.homeTab),
-          BottomNavigationBarItem(icon: Icon(Icons.sports), label: l10n.myMatchesTab),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: l10n.profileTab),
-        ],
+        ),
       ),
     );
   }
 }
 
-class _CategoryPill extends StatelessWidget {
-  final String title;
-  final bool isSelected;
-  final VoidCallback onTap;
+// ─────────────────────────────────────────────────────────────────────────────
+// Header widget
+// ─────────────────────────────────────────────────────────────────────────────
 
-  const _CategoryPill({required this.title, required this.isSelected, required this.onTap});
+class _HomeHeader extends StatelessWidget {
+  final String? userName;
+  final String? selectedCategory;
+  final ValueChanged<String?> onCategorySelected;
+
+  const _HomeHeader({required this.userName, required this.selectedCategory, required this.onCategorySelected});
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        padding: EdgeInsets.symmetric(horizontal: Dimensions.r16.dynamicW, vertical: Dimensions.r8.dynamicH),
-        decoration: BoxDecoration(
-          color: isSelected ? AppColor.primaryColor : context.surfaceColor,
-          borderRadius: BorderRadius.circular(Dimensions.r20.dynamicR),
-          border: Border.all(color: isSelected ? AppColor.primaryColor : context.borderColor),
-        ),
-        child: Text(
-          title,
-          style: TextStyle(
-            color: isSelected ? AppColor.whiteColor : context.textPrimary,
-            fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-          ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(height: Dimensions.r8.dynamicH),
+
+        // ── Greeting banner ──────────────────────────
+        HomeGreetingBanner(userName: userName),
+
+        SizedBox(height: Dimensions.r16.dynamicH),
+
+        // ── Search bar ───────────────────────────────
+        const HomeSearchBar(),
+
+        SizedBox(height: Dimensions.r14.dynamicH),
+
+        // ── Sport filter chips ───────────────────────
+        SportFilterChips(selectedCategory: selectedCategory, onCategorySelected: onCategorySelected),
+
+        SizedBox(height: Dimensions.r8.dynamicH),
+      ],
+    );
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Empty state
+// ─────────────────────────────────────────────────────────────────────────────
+
+class _EmptyFeed extends StatelessWidget {
+  final AppLocalizations loc;
+
+  const _EmptyFeed({required this.loc});
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Padding(
+        padding: EdgeInsets.all(Dimensions.r32.dynamicW),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              width: Dimensions.r48.dynamicW * 1.67,
+              height: Dimensions.r48.dynamicH * 1.67,
+              decoration: BoxDecoration(color: AppColor.primaryColor.withValues(alpha: 0.1), shape: BoxShape.circle),
+              child: Icon(Icons.sports_soccer, size: Dimensions.r24.dynamicH * 1.67, color: AppColor.primaryColor),
+            ),
+            SizedBox(height: Dimensions.r20.dynamicH),
+            Text(
+              loc.noSpotsFound,
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: Dimensions.r15.dynamicSP, color: context.textSecondary, height: 1.6),
+            ),
+          ],
         ),
       ),
     );

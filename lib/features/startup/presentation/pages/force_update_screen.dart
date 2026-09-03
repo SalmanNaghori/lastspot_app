@@ -1,17 +1,11 @@
-import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../../../../core/constants/app_color.dart';
-import '../../../../core/constants/dimensions.dart';
-import '../../../../core/widgets/responsive_layout.dart';
+import 'package:lastspot_app/core/base_import.dart';
 import '../bloc/startup_state.dart';
 
 class ForceUpdateScreen extends StatelessWidget {
   final StartupUpdateRequired updateData;
 
-  const ForceUpdateScreen({
-    super.key,
-    required this.updateData,
-  });
+  const ForceUpdateScreen({super.key, required this.updateData});
 
   @override
   Widget build(BuildContext context) {
@@ -83,7 +77,9 @@ class ForceUpdateScreen extends StatelessWidget {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColor.primaryColor,
                     foregroundColor: AppColor.whiteColor,
-                    padding: const EdgeInsets.symmetric(vertical: Dimensions.r16),
+                    padding: const EdgeInsets.symmetric(
+                      vertical: Dimensions.r16,
+                    ),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(Dimensions.r12),
                     ),
@@ -91,7 +87,10 @@ class ForceUpdateScreen extends StatelessWidget {
                   onPressed: () async {
                     final url = Uri.parse(updateData.storeUrl);
                     if (await canLaunchUrl(url)) {
-                      await launchUrl(url, mode: LaunchMode.externalApplication);
+                      await launchUrl(
+                        url,
+                        mode: LaunchMode.externalApplication,
+                      );
                     }
                   },
                   child: const Text('Update Now'),

@@ -1,21 +1,27 @@
-import '../../domain/entities/spot_entity.dart';
+import 'dart:io';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import '../../domain/entities/request_entity.dart';
 import '../../domain/entities/join_request_entity.dart';
 import '../../domain/repositories/spot_repository.dart';
 import '../datasources/spot_remote_datasource.dart';
 
 class SpotRepositoryImpl implements SpotRepository {
   final SpotRemoteDataSource _remoteDataSource;
+  final SupabaseClient _supabaseClient;
 
-  SpotRepositoryImpl({required SpotRemoteDataSource remoteDataSource}) 
-      : _remoteDataSource = remoteDataSource;
+  SpotRepositoryImpl({
+    required SpotRemoteDataSource remoteDataSource,
+    required SupabaseClient supabaseClient,
+  }) : _remoteDataSource = remoteDataSource,
+       _supabaseClient = supabaseClient;
 
   @override
-  Future<List<SpotEntity>> getFeedSpots({String? category}) async {
-    return _remoteDataSource.getFeedPosts(category: category);
+  Future<List<RequestEntity>> getFeedPosts({String? categoryId}) async {
+    return _remoteDataSource.getFeedPosts(categoryId: categoryId);
   }
 
   @override
-  Future<SpotEntity> getSpotDetails(String spotId) async {
+  Future<RequestEntity> getSpotDetails(String spotId) async {
     return _remoteDataSource.getSpotDetails(spotId);
   }
 
@@ -30,24 +36,34 @@ class SpotRepositoryImpl implements SpotRepository {
   }
 
   @override
-  Future<void> createSpot({
-    required String sportCategory,
-    required int totalSpots,
-    required int neededSpots,
-    required DateTime matchTime,
-    required String venueName,
-    String? googleMapsUrl,
-    String? additionalNotes,
+  Future<void> createRequest({
+    required String categoryId,
+    required String title,
+    String? description,
+    required String locationName,
+    required DateTime eventDateTime,
+    required int maxParticipants,
+    required double pricePerPerson,
+    required List<File> images,
   }) async {
-    await _remoteDataSource.createPost({
-      'sport_category': sportCategory,
-      'total_spots': totalSpots,
-      'needed_spots': neededSpots,
-      'match_time': matchTime.toIso8601String(),
-      'venue_name': venueName,
-      'google_maps_url': googleMapsUrl,
-      'additional_notes': additionalNotes,
-    });
+    final userId = _supabaseClient.auth.currentUser!.id;
+
+    final requestData = {
+      'user_id': userId,
+      'category_id': categoryId,
+      'title': title,
+      'description': description,
+      'location_name': locationName,
+      'latitude': 0.0, // Default as per plan
+      'longitude': 0.0, // Default as per plan
+      'event_date_time': eventDateTime.toIso8601String(),
+      'max_participants': maxParticipants,
+      'current_participants': 1, // Creator is the first participant
+      'price_per_person': pricePerPerson,
+      'status': 'open', // Enum value string
+    };
+
+    await _remoteDataSource.createRequest(requestData, images);
   }
 
   @override

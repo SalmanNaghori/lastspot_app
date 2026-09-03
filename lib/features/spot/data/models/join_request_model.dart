@@ -1,6 +1,6 @@
 import '../../../auth/data/models/profile_model.dart';
 import '../../domain/entities/join_request_entity.dart';
-import 'post_model.dart';
+import 'request_model.dart';
 
 class JoinRequestModel extends JoinRequestEntity {
   const JoinRequestModel({
@@ -39,7 +39,7 @@ class JoinRequestModel extends JoinRequestEntity {
       userProfile: json['profiles'] != null
           ? ProfileModel.fromJson(json['profiles'])
           : null,
-      post: json['posts'] != null ? PostModel.fromJson(json['posts']) : null,
+      post: json['posts'] != null ? RequestModel.fromJson(json['posts']) : null,
     );
   }
 

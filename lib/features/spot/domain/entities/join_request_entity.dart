@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 import '../../../auth/domain/entities/user_profile.dart';
-import 'spot_entity.dart';
+import 'request_entity.dart';
 
 enum JoinRequestStatus { pending, accepted, rejected, cancelled }
 
@@ -12,7 +12,7 @@ class JoinRequestEntity extends Equatable {
   final String? message;
   final DateTime createdAt;
   final UserProfile? userProfile;
-  final SpotEntity? post;
+  final RequestEntity? post;
 
   const JoinRequestEntity({
     required this.id,
@@ -27,13 +27,13 @@ class JoinRequestEntity extends Equatable {
 
   @override
   List<Object?> get props => [
-        id,
-        postId,
-        userId,
-        status,
-        message,
-        createdAt,
-        userProfile,
-        post,
-      ];
+    id,
+    postId,
+    userId,
+    status,
+    message,
+    createdAt,
+    userProfile,
+    post,
+  ];
 }

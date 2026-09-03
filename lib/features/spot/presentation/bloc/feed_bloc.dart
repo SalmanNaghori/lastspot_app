@@ -1,5 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../domain/entities/spot_entity.dart';
+import '../../domain/entities/request_entity.dart';
 import '../../domain/usecases/get_spots_usecase.dart';
 
 abstract class FeedEvent {}
@@ -12,11 +12,14 @@ class LoadFeedEvent extends FeedEvent {
 abstract class FeedState {}
 
 class FeedInitial extends FeedState {}
+
 class FeedLoading extends FeedState {}
+
 class FeedLoaded extends FeedState {
-  final List<SpotEntity> posts;
+  final List<RequestEntity> posts;
   FeedLoaded({required this.posts});
 }
+
 class FeedError extends FeedState {
   final String message;
   FeedError({required this.message});
@@ -25,9 +28,9 @@ class FeedError extends FeedState {
 class FeedBloc extends Bloc<FeedEvent, FeedState> {
   final GetSpotsUseCase _getSpotsUseCase;
 
-  FeedBloc({required GetSpotsUseCase getSpotsUseCase}) 
-      : _getSpotsUseCase = getSpotsUseCase,
-        super(FeedInitial()) {
+  FeedBloc({required GetSpotsUseCase getSpotsUseCase})
+    : _getSpotsUseCase = getSpotsUseCase,
+      super(FeedInitial()) {
     on<LoadFeedEvent>(_onLoadFeed);
   }
 

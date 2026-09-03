@@ -13,6 +13,14 @@ class AuthLoading extends AuthState {}
 
 class Authenticated extends AuthState {}
 
+class AuthProfileIncomplete extends AuthState {}
+
+class AuthSuspended extends AuthState {}
+
+class AuthBanned extends AuthState {}
+
+class AuthDeleted extends AuthState {}
+
 class Unauthenticated extends AuthState {}
 
 class AuthError extends AuthState {

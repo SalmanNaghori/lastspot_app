@@ -1,19 +1,24 @@
-import 'package:flutter/material.dart';
-import '../constants/app_color.dart';
-import '../constants/dimensions.dart';
+import '../base_import.dart';
 
 class ResponsiveLayout extends StatelessWidget {
   final Widget mobile;
   final Widget tablet;
 
-  const ResponsiveLayout({super.key, required this.mobile, required this.tablet});
+  const ResponsiveLayout({
+    super.key,
+    required this.mobile,
+    required this.tablet,
+  });
 
-  static bool isMobile(BuildContext context) => MediaQuery.of(context).size.width < 650;
+  static bool isMobile(BuildContext context) =>
+      MediaQuery.of(context).size.width < 650;
 
   static bool isTablet(BuildContext context) =>
-      MediaQuery.of(context).size.width >= 650 && MediaQuery.of(context).size.width < 1050;
+      MediaQuery.of(context).size.width >= 650 &&
+      MediaQuery.of(context).size.width < 1050;
 
-  static bool isDesktop(BuildContext context) => MediaQuery.of(context).size.width >= 1050;
+  static bool isDesktop(BuildContext context) =>
+      MediaQuery.of(context).size.width >= 1050;
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +35,10 @@ class ResponsiveLayout extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: AppColor.whiteColor,
                   borderRadius: BorderRadius.circular(Dimensions.r20),
-                  border: Border.all(color: AppColor.helpCardBorderColor, width: 0.5),
+                  border: Border.all(
+                    color: AppColor.helpCardBorderColor,
+                    width: 0.5,
+                  ),
                   boxShadow: [
                     BoxShadow(
                       color: AppColor.blackColor.withValues(alpha: 0.04),

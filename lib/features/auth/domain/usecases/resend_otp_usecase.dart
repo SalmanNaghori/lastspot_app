@@ -5,10 +5,7 @@ class ResendOtpUseCase {
 
   ResendOtpUseCase(this._repository);
 
-  Future<void> call({
-    required String email,
-    required String type,
-  }) async {
+  Future<void> call({required String email, required String type}) async {
     return _repository.resendOtp(email: email, type: type);
   }
 }

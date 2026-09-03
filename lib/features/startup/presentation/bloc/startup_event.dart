@@ -8,3 +8,12 @@ abstract class StartupEvent extends Equatable {
 }
 
 class StartupInitialCheckRequested extends StartupEvent {}
+
+class StartupUpdateSkipped extends StartupEvent {
+  final String version;
+
+  const StartupUpdateSkipped(this.version);
+
+  @override
+  List<Object> get props => [version];
+}

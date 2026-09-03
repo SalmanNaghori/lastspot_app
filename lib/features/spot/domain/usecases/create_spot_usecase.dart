@@ -1,3 +1,4 @@
+import 'dart:io';
 import '../repositories/spot_repository.dart';
 
 class CreateSpotUseCase {
@@ -6,22 +7,24 @@ class CreateSpotUseCase {
   CreateSpotUseCase(this._repository);
 
   Future<void> call({
-    required String sportCategory,
-    required int totalSpots,
-    required int neededSpots,
-    required DateTime matchTime,
-    required String venueName,
-    String? googleMapsUrl,
-    String? additionalNotes,
+    required String categoryId,
+    required String title,
+    String? description,
+    required String locationName,
+    required DateTime eventDateTime,
+    required int maxParticipants,
+    required double pricePerPerson,
+    required List<File> images,
   }) async {
-    return _repository.createSpot(
-      sportCategory: sportCategory,
-      totalSpots: totalSpots,
-      neededSpots: neededSpots,
-      matchTime: matchTime,
-      venueName: venueName,
-      googleMapsUrl: googleMapsUrl,
-      additionalNotes: additionalNotes,
+    return _repository.createRequest(
+      categoryId: categoryId,
+      title: title,
+      description: description,
+      locationName: locationName,
+      eventDateTime: eventDateTime,
+      maxParticipants: maxParticipants,
+      pricePerPerson: pricePerPerson,
+      images: images,
     );
   }
 }
