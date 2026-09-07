@@ -13,6 +13,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  bool _obscurePassword = true;
 
   final _formKey = GlobalKey<FormState>();
 
@@ -84,14 +85,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                   const SizedBox(height: Dimensions.r48),
-                  TextFormField(
+                  AppTextField(
                     controller: _emailController,
-                    decoration: InputDecoration(
-                      labelText: context.loc.email,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(Dimensions.r12),
-                      ),
-                    ),
+                    labelText: context.loc.email,
                     keyboardType: TextInputType.emailAddress,
                     textInputAction: TextInputAction.next,
                     validator: (value) {
@@ -106,17 +102,17 @@ class _LoginScreenState extends State<LoginScreen> {
                     },
                   ),
                   const SizedBox(height: Dimensions.r16),
-                  TextFormField(
+                  AppTextField(
                     controller: _passwordController,
-                    decoration: InputDecoration(
-                      labelText: context.loc.password,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(Dimensions.r12),
-                      ),
-                    ),
-                    obscureText: true,
+                    labelText: context.loc.password,
+                    isPassword: true,
+                    obscureText: _obscurePassword,
+                    onTogglePassword: () {
+                      setState(() {
+                        _obscurePassword = !_obscurePassword;
+                      });
+                    },
                     textInputAction: TextInputAction.done,
-                    onFieldSubmitted: (_) => _onLogin(),
                     validator: (value) {
                       if (value == null || value.isEmpty)
                         return 'Password is required';

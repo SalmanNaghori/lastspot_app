@@ -5,6 +5,14 @@ import 'dart:io';
 abstract class SpotRepository {
   Future<List<RequestEntity>> getFeedPosts({String? categoryId});
 
+  Future<List<RequestEntity>> getExplorePosts({
+    required String cityId,
+    String? categoryId,
+    String? searchQuery,
+    int limit = 20,
+    int offset = 0,
+  });
+
   Future<RequestEntity> getSpotDetails(String spotId);
 
   Stream<List<JoinRequestEntity>> streamPendingRequests(String spotId);

@@ -1,3 +1,4 @@
+import '../../../../core/utils/result.dart';
 import '../repositories/auth_repository.dart';
 
 class VerifyOtpUseCase {
@@ -5,7 +6,7 @@ class VerifyOtpUseCase {
 
   VerifyOtpUseCase(this._repository);
 
-  Future<void> call({
+  Future<Result<void, Exception>> call({
     required String email,
     required String token,
     required String type,
@@ -13,3 +14,4 @@ class VerifyOtpUseCase {
     return _repository.verifyOtp(email: email, token: token, type: type);
   }
 }
+

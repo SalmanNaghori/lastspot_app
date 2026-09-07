@@ -8,6 +8,13 @@ import '../models/request_model.dart';
 
 abstract class SpotRemoteDataSource {
   Future<List<RequestModel>> getFeedPosts({String? categoryId});
+  Future<List<RequestModel>> getExplorePosts({
+    required String cityId,
+    String? categoryId,
+    String? searchQuery,
+    int limit = 20,
+    int offset = 0,
+  });
   Future<void> createRequest(
     Map<String, dynamic> requestData,
     List<File> images,
@@ -47,7 +54,56 @@ class SupabaseSpotDataSourceImpl implements SpotRemoteDataSource {
       },
     );
   }
+  @override
+  Future<List<RequestModel>> getExplorePosts({
+    required String cityId,
+    String? categoryId,
+    String? searchQuery,
+    int limit = 20,
+    int offset = 0,
+  }) async {
+    return SupabaseLogger.execute(
+      operationName: 'Spot.getExplorePosts',
+      requestData: {
+        'cityId': cityId,
+        'categoryId': categoryId,
+        'searchQuery': searchQuery,
+        'limit': limit,
+        'offset': offset,
+      },
+      operation: () async {
+        var query = _client
+            .from('requests')
+            .select('*, profiles:user_id(*), request_images(*)')
+            .inFilter('status', ['open', 'full'])
+            .gte('event_date_time', DateTime.now().toUtc().toIso8601String());
 
+        if (cityId.isNotEmpty) {
+          query = query.eq('city_id', cityId);
+        }
+
+        if (categoryId != null && categoryId.isNotEmpty) {
+          query = query.eq('category_id', categoryId);
+        }
+
+        if (searchQuery != null && searchQuery.isNotEmpty) {
+          // Note: Full text search on related tables (categories) is complex in PostgREST. 
+          // We search title, description, location_name. If category name search is critical,
+          // we would need a database function or an ilike with inner join.
+          // For now, doing an or() on local fields.
+          query = query.or('title.ilike.%$searchQuery%,description.ilike.%$searchQuery%,location_name.ilike.%$searchQuery%');
+        }
+
+        final response = await query
+            .order('event_date_time', ascending: true)
+            .range(offset, offset + limit - 1);
+            
+        return (response as List<dynamic>)
+            .map((e) => RequestModel.fromJson(e as Map<String, dynamic>))
+            .toList();
+      },
+    );
+  }
   @override
   Future<void> createRequest(
     Map<String, dynamic> requestData,

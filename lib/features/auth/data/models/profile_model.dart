@@ -13,6 +13,7 @@ class ProfileModel extends UserProfile {
     super.deletedAt,
     super.bio,
     super.city,
+    super.cityId,
     super.sportsInterests = const [],
     super.rating = 0.0,
   });
@@ -45,6 +46,7 @@ class ProfileModel extends UserProfile {
       // Extended fields — present after SQL migration; graceful fallback until then
       bio: json['bio'] as String?,
       city: json['city'] as String?,
+      cityId: json['city_id'] as String?,
       sportsInterests:
           (json['sports_interests'] as List<dynamic>?)
               ?.map((e) => e as String)
@@ -66,6 +68,7 @@ class ProfileModel extends UserProfile {
       // Extended fields — only included if present (no-op if column missing in DB)
       if (bio != null) 'bio': bio,
       if (city != null) 'city': city,
+      if (cityId != null) 'city_id': cityId,
       'sports_interests': sportsInterests,
       'rating': rating,
     };

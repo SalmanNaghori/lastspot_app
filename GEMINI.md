@@ -22,18 +22,19 @@ NEVER use raw double literals for padding, margin, font size, or border radius. 
 - `Dimensions.r12.dynamicR` (border radii)
 
 ## 4. No Hardcoded Colors
-NEVER use standard `Colors.*` or hex color literals. ALWAYS use `AppColor` or `context.surfaceColor` / `context.backgroundColor` via extensions for System Theme compatibility.
-- Example: `AppColor.primaryColor`, `context.textPrimary`
+NEVER use standard `Colors.*` or hex color literals. ALWAYS use `context.surfaceColor` / `context.primaryColor` / `context.textPrimary` via extensions on BuildContext (`ThemeColors` from `app_color.dart`) for System Theme compatibility. This ensures that colors automatically adapt when the theme changes from the app side.
+- Example: `context.primaryColor`, `context.textPrimary`
 
 ## 5. No Hardcoded Strings
 NEVER embed user-facing text directly in widget code. ALWAYS add strings to `lib/core/l10n/intl_en.arb` and access via `AppLocalizations.of(context)`. No redundant static string helper files.
 
 ## 6. Architecture & State Management
 - **Feature-first Clean Architecture:** `lib/features/<feature_name>/` (data, domain, presentation).
-- **State Management:** Use `flutter_bloc` for business logic, global state, and async operations. Use `ValueNotifier` for local UI state (toggles, loading spinners).
+- **State Management:** Use `flutter_bloc` for business logic, global state, and async operations. Use `ValueNotifier` for local UI state (toggles, loading spinners) instead of `setState`. DO NOT use `setState` unless absolutely required for trivial UI interactions that cannot be easily solved with `ValueNotifier`.
 
 ## 7. UI Components & DRY
 NEVER write private widget classes (`_MyWidget`) inside a screen file if it can be reused. ALWAYS extract every reusable widget into its OWN public file inside `lib/features/[feature]/presentation/widgets/`.
+**Avoid widget-building methods** (e.g., `Widget _buildRow() { ... }`). ALWAYS create separate `StatelessWidget` or `StatefulWidget` classes instead. This improves performance (via `const` constructors) and maintains a clean widget tree.
 
 ## 8. Material 3 & ThemeMode
 - `ThemeData(useMaterial3: true)` must be set at the app root.
@@ -41,3 +42,10 @@ NEVER write private widget classes (`_MyWidget`) inside a screen file if it can 
 
 ## 9. Supabase Edge Functions
 Sensitive operations (joining a match, decrementing open slots, preventing race conditions, post expiry validation) must execute via Supabase Edge Functions (RPC), never directly via client DB writes.
+
+## 10. App Constants
+Use `AppConstants` (from `lib/core/constants/app_constants.dart`) where required, instead of hardcoding constant values like versions, support emails, platform checks, or global configs.
+
+## 11. No Inline Function Execution Logic in Widget Tree
+NEVER write multiline function or callback logic directly inside widget trees (e.g. `onPressed: () { ... }`).
+ALWAYS extract callback logic into dedicated, private helper methods (e.g. `_onNotificationTap()`, `_onClearAllPressed()`) and call the method in the widget callback.

@@ -15,7 +15,11 @@ class _SignupScreenState extends State<SignupScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
+  
   bool _termsAccepted = false;
+  bool _obscurePassword = true;
+  bool _obscureConfirmPassword = true;
+  
   final _formKey = GlobalKey<FormState>();
 
   void _onSignup() {
@@ -63,7 +67,7 @@ class _SignupScreenState extends State<SignupScreen> {
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
-            padding: const EdgeInsets.all(Dimensions.r24),
+            padding: const EdgeInsets.symmetric(horizontal: Dimensions.r24),
             child: Form(
               key: _formKey,
               child: Column(
@@ -76,72 +80,80 @@ class _SignupScreenState extends State<SignupScreen> {
                   ),
                   const SizedBox(height: Dimensions.r8),
                   Text(
-                    context.loc.joinCommunity,
+                    context.loc.joinCommunitySubtitle,
                     style: TextStyle(fontSize: Dimensions.r16, color: context.textSecondary),
                   ),
                   const SizedBox(height: Dimensions.r32),
-                  TextFormField(
+                  // Full Name
+                  AppTextField(
                     controller: _nameController,
-                    decoration: InputDecoration(
-                      labelText: context.loc.fullName,
-                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(Dimensions.r12)),
-                    ),
+                    labelText: context.loc.fullName,
+                    prefixIcon: const Icon(Icons.person_outline),
                     textCapitalization: TextCapitalization.words,
                     textInputAction: TextInputAction.next,
                     validator: (value) {
-                      if (value == null || value.trim().isEmpty) return 'Full Name is required';
+                      if (value == null || value.trim().isEmpty) return context.loc.fullNameRequired;
                       return null;
                     },
                   ),
                   const SizedBox(height: Dimensions.r16),
-                  TextFormField(
+                  // Email
+                  AppTextField(
                     controller: _emailController,
-                    decoration: InputDecoration(
-                      labelText: context.loc.email,
-                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(Dimensions.r12)),
-                    ),
+                    labelText: context.loc.email,
+                    prefixIcon: const Icon(Icons.email_outlined),
                     keyboardType: TextInputType.emailAddress,
                     textInputAction: TextInputAction.next,
                     validator: (value) {
-                      if (value == null || value.trim().isEmpty) return 'Email is required';
+                      if (value == null || value.trim().isEmpty) return context.loc.emailRequired;
                       if (!RegExp(
                         r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+",
                       ).hasMatch(value)) {
-                        return 'Enter a valid email';
+                        return context.loc.invalidEmail;
                       }
                       return null;
                     },
                   ),
                   const SizedBox(height: Dimensions.r16),
-                  TextFormField(
+                  // Password
+                  AppTextField(
                     controller: _passwordController,
-                    decoration: InputDecoration(
-                      labelText: context.loc.password,
-                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(Dimensions.r12)),
-                    ),
-                    obscureText: true,
+                    labelText: context.loc.password,
+                    prefixIcon: const Icon(Icons.lock_outline),
+                    isPassword: true,
+                    obscureText: _obscurePassword,
+                    onTogglePassword: () {
+                      setState(() {
+                        _obscurePassword = !_obscurePassword;
+                      });
+                    },
                     textInputAction: TextInputAction.next,
                     validator: (value) {
-                      if (value == null || value.isEmpty) return 'Password is required';
-                      if (value.length < 6) return 'Password must be at least 6 characters';
+                      if (value == null || value.isEmpty) return context.loc.passwordRequired;
+                      if (value.length < 6) return context.loc.passwordLengthError;
                       return null;
                     },
                   ),
                   const SizedBox(height: Dimensions.r16),
-                  TextFormField(
+                  // Confirm Password
+                  AppTextField(
                     controller: _confirmPasswordController,
-                    decoration: InputDecoration(
-                      labelText: 'Confirm Password',
-                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(Dimensions.r12)),
-                    ),
-                    obscureText: true,
+                    labelText: context.loc.confirmPassword,
+                    prefixIcon: const Icon(Icons.lock_outline),
+                    isPassword: true,
+                    obscureText: _obscureConfirmPassword,
+                    onTogglePassword: () {
+                      setState(() {
+                        _obscureConfirmPassword = !_obscureConfirmPassword;
+                      });
+                    },
                     textInputAction: TextInputAction.done,
                     validator: (value) {
-                      if (value != _passwordController.text) return 'Passwords do not match';
+                      if (value != _passwordController.text) return context.loc.passwordsDoNotMatch;
                       return null;
                     },
                   ),
-                  const SizedBox(height: Dimensions.r16),
+                  // Terms
                   CheckboxListTile(
                     title: Text(context.loc.acceptTerms),
                     value: _termsAccepted,
@@ -154,6 +166,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     contentPadding: EdgeInsets.zero,
                   ),
                   const SizedBox(height: Dimensions.r32),
+                  // Signup Button
                   BlocBuilder<AuthBloc, AuthState>(
                     builder: (context, state) {
                       return ElevatedButton(
@@ -161,7 +174,7 @@ class _SignupScreenState extends State<SignupScreen> {
                           backgroundColor: AppColor.primaryColor,
                           foregroundColor: AppColor.whiteColor,
                           padding: const EdgeInsets.symmetric(vertical: Dimensions.r16),
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(Dimensions.r12)),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(Dimensions.r16)),
                         ),
                         onPressed: state is AuthLoading ? null : _onSignup,
                         child: state is AuthLoading
@@ -170,10 +183,29 @@ class _SignupScreenState extends State<SignupScreen> {
                                 width: 20,
                                 child: CircularProgressIndicator(strokeWidth: 2, color: context.textPrimary),
                               )
-                            : Text(context.loc.signup),
+                            : Text(context.loc.signup, style: TextStyle(fontSize: Dimensions.r16, fontWeight: FontWeight.bold)),
                       );
                     },
                   ),
+                  const SizedBox(height: Dimensions.r24),
+                  // Login Link
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(context.loc.alreadyHaveAccount, style: TextStyle(color: context.textSecondary)),
+                      GestureDetector(
+                        onTap: () => context.go(AppRoutes.login),
+                        child: Text(
+                          context.loc.login,
+                          style: TextStyle(
+                            color: AppColor.primaryColor,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: Dimensions.r32),
                 ],
               ),
             ),

@@ -2,8 +2,15 @@ import 'package:lastspot_app/core/base_import.dart';
 
 class HomeGreetingBanner extends StatelessWidget {
   final String? userName;
+  final String? city;
+  final VoidCallback? onCityTap;
 
-  const HomeGreetingBanner({super.key, this.userName});
+  const HomeGreetingBanner({
+    super.key,
+    this.userName,
+    this.city,
+    this.onCityTap,
+  });
 
   String _greeting(BuildContext context) {
     final loc = context.loc;
@@ -23,7 +30,6 @@ class HomeGreetingBanner extends StatelessWidget {
         horizontal: Dimensions.r16.dynamicW,
         vertical: Dimensions.r8.dynamicH,
       ),
-      height: Dimensions.r64.dynamicH * 1.8,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(Dimensions.r16.dynamicR),
         gradient: LinearGradient(
@@ -111,6 +117,25 @@ class HomeGreetingBanner extends StatelessWidget {
                     color: AppColor.whiteColor.withValues(alpha: 0.85),
                     fontSize: Dimensions.r13.dynamicSP,
                     fontWeight: FontWeight.w400,
+                  ),
+                ),
+                SizedBox(height: Dimensions.r16.dynamicH),
+                GestureDetector(
+                  onTap: onCityTap,
+                  child: Row(
+                    children: [
+                      const Text('📍', style: TextStyle(fontSize: 14)),
+                      SizedBox(width: Dimensions.r4.dynamicW),
+                      Text(
+                        city ?? 'Select City',
+                        style: TextStyle(
+                          color: AppColor.whiteColor,
+                          fontSize: Dimensions.r14.dynamicSP,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      Icon(Icons.keyboard_arrow_down, color: AppColor.whiteColor, size: Dimensions.r16.dynamicH),
+                    ],
                   ),
                 ),
               ],

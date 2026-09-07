@@ -27,8 +27,11 @@ import '../../features/spot/domain/usecases/stream_spot_join_requests_usecase.da
 import '../../features/spot/domain/usecases/get_confirmed_players_usecase.dart';
 import '../../features/categories/domain/usecases/get_categories_usecase.dart';
 import '../../features/auth/domain/repositories/auth_repository.dart';
+import '../../features/categories/presentation/bloc/category_bloc.dart';
+import '../../features/categories/presentation/bloc/category_event.dart' as ce;
 import '../widgets/authenticated_app_shell.dart';
 import '../../features/explore/presentation/pages/explore_screen.dart';
+import '../../features/explore/presentation/bloc/explore_bloc.dart';
 import '../../features/activities/presentation/pages/activities_screen.dart';
 import '../../features/profile/presentation/pages/profile_screen.dart';
 import '../../features/profile/presentation/pages/edit_profile_screen.dart';
@@ -113,7 +116,13 @@ final GoRouter appRouter = GoRouter(
           routes: [
             GoRoute(
               path: AppRoutes.explore,
-              builder: (context, state) => const ExploreScreen(),
+              builder: (context, state) => MultiBlocProvider(
+                providers: [
+                  BlocProvider(create: (context) => sl<ExploreBloc>()),
+                  BlocProvider(create: (context) => sl<CategoryBloc>()..add(ce.LoadCategoriesEvent())),
+                ],
+                child: const ExploreScreen(),
+              ),
             ),
           ],
         ),

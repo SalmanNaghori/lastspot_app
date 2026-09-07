@@ -309,72 +309,57 @@ extension ThemeColors on BuildContext {
   // Background
   // ------------------------------------------------------------
 
-  Color get backgroundColor =>
-      isDarkMode ? AppColor.backgroundDark : AppColor.backgroundLight;
+  Color get backgroundColor => colorScheme.surface;
 
   // ------------------------------------------------------------
   // Surface
   // ------------------------------------------------------------
 
-  Color get surfaceColor =>
-      isDarkMode ? AppColor.surfaceDark : AppColor.surfaceLight;
+  Color get surfaceColor => colorScheme.surface;
 
-  Color get surfaceContainer => isDarkMode
-      ? AppColor.surfaceContainerDark
-      : AppColor.surfaceContainerLight;
+  Color get surfaceContainer => colorScheme.surfaceContainerHighest;
 
-  Color get surfaceContainerLow => isDarkMode
-      ? AppColor.surfaceContainerLowDark
-      : AppColor.surfaceContainerLowLight;
+  Color get surfaceContainerLow => colorScheme.surfaceContainerHighest; // Adjust if needed based on scheme
 
-  Color get surfaceContainerHigh => isDarkMode
-      ? AppColor.surfaceContainerHighDark
-      : AppColor.surfaceContainerHighLight;
+  Color get surfaceContainerHigh => colorScheme.surfaceContainerHighest; // Adjust if needed based on scheme
 
   // ------------------------------------------------------------
   // Text
   // ------------------------------------------------------------
 
-  Color get textPrimary =>
-      isDarkMode ? AppColor.textPrimaryDark : AppColor.textPrimaryLight;
+  Color get textPrimary => colorScheme.onSurface;
 
-  Color get textSecondary =>
-      isDarkMode ? AppColor.textSecondaryDark : AppColor.textSecondaryLight;
+  Color get textSecondary => colorScheme.onSurfaceVariant;
 
-  Color get textTertiary =>
-      isDarkMode ? AppColor.textTertiaryDark : AppColor.textTertiaryLight;
+  Color get textTertiary => colorScheme.onSurfaceVariant.withValues(alpha: 0.7);
 
   // ------------------------------------------------------------
   // Border
   // ------------------------------------------------------------
 
-  Color get borderColor =>
-      isDarkMode ? AppColor.cardBorderDark : AppColor.cardBorderLight;
+  Color get borderColor => colorScheme.outline;
 
-  Color get dividerColor =>
-      isDarkMode ? AppColor.dividerDark : AppColor.dividerLight;
+  Color get dividerColor => colorScheme.outlineVariant;
 
   // ------------------------------------------------------------
   // Brand
   // ------------------------------------------------------------
 
-  Color get primaryColor => AppColor.primaryColor;
+  Color get primaryColor => colorScheme.primary;
 
-  Color get primaryContainer => isDarkMode
-      ? AppColor.primaryContainerDark
-      : AppColor.primaryContainerLight;
+  Color get primaryContainer => colorScheme.primaryContainer;
 
-  Color get accentColor => AppColor.accentColor;
+  Color get accentColor => colorScheme.secondary;
 
   // ------------------------------------------------------------
   // Status
   // ------------------------------------------------------------
 
-  Color get successColor => AppColor.successColor;
+  Color get successColor => semantics.success;
 
-  Color get warningColor => AppColor.warningColor;
+  Color get warningColor => semantics.warning;
 
-  Color get errorColor => AppColor.errorColor;
+  Color get errorColor => colorScheme.error;
 
-  Color get infoColor => AppColor.infoColor;
+  Color get infoColor => semantics.info;
 }

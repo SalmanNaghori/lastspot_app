@@ -34,6 +34,7 @@ export 'network/app_routes.dart';
 // ========================================================
 // CORE UTILITIES & EXTENSIONS
 // ========================================================
+export 'extension/string_extension.dart';
 export 'utils/app_utils.dart';
 export 'utils/context_extensions.dart';
 

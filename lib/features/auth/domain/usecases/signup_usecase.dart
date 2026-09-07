@@ -1,3 +1,4 @@
+import '../../../../core/utils/result.dart';
 import '../repositories/auth_repository.dart';
 
 class SignupUseCase {
@@ -5,7 +6,7 @@ class SignupUseCase {
 
   SignupUseCase(this._repository);
 
-  Future<void> call({
+  Future<Result<void, Exception>> call({
     required String email,
     required String password,
     required String fullName,

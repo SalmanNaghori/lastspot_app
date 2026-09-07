@@ -13,6 +13,8 @@ class AppCachedNetworkImage extends StatelessWidget {
   final Widget? placeholder;
   final Widget? errorWidget;
   final Color? backgroundColor;
+  final int? memCacheWidth;
+  final int? memCacheHeight;
 
   const AppCachedNetworkImage({
     super.key,
@@ -25,6 +27,8 @@ class AppCachedNetworkImage extends StatelessWidget {
     this.placeholder,
     this.errorWidget,
     this.backgroundColor,
+    this.memCacheWidth,
+    this.memCacheHeight,
   });
 
   @override
@@ -39,6 +43,8 @@ class AppCachedNetworkImage extends StatelessWidget {
         width: width,
         height: height,
         fit: fit,
+        memCacheWidth: memCacheWidth,
+        memCacheHeight: memCacheHeight,
         fadeInDuration: const Duration(milliseconds: 300),
         fadeOutDuration: const Duration(milliseconds: 200),
         placeholder: (context, url) =>

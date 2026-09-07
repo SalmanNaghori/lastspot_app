@@ -41,6 +41,7 @@ class _FeedScreenState extends State<FeedScreen> {
     final loc = context.loc;
     final currentUser = Supabase.instance.client.auth.currentUser;
     final userName = currentUser?.userMetadata?['full_name'] as String?;
+    final String? userCity = 'Ahmedabad'; // TODO: Fetch from Profile/City state
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: AppTheme.systemUiOverlayStyle(context),
@@ -52,8 +53,12 @@ class _FeedScreenState extends State<FeedScreen> {
             SliverToBoxAdapter(
               child: _HomeHeader(
                 userName: userName,
+                city: userCity,
                 selectedCategory: _selectedCategory,
                 onCategorySelected: _onCategorySelected,
+                onCityTap: () {
+                  // TODO: Show city picker
+                },
               ),
             ),
           ],
@@ -103,6 +108,9 @@ class _FeedScreenState extends State<FeedScreen> {
                     .where((p) => p.eventDateTime.difference(DateTime.now()).inHours < 24)
                     .toList();
                 final recentPosts = state.posts.where((p) => !urgentPosts.contains(p)).toList();
+                
+                final nearbyPosts = recentPosts.take(5).toList();
+                final recommendedPosts = recentPosts.skip(5).take(5).toList();
 
                 return CustomScrollView(
                   slivers: [
@@ -117,7 +125,7 @@ class _FeedScreenState extends State<FeedScreen> {
                               title: 'Urgent Matches',
                               subtitle: loc.urgentMatchesSubtitle,
                               viewAllLabel: loc.viewAll,
-                              onViewAll: () {},
+                              onViewAll: () => context.go(AppRoutes.explore),
                               leadingIcon: const Text('🔥', style: TextStyle(fontSize: 20)),
                             ),
                             SizedBox(height: Dimensions.r16.dynamicH),
@@ -136,34 +144,17 @@ class _FeedScreenState extends State<FeedScreen> {
                       ),
                     ],
 
-                    // ── Popular Sports ──────────────────────────
-                    SliverToBoxAdapter(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SizedBox(height: Dimensions.r8.dynamicH),
-                          HomeSectionHeader(
-                            title: loc.popularSports,
-                            subtitle: loc.popularSportsSubtitle,
-                            leadingIcon: const Text('🏆', style: TextStyle(fontSize: 20)),
-                          ),
-                          SizedBox(height: Dimensions.r14.dynamicH),
-                          PopularSportsGrid(onSportTap: _onCategorySelected),
-                          SizedBox(height: Dimensions.r24.dynamicH),
-                        ],
-                      ),
-                    ),
-
-                    // ── Nearby / Recent Activities ───────────────
-                    if (recentPosts.isNotEmpty) ...[
+                    // ── Nearby Activities ───────────────
+                    if (nearbyPosts.isNotEmpty) ...[
                       SliverToBoxAdapter(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+                            SizedBox(height: Dimensions.r20.dynamicH),
                             HomeSectionHeader(
                               title: loc.nearbyActivities,
                               viewAllLabel: loc.viewAll,
-                              onViewAll: () {},
+                              onViewAll: () => context.go(AppRoutes.explore),
                               leadingIcon: Icon(
                                 Icons.location_on,
                                 color: AppColor.primaryColor,
@@ -179,8 +170,37 @@ class _FeedScreenState extends State<FeedScreen> {
                         sliver: SliverList(
                           delegate: SliverChildBuilderDelegate(
                             (context, index) =>
-                                HomeSpotCard(spot: recentPosts[index], onTap: () => _onSpotTap(recentPosts[index].id)),
-                            childCount: recentPosts.length,
+                                HomeSpotCard(spot: nearbyPosts[index], onTap: () => _onSpotTap(nearbyPosts[index].id)),
+                            childCount: nearbyPosts.length,
+                          ),
+                        ),
+                      ),
+                    ],
+
+                    // ── Recommended For You ───────────────
+                    if (recommendedPosts.isNotEmpty) ...[
+                      SliverToBoxAdapter(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(height: Dimensions.r20.dynamicH),
+                            HomeSectionHeader(
+                              title: '⭐ Recommended For You',
+                              viewAllLabel: loc.viewAll,
+                              onViewAll: () => context.go(AppRoutes.explore),
+                              leadingIcon: const SizedBox.shrink(), // Star is in title
+                            ),
+                            SizedBox(height: Dimensions.r16.dynamicH),
+                          ],
+                        ),
+                      ),
+                      SliverPadding(
+                        padding: EdgeInsets.symmetric(horizontal: Dimensions.r16.dynamicW),
+                        sliver: SliverList(
+                          delegate: SliverChildBuilderDelegate(
+                            (context, index) =>
+                                HomeSpotCard(spot: recommendedPosts[index], onTap: () => _onSpotTap(recommendedPosts[index].id)),
+                            childCount: recommendedPosts.length,
                           ),
                         ),
                       ),
@@ -207,10 +227,18 @@ class _FeedScreenState extends State<FeedScreen> {
 
 class _HomeHeader extends StatelessWidget {
   final String? userName;
+  final String? city;
   final String? selectedCategory;
   final ValueChanged<String?> onCategorySelected;
+  final VoidCallback? onCityTap;
 
-  const _HomeHeader({required this.userName, required this.selectedCategory, required this.onCategorySelected});
+  const _HomeHeader({
+    required this.userName,
+    this.city,
+    required this.selectedCategory,
+    required this.onCategorySelected,
+    this.onCityTap,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -220,7 +248,11 @@ class _HomeHeader extends StatelessWidget {
         SizedBox(height: Dimensions.r8.dynamicH),
 
         // ── Greeting banner ──────────────────────────
-        HomeGreetingBanner(userName: userName),
+        HomeGreetingBanner(
+          userName: userName,
+          city: city,
+          onCityTap: onCityTap,
+        ),
 
         SizedBox(height: Dimensions.r16.dynamicH),
 

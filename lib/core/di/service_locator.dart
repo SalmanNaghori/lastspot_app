@@ -12,6 +12,17 @@ import '../../features/auth/data/repositories/profile_repository_impl.dart';
 import '../../features/auth/data/datasources/device_remote_datasource.dart';
 import '../../features/auth/data/repositories/device_repository_impl.dart';
 
+// City Data
+import '../../features/cities/data/datasources/city_remote_datasource.dart';
+import '../../features/cities/data/repositories/city_repository_impl.dart';
+
+// City Domain
+import '../../features/cities/domain/repositories/city_repository.dart';
+import '../../features/cities/domain/usecases/get_active_cities_usecase.dart';
+
+// City Presentation
+import '../../features/cities/presentation/bloc/city_cubit.dart';
+
 // Category Data
 import '../../features/categories/data/datasources/category_remote_datasource.dart';
 import '../../features/categories/data/repositories/category_repository_impl.dart';
@@ -19,6 +30,8 @@ import '../../features/categories/data/repositories/category_repository_impl.dar
 // Category Domain
 import '../../features/categories/domain/repositories/category_repository.dart';
 import '../../features/categories/domain/usecases/get_categories_usecase.dart';
+import '../../features/categories/presentation/bloc/category_bloc.dart';
+import '../../features/explore/presentation/bloc/explore_bloc.dart';
 
 // Auth Domain
 import '../../features/auth/domain/repositories/auth_repository.dart';
@@ -52,6 +65,7 @@ import '../../features/spot/domain/usecases/join_spot_usecase.dart';
 import '../../features/spot/domain/usecases/manage_join_request_usecase.dart';
 import '../../features/spot/domain/usecases/stream_spot_join_requests_usecase.dart';
 import '../../features/spot/domain/usecases/get_confirmed_players_usecase.dart';
+import '../../features/spot/presentation/bloc/feed_bloc.dart';
 
 // Settings
 import '../../features/settings/presentation/bloc/settings_cubit.dart';
@@ -87,6 +101,10 @@ Future<void> setupServiceLocator() async {
     SupabaseDeviceDataSourceImpl(client: sl<SupabaseClient>()),
   );
 
+  sl.registerSingleton<CityRemoteDataSource>(
+    SupabaseCityDataSourceImpl(client: sl<SupabaseClient>()),
+  );
+
   sl.registerSingleton<CategoryRemoteDataSource>(
     SupabaseCategoryDataSourceImpl(client: sl<SupabaseClient>()),
   );
@@ -102,6 +120,10 @@ Future<void> setupServiceLocator() async {
 
   sl.registerSingleton<DeviceRepository>(
     DeviceRepositoryImpl(remoteDataSource: sl<DeviceRemoteDataSource>()),
+  );
+
+  sl.registerSingleton<CityRepository>(
+    CityRepositoryImpl(remoteDataSource: sl<CityRemoteDataSource>()),
   );
 
   sl.registerSingleton<CategoryRepository>(
@@ -146,6 +168,13 @@ Future<void> setupServiceLocator() async {
     UploadAvatarUseCase(sl<ProfileRepository>()),
   );
 
+  // Feed
+  sl.registerFactory(() => FeedBloc(getSpotsUseCase: sl()));
+  
+  // Explore
+  sl.registerFactory(() => ExploreBloc(spotRepository: sl()));
+
+  // Profile
   sl.registerFactory<ProfileCubit>(
     () => ProfileCubit(
       getProfile: sl<GetProfileUseCase>(),
@@ -158,8 +187,20 @@ Future<void> setupServiceLocator() async {
     RegisterDeviceUseCase(sl<DeviceRepository>()),
   );
 
+  sl.registerSingleton<GetActiveCitiesUseCase>(
+    GetActiveCitiesUseCase(sl<CityRepository>()),
+  );
+
+  sl.registerFactory<CityCubit>(
+    () => CityCubit(getActiveCitiesUseCase: sl<GetActiveCitiesUseCase>()),
+  );
+
   sl.registerSingleton<GetCategoriesUseCase>(
     GetCategoriesUseCase(sl<CategoryRepository>()),
+  );
+
+  sl.registerFactory<CategoryBloc>(
+    () => CategoryBloc(getCategoriesUseCase: sl<GetCategoriesUseCase>()),
   );
 
   sl.registerSingleton<CreateSpotUseCase>(

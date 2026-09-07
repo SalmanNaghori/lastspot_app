@@ -4,6 +4,22 @@
   "@appName": {
     "description": "The name of the application"
   },
+  "todayAt": "Today at {time}",
+  "@todayAt": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "yesterdayAt": "Yesterday at {time}",
+  "@yesterdayAt": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
   "appDescription": "On-Demand Sports & Activity Partner Finder",
   "updateNow": "Update Now",
   "maybeLater": "Maybe Later",
@@ -180,5 +196,70 @@
   "themeDark": "Dark",
   "languageTitle": "Language",
   "languageEnglish": "English",
-  "languageFrench": "French"
+  "languageFrench": "French",
+  "cityRequiredError": "Please select a city",
+  "joinCommunitySubtitle": "Join the community and find activities near you.",
+  "fullNameRequired": "Full Name is required",
+  "emailRequired": "Email is required",
+  "invalidEmail": "Enter a valid email",
+  "passwordRequired": "Password is required",
+  "passwordLengthError": "Password must be at least 6 characters",
+  "passwordsDoNotMatch": "Passwords do not match",
+  "cityLabel": "City *",
+  "selectCityHint": "Select your city",
+  "alreadyHaveAccount": "Already have an account? ",
+  "noInternetError": "No internet connection. Please check your network and try again.",
+  "setupProfile": "Setup Profile",
+  "bioOptional": "Bio (Optional)",
+  "sportsPreferences": "Sports Preferences",
+  "saveAndContinue": "Save & Continue",
+  "saveChanges": "Save Changes",
+  "cityIsRequired": "City is required",
+  "findActivitiesNearYou": "Find activities near you",
+  "searchActivitiesHint": "Search activities...",
+  "activitiesNearYou": "Activities near you",
+  "activitiesCount": "{count} activities",
+  "@activitiesCount": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "couldNotLoadActivities": "Couldn't load activities",
+  "checkConnectionRetry": "Check your connection and try again.",
+  "noActivitiesFound": "No activities found",
+  "noActivitiesInArea": "There are no upcoming activities in your area right now.",
+  "noActivitiesMatchSearch": "No activities match your search",
+  "tryDifferentKeyword": "Try searching with a different keyword.",
+  "noActivitiesInCategory": "No activities in this category",
+  "tryDifferentCategory": "Try selecting 'All' or a different category.",
+  "retry": "Retry",
+  "allFilter": "All",
+  "selectYourCity": "Select your city",
+  "todayAt": "Today at {time}",
+  "@todayAt": {
+    "placeholders": {
+      "time": {}
+    }
+  },
+  "yesterdayAt": "Yesterday at {time}",
+  "@yesterdayAt": {
+    "placeholders": {
+      "time": {}
+    }
+  },
+  "filters": "Filters",
+  "anyDate": "Any date",
+  "today": "Today",
+  "tomorrow": "Tomorrow",
+  "thisWeekend": "This weekend",
+  "price": "Price",
+  "any": "Any",
+  "free": "Free",
+  "paid": "Paid",
+  "participants": "Participants",
+  "spots1to2": "1–2 spots",
+  "spots3to5": "3–5 spots",
+  "spots5plus": "5+ spots",
+  "reset": "Reset",
+  "applyFilters": "Apply Filters"
 }

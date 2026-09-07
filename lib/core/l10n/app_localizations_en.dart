@@ -12,6 +12,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get appName => 'LastSpot';
 
   @override
+  String todayAt(Object time) {
+    return 'Today at $time';
+  }
+
+  @override
+  String yesterdayAt(Object time) {
+    return 'Yesterday at $time';
+  }
+
+  @override
   String get appDescription => 'On-Demand Sports & Activity Partner Finder';
 
   @override
@@ -426,4 +436,154 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get languageFrench => 'French';
+
+  @override
+  String get cityRequiredError => 'Please select a city';
+
+  @override
+  String get joinCommunitySubtitle =>
+      'Join the community and find activities near you.';
+
+  @override
+  String get fullNameRequired => 'Full Name is required';
+
+  @override
+  String get emailRequired => 'Email is required';
+
+  @override
+  String get invalidEmail => 'Enter a valid email';
+
+  @override
+  String get passwordRequired => 'Password is required';
+
+  @override
+  String get passwordLengthError => 'Password must be at least 6 characters';
+
+  @override
+  String get passwordsDoNotMatch => 'Passwords do not match';
+
+  @override
+  String get cityLabel => 'City *';
+
+  @override
+  String get selectCityHint => 'Select your city';
+
+  @override
+  String get alreadyHaveAccount => 'Already have an account? ';
+
+  @override
+  String get noInternetError =>
+      'No internet connection. Please check your network and try again.';
+
+  @override
+  String get setupProfile => 'Setup Profile';
+
+  @override
+  String get bioOptional => 'Bio (Optional)';
+
+  @override
+  String get sportsPreferences => 'Sports Preferences';
+
+  @override
+  String get saveAndContinue => 'Save & Continue';
+
+  @override
+  String get saveChanges => 'Save Changes';
+
+  @override
+  String get cityIsRequired => 'City is required';
+
+  @override
+  String get findActivitiesNearYou => 'Find activities near you';
+
+  @override
+  String get searchActivitiesHint => 'Search activities...';
+
+  @override
+  String get activitiesNearYou => 'Activities near you';
+
+  @override
+  String activitiesCount(Object count) {
+    return '$count activities';
+  }
+
+  @override
+  String get couldNotLoadActivities => 'Couldn\'t load activities';
+
+  @override
+  String get checkConnectionRetry => 'Check your connection and try again.';
+
+  @override
+  String get noActivitiesFound => 'No activities found';
+
+  @override
+  String get noActivitiesInArea =>
+      'There are no upcoming activities in your area right now.';
+
+  @override
+  String get noActivitiesMatchSearch => 'No activities match your search';
+
+  @override
+  String get tryDifferentKeyword => 'Try searching with a different keyword.';
+
+  @override
+  String get noActivitiesInCategory => 'No activities in this category';
+
+  @override
+  String get tryDifferentCategory =>
+      'Try selecting \'All\' or a different category.';
+
+  @override
+  String get retry => 'Retry';
+
+  @override
+  String get allFilter => 'All';
+
+  @override
+  String get selectYourCity => 'Select your city';
+
+  @override
+  String get filters => 'Filters';
+
+  @override
+  String get anyDate => 'Any date';
+
+  @override
+  String get today => 'Today';
+
+  @override
+  String get tomorrow => 'Tomorrow';
+
+  @override
+  String get thisWeekend => 'This weekend';
+
+  @override
+  String get price => 'Price';
+
+  @override
+  String get any => 'Any';
+
+  @override
+  String get free => 'Free';
+
+  @override
+  String get paid => 'Paid';
+
+  @override
+  String get participants => 'Participants';
+
+  @override
+  String get spots1to2 => '1–2 spots';
+
+  @override
+  String get spots3to5 => '3–5 spots';
+
+  @override
+  String get spots5plus => '5+ spots';
+
+  @override
+  String get reset => 'Reset';
+
+  @override
+  String get applyFilters => 'Apply Filters';
 }

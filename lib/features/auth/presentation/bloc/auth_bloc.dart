@@ -6,11 +6,14 @@ import '../../domain/usecases/login_usecase.dart';
 import '../../domain/usecases/signup_usecase.dart';
 import '../../domain/usecases/logout_usecase.dart';
 import '../../domain/usecases/reset_password_usecase.dart';
+import '../../domain/usecases/update_profile_usecase.dart';
 import '../../domain/usecases/verify_otp_usecase.dart';
 import '../../domain/usecases/resend_otp_usecase.dart';
 import '../../domain/usecases/check_auth_status_usecase.dart';
 import '../../domain/usecases/get_profile_usecase.dart';
 import '../../domain/usecases/register_device_usecase.dart';
+import '../../../../core/network/network_exceptions.dart';
+import '../../../../core/utils/result.dart';
 import '../../domain/entities/user_profile.dart';
 import 'auth_event.dart';
 import 'auth_state.dart';
@@ -24,6 +27,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final ResendOtpUseCase _resendOtpUseCase;
   final CheckAuthStatusUseCase _checkAuthStatusUseCase;
   final GetProfileUseCase _getProfileUseCase;
+  final UpdateProfileUseCase _updateProfileUseCase;
   final RegisterDeviceUseCase _registerDeviceUseCase;
 
   AuthBloc({
@@ -35,6 +39,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     required ResendOtpUseCase resendOtpUseCase,
     required CheckAuthStatusUseCase checkAuthStatusUseCase,
     required GetProfileUseCase getProfileUseCase,
+    required UpdateProfileUseCase updateProfileUseCase,
     required RegisterDeviceUseCase registerDeviceUseCase,
   }) : _loginUseCase = loginUseCase,
        _signupUseCase = signupUseCase,
@@ -44,6 +49,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
        _resendOtpUseCase = resendOtpUseCase,
        _checkAuthStatusUseCase = checkAuthStatusUseCase,
        _getProfileUseCase = getProfileUseCase,
+       _updateProfileUseCase = updateProfileUseCase,
        _registerDeviceUseCase = registerDeviceUseCase,
        super(AuthInitial()) {
     on<AuthCheckRequested>(_onCheckRequested);
@@ -82,32 +88,24 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     Emitter<AuthState> emit,
   ) async {
     emit(AuthLoading());
-    try {
-      await _loginUseCase(email: event.email, password: event.password);
-      final userId = _checkAuthStatusUseCase();
-      if (userId != null) {
-        await _handleUserSession(userId, emit);
-      } else {
+    final result = await _loginUseCase(email: event.email, password: event.password);
+    switch (result) {
+      case Success():
+        final userId = _checkAuthStatusUseCase();
+        if (userId != null) {
+          await _handleUserSession(userId, emit);
+        } else {
+          emit(Unauthenticated());
+        }
+      case Failure(exception: final exception):
+        if (exception is NoInternetException) {
+          emit(const AuthError(message: 'no_internet'));
+        } else if (exception is AuthException) {
+          emit(AuthError(message: exception.message));
+        } else {
+          emit(AuthError(message: exception.toString()));
+        }
         emit(Unauthenticated());
-      }
-    } on AuthException catch (e, st) {
-      log(
-        'AuthException during login: ${e.message}',
-        name: 'AuthBloc',
-        error: e,
-        stackTrace: st,
-      );
-      emit(AuthError(message: e.message));
-      emit(Unauthenticated());
-    } catch (e, st) {
-      log(
-        'Unexpected error during login',
-        name: 'AuthBloc',
-        error: e,
-        stackTrace: st,
-      );
-      emit(AuthError(message: 'An unexpected error occurred.'));
-      emit(Unauthenticated());
     }
   }
 
@@ -116,36 +114,29 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     Emitter<AuthState> emit,
   ) async {
     emit(AuthLoading());
-    try {
-      await _signupUseCase(
-        email: event.email,
-        password: event.password,
-        fullName: event.fullName,
-      );
-      final userId = _checkAuthStatusUseCase();
-      if (userId != null) {
-        await _handleUserSession(userId, emit);
-      } else {
+    final result = await _signupUseCase(
+      email: event.email,
+      password: event.password,
+      fullName: event.fullName,
+    );
+    switch (result) {
+      case Success():
+        final userId = _checkAuthStatusUseCase();
+        if (userId != null) {
+          await Future.delayed(const Duration(seconds: 1)); // Wait for trigger to complete
+          await _handleUserSession(userId, emit);
+        } else {
+          emit(Unauthenticated());
+        }
+      case Failure(exception: final exception):
+        if (exception is NoInternetException) {
+          emit(const AuthError(message: 'no_internet'));
+        } else if (exception is AuthException) {
+          emit(AuthError(message: exception.message));
+        } else {
+          emit(AuthError(message: exception.toString()));
+        }
         emit(Unauthenticated());
-      }
-    } on AuthException catch (e, st) {
-      log(
-        'AuthException during signup: ${e.message}',
-        name: 'AuthBloc',
-        error: e,
-        stackTrace: st,
-      );
-      emit(AuthError(message: e.message));
-      emit(Unauthenticated());
-    } catch (e, st) {
-      log(
-        'Unexpected error during signup',
-        name: 'AuthBloc',
-        error: e,
-        stackTrace: st,
-      );
-      emit(AuthError(message: 'An unexpected error occurred.'));
-      emit(Unauthenticated());
     }
   }
 
@@ -154,18 +145,17 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     Emitter<AuthState> emit,
   ) async {
     emit(AuthLoading());
-    try {
-      await _logoutUseCase();
-      emit(Unauthenticated());
-    } catch (e, st) {
-      log(
-        'Unexpected error during logout',
-        name: 'AuthBloc',
-        error: e,
-        stackTrace: st,
-      );
-      emit(AuthError(message: 'Logout failed.'));
-      emit(Authenticated());
+    final result = await _logoutUseCase();
+    switch (result) {
+      case Success():
+        emit(Unauthenticated());
+      case Failure(exception: final exception):
+        if (exception is NoInternetException) {
+          emit(const AuthError(message: 'no_internet'));
+        } else {
+          emit(AuthError(message: exception.toString()));
+        }
+        emit(Authenticated());
     }
   }
 
@@ -174,25 +164,18 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     Emitter<AuthState> emit,
   ) async {
     emit(AuthLoading());
-    try {
-      await _resetPasswordUseCase(email: event.email);
-      emit(AuthOtpSent(email: event.email));
-    } on AuthException catch (e, st) {
-      log(
-        'AuthException during password reset: ${e.message}',
-        name: 'AuthBloc',
-        error: e,
-        stackTrace: st,
-      );
-      emit(AuthError(message: e.message));
-    } catch (e, st) {
-      log(
-        'Unexpected error during password reset',
-        name: 'AuthBloc',
-        error: e,
-        stackTrace: st,
-      );
-      emit(AuthError(message: 'Failed to send reset email.'));
+    final result = await _resetPasswordUseCase(email: event.email);
+    switch (result) {
+      case Success():
+        emit(AuthOtpSent(email: event.email));
+      case Failure(exception: final exception):
+        if (exception is NoInternetException) {
+          emit(const AuthError(message: 'no_internet'));
+        } else if (exception is AuthException) {
+          emit(AuthError(message: exception.message));
+        } else {
+          emit(AuthError(message: exception.toString()));
+        }
     }
   }
 
@@ -201,32 +184,24 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     Emitter<AuthState> emit,
   ) async {
     emit(AuthLoading());
-    try {
-      // Map OtpType enum back to string since UseCase expects string to decouple from Supabase
-      String typeStr = event.type == OtpType.signup ? 'signup' : 'email';
-
-      await _verifyOtpUseCase(
-        email: event.email,
-        token: event.token,
-        type: typeStr,
-      );
-      emit(AuthOtpVerified());
-    } on AuthException catch (e, st) {
-      log(
-        'AuthException during OTP verify: ${e.message}',
-        name: 'AuthBloc',
-        error: e,
-        stackTrace: st,
-      );
-      emit(AuthError(message: e.message));
-    } catch (e, st) {
-      log(
-        'Unexpected error during OTP verify',
-        name: 'AuthBloc',
-        error: e,
-        stackTrace: st,
-      );
-      emit(AuthError(message: 'OTP verification failed.'));
+    String typeStr = event.type == OtpType.signup ? 'signup' : 'email';
+    final result = await _verifyOtpUseCase(
+      email: event.email,
+      token: event.token,
+      type: typeStr,
+    );
+    
+    switch (result) {
+      case Success():
+        emit(AuthOtpVerified());
+      case Failure(exception: final exception):
+        if (exception is NoInternetException) {
+          emit(const AuthError(message: 'no_internet'));
+        } else if (exception is AuthException) {
+          emit(AuthError(message: exception.message));
+        } else {
+          emit(AuthError(message: exception.toString()));
+        }
     }
   }
 
@@ -235,27 +210,20 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     Emitter<AuthState> emit,
   ) async {
     emit(AuthLoading());
-    try {
-      String typeStr = event.type == OtpType.signup ? 'signup' : 'email';
-
-      await _resendOtpUseCase(email: event.email, type: typeStr);
-      emit(AuthOtpSent(email: event.email));
-    } on AuthException catch (e, st) {
-      log(
-        'AuthException during OTP resend: ${e.message}',
-        name: 'AuthBloc',
-        error: e,
-        stackTrace: st,
-      );
-      emit(AuthError(message: e.message));
-    } catch (e, st) {
-      log(
-        'Unexpected error during OTP resend',
-        name: 'AuthBloc',
-        error: e,
-        stackTrace: st,
-      );
-      emit(AuthError(message: 'Failed to resend OTP.'));
+    String typeStr = event.type == OtpType.signup ? 'signup' : 'email';
+    final result = await _resendOtpUseCase(email: event.email, type: typeStr);
+    
+    switch (result) {
+      case Success():
+        emit(AuthOtpSent(email: event.email));
+      case Failure(exception: final exception):
+        if (exception is NoInternetException) {
+          emit(const AuthError(message: 'no_internet'));
+        } else if (exception is AuthException) {
+          emit(AuthError(message: exception.message));
+        } else {
+          emit(AuthError(message: exception.toString()));
+        }
     }
   }
 

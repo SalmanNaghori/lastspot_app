@@ -202,23 +202,23 @@ class _CreateSpotScreenState extends State<CreateSpotScreen> {
                       // Basic Details
                       AppTextField(
                         controller: _titleController,
-                        label: context.loc.activityTitle,
-                        hint: context.loc.activityTitleHint,
+                        labelText: context.loc.activityTitle,
+                        hintText: context.loc.activityTitleHint,
                       ),
                       SizedBox(height: Dimensions.r16.dynamicH),
 
                       AppTextField(
                         controller: _descriptionController,
-                        label: context.loc.description,
-                        hint: context.loc.descriptionHint,
+                        labelText: context.loc.description,
+                        hintText: context.loc.descriptionHint,
                         maxLines: 3,
                       ),
                       SizedBox(height: Dimensions.r16.dynamicH),
 
                       AppTextField(
                         controller: _locationController,
-                        label: context.loc.location,
-                        hint: context.loc.locationHint,
+                        labelText: context.loc.location,
+                        hintText: context.loc.locationHint,
                       ),
                       SizedBox(height: Dimensions.r24.dynamicH),
 
@@ -323,7 +323,7 @@ class _CreateSpotScreenState extends State<CreateSpotScreen> {
                           Expanded(
                             child: AppTextField(
                               controller: _priceController,
-                              label: AppLocalizations.of(context)!.pricePerPerson,
+                              labelText: AppLocalizations.of(context)!.pricePerPerson,
                               keyboardType: TextInputType.number,
                             ),
                           ),

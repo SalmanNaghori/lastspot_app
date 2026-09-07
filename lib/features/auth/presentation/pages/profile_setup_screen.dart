@@ -6,6 +6,8 @@ import '../../../../core/utils/image_cropper_helper.dart';
 import '../../../../core/di/service_locator.dart';
 import '../../domain/entities/user_profile.dart';
 import '../bloc/profile_cubit.dart';
+import '../widgets/city_picker_bottom_sheet.dart';
+import '../../../cities/domain/entities/city_entity.dart';
 
 class ProfileSetupScreen extends StatefulWidget {
   const ProfileSetupScreen({super.key});
@@ -18,7 +20,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _bioController = TextEditingController();
-  final _cityController = TextEditingController();
+  CityEntity? _selectedCity;
   File? _selectedAvatar;
   List<String> _selectedSports = [];
 
@@ -55,13 +57,39 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
     }
   }
 
+  void _onCityTap() async {
+    final city = await CityPickerBottomSheet.show(context, selectedCity: _selectedCity);
+    if (city != null) {
+      setState(() {
+        _selectedCity = city;
+      });
+    }
+  }
+
   void _onSave(BuildContext context) {
     if (_formKey.currentState?.validate() ?? false) {
+      if (_selectedCity == null) {
+        setState(() {}); // Trigger rebuild to show error
+        return;
+      }
+      
+      final currentState = context.read<ProfileCubit>().state;
+      String? existingAvatarUrl;
+      String? existingEmail;
+      
+      if (currentState is ProfileLoaded) {
+        existingAvatarUrl = currentState.profile.avatarUrl;
+        existingEmail = currentState.profile.email;
+      }
+
       final profile = UserProfile(
         id: _userId,
         fullName: _nameController.text.trim(),
         bio: _bioController.text.trim(),
-        city: _cityController.text.trim(),
+        city: _selectedCity?.name,
+        cityId: _selectedCity?.id,
+        email: existingEmail,
+        avatarUrl: existingAvatarUrl,
         sportsInterests: _selectedSports,
         createdAt: DateTime.now(), // Will be ignored by update if exists
       );
@@ -98,7 +126,12 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
           } else if (state is ProfileLoaded) {
             _nameController.text = state.profile.fullName ?? '';
             _bioController.text = state.profile.bio ?? '';
-            _cityController.text = state.profile.city ?? '';
+            if (state.profile.cityId != null && state.profile.city != null) {
+              _selectedCity = CityEntity(
+                id: state.profile.cityId!,
+                name: state.profile.city!,
+              );
+            }
             _selectedSports = List.from(state.profile.sportsInterests);
           }
         },
@@ -116,7 +149,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
     return Scaffold(
       backgroundColor: context.backgroundColor,
       appBar: AppBar(
-        title: const Text('Setup Profile'),
+        title: Text(context.loc.setupProfile),
         backgroundColor: context.backgroundColor,
         elevation: 0,
       ),
@@ -178,48 +211,38 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                         ),
                       ),
                       const SizedBox(height: Dimensions.r32),
-                      TextFormField(
+                      AppTextField(
                         controller: _nameController,
-                        decoration: InputDecoration(
-                          labelText: 'Full Name',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(Dimensions.r12),
-                          ),
-                        ),
+                        labelText: context.loc.fullName,
                         textCapitalization: TextCapitalization.words,
                         validator: (value) {
                           if (value == null || value.trim().isEmpty) {
-                            return 'Full Name is required';
+                            return context.loc.fullNameRequired;
                           }
                           return null;
                         },
                       ),
                       const SizedBox(height: Dimensions.r16),
-                      TextFormField(
+                      AppTextField(
                         controller: _bioController,
-                        decoration: InputDecoration(
-                          labelText: 'Bio (Optional)',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(Dimensions.r12),
-                          ),
-                        ),
+                        labelText: context.loc.bioOptional,
                         maxLines: 3,
                         textCapitalization: TextCapitalization.sentences,
                       ),
                       const SizedBox(height: Dimensions.r16),
-                      TextFormField(
-                        controller: _cityController,
-                        decoration: InputDecoration(
-                          labelText: 'City',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(Dimensions.r12),
-                          ),
-                        ),
-                        textCapitalization: TextCapitalization.words,
+                      // City Picker
+                      AppTextField(
+                        labelText: context.loc.cityLabel,
+                        hintText: _selectedCity?.name ?? context.loc.selectCityHint,
+                        readOnly: true,
+                        onTap: _onCityTap,
+                        errorText: _selectedCity == null && (_formKey.currentState?.validate() == false)
+                            ? context.loc.cityRequiredError
+                            : null,
                       ),
                       const SizedBox(height: Dimensions.r24),
                       Text(
-                        'Sports Preferences',
+                        context.loc.sportsPreferences,
                         style: TextStyle(
                           fontSize: Dimensions.r16,
                           fontWeight: FontWeight.bold,
@@ -271,7 +294,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                                   color: AppColor.whiteColor,
                                 ),
                               )
-                            : const Text('Save & Continue'),
+                            : Text(context.loc.saveAndContinue),
                       ),
                     ],
                   ),
@@ -285,7 +308,6 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
   void dispose() {
     _nameController.dispose();
     _bioController.dispose();
-    _cityController.dispose();
     super.dispose();
   }
 }

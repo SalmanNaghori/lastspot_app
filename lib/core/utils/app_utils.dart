@@ -64,6 +64,28 @@ class AppUtils {
     return DateFormat('MMM d, yyyy • h:mm a').format(dateTime);
   }
 
+  /// Calculates and formats the time passed since the given DateTime (e.g., "2 hours ago")
+  static String timeAgo(DateTime dateTime) {
+    final Duration diff = DateTime.now().difference(dateTime);
+    
+    if (diff.inDays > 365) {
+      return '${(diff.inDays / 365).floor()} ${diff.inDays / 365 >= 2 ? 'years' : 'year'} ago';
+    }
+    if (diff.inDays > 30) {
+      return '${(diff.inDays / 30).floor()} ${(diff.inDays / 30).floor() >= 2 ? 'months' : 'month'} ago';
+    }
+    if (diff.inDays > 0) {
+      return '${diff.inDays} ${diff.inDays == 1 ? 'day' : 'days'} ago';
+    }
+    if (diff.inHours > 0) {
+      return '${diff.inHours} ${diff.inHours == 1 ? 'hour' : 'hours'} ago';
+    }
+    if (diff.inMinutes > 0) {
+      return '${diff.inMinutes} ${diff.inMinutes == 1 ? 'minute' : 'minutes'} ago';
+    }
+    return 'Just now';
+  }
+
   /// Formats currency with currency symbol
   static String formatCurrency(double amount, {String symbol = '₹'}) {
     return '$symbol${amount.toStringAsFixed(amount.truncateToDouble() == amount ? 0 : 2)}';

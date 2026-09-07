@@ -21,6 +21,23 @@ class SpotRepositoryImpl implements SpotRepository {
   }
 
   @override
+  Future<List<RequestEntity>> getExplorePosts({
+    required String cityId,
+    String? categoryId,
+    String? searchQuery,
+    int limit = 20,
+    int offset = 0,
+  }) async {
+    return _remoteDataSource.getExplorePosts(
+      cityId: cityId,
+      categoryId: categoryId,
+      searchQuery: searchQuery,
+      limit: limit,
+      offset: offset,
+    );
+  }
+
+  @override
   Future<RequestEntity> getSpotDetails(String spotId) async {
     return _remoteDataSource.getSpotDetails(spotId);
   }
@@ -48,6 +65,14 @@ class SpotRepositoryImpl implements SpotRepository {
   }) async {
     final userId = _supabaseClient.auth.currentUser!.id;
 
+    // Fetch the user's city_id so the event is associated with their city
+    final profileResponse = await _supabaseClient
+        .from('profiles')
+        .select('city_id')
+        .eq('id', userId)
+        .single();
+    final cityId = profileResponse['city_id'];
+
     final requestData = {
       'user_id': userId,
       'category_id': categoryId,
@@ -61,6 +86,7 @@ class SpotRepositoryImpl implements SpotRepository {
       'current_participants': 1, // Creator is the first participant
       'price_per_person': pricePerPerson,
       'status': 'open', // Enum value string
+      if (cityId != null) 'city_id': cityId,
     };
 
     await _remoteDataSource.createRequest(requestData, images);

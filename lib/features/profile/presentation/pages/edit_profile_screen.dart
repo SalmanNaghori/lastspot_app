@@ -19,6 +19,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   final _nameController = TextEditingController();
   final _bioController = TextEditingController();
   final _cityController = TextEditingController();
+  final _emailController = TextEditingController();
   File? _selectedAvatar;
   List<String> _selectedSports = [];
 
@@ -57,11 +58,22 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   void _onSave(BuildContext context) {
     if (_formKey.currentState?.validate() ?? false) {
+      final currentState = context.read<ProfileCubit>().state;
+      String? existingAvatarUrl;
+      String? existingEmail;
+      
+      if (currentState is ProfileLoaded) {
+        existingAvatarUrl = currentState.profile.avatarUrl;
+        existingEmail = currentState.profile.email;
+      }
+
       final profile = UserProfile(
         id: _userId,
         fullName: _nameController.text.trim(),
         bio: _bioController.text.trim(),
         city: _cityController.text.trim(),
+        email: existingEmail,
+        avatarUrl: existingAvatarUrl,
         sportsInterests: _selectedSports,
         createdAt: DateTime.now(), // Will be ignored by update if exists
       );
@@ -99,6 +111,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             _nameController.text = state.profile.fullName ?? '';
             _bioController.text = state.profile.bio ?? '';
             _cityController.text = state.profile.city ?? '';
+            _emailController.text = state.profile.email ?? '';
             _selectedSports = List.from(state.profile.sportsInterests);
           }
         },
@@ -116,7 +129,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     return Scaffold(
       backgroundColor: context.backgroundColor,
       appBar: AppBar(
-        title: const Text('Edit Profile'),
+        title: Text(context.loc.editProfile),
         backgroundColor: context.backgroundColor,
         elevation: 0,
       ),
@@ -178,48 +191,46 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         ),
                       ),
                       const SizedBox(height: Dimensions.r32),
-                      TextFormField(
+                      AppTextField(
                         controller: _nameController,
-                        decoration: InputDecoration(
-                          labelText: 'Full Name',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(Dimensions.r12),
-                          ),
-                        ),
+                        labelText: context.loc.fullName,
                         textCapitalization: TextCapitalization.words,
                         validator: (value) {
                           if (value == null || value.trim().isEmpty) {
-                            return 'Full Name is required';
+                            return context.loc.fullNameRequired;
                           }
                           return null;
                         },
                       ),
                       const SizedBox(height: Dimensions.r16),
-                      TextFormField(
+                      AppTextField(
+                        labelText: context.loc.email,
+                        controller: _emailController,
+                        readOnly: true,
+                        hintText: '',
+                      ),
+                      const SizedBox(height: Dimensions.r16),
+                      AppTextField(
                         controller: _bioController,
-                        decoration: InputDecoration(
-                          labelText: 'Bio (Optional)',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(Dimensions.r12),
-                          ),
-                        ),
+                        labelText: context.loc.bioOptional,
                         maxLines: 3,
                         textCapitalization: TextCapitalization.sentences,
                       ),
                       const SizedBox(height: Dimensions.r16),
-                      TextFormField(
+                      AppTextField(
                         controller: _cityController,
-                        decoration: InputDecoration(
-                          labelText: 'City',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(Dimensions.r12),
-                          ),
-                        ),
+                        labelText: context.loc.cityLabel,
                         textCapitalization: TextCapitalization.words,
+                        validator: (value) {
+                          if (value == null || value.trim().isEmpty) {
+                            return context.loc.cityIsRequired;
+                          }
+                          return null;
+                        },
                       ),
                       const SizedBox(height: Dimensions.r24),
                       Text(
-                        'Sports Preferences',
+                        context.loc.sportsPreferences,
                         style: TextStyle(
                           fontSize: Dimensions.r16,
                           fontWeight: FontWeight.bold,
@@ -271,7 +282,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                   color: AppColor.whiteColor,
                                 ),
                               )
-                            : const Text('Save Changes'),
+                            : Text(context.loc.saveChanges),
                       ),
                     ],
                   ),
@@ -286,6 +297,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     _nameController.dispose();
     _bioController.dispose();
     _cityController.dispose();
+    _emailController.dispose();
     super.dispose();
   }
 }

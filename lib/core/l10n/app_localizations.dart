@@ -100,6 +100,18 @@ abstract class AppLocalizations {
   /// **'LastSpot'**
   String get appName;
 
+  /// No description provided for @todayAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Today at {time}'**
+  String todayAt(Object time);
+
+  /// No description provided for @yesterdayAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Yesterday at {time}'**
+  String yesterdayAt(Object time);
+
   /// No description provided for @appDescription.
   ///
   /// In en, this message translates to:
@@ -879,6 +891,294 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'French'**
   String get languageFrench;
+
+  /// No description provided for @cityRequiredError.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select a city'**
+  String get cityRequiredError;
+
+  /// No description provided for @joinCommunitySubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Join the community and find activities near you.'**
+  String get joinCommunitySubtitle;
+
+  /// No description provided for @fullNameRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Full Name is required'**
+  String get fullNameRequired;
+
+  /// No description provided for @emailRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Email is required'**
+  String get emailRequired;
+
+  /// No description provided for @invalidEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid email'**
+  String get invalidEmail;
+
+  /// No description provided for @passwordRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Password is required'**
+  String get passwordRequired;
+
+  /// No description provided for @passwordLengthError.
+  ///
+  /// In en, this message translates to:
+  /// **'Password must be at least 6 characters'**
+  String get passwordLengthError;
+
+  /// No description provided for @passwordsDoNotMatch.
+  ///
+  /// In en, this message translates to:
+  /// **'Passwords do not match'**
+  String get passwordsDoNotMatch;
+
+  /// No description provided for @cityLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'City *'**
+  String get cityLabel;
+
+  /// No description provided for @selectCityHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Select your city'**
+  String get selectCityHint;
+
+  /// No description provided for @alreadyHaveAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Already have an account? '**
+  String get alreadyHaveAccount;
+
+  /// No description provided for @noInternetError.
+  ///
+  /// In en, this message translates to:
+  /// **'No internet connection. Please check your network and try again.'**
+  String get noInternetError;
+
+  /// No description provided for @setupProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Setup Profile'**
+  String get setupProfile;
+
+  /// No description provided for @bioOptional.
+  ///
+  /// In en, this message translates to:
+  /// **'Bio (Optional)'**
+  String get bioOptional;
+
+  /// No description provided for @sportsPreferences.
+  ///
+  /// In en, this message translates to:
+  /// **'Sports Preferences'**
+  String get sportsPreferences;
+
+  /// No description provided for @saveAndContinue.
+  ///
+  /// In en, this message translates to:
+  /// **'Save & Continue'**
+  String get saveAndContinue;
+
+  /// No description provided for @saveChanges.
+  ///
+  /// In en, this message translates to:
+  /// **'Save Changes'**
+  String get saveChanges;
+
+  /// No description provided for @cityIsRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'City is required'**
+  String get cityIsRequired;
+
+  /// No description provided for @findActivitiesNearYou.
+  ///
+  /// In en, this message translates to:
+  /// **'Find activities near you'**
+  String get findActivitiesNearYou;
+
+  /// No description provided for @searchActivitiesHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search activities...'**
+  String get searchActivitiesHint;
+
+  /// No description provided for @activitiesNearYou.
+  ///
+  /// In en, this message translates to:
+  /// **'Activities near you'**
+  String get activitiesNearYou;
+
+  /// No description provided for @activitiesCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} activities'**
+  String activitiesCount(Object count);
+
+  /// No description provided for @couldNotLoadActivities.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t load activities'**
+  String get couldNotLoadActivities;
+
+  /// No description provided for @checkConnectionRetry.
+  ///
+  /// In en, this message translates to:
+  /// **'Check your connection and try again.'**
+  String get checkConnectionRetry;
+
+  /// No description provided for @noActivitiesFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No activities found'**
+  String get noActivitiesFound;
+
+  /// No description provided for @noActivitiesInArea.
+  ///
+  /// In en, this message translates to:
+  /// **'There are no upcoming activities in your area right now.'**
+  String get noActivitiesInArea;
+
+  /// No description provided for @noActivitiesMatchSearch.
+  ///
+  /// In en, this message translates to:
+  /// **'No activities match your search'**
+  String get noActivitiesMatchSearch;
+
+  /// No description provided for @tryDifferentKeyword.
+  ///
+  /// In en, this message translates to:
+  /// **'Try searching with a different keyword.'**
+  String get tryDifferentKeyword;
+
+  /// No description provided for @noActivitiesInCategory.
+  ///
+  /// In en, this message translates to:
+  /// **'No activities in this category'**
+  String get noActivitiesInCategory;
+
+  /// No description provided for @tryDifferentCategory.
+  ///
+  /// In en, this message translates to:
+  /// **'Try selecting \'All\' or a different category.'**
+  String get tryDifferentCategory;
+
+  /// No description provided for @retry.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get retry;
+
+  /// No description provided for @allFilter.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get allFilter;
+
+  /// No description provided for @selectYourCity.
+  ///
+  /// In en, this message translates to:
+  /// **'Select your city'**
+  String get selectYourCity;
+
+  /// No description provided for @filters.
+  ///
+  /// In en, this message translates to:
+  /// **'Filters'**
+  String get filters;
+
+  /// No description provided for @anyDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Any date'**
+  String get anyDate;
+
+  /// No description provided for @today.
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get today;
+
+  /// No description provided for @tomorrow.
+  ///
+  /// In en, this message translates to:
+  /// **'Tomorrow'**
+  String get tomorrow;
+
+  /// No description provided for @thisWeekend.
+  ///
+  /// In en, this message translates to:
+  /// **'This weekend'**
+  String get thisWeekend;
+
+  /// No description provided for @price.
+  ///
+  /// In en, this message translates to:
+  /// **'Price'**
+  String get price;
+
+  /// No description provided for @any.
+  ///
+  /// In en, this message translates to:
+  /// **'Any'**
+  String get any;
+
+  /// No description provided for @free.
+  ///
+  /// In en, this message translates to:
+  /// **'Free'**
+  String get free;
+
+  /// No description provided for @paid.
+  ///
+  /// In en, this message translates to:
+  /// **'Paid'**
+  String get paid;
+
+  /// No description provided for @participants.
+  ///
+  /// In en, this message translates to:
+  /// **'Participants'**
+  String get participants;
+
+  /// No description provided for @spots1to2.
+  ///
+  /// In en, this message translates to:
+  /// **'1–2 spots'**
+  String get spots1to2;
+
+  /// No description provided for @spots3to5.
+  ///
+  /// In en, this message translates to:
+  /// **'3–5 spots'**
+  String get spots3to5;
+
+  /// No description provided for @spots5plus.
+  ///
+  /// In en, this message translates to:
+  /// **'5+ spots'**
+  String get spots5plus;
+
+  /// No description provided for @reset.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset'**
+  String get reset;
+
+  /// No description provided for @applyFilters.
+  ///
+  /// In en, this message translates to:
+  /// **'Apply Filters'**
+  String get applyFilters;
 }
 
 class _AppLocalizationsDelegate

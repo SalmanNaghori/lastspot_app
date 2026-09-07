@@ -16,6 +16,7 @@ class UserProfile extends Equatable {
   // Extended profile fields — stored in live DB after migration
   final String? bio;
   final String? city;
+  final String? cityId; // NEW source of truth for city
   final List<String> sportsInterests;
   final double rating;
 
@@ -31,6 +32,7 @@ class UserProfile extends Equatable {
     this.deletedAt,
     this.bio,
     this.city,
+    this.cityId,
     this.sportsInterests = const [],
     this.rating = 0.0,
   });
@@ -48,6 +50,7 @@ class UserProfile extends Equatable {
     deletedAt,
     bio,
     city,
+    cityId,
     sportsInterests,
     rating,
   ];

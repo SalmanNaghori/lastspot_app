@@ -329,3 +329,25 @@ class AppTheme {
     );
   }
 }
+
+class CategoryColors {
+  CategoryColors._();
+
+  static const Color cricketDark = Color(0xFF064E3B);
+  static const Color cricketLight = Color(0xFF10B981);
+  
+  static const Color footballDark = Color(0xFF1E3A8A);
+  static const Color footballLight = Color(0xFF3B82F6);
+  
+  static const Color basketballDark = Color(0xFF7C2D12);
+  static const Color basketballLight = Color(0xFFF97316);
+  
+  static const Color tennisDark = Color(0xFF4C1D95);
+  static const Color tennisLight = Color(0xFF8B5CF6);
+  
+  static const Color badmintonDark = Color(0xFF713F12);
+  static const Color badmintonLight = Color(0xFFF59E0B);
+  
+  static const Color defaultDark = Color(0xFF0F172A);
+  static const Color defaultLight = Color(0xFF334155);
+}

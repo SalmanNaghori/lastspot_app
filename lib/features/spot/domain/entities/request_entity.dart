@@ -10,6 +10,7 @@ class RequestEntity extends Equatable {
   final String categoryId;
   final String title;
   final String? description;
+  final String? cityId;
   final String locationName;
   final double latitude;
   final double longitude;
@@ -29,6 +30,7 @@ class RequestEntity extends Equatable {
     required this.categoryId,
     required this.title,
     this.description,
+    this.cityId,
     required this.locationName,
     required this.latitude,
     required this.longitude,
@@ -50,6 +52,7 @@ class RequestEntity extends Equatable {
     categoryId,
     title,
     description,
+    cityId,
     locationName,
     latitude,
     longitude,
