@@ -86,15 +86,13 @@ class _HomeSpotCardState extends State<HomeSpotCard> {
                     SizedBox(width: Dimensions.r4.dynamicW),
                     Expanded(
                       child: Text(
-                        widget.spot.locationName.startsWith('http') ? loc.openInMaps : widget.spot.locationName,
+                        widget.spot.locationName,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
                           fontSize: Dimensions.r12.dynamicSP,
-                          color: widget.spot.locationName.startsWith('http')
-                              ? context.primaryColor
-                              : context.textSecondary,
-                          fontWeight: widget.spot.locationName.startsWith('http') ? FontWeight.w600 : FontWeight.w500,
+                          color: context.textSecondary,
+                          fontWeight: FontWeight.w500,
                         ),
                       ),
                     ),

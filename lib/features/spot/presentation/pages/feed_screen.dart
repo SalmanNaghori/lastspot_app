@@ -10,6 +10,7 @@ import '../widgets/home_spot_card.dart';
 import '../widgets/popular_sports_grid.dart';
 import '../widgets/sport_filter_chips.dart';
 import '../widgets/feed_skeleton_loading.dart';
+import '../../../auth/presentation/bloc/profile_cubit.dart';
 
 class FeedScreen extends StatefulWidget {
   const FeedScreen({super.key});
@@ -41,7 +42,8 @@ class _FeedScreenState extends State<FeedScreen> {
     final loc = context.loc;
     final currentUser = Supabase.instance.client.auth.currentUser;
     final userName = currentUser?.userMetadata?['full_name'] as String?;
-    final String? userCity = 'Ahmedabad'; // TODO: Fetch from Profile/City state
+    final profileState = context.watch<ProfileCubit>().state;
+    final userCity = (profileState is ProfileLoaded) ? profileState.profile.city : 'Loading...';
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: AppTheme.systemUiOverlayStyle(context),
@@ -104,16 +106,52 @@ class _FeedScreenState extends State<FeedScreen> {
                   return _EmptyFeed(loc: loc);
                 }
 
-                final urgentPosts = state.posts
-                    .where((p) => p.eventDateTime.difference(DateTime.now()).inHours < 24)
+                final now = DateTime.now();
+                final todayPosts = state.posts
+                    .where((p) => p.eventDateTime.year == now.year &&
+                                  p.eventDateTime.month == now.month &&
+                                  p.eventDateTime.day == now.day)
                     .toList();
-                final recentPosts = state.posts.where((p) => !urgentPosts.contains(p)).toList();
+
+                final urgentPosts = state.posts
+                    .where((p) => p.eventDateTime.difference(now).inHours < 24 && !todayPosts.contains(p))
+                    .toList();
+                final recentPosts = state.posts
+                    .where((p) => !urgentPosts.contains(p) && !todayPosts.contains(p))
+                    .toList();
                 
-                final nearbyPosts = recentPosts.take(5).toList();
-                final recommendedPosts = recentPosts.skip(5).take(5).toList();
+                final nearbyPosts = recentPosts.toList();
 
                 return CustomScrollView(
                   slivers: [
+                    // ── Today's Matches ──────────────────────────
+                    if (todayPosts.isNotEmpty) ...[
+                      SliverToBoxAdapter(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(height: Dimensions.r20.dynamicH),
+                            HomeSectionHeader(
+                              title: "Today's Matches",
+                              viewAllLabel: loc.viewAll,
+                              onViewAll: () => context.go(AppRoutes.explore),
+                              leadingIcon: const Text('📅', style: TextStyle(fontSize: 20)),
+                            ),
+                            SizedBox(height: Dimensions.r16.dynamicH),
+                          ],
+                        ),
+                      ),
+                      SliverPadding(
+                        padding: EdgeInsets.symmetric(horizontal: Dimensions.r16.dynamicW),
+                        sliver: SliverList(
+                          delegate: SliverChildBuilderDelegate(
+                            (context, index) =>
+                                HomeSpotCard(spot: todayPosts[index], onTap: () => _onSpotTap(todayPosts[index].id)),
+                            childCount: todayPosts.length,
+                          ),
+                        ),
+                      ),
+                    ],
                     // ── Urgent Matches ──────────────────────────
                     if (urgentPosts.isNotEmpty) ...[
                       SliverToBoxAdapter(
@@ -172,35 +210,6 @@ class _FeedScreenState extends State<FeedScreen> {
                             (context, index) =>
                                 HomeSpotCard(spot: nearbyPosts[index], onTap: () => _onSpotTap(nearbyPosts[index].id)),
                             childCount: nearbyPosts.length,
-                          ),
-                        ),
-                      ),
-                    ],
-
-                    // ── Recommended For You ───────────────
-                    if (recommendedPosts.isNotEmpty) ...[
-                      SliverToBoxAdapter(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SizedBox(height: Dimensions.r20.dynamicH),
-                            HomeSectionHeader(
-                              title: '⭐ Recommended For You',
-                              viewAllLabel: loc.viewAll,
-                              onViewAll: () => context.go(AppRoutes.explore),
-                              leadingIcon: const SizedBox.shrink(), // Star is in title
-                            ),
-                            SizedBox(height: Dimensions.r16.dynamicH),
-                          ],
-                        ),
-                      ),
-                      SliverPadding(
-                        padding: EdgeInsets.symmetric(horizontal: Dimensions.r16.dynamicW),
-                        sliver: SliverList(
-                          delegate: SliverChildBuilderDelegate(
-                            (context, index) =>
-                                HomeSpotCard(spot: recommendedPosts[index], onTap: () => _onSpotTap(recommendedPosts[index].id)),
-                            childCount: recommendedPosts.length,
                           ),
                         ),
                       ),
