@@ -1179,6 +1179,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Apply Filters'**
   String get applyFilters;
+
+  /// No description provided for @loading.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading...'**
+  String get loading;
+
+  /// No description provided for @todaysMatches.
+  ///
+  /// In en, this message translates to:
+  /// **'Today\'s Matches'**
+  String get todaysMatches;
+
+  /// No description provided for @urgentMatchesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Urgent Matches'**
+  String get urgentMatchesTitle;
+
+  /// No description provided for @tryAgain.
+  ///
+  /// In en, this message translates to:
+  /// **'Try again'**
+  String get tryAgain;
 }
 
 class _AppLocalizationsDelegate

@@ -1,16 +1,15 @@
 import 'package:lastspot_app/core/base_import.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import '../../../auth/presentation/bloc/profile_cubit.dart';
 import '../bloc/feed_bloc.dart';
+import '../widgets/feed_skeleton_loading.dart';
 import '../widgets/home_app_bar.dart';
 import '../widgets/home_greeting_banner.dart';
 import '../widgets/home_search_bar.dart';
 import '../widgets/home_section_header.dart';
 import '../widgets/home_spot_card.dart';
-import '../widgets/popular_sports_grid.dart';
 import '../widgets/sport_filter_chips.dart';
-import '../widgets/feed_skeleton_loading.dart';
-import '../../../auth/presentation/bloc/profile_cubit.dart';
 
 class FeedScreen extends StatefulWidget {
   const FeedScreen({super.key});
@@ -37,13 +36,21 @@ class _FeedScreenState extends State<FeedScreen> {
 
   void _onNotificationTap() => context.push(AppRoutes.notifications);
 
+  void _onRefresh() => context.read<FeedBloc>().add(LoadFeedEvent(category: _selectedCategory));
+
+  void _onViewAllTap() => context.go(AppRoutes.explore);
+
+  void _onCityTap() {
+    // TODO: Show city picker
+  }
+
   @override
   Widget build(BuildContext context) {
     final loc = context.loc;
     final currentUser = Supabase.instance.client.auth.currentUser;
     final userName = currentUser?.userMetadata?['full_name'] as String?;
     final profileState = context.watch<ProfileCubit>().state;
-    final userCity = (profileState is ProfileLoaded) ? profileState.profile.city : 'Loading...';
+    final userCity = (profileState is ProfileLoaded) ? profileState.profile.city : loc.loading;
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: AppTheme.systemUiOverlayStyle(context),
@@ -58,9 +65,7 @@ class _FeedScreenState extends State<FeedScreen> {
                 city: userCity,
                 selectedCategory: _selectedCategory,
                 onCategorySelected: _onCategorySelected,
-                onCityTap: () {
-                  // TODO: Show city picker
-                },
+                onCityTap: _onCityTap,
               ),
             ),
           ],
@@ -90,9 +95,9 @@ class _FeedScreenState extends State<FeedScreen> {
                         ),
                         SizedBox(height: Dimensions.r24.dynamicH),
                         FilledButton.icon(
-                          onPressed: () => context.read<FeedBloc>().add(LoadFeedEvent(category: _selectedCategory)),
+                          onPressed: _onRefresh,
                           icon: const Icon(Icons.refresh),
-                          label: const Text('Try again'),
+                          label: Text(loc.tryAgain),
                           style: FilledButton.styleFrom(backgroundColor: AppColor.primaryColor),
                         ),
                       ],
@@ -102,25 +107,26 @@ class _FeedScreenState extends State<FeedScreen> {
               }
 
               if (state is FeedLoaded) {
-                if (state.posts.isEmpty) {
-                  return _EmptyFeed(loc: loc);
-                }
-
                 final now = DateTime.now();
                 final todayPosts = state.posts
-                    .where((p) => p.eventDateTime.year == now.year &&
-                                  p.eventDateTime.month == now.month &&
-                                  p.eventDateTime.day == now.day)
+                    .where(
+                      (p) =>
+                          p.eventDateTime.year == now.year &&
+                          p.eventDateTime.month == now.month &&
+                          p.eventDateTime.day == now.day,
+                    )
                     .toList();
 
                 final urgentPosts = state.posts
-                    .where((p) => p.eventDateTime.difference(now).inHours < 24 && !todayPosts.contains(p))
+                    .where((p) {
+                      final diff = p.eventDateTime.difference(now);
+                      return diff.inHours >= 0 && diff.inHours < 24 && !todayPosts.contains(p);
+                    })
                     .toList();
-                final recentPosts = state.posts
-                    .where((p) => !urgentPosts.contains(p) && !todayPosts.contains(p))
-                    .toList();
-                
-                final nearbyPosts = recentPosts.toList();
+
+                if (todayPosts.isEmpty && urgentPosts.isEmpty) {
+                  return _EmptyFeed(loc: loc);
+                }
 
                 return CustomScrollView(
                   slivers: [
@@ -132,10 +138,10 @@ class _FeedScreenState extends State<FeedScreen> {
                           children: [
                             SizedBox(height: Dimensions.r20.dynamicH),
                             HomeSectionHeader(
-                              title: "Today's Matches",
+                              title: loc.todaysMatches,
                               viewAllLabel: loc.viewAll,
-                              onViewAll: () => context.go(AppRoutes.explore),
-                              leadingIcon: const Text('📅', style: TextStyle(fontSize: 20)),
+                              onViewAll: _onViewAllTap,
+                              leadingIcon: Text('📅', style: TextStyle(fontSize: Dimensions.r20.dynamicSP)),
                             ),
                             SizedBox(height: Dimensions.r16.dynamicH),
                           ],
@@ -152,6 +158,7 @@ class _FeedScreenState extends State<FeedScreen> {
                         ),
                       ),
                     ],
+
                     // ── Urgent Matches ──────────────────────────
                     if (urgentPosts.isNotEmpty) ...[
                       SliverToBoxAdapter(
@@ -160,11 +167,11 @@ class _FeedScreenState extends State<FeedScreen> {
                           children: [
                             SizedBox(height: Dimensions.r20.dynamicH),
                             HomeSectionHeader(
-                              title: 'Urgent Matches',
+                              title: loc.urgentMatchesTitle,
                               subtitle: loc.urgentMatchesSubtitle,
                               viewAllLabel: loc.viewAll,
-                              onViewAll: () => context.go(AppRoutes.explore),
-                              leadingIcon: const Text('🔥', style: TextStyle(fontSize: 20)),
+                              onViewAll: _onViewAllTap,
+                              leadingIcon: Text('🔥', style: TextStyle(fontSize: Dimensions.r20.dynamicSP)),
                             ),
                             SizedBox(height: Dimensions.r16.dynamicH),
                           ],
@@ -177,39 +184,6 @@ class _FeedScreenState extends State<FeedScreen> {
                             (context, index) =>
                                 HomeSpotCard(spot: urgentPosts[index], onTap: () => _onSpotTap(urgentPosts[index].id)),
                             childCount: urgentPosts.length,
-                          ),
-                        ),
-                      ),
-                    ],
-
-                    // ── Nearby Activities ───────────────
-                    if (nearbyPosts.isNotEmpty) ...[
-                      SliverToBoxAdapter(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SizedBox(height: Dimensions.r20.dynamicH),
-                            HomeSectionHeader(
-                              title: loc.nearbyActivities,
-                              viewAllLabel: loc.viewAll,
-                              onViewAll: () => context.go(AppRoutes.explore),
-                              leadingIcon: Icon(
-                                Icons.location_on,
-                                color: AppColor.primaryColor,
-                                size: Dimensions.r20.dynamicH,
-                              ),
-                            ),
-                            SizedBox(height: Dimensions.r16.dynamicH),
-                          ],
-                        ),
-                      ),
-                      SliverPadding(
-                        padding: EdgeInsets.symmetric(horizontal: Dimensions.r16.dynamicW),
-                        sliver: SliverList(
-                          delegate: SliverChildBuilderDelegate(
-                            (context, index) =>
-                                HomeSpotCard(spot: nearbyPosts[index], onTap: () => _onSpotTap(nearbyPosts[index].id)),
-                            childCount: nearbyPosts.length,
                           ),
                         ),
                       ),
@@ -257,11 +231,7 @@ class _HomeHeader extends StatelessWidget {
         SizedBox(height: Dimensions.r8.dynamicH),
 
         // ── Greeting banner ──────────────────────────
-        HomeGreetingBanner(
-          userName: userName,
-          city: city,
-          onCityTap: onCityTap,
-        ),
+        HomeGreetingBanner(userName: userName, city: city, onCityTap: onCityTap),
 
         SizedBox(height: Dimensions.r16.dynamicH),
 

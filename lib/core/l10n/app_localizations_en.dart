@@ -586,4 +586,16 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get applyFilters => 'Apply Filters';
+
+  @override
+  String get loading => 'Loading...';
+
+  @override
+  String get todaysMatches => 'Today\'s Matches';
+
+  @override
+  String get urgentMatchesTitle => 'Urgent Matches';
+
+  @override
+  String get tryAgain => 'Try again';
 }

@@ -261,5 +261,9 @@
   "spots3to5": "3–5 spots",
   "spots5plus": "5+ spots",
   "reset": "Reset",
-  "applyFilters": "Apply Filters"
+  "applyFilters": "Apply Filters",
+  "loading": "Loading...",
+  "todaysMatches": "Today's Matches",
+  "urgentMatchesTitle": "Urgent Matches",
+  "tryAgain": "Try again"
 }
