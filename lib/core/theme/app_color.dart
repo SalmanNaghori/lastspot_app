@@ -10,10 +10,10 @@ class AppColor {
   /// Main LastSpot brand color.
   /// Used for primary actions, selected navigation,
   /// links and important highlights.
-  static const Color primaryColor = Color(0xFF10B981);
+  static const Color primaryColor = Color(0xFF0FA958);
 
   /// Darker version of primary.
-  static const Color primaryDarkColor = Color(0xFF059669);
+  static const Color primaryDarkColor = Color(0xFF087A40);
 
   /// Very light green used for containers/background highlights.
   static const Color primaryContainerLight = Color(0xFFD1FAE5);
@@ -34,7 +34,7 @@ class AppColor {
 
   /// Coral/orange accent.
   /// Good for Create, highlights and important secondary actions.
-  static const Color accentColor = Color(0xFFF97316);
+  static const Color accentColor = Color(0xFFFF7A00);
 
   static const Color accentLight = Color(0xFFFFEDD5);
 
@@ -44,7 +44,7 @@ class AppColor {
   // LIGHT THEME
   // ============================================================
 
-  static const Color backgroundLight = Color(0xFFF8FAFC);
+  static const Color backgroundLight = Color(0xFFF7FAF8);
 
   static const Color surfaceLight = Color(0xFFFFFFFF);
 
@@ -54,10 +54,10 @@ class AppColor {
 
   static const Color surfaceContainerHighLight = Color(0xFFEFF3F7);
 
-  static const Color cardBorderLight = Color(0xFFE2E8F0);
+  static const Color cardBorderLight = Color(0xFFDCE7E1);
 
   /// Border light color alias (used in cached network image & cards)
-  static const Color borderLight = Color(0xFFE2E8F0);
+  static const Color borderLight = Color(0xFFDCE7E1);
 
   static const Color dividerLight = Color(0xFFE2E8F0);
 
@@ -86,9 +86,9 @@ class AppColor {
   // TEXT COLORS
   // ============================================================
 
-  static const Color textPrimaryLight = Color(0xFF0F172A);
+  static const Color textPrimaryLight = Color(0xFF10231A);
 
-  static const Color textSecondaryLight = Color(0xFF64748B);
+  static const Color textSecondaryLight = Color(0xFF60736A);
 
   static const Color textTertiaryLight = Color(0xFF94A3B8);
 
@@ -103,7 +103,7 @@ class AppColor {
   // ============================================================
 
   /// Error / destructive action
-  static const Color errorColor = Color(0xFFEF4444);
+  static const Color errorColor = Color(0xFFDC2626);
 
   static const Color errorContainerLight = Color(0xFFFEE2E2);
 

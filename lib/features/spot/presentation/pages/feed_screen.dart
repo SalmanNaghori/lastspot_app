@@ -83,22 +83,34 @@ class _FeedScreenState extends State<FeedScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(
-                          Icons.wifi_off_outlined,
-                          size: Dimensions.r32.dynamicH * 1.75,
+                          Icons.wifi_off,
+                          size: Dimensions.r48.dynamicH * 1.5,
                           color: context.textSecondary,
                         ),
                         SizedBox(height: Dimensions.r16.dynamicH),
                         Text(
                           state.message,
                           textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: Dimensions.r14.dynamicSP, color: context.textSecondary),
+                          style: TextStyle(fontSize: Dimensions.r16.dynamicSP, color: context.textPrimary),
                         ),
-                        SizedBox(height: Dimensions.r24.dynamicH),
-                        FilledButton.icon(
-                          onPressed: _onRefresh,
-                          icon: const Icon(Icons.refresh),
-                          label: Text(loc.tryAgain),
-                          style: FilledButton.styleFrom(backgroundColor: AppColor.primaryColor),
+                        SizedBox(height: Dimensions.r32.dynamicH),
+                        SizedBox(
+                          width: double.infinity,
+                          height: Dimensions.r48.dynamicH,
+                          child: FilledButton.icon(
+                            onPressed: _onRefresh,
+                            icon: Icon(Icons.refresh, size: Dimensions.r20.dynamicH),
+                            label: Text(
+                              loc.tryAgain,
+                              style: TextStyle(fontSize: Dimensions.r16.dynamicSP, fontWeight: FontWeight.w600),
+                            ),
+                            style: FilledButton.styleFrom(
+                              backgroundColor: AppColor.primaryColor,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(Dimensions.r12.dynamicR),
+                              ),
+                            ),
+                          ),
                         ),
                       ],
                     ),

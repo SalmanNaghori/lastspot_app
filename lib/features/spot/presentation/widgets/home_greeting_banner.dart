@@ -5,12 +5,7 @@ class HomeGreetingBanner extends StatelessWidget {
   final String? city;
   final VoidCallback? onCityTap;
 
-  const HomeGreetingBanner({
-    super.key,
-    this.userName,
-    this.city,
-    this.onCityTap,
-  });
+  const HomeGreetingBanner({super.key, this.userName, this.city, this.onCityTap});
 
   String _greeting(BuildContext context) {
     final loc = context.loc;
@@ -26,10 +21,7 @@ class HomeGreetingBanner extends StatelessWidget {
     final firstName = userName?.split(' ').firstOrNull ?? 'Player';
 
     return Container(
-      margin: EdgeInsets.symmetric(
-        horizontal: Dimensions.r16.dynamicW,
-        vertical: Dimensions.r8.dynamicH,
-      ),
+      margin: EdgeInsets.symmetric(horizontal: Dimensions.r16.dynamicW, vertical: Dimensions.r8.dynamicH),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(Dimensions.r16.dynamicR),
         gradient: LinearGradient(
@@ -51,10 +43,7 @@ class HomeGreetingBanner extends StatelessWidget {
             child: Container(
               width: Dimensions.r64.dynamicW * 2.0,
               height: Dimensions.r64.dynamicH * 2.0,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: AppColor.whiteColor.withValues(alpha: 0.08),
-              ),
+              decoration: BoxDecoration(shape: BoxShape.circle, color: AppColor.whiteColor.withValues(alpha: 0.08)),
             ),
           ),
           Positioned(
@@ -63,19 +52,11 @@ class HomeGreetingBanner extends StatelessWidget {
             child: Container(
               width: Dimensions.r48.dynamicW * 1.8,
               height: Dimensions.r48.dynamicH * 1.8,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: AppColor.whiteColor.withValues(alpha: 0.06),
-              ),
+              decoration: BoxDecoration(shape: BoxShape.circle, color: AppColor.whiteColor.withValues(alpha: 0.06)),
             ),
           ),
           // Sport silhouette icons (decorative)
-          Positioned(
-            right: Dimensions.r16.dynamicW,
-            top: 0,
-            bottom: 0,
-            child: _SportSilhouettes(),
-          ),
+          Positioned(right: Dimensions.r16.dynamicW, top: 0, bottom: 0, child: _SportSilhouettes()),
           // Text content
           Padding(
             padding: EdgeInsets.all(Dimensions.r20.dynamicW),
@@ -104,10 +85,7 @@ class HomeGreetingBanner extends StatelessWidget {
                       ),
                     ),
                     SizedBox(width: Dimensions.r8.dynamicW),
-                    Text(
-                      '👋',
-                      style: TextStyle(fontSize: Dimensions.r22.dynamicSP),
-                    ),
+                    Text('👋', style: TextStyle(fontSize: Dimensions.r22.dynamicSP)),
                   ],
                 ),
                 SizedBox(height: Dimensions.r4.dynamicH),
@@ -162,10 +140,7 @@ class _SportSilhouettes extends StatelessWidget {
             child: Container(
               width: Dimensions.r18.dynamicW,
               height: Dimensions.r18.dynamicW,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: AppColor.whiteColor.withValues(alpha: 0.25),
-              ),
+              decoration: BoxDecoration(shape: BoxShape.circle, color: AppColor.whiteColor.withValues(alpha: 0.25)),
             ),
           ),
           // Running person silhouette (right)
@@ -195,10 +170,7 @@ class _SportSilhouettes extends StatelessWidget {
             child: Container(
               width: Dimensions.r14.dynamicW,
               height: Dimensions.r14.dynamicW,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: const Color(0xFFFBBF24).withValues(alpha: 0.8),
-              ),
+              decoration: BoxDecoration(shape: BoxShape.circle, color: const Color(0xFFFBBF24).withValues(alpha: 0.8)),
             ),
           ),
         ],

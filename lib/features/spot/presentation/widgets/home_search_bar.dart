@@ -30,25 +30,13 @@ class HomeSearchBar extends StatelessWidget {
               ),
               child: TextField(
                 onChanged: onChanged,
-                style: TextStyle(
-                  fontSize: Dimensions.r14.dynamicSP,
-                  color: context.textPrimary,
-                ),
+                style: TextStyle(fontSize: Dimensions.r14.dynamicSP, color: context.textPrimary),
                 decoration: InputDecoration(
                   hintText: loc.searchHint,
-                  hintStyle: TextStyle(
-                    fontSize: Dimensions.r14.dynamicSP,
-                    color: context.textTertiary,
-                  ),
-                  prefixIcon: Icon(
-                    Icons.search,
-                    color: context.textSecondary,
-                    size: Dimensions.r20.dynamicH,
-                  ),
+                  hintStyle: TextStyle(fontSize: Dimensions.r14.dynamicSP, color: context.textTertiary),
+                  prefixIcon: Icon(Icons.search, color: context.textSecondary, size: Dimensions.r20.dynamicH),
                   border: InputBorder.none,
-                  contentPadding: EdgeInsets.symmetric(
-                    vertical: Dimensions.r14.dynamicH,
-                  ),
+                  contentPadding: EdgeInsets.symmetric(vertical: Dimensions.r14.dynamicH),
                 ),
               ),
             ),
@@ -71,11 +59,7 @@ class HomeSearchBar extends StatelessWidget {
                   ),
                 ],
               ),
-              child: Icon(
-                Icons.tune,
-                color: AppColor.whiteColor,
-                size: Dimensions.r20.dynamicH,
-              ),
+              child: Icon(Icons.tune, color: AppColor.whiteColor, size: Dimensions.r20.dynamicH),
             ),
           ),
         ],

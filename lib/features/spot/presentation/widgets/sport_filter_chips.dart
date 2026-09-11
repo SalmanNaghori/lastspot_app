@@ -66,7 +66,7 @@ class _SportChip extends StatelessWidget {
         ),
         decoration: BoxDecoration(
           color: isSelected ? AppColor.primaryColor : context.surfaceColor,
-          borderRadius: BorderRadius.circular(Dimensions.r20.dynamicR),
+          borderRadius: BorderRadius.circular(9999),
           border: Border.all(
             color: isSelected ? AppColor.primaryColor : context.borderColor,
             width: 1.5,
