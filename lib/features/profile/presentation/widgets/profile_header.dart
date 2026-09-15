@@ -93,7 +93,7 @@ class ProfileHeader extends StatelessWidget {
         const SizedBox(height: Dimensions.r24),
         OutlinedButton.icon(
           onPressed: () async {
-            final result = await context.push<dynamic>('/edit-profile');
+            final result = await context.safePush<dynamic>('/edit-profile');
             if (result != null && result is UserProfile && context.mounted) {
               context.read<ProfileCubit>().setProfileLocally(result);
             }

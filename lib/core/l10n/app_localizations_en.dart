@@ -598,4 +598,23 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get tryAgain => 'Try again';
+
+  @override
+  String get recommendedForYou => 'Recommended for you';
+
+  @override
+  String get newThisWeek => 'New this week';
+
+  @override
+  String get city => 'City';
+
+  @override
+  String get selectCity => 'Select City';
+
+  @override
+  String get edit => 'Edit';
+
+  @override
+  String get deleteImageNotSupported =>
+      'Deleting existing images is not supported yet.';
 }

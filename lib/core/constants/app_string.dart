@@ -1,5 +1,3 @@
-import '../network/app_routes.dart';
-
 class AppString {
   AppString._();
 

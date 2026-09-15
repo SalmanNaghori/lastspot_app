@@ -20,6 +20,7 @@ abstract class SpotRepository {
   Future<List<JoinRequestEntity>> getConfirmedPlayers(String spotId);
 
   Future<void> createRequest({
+    required String cityId,
     required String categoryId,
     required String title,
     String? description,
@@ -35,5 +36,20 @@ abstract class SpotRepository {
   Future<void> updateJoinRequestStatus({
     required String joinRequestId,
     required String status,
+  });
+
+  Future<List<RequestEntity>> getUserActivities();
+
+  Future<void> updateRequest({
+    required String spotId,
+    String? categoryId,
+    String? cityId,
+    String? title,
+    String? description,
+    String? locationName,
+    DateTime? eventDateTime,
+    int? maxParticipants,
+    double? pricePerPerson,
+    List<File>? newImages,
   });
 }

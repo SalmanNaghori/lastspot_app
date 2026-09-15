@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lastspot_app/core/base_import.dart';
 import '../../../cities/domain/entities/city_entity.dart';
 import '../../../cities/presentation/bloc/city_cubit.dart';

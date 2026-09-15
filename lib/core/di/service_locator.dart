@@ -59,6 +59,7 @@ import '../../features/spot/domain/repositories/spot_repository.dart';
 
 // Spot Domain
 import '../../features/spot/domain/usecases/create_spot_usecase.dart';
+import '../../features/spot/domain/usecases/update_spot_usecase.dart';
 import '../../features/spot/domain/usecases/get_spot_details_usecase.dart';
 import '../../features/spot/domain/usecases/get_spots_usecase.dart';
 import '../../features/spot/domain/usecases/join_spot_usecase.dart';
@@ -205,6 +206,9 @@ Future<void> setupServiceLocator() async {
 
   sl.registerSingleton<CreateSpotUseCase>(
     CreateSpotUseCase(sl<SpotRepository>()),
+  );
+  sl.registerSingleton<UpdateSpotUseCase>(
+    UpdateSpotUseCase(repository: sl<SpotRepository>()),
   );
   sl.registerSingleton<GetSpotDetailsUseCase>(
     GetSpotDetailsUseCase(sl<SpotRepository>()),

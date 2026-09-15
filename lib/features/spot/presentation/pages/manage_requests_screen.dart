@@ -39,9 +39,13 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen> {
             return const Center(child: CircularProgressIndicator());
           } else if (state is ManageRequestsError) {
             return Center(
-              child: Text(
-                state.message,
-                style: const TextStyle(color: AppColor.errorColor),
+              child: Padding(
+                padding: EdgeInsets.all(Dimensions.r24.dynamicW),
+                child: Text(
+                  state.message,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(color: AppColor.errorColor),
+                ),
               ),
             );
           } else if (state is ManageRequestsLoaded) {

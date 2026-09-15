@@ -24,6 +24,11 @@ class _RequestsUpdatedEvent extends ManageRequestsEvent {
   _RequestsUpdatedEvent(this.requests);
 }
 
+class _RequestsErrorEvent extends ManageRequestsEvent {
+  final String message;
+  _RequestsErrorEvent(this.message);
+}
+
 abstract class ManageRequestsState {}
 
 class ManageRequestsInitial extends ManageRequestsState {}
@@ -59,6 +64,7 @@ class ManageRequestsBloc
        super(ManageRequestsInitial()) {
     on<LoadPendingRequestsEvent>(_onLoadPending);
     on<_RequestsUpdatedEvent>(_onRequestsUpdated);
+    on<_RequestsErrorEvent>(_onRequestsError);
     on<UpdateRequestStatusEvent>(_onUpdateStatus);
   }
 
@@ -79,6 +85,8 @@ class ManageRequestsBloc
       requests,
     ) {
       add(_RequestsUpdatedEvent(requests));
+    }, onError: (error) {
+      add(_RequestsErrorEvent('Failed to stream requests. Please check if Realtime is enabled for the join_requests table in your Supabase Dashboard.'));
     });
   }
 
@@ -94,6 +102,13 @@ class ManageRequestsBloc
         ),
       );
     }
+  }
+
+  void _onRequestsError(
+    _RequestsErrorEvent event,
+    Emitter<ManageRequestsState> emit,
+  ) {
+    emit(ManageRequestsError(message: event.message));
   }
 
   Future<void> _onUpdateStatus(

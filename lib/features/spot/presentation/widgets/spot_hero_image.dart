@@ -1,5 +1,4 @@
 import 'package:lastspot_app/core/base_import.dart';
-import 'package:lastspot_app/core/widgets/app_cached_network_image.dart';
 import 'package:lastspot_app/features/spot/domain/entities/request_entity.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'sport_gradient_background.dart';
@@ -9,6 +8,7 @@ class SpotHeroImage extends StatelessWidget {
   final bool isUrgent;
   final String spotsLeftText;
   final String perPersonLabel;
+  final String? heroTagPrefix;
 
   const SpotHeroImage({
     super.key,
@@ -16,12 +16,13 @@ class SpotHeroImage extends StatelessWidget {
     required this.isUrgent,
     required this.spotsLeftText,
     required this.perPersonLabel,
+    this.heroTagPrefix,
   });
 
   @override
   Widget build(BuildContext context) {
     return Hero(
-      tag: 'activity_image_${spot.id}',
+      tag: heroTagPrefix != null ? '${heroTagPrefix}_activity_image_${spot.id}' : 'activity_image_${spot.id}',
       child: Skeleton.replace(
         width: double.infinity,
         height: Dimensions.r64.dynamicH * 2.8,

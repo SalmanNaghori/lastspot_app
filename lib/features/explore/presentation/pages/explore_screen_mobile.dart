@@ -106,7 +106,7 @@ class _ExploreScreenMobileState extends State<ExploreScreenMobile> {
   }
 
   void _onSpotTap(String spotId) {
-    context.push('${AppRoutes.spotDetails.replaceAll(':id', '')}$spotId');
+    context.safePush(AppRoutes.spotDetailsPath(spotId));
   }
 
   List<RequestEntity> _getDisplayedPosts(ExploreLoaded state) {

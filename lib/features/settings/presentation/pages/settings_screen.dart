@@ -165,7 +165,9 @@ class SettingsScreen extends StatelessWidget {
     return RadioListTile<T>(
       title: Text(title, style: Theme.of(context).textTheme.bodyLarge),
       value: value,
+      // ignore: deprecated_member_use
       groupValue: groupValue,
+      // ignore: deprecated_member_use
       onChanged: onChanged,
       activeColor: AppColor.primaryColor,
       controlAffinity: ListTileControlAffinity.trailing,

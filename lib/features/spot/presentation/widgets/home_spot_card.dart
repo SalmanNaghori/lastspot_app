@@ -1,7 +1,6 @@
 import 'package:intl/intl.dart';
 import 'package:lastspot_app/core/base_import.dart';
 import 'package:lastspot_app/features/spot/domain/entities/request_entity.dart';
-import 'package:skeletonizer/skeletonizer.dart';
 
 import 'spot_hero_image.dart';
 import 'spot_host_avatar.dart';
@@ -14,8 +13,9 @@ class HomeSpotCard extends StatefulWidget {
   final RequestEntity spot;
   final VoidCallback onTap;
   final VoidCallback? onMapTap;
+  final String? heroTagPrefix;
 
-  const HomeSpotCard({super.key, required this.spot, required this.onTap, this.onMapTap});
+  const HomeSpotCard({super.key, required this.spot, required this.onTap, this.onMapTap, this.heroTagPrefix});
 
   @override
   State<HomeSpotCard> createState() => _HomeSpotCardState();
@@ -23,6 +23,16 @@ class HomeSpotCard extends StatefulWidget {
 
 class _HomeSpotCardState extends State<HomeSpotCard> {
   final ValueNotifier<bool> _isPressed = ValueNotifier(false);
+  bool _isTapped = false;
+
+  void _handleTap() {
+    if (_isTapped) return;
+    _isTapped = true;
+    widget.onTap();
+    Future.delayed(const Duration(milliseconds: 500), () {
+      if (mounted) _isTapped = false;
+    });
+  }
 
   @override
   void dispose() {
@@ -47,7 +57,7 @@ class _HomeSpotCardState extends State<HomeSpotCard> {
       onTapDown: (_) => _isPressed.value = true,
       onTapUp: (_) => _isPressed.value = false,
       onTapCancel: () => _isPressed.value = false,
-      onTap: widget.onTap,
+      onTap: _handleTap,
       child: ValueListenableBuilder<bool>(
         valueListenable: _isPressed,
         builder: (context, isPressed, child) => AnimatedScale(
@@ -75,6 +85,7 @@ class _HomeSpotCardState extends State<HomeSpotCard> {
                 isUrgent: isUrgent,
                 spotsLeftText: _spotsLeftText(loc),
                 perPersonLabel: loc.perPerson,
+                heroTagPrefix: widget.heroTagPrefix,
               ),
 
               // ── Location row ────────────────────────────────────
@@ -195,7 +206,7 @@ class _HomeSpotCardState extends State<HomeSpotCard> {
                             ],
                           ),
                         ),
-                        ViewSpotButton(onTap: widget.onTap, label: loc.viewSpot),
+                        ViewSpotButton(onTap: _handleTap, label: loc.viewSpot),
                       ],
                     ),
                   ],

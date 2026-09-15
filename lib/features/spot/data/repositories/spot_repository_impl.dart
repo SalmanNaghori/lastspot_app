@@ -54,6 +54,7 @@ class SpotRepositoryImpl implements SpotRepository {
 
   @override
   Future<void> createRequest({
+    required String cityId,
     required String categoryId,
     required String title,
     String? description,
@@ -64,14 +65,6 @@ class SpotRepositoryImpl implements SpotRepository {
     required List<File> images,
   }) async {
     final userId = _supabaseClient.auth.currentUser!.id;
-
-    // Fetch the user's city_id so the event is associated with their city
-    final profileResponse = await _supabaseClient
-        .from('profiles')
-        .select('city_id')
-        .eq('id', userId)
-        .single();
-    final cityId = profileResponse['city_id'];
 
     final requestData = {
       'user_id': userId,
@@ -86,7 +79,7 @@ class SpotRepositoryImpl implements SpotRepository {
       'current_participants': 1, // Creator is the first participant
       'price_per_person': pricePerPerson,
       'status': 'open', // Enum value string
-      if (cityId != null) 'city_id': cityId,
+      'city_id': cityId,
     };
 
     await _remoteDataSource.createRequest(requestData, images);
@@ -103,5 +96,40 @@ class SpotRepositoryImpl implements SpotRepository {
     required String status,
   }) async {
     return _remoteDataSource.updateRequestStatus(joinRequestId, status);
+  }
+
+  @override
+  Future<List<RequestEntity>> getUserActivities() async {
+    return _remoteDataSource.getUserActivities();
+  }
+
+  @override
+  Future<void> updateRequest({
+    required String spotId,
+    String? categoryId,
+    String? cityId,
+    String? title,
+    String? description,
+    String? locationName,
+    DateTime? eventDateTime,
+    int? maxParticipants,
+    double? pricePerPerson,
+    List<File>? newImages,
+  }) async {
+    final Map<String, dynamic> updates = {};
+    if (categoryId != null) updates['category_id'] = categoryId;
+    if (cityId != null) updates['city_id'] = cityId;
+    if (title != null) updates['title'] = title;
+    if (description != null) updates['description'] = description;
+    if (locationName != null) updates['location_name'] = locationName;
+    if (eventDateTime != null) updates['event_date_time'] = eventDateTime.toIso8601String();
+    if (maxParticipants != null) updates['max_participants'] = maxParticipants;
+    if (pricePerPerson != null) updates['price_per_person'] = pricePerPerson;
+
+    // Note: updating images would require deleting old images and uploading new ones in the datasource.
+    // For now, we only update the simple text fields as requested by the basic edit flow.
+    // A robust image update requires modifying updateRequest in remoteDataSource to handle the newImages list.
+
+    return _remoteDataSource.updateRequest(spotId, updates);
   }
 }

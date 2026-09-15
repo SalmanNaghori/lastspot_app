@@ -8,8 +8,9 @@ import '../widgets/home_app_bar.dart';
 import '../widgets/home_greeting_banner.dart';
 import '../widgets/home_search_bar.dart';
 import '../widgets/home_section_header.dart';
-import '../widgets/home_spot_card.dart';
 import '../widgets/sport_filter_chips.dart';
+import '../widgets/recommended_spot_card.dart';
+import '../widgets/compact_spot_card.dart';
 
 class FeedScreen extends StatefulWidget {
   const FeedScreen({super.key});
@@ -32,7 +33,7 @@ class _FeedScreenState extends State<FeedScreen> {
     context.read<FeedBloc>().add(LoadFeedEvent(category: category));
   }
 
-  void _onSpotTap(String postId) => context.push(AppRoutes.spotDetailsPath(postId));
+  void _onSpotTap(String postId) => context.safePush(AppRoutes.spotDetailsPath(postId));
 
   void _onNotificationTap() => context.push(AppRoutes.notifications);
 
@@ -63,8 +64,6 @@ class _FeedScreenState extends State<FeedScreen> {
               child: _HomeHeader(
                 userName: userName,
                 city: userCity,
-                selectedCategory: _selectedCategory,
-                onCategorySelected: _onCategorySelected,
                 onCityTap: _onCityTap,
               ),
             ),
@@ -142,7 +141,7 @@ class _FeedScreenState extends State<FeedScreen> {
 
                 return CustomScrollView(
                   slivers: [
-                    // ── Today's Matches ──────────────────────────
+                    // ── Recommended For You ──────────────────────────
                     if (todayPosts.isNotEmpty) ...[
                       SliverToBoxAdapter(
                         child: Column(
@@ -150,40 +149,41 @@ class _FeedScreenState extends State<FeedScreen> {
                           children: [
                             SizedBox(height: Dimensions.r20.dynamicH),
                             HomeSectionHeader(
-                              title: loc.todaysMatches,
+                              title: loc.recommendedForYou,
                               viewAllLabel: loc.viewAll,
                               onViewAll: _onViewAllTap,
-                              leadingIcon: Text('📅', style: TextStyle(fontSize: Dimensions.r20.dynamicSP)),
                             ),
                             SizedBox(height: Dimensions.r16.dynamicH),
+                            SizedBox(
+                              height: Dimensions.r24.dynamicH * 10,
+                              child: ListView.builder(
+                                padding: EdgeInsets.symmetric(horizontal: Dimensions.r16.dynamicW),
+                                scrollDirection: Axis.horizontal,
+                                itemCount: todayPosts.length,
+                                itemBuilder: (context, index) {
+                                  return RecommendedSpotCard(
+                                    spot: todayPosts[index],
+                                    onTap: () => _onSpotTap(todayPosts[index].id),
+                                  );
+                                },
+                              ),
+                            ),
                           ],
-                        ),
-                      ),
-                      SliverPadding(
-                        padding: EdgeInsets.symmetric(horizontal: Dimensions.r16.dynamicW),
-                        sliver: SliverList(
-                          delegate: SliverChildBuilderDelegate(
-                            (context, index) =>
-                                HomeSpotCard(spot: todayPosts[index], onTap: () => _onSpotTap(todayPosts[index].id)),
-                            childCount: todayPosts.length,
-                          ),
                         ),
                       ),
                     ],
 
-                    // ── Urgent Matches ──────────────────────────
+                    // ── New This Week ──────────────────────────
                     if (urgentPosts.isNotEmpty) ...[
                       SliverToBoxAdapter(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            SizedBox(height: Dimensions.r20.dynamicH),
+                            SizedBox(height: Dimensions.r24.dynamicH),
                             HomeSectionHeader(
-                              title: loc.urgentMatchesTitle,
-                              subtitle: loc.urgentMatchesSubtitle,
+                              title: loc.newThisWeek,
                               viewAllLabel: loc.viewAll,
                               onViewAll: _onViewAllTap,
-                              leadingIcon: Text('🔥', style: TextStyle(fontSize: Dimensions.r20.dynamicSP)),
                             ),
                             SizedBox(height: Dimensions.r16.dynamicH),
                           ],
@@ -194,15 +194,33 @@ class _FeedScreenState extends State<FeedScreen> {
                         sliver: SliverList(
                           delegate: SliverChildBuilderDelegate(
                             (context, index) =>
-                                HomeSpotCard(spot: urgentPosts[index], onTap: () => _onSpotTap(urgentPosts[index].id)),
+                                CompactSpotCard(spot: urgentPosts[index], onTap: () => _onSpotTap(urgentPosts[index].id)),
                             childCount: urgentPosts.length,
                           ),
                         ),
                       ),
                     ],
 
-                    // Bottom padding
-                    SliverToBoxAdapter(child: SizedBox(height: Dimensions.r32.dynamicH)),
+                    // ── Popular Categories ──────────────────────────
+                    SliverToBoxAdapter(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(height: Dimensions.r24.dynamicH),
+                          HomeSectionHeader(
+                            title: loc.popularSports,
+                            viewAllLabel: loc.viewAll,
+                            onViewAll: _onViewAllTap,
+                          ),
+                          SizedBox(height: Dimensions.r16.dynamicH),
+                          SportFilterChips(
+                            selectedCategory: _selectedCategory,
+                            onCategorySelected: _onCategorySelected,
+                          ),
+                          SizedBox(height: Dimensions.r32.dynamicH),
+                        ],
+                      ),
+                    ),
                   ],
                 );
               }
@@ -223,15 +241,11 @@ class _FeedScreenState extends State<FeedScreen> {
 class _HomeHeader extends StatelessWidget {
   final String? userName;
   final String? city;
-  final String? selectedCategory;
-  final ValueChanged<String?> onCategorySelected;
   final VoidCallback? onCityTap;
 
   const _HomeHeader({
     required this.userName,
     this.city,
-    required this.selectedCategory,
-    required this.onCategorySelected,
     this.onCityTap,
   });
 
@@ -250,12 +264,7 @@ class _HomeHeader extends StatelessWidget {
         // ── Search bar ───────────────────────────────
         const HomeSearchBar(),
 
-        SizedBox(height: Dimensions.r14.dynamicH),
-
-        // ── Sport filter chips ───────────────────────
-        SportFilterChips(selectedCategory: selectedCategory, onCategorySelected: onCategorySelected),
-
-        SizedBox(height: Dimensions.r8.dynamicH),
+        SizedBox(height: Dimensions.r16.dynamicH),
       ],
     );
   }

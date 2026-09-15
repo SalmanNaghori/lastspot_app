@@ -1,10 +1,10 @@
 extension MapExtension<T> on Map<T, T> {
-  ///Map<String, dynamic> map = {'id': ', 'name': 'Desk', 'price': 200};
-  ///print(map.has("id", ")); // true
-  ///print(map.has("id", 2)); // false
+  /// `Map<String, dynamic>` map = {'id': 1, 'name': 'Desk', 'price': 200};
+  /// print(map.has("id", 1)); // true
+  /// print(map.has("id", 2)); // false
   bool has(String key, dynamic value) => containsKey(key) && this[key] == value;
 
-  /// Map<String, dynamic> map = {"name": "John", "age": 30};
+  /// `Map<String, dynamic>` map = {"name": "John", "age": 30};
   /// print(map.doesntHave("gender", "male")); // true
   /// print(map.doesntHave("gender", null)); // true
   bool doesntHave(String key, T value) => !has(key, value);

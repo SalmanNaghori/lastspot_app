@@ -21,9 +21,11 @@ import '../../features/spot/presentation/pages/manage_requests_screen.dart';
 import '../../features/spot/presentation/bloc/manage_requests_bloc.dart';
 import '../../features/spot/presentation/pages/chat_screen.dart';
 import '../../features/spot/domain/usecases/create_spot_usecase.dart';
+import '../../features/spot/domain/usecases/update_spot_usecase.dart';
 import '../../features/spot/domain/usecases/get_spot_details_usecase.dart';
 import '../../features/spot/domain/usecases/get_spots_usecase.dart';
 import '../../features/spot/domain/usecases/join_spot_usecase.dart';
+import '../../features/spot/domain/entities/request_entity.dart';
 import '../../features/spot/domain/usecases/manage_join_request_usecase.dart';
 import '../../features/spot/domain/usecases/stream_spot_join_requests_usecase.dart';
 import '../../features/spot/domain/usecases/get_confirmed_players_usecase.dart';
@@ -142,13 +144,17 @@ final GoRouter appRouter = GoRouter(
           routes: [
             GoRoute(
               path: AppRoutes.create,
-              builder: (context, state) => BlocProvider(
-                create: (context) => CreateSpotBloc(
-                  createSpotUseCase: sl<CreateSpotUseCase>(),
-                  getCategoriesUseCase: sl<GetCategoriesUseCase>(),
-                )..add(LoadCategoriesEvent()),
-                child: const CreateSpotScreen(),
-              ),
+              builder: (context, state) {
+                final spotToEdit = state.extra as RequestEntity?;
+                return BlocProvider(
+                  create: (context) => CreateSpotBloc(
+                    createSpotUseCase: sl<CreateSpotUseCase>(),
+                    updateSpotUseCase: sl<UpdateSpotUseCase>(),
+                    getCategoriesUseCase: sl<GetCategoriesUseCase>(),
+                  )..add(LoadCategoriesEvent()),
+                  child: CreateSpotScreen(spotToEdit: spotToEdit),
+                );
+              },
             ),
           ],
         ),
@@ -186,6 +192,20 @@ final GoRouter appRouter = GoRouter(
             getConfirmedPlayersUseCase: sl<GetConfirmedPlayersUseCase>(),
           ),
           child: SpotDetailsScreen(postId: id),
+        );
+      },
+    ),
+    GoRoute(
+      path: AppRoutes.editSpot,
+      builder: (context, state) {
+        final spotToEdit = state.extra as RequestEntity?;
+        return BlocProvider(
+          create: (context) => CreateSpotBloc(
+            createSpotUseCase: sl<CreateSpotUseCase>(),
+            updateSpotUseCase: sl<UpdateSpotUseCase>(),
+            getCategoriesUseCase: sl<GetCategoriesUseCase>(),
+          )..add(LoadCategoriesEvent()),
+          child: CreateSpotScreen(spotToEdit: spotToEdit),
         );
       },
     ),

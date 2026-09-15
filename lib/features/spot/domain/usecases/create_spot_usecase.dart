@@ -7,6 +7,7 @@ class CreateSpotUseCase {
   CreateSpotUseCase(this._repository);
 
   Future<void> call({
+    required String cityId,
     required String categoryId,
     required String title,
     String? description,
@@ -17,6 +18,7 @@ class CreateSpotUseCase {
     required List<File> images,
   }) async {
     return _repository.createRequest(
+      cityId: cityId,
       categoryId: categoryId,
       title: title,
       description: description,

@@ -31,7 +31,7 @@ class JoinRequestModel extends JoinRequestEntity {
 
     return JoinRequestModel(
       id: json['id'] as String,
-      postId: json['post_id'] as String,
+      postId: (json['request_id'] ?? json['post_id']) as String,
       userId: json['user_id'] as String,
       status: parseStatus(json['status'] as String?),
       message: json['message'] as String?,
@@ -39,14 +39,16 @@ class JoinRequestModel extends JoinRequestEntity {
       userProfile: json['profiles'] != null
           ? ProfileModel.fromJson(json['profiles'])
           : null,
-      post: json['posts'] != null ? RequestModel.fromJson(json['posts']) : null,
+      post: (json['requests'] ?? json['posts']) != null 
+          ? RequestModel.fromJson(json['requests'] ?? json['posts']) 
+          : null,
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'post_id': postId,
+      'request_id': postId,
       'user_id': userId,
       'status': status.name,
       'message': message,

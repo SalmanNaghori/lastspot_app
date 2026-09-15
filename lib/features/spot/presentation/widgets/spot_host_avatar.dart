@@ -1,5 +1,4 @@
 import 'package:lastspot_app/core/base_import.dart';
-import 'package:lastspot_app/core/widgets/app_cached_network_image.dart';
 
 class SpotHostAvatar extends StatelessWidget {
   final String name;

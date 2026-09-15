@@ -91,8 +91,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     keyboardType: TextInputType.emailAddress,
                     textInputAction: TextInputAction.next,
                     validator: (value) {
-                      if (value == null || value.trim().isEmpty)
+                      if (value == null || value.trim().isEmpty) {
                         return 'Email is required';
+                      }
                       if (!RegExp(
                         r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+",
                       ).hasMatch(value)) {
@@ -114,8 +115,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     },
                     textInputAction: TextInputAction.done,
                     validator: (value) {
-                      if (value == null || value.isEmpty)
+                      if (value == null || value.isEmpty) {
                         return 'Password is required';
+                      }
                       return null;
                     },
                   ),
@@ -124,7 +126,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     alignment: Alignment.centerRight,
                     child: TextButton(
                       onPressed: () {
-                        context.push(AppRoutes.forgotPassword);
+                        context.safePush(AppRoutes.forgotPassword);
                       },
                       child: Text(
                         context.loc.forgotPassword,
@@ -163,7 +165,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   const SizedBox(height: Dimensions.r16),
                   TextButton(
                     onPressed: () {
-                      context.push(AppRoutes.signup);
+                      context.safePush(AppRoutes.signup);
                     },
                     child: Text(
                       context.loc.dontHaveAccount,

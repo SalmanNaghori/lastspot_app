@@ -1,4 +1,3 @@
-import 'package:url_launcher/url_launcher.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:lastspot_app/core/base_import.dart';
 import '../bloc/spot_details_bloc.dart';
@@ -18,12 +17,7 @@ class _SpotDetailsScreenState extends State<SpotDetailsScreen> {
     context.read<SpotDetailsBloc>().add(LoadSpotDetailsEvent(spotId: widget.postId));
   }
 
-  Future<void> _launchMap(String url) async {
-    final uri = Uri.parse(url);
-    if (await canLaunchUrl(uri)) {
-      await launchUrl(uri);
-    }
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +28,22 @@ class _SpotDetailsScreenState extends State<SpotDetailsScreen> {
       appBar: AppBar(
         leading: IconButton(icon: const Icon(Icons.arrow_back), onPressed: () => context.pop()),
         title: Text(l10n.matchOverviewTitle, style: const TextStyle(fontWeight: FontWeight.bold)),
-        actions: [IconButton(icon: const Icon(Icons.share), onPressed: () {})],
+        actions: [
+          BlocBuilder<SpotDetailsBloc, SpotDetailsState>(
+            builder: (context, state) {
+              if (state is SpotDetailsLoaded && state.post.userId == currentUserId) {
+                return IconButton(
+                  icon: const Icon(Icons.edit),
+                  onPressed: () {
+                    context.safePush(AppRoutes.editSpot, extra: state.post);
+                  },
+                );
+              }
+              return const SizedBox.shrink();
+            },
+          ),
+          IconButton(icon: const Icon(Icons.share), onPressed: () {}),
+        ],
       ),
       body: BlocConsumer<SpotDetailsBloc, SpotDetailsState>(
         listener: (context, state) {
@@ -220,7 +229,7 @@ class _SpotDetailsScreenState extends State<SpotDetailsScreen> {
                 final isHost = state.post.userId == currentUserId;
                 if (isHost) {
                   return ElevatedButton(
-                    onPressed: () => context.push(AppRoutes.manageRequestsPath(state.post.id)),
+                    onPressed: () => context.safePush(AppRoutes.manageRequestsPath(state.post.id)),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColor.secondaryColor,
                       foregroundColor: AppColor.whiteColor,

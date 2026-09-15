@@ -6,7 +6,6 @@ import '../../domain/usecases/login_usecase.dart';
 import '../../domain/usecases/signup_usecase.dart';
 import '../../domain/usecases/logout_usecase.dart';
 import '../../domain/usecases/reset_password_usecase.dart';
-import '../../domain/usecases/update_profile_usecase.dart';
 import '../../domain/usecases/verify_otp_usecase.dart';
 import '../../domain/usecases/resend_otp_usecase.dart';
 import '../../domain/usecases/check_auth_status_usecase.dart';
@@ -27,7 +26,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final ResendOtpUseCase _resendOtpUseCase;
   final CheckAuthStatusUseCase _checkAuthStatusUseCase;
   final GetProfileUseCase _getProfileUseCase;
-  final UpdateProfileUseCase _updateProfileUseCase;
   final RegisterDeviceUseCase _registerDeviceUseCase;
 
   AuthBloc({
@@ -39,7 +37,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     required ResendOtpUseCase resendOtpUseCase,
     required CheckAuthStatusUseCase checkAuthStatusUseCase,
     required GetProfileUseCase getProfileUseCase,
-    required UpdateProfileUseCase updateProfileUseCase,
     required RegisterDeviceUseCase registerDeviceUseCase,
   }) : _loginUseCase = loginUseCase,
        _signupUseCase = signupUseCase,
@@ -49,7 +46,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
        _resendOtpUseCase = resendOtpUseCase,
        _checkAuthStatusUseCase = checkAuthStatusUseCase,
        _getProfileUseCase = getProfileUseCase,
-       _updateProfileUseCase = updateProfileUseCase,
        _registerDeviceUseCase = registerDeviceUseCase,
        super(AuthInitial()) {
     on<AuthCheckRequested>(_onCheckRequested);

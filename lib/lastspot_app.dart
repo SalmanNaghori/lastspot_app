@@ -16,7 +16,6 @@ import 'features/auth/domain/usecases/verify_otp_usecase.dart';
 import 'features/auth/domain/usecases/resend_otp_usecase.dart';
 import 'features/auth/domain/usecases/check_auth_status_usecase.dart';
 import 'features/auth/domain/usecases/get_profile_usecase.dart';
-import 'features/auth/domain/usecases/update_profile_usecase.dart';
 import 'features/auth/domain/usecases/register_device_usecase.dart';
 
 class LastSpotApp extends StatelessWidget {
@@ -39,7 +38,6 @@ class LastSpotApp extends StatelessWidget {
             resendOtpUseCase: sl<ResendOtpUseCase>(),
             checkAuthStatusUseCase: sl<CheckAuthStatusUseCase>(),
             getProfileUseCase: sl<GetProfileUseCase>(),
-            updateProfileUseCase: sl<UpdateProfileUseCase>(),
             registerDeviceUseCase: sl<RegisterDeviceUseCase>(),
           ),
         ),

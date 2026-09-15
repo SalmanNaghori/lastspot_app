@@ -265,5 +265,11 @@
   "loading": "Loading...",
   "todaysMatches": "Today's Matches",
   "urgentMatchesTitle": "Urgent Matches",
-  "tryAgain": "Try again"
+  "tryAgain": "Try again",
+  "recommendedForYou": "Recommended for you",
+  "newThisWeek": "New this week",
+  "city": "City",
+  "selectCity": "Select City",
+  "edit": "Edit",
+  "deleteImageNotSupported": "Deleting existing images is not supported yet."
 }

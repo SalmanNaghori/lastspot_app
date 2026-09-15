@@ -24,6 +24,8 @@ abstract class SpotRemoteDataSource {
   Stream<List<JoinRequestModel>> streamPendingRequests(String requestId);
   Future<void> requestToJoin(String requestId);
   Future<void> updateRequestStatus(String joinRequestId, String status);
+  Future<List<RequestModel>> getUserActivities();
+  Future<void> updateRequest(String spotId, Map<String, dynamic> updates);
 }
 
 class SupabaseSpotDataSourceImpl implements SpotRemoteDataSource {
@@ -121,6 +123,13 @@ class SupabaseSpotDataSourceImpl implements SpotRemoteDataSource {
             .single();
         final requestId = response['id'] as String;
 
+        // Add creator to join_requests as accepted
+        await _client.from('join_requests').insert({
+          'request_id': requestId,
+          'user_id': requestData['user_id'],
+          'status': 'accepted',
+        });
+
         // 2. Upload images and insert into request_images
         for (int i = 0; i < images.length; i++) {
           final file = images[i];
@@ -214,6 +223,62 @@ class SupabaseSpotDataSourceImpl implements SpotRemoteDataSource {
         'update_request_status',
         params: {'p_request_id': requestId, 'p_status': status},
       ),
+    );
+  }
+
+  @override
+  Future<List<RequestModel>> getUserActivities() async {
+    return SupabaseLogger.execute(
+      operationName: 'Spot.getUserActivities',
+      requestData: {},
+      operation: () async {
+        final userId = _client.auth.currentUser?.id;
+        if (userId == null) return [];
+
+        // Find spots where user is the creator OR is an accepted participant
+        // First get accepted join requests
+        final joinResponses = await _client
+            .from('join_requests')
+            .select('request_id')
+            .eq('user_id', userId)
+            .eq('status', 'accepted');
+
+        final joinedRequestIds = (joinResponses as List<dynamic>)
+            .map((e) => e['request_id'] as String)
+            .toList();
+
+        // Query requests: creator OR in joined list
+        var query = _client
+            .from('requests')
+            .select('*, profiles:user_id(*), request_images(*)');
+
+        if (joinedRequestIds.isNotEmpty) {
+          final idList = joinedRequestIds.map((id) => '"$id"').join(',');
+          query = query.or('user_id.eq.$userId,id.in.($idList)');
+        } else {
+          query = query.eq('user_id', userId);
+        }
+
+        final response = await query.order('event_date_time', ascending: false);
+        return (response as List<dynamic>)
+            .map((e) => RequestModel.fromJson(e as Map<String, dynamic>))
+            .toList();
+      },
+    );
+  }
+
+  @override
+  Future<void> updateRequest(String spotId, Map<String, dynamic> updates) async {
+    return SupabaseLogger.execute(
+      operationName: 'Spot.updateRequest',
+      requestData: {'spotId': spotId, ...updates},
+      operation: () async {
+        if (updates.isEmpty) return;
+        await _client
+            .from('requests')
+            .update(updates)
+            .eq('id', spotId);
+      },
     );
   }
 }

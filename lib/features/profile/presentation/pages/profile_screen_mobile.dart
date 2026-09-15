@@ -97,7 +97,9 @@ class ProfileScreenMobile extends StatelessWidget {
                     ProfileListTile(
                       icon: Icons.event_available_outlined,
                       title: loc.myActivities,
-                      onTap: () {},
+                      onTap: () {
+                        context.go(AppRoutes.activities);
+                      },
                     ),
                   ],
                 ),
@@ -114,7 +116,7 @@ class ProfileScreenMobile extends StatelessWidget {
                       icon: Icons.settings_outlined,
                       title: loc.settings,
                       onTap: () {
-                        context.push(AppRoutes.settings);
+                        context.safePush(AppRoutes.settings);
                       },
                     ),
                     ProfileListTile(
