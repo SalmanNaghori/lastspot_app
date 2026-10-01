@@ -6,9 +6,15 @@ import 'spot_hero_image.dart';
 
 class RecommendedSpotCard extends StatefulWidget {
   final RequestEntity spot;
+  final String? heroTagPrefix;
   final VoidCallback onTap;
 
-  const RecommendedSpotCard({super.key, required this.spot, required this.onTap});
+  const RecommendedSpotCard({
+    super.key,
+    required this.spot,
+    this.heroTagPrefix,
+    required this.onTap,
+  });
 
   @override
   State<RecommendedSpotCard> createState() => _RecommendedSpotCardState();
@@ -25,6 +31,14 @@ class _RecommendedSpotCardState extends State<RecommendedSpotCard> {
 
   String _formatDate(DateTime dt) => DateFormat('E, MMM d').format(dt);
   String _formatTime(DateTime dt) => DateFormat('h:mm a').format(dt);
+
+  String _getDisplayLocation(String location) {
+    final lower = location.toLowerCase();
+    if (lower.startsWith('http://') || lower.startsWith('https://')) {
+      return 'Map Location';
+    }
+    return location;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +77,9 @@ class _RecommendedSpotCardState extends State<RecommendedSpotCard> {
               SizedBox(
                 height: Dimensions.r24.dynamicH * 5.5,
                 child: ClipRRect(
-                  borderRadius: BorderRadius.vertical(top: Radius.circular(Dimensions.r16.dynamicR - 1)),
+                  borderRadius: BorderRadius.vertical(
+                    top: Radius.circular(Dimensions.r16.dynamicR - 1),
+                  ),
                   child: Stack(
                     fit: StackFit.expand,
                     children: [
@@ -71,30 +87,8 @@ class _RecommendedSpotCardState extends State<RecommendedSpotCard> {
                         spot: widget.spot,
                         isUrgent: false,
                         spotsLeftText: '',
-                        perPersonLabel: '',
-                      ),
-                      // Overlay price
-                      Positioned(
-                        bottom: Dimensions.r12.dynamicH,
-                        right: Dimensions.r12.dynamicW,
-                        child: Container(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: Dimensions.r10.dynamicW,
-                            vertical: Dimensions.r4.dynamicH,
-                          ),
-                          decoration: BoxDecoration(
-                            color: AppColor.blackColor.withValues(alpha: 0.7),
-                            borderRadius: BorderRadius.circular(Dimensions.r12.dynamicR),
-                          ),
-                          child: Text(
-                            '\$${widget.spot.pricePerPerson.toStringAsFixed(0)}',
-                            style: TextStyle(
-                              color: AppColor.whiteColor,
-                              fontWeight: FontWeight.w700,
-                              fontSize: Dimensions.r12.dynamicSP,
-                            ),
-                          ),
-                        ),
+                        perPersonLabel: '/ person', // Let the card's other logic or SpotHeroImage handle it natively
+                        heroTagPrefix: widget.heroTagPrefix,
                       ),
                     ],
                   ),
@@ -107,7 +101,9 @@ class _RecommendedSpotCardState extends State<RecommendedSpotCard> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      widget.spot.title.trim().isNotEmpty ? widget.spot.title.trim() : widget.spot.locationName,
+                      widget.spot.title.trim().isNotEmpty
+                          ? widget.spot.title.trim()
+                          : _getDisplayLocation(widget.spot.locationName),
                       style: TextStyle(
                         fontSize: Dimensions.r15.dynamicSP,
                         fontWeight: FontWeight.w700,
@@ -120,11 +116,15 @@ class _RecommendedSpotCardState extends State<RecommendedSpotCard> {
                     SizedBox(height: Dimensions.r6.dynamicH),
                     Row(
                       children: [
-                        Icon(Icons.location_on_outlined, size: Dimensions.r14.dynamicH, color: context.textSecondary),
+                        Icon(
+                          Icons.location_on_outlined,
+                          size: Dimensions.r14.dynamicH,
+                          color: context.textSecondary,
+                        ),
                         SizedBox(width: Dimensions.r4.dynamicW),
                         Expanded(
                           child: Text(
-                            widget.spot.locationName,
+                            _getDisplayLocation(widget.spot.locationName),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
@@ -138,12 +138,19 @@ class _RecommendedSpotCardState extends State<RecommendedSpotCard> {
                     SizedBox(height: Dimensions.r4.dynamicH),
                     Row(
                       children: [
-                        Icon(Icons.calendar_today_outlined, size: Dimensions.r14.dynamicH, color: context.textSecondary),
+                        Icon(
+                          Icons.calendar_today_outlined,
+                          size: Dimensions.r14.dynamicH,
+                          color: context.textSecondary,
+                        ),
                         SizedBox(width: Dimensions.r4.dynamicW),
                         Expanded(
                           child: Text(
                             '${_formatDate(widget.spot.eventDateTime)}, ${_formatTime(widget.spot.eventDateTime)}',
-                            style: TextStyle(fontSize: Dimensions.r12.dynamicSP, color: context.textSecondary),
+                            style: TextStyle(
+                              fontSize: Dimensions.r12.dynamicSP,
+                              color: context.textSecondary,
+                            ),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                           ),

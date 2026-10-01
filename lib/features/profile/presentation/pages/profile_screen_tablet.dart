@@ -11,7 +11,11 @@ class ProfileScreenTablet extends StatelessWidget {
   final ProfileState state;
   final Future<void> Function() onRefresh;
 
-  const ProfileScreenTablet({super.key, required this.state, required this.onRefresh});
+  const ProfileScreenTablet({
+    super.key,
+    required this.state,
+    required this.onRefresh,
+  });
 
   void _onLogout(BuildContext context, AppLocalizations loc) {
     showDialog(
@@ -20,7 +24,10 @@ class ProfileScreenTablet extends StatelessWidget {
         title: Text(loc.logoutDialogTitle),
         content: Text(loc.logoutDialogMessage),
         actions: [
-          TextButton(onPressed: () => Navigator.of(ctx).pop(), child: Text(loc.cancel)),
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(),
+            child: Text(loc.cancel),
+          ),
           FilledButton(
             onPressed: () {
               Navigator.of(ctx).pop();
@@ -36,7 +43,6 @@ class ProfileScreenTablet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final loc = context.loc;
-    final theme = Theme.of(context);
 
     return Scaffold(
       backgroundColor: context.backgroundColor,
@@ -56,9 +62,12 @@ class ProfileScreenTablet extends StatelessWidget {
               margin: const EdgeInsets.all(Dimensions.r24),
               padding: const EdgeInsets.all(Dimensions.r32),
               decoration: BoxDecoration(
-                color: theme.colorScheme.surface,
+                color: context.colorScheme.surface,
                 borderRadius: BorderRadius.circular(Dimensions.r20),
-                border: Border.all(color: AppColor.helpCardBorderColor, width: 0.5),
+                border: Border.all(
+                  color: AppColor.helpCardBorderColor,
+                  width: 0.5,
+                ),
                 boxShadow: [
                   BoxShadow(
                     color: AppColor.blackColor.withValues(alpha: 0.04),
@@ -73,8 +82,13 @@ class ProfileScreenTablet extends StatelessWidget {
                     return const ProfileSkeleton();
                   } else if (state is ProfileError) {
                     return Padding(
-                      padding: const EdgeInsets.symmetric(vertical: Dimensions.r48),
-                      child: ErrorState(message: (state as ProfileError).message, onRetry: onRefresh),
+                      padding: const EdgeInsets.symmetric(
+                        vertical: Dimensions.r48,
+                      ),
+                      child: ErrorState(
+                        message: (state as ProfileError).message,
+                        onRetry: onRefresh,
+                      ),
                     );
                   } else if (state is ProfileLoaded) {
                     final profile = (state as ProfileLoaded).profile;
@@ -88,7 +102,11 @@ class ProfileScreenTablet extends StatelessWidget {
                             children: [
                               ProfileHeader(profile: profile),
                               const SizedBox(height: Dimensions.r32),
-                              const ProfileStatistics(createdCount: 0, joinedCount: 0, completedCount: 0),
+                              const ProfileStatistics(
+                                createdCount: 0,
+                                joinedCount: 0,
+                                completedCount: 0,
+                              ),
                             ],
                           ),
                         ),
@@ -104,7 +122,11 @@ class ProfileScreenTablet extends StatelessWidget {
                                 context,
                                 title: loc.profileSectionActivity,
                                 items: [
-                                  ProfileListTile(icon: Icons.assignment_outlined, title: loc.myRequests, onTap: () {}),
+                                  ProfileListTile(
+                                    icon: Icons.assignment_outlined,
+                                    title: loc.myRequests,
+                                    onTap: () {},
+                                  ),
                                   ProfileListTile(
                                     icon: Icons.event_available_outlined,
                                     title: loc.myActivities,
@@ -130,7 +152,11 @@ class ProfileScreenTablet extends StatelessWidget {
                                       context.safePush(AppRoutes.settings);
                                     },
                                   ),
-                                  ProfileListTile(icon: Icons.help_outline, title: loc.helpSupport, onTap: () {}),
+                                  ProfileListTile(
+                                    icon: Icons.help_outline,
+                                    title: loc.helpSupport,
+                                    onTap: () {},
+                                  ),
                                 ],
                               ),
                               _buildSection(
@@ -155,7 +181,7 @@ class ProfileScreenTablet extends StatelessWidget {
                                 child: TextButton(
                                   onPressed: () => _onLogout(context, loc),
                                   style: TextButton.styleFrom(
-                                    foregroundColor: theme.colorScheme.error,
+                                    foregroundColor: context.colorScheme.error,
                                     padding: const EdgeInsets.symmetric(
                                       horizontal: Dimensions.r24,
                                       vertical: Dimensions.r12,
@@ -180,17 +206,23 @@ class ProfileScreenTablet extends StatelessWidget {
     );
   }
 
-  Widget _buildSection(BuildContext context, {required String title, required List<Widget> items}) {
-    final theme = Theme.of(context);
+  Widget _buildSection(
+    BuildContext context, {
+    required String title,
+    required List<Widget> items,
+  }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: Dimensions.r8, vertical: Dimensions.r8),
+          padding: const EdgeInsets.symmetric(
+            horizontal: Dimensions.r8,
+            vertical: Dimensions.r8,
+          ),
           child: Text(
             title.toUpperCase(),
-            style: theme.textTheme.labelMedium?.copyWith(
-              color: theme.colorScheme.onSurfaceVariant,
+            style: context.labelMedium?.copyWith(
+              color: context.colorScheme.onSurfaceVariant,
               fontWeight: FontWeight.bold,
               letterSpacing: 1.2,
             ),
@@ -198,7 +230,7 @@ class ProfileScreenTablet extends StatelessWidget {
         ),
         Container(
           decoration: BoxDecoration(
-            color: theme.colorScheme.surfaceContainerLow,
+            color: context.colorScheme.surfaceContainerLow,
             borderRadius: BorderRadius.circular(Dimensions.r12),
           ),
           child: Column(children: items),

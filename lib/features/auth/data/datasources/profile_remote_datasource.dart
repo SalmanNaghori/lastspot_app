@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:lastspot_app/core/network/supabase_logger.dart';
+import 'package:lastspot_app/core/network/api_endpoints.dart';
 import '../models/profile_model.dart';
 
 abstract class ProfileRemoteDataSource {
@@ -20,29 +20,19 @@ class SupabaseProfileDataSourceImpl implements ProfileRemoteDataSource {
 
   @override
   Future<ProfileModel?> getProfile(String userId) async {
-    return SupabaseLogger.execute(
-      operationName: 'Profile.getProfile',
-      requestData: {'userId': userId},
-      operation: () async {
-        final response = await _client
-            .from('profiles')
-            .select()
-            .eq('id', userId)
-            .maybeSingle();
+    final response = await _client
+        .from(ApiEndpoints.tableProfiles)
+        .select()
+        .eq('id', userId)
+        .maybeSingle();
 
-        if (response == null) return null;
-        return ProfileModel.fromJson(response);
-      },
-    );
+    if (response == null) return null;
+    return ProfileModel.fromJson(response);
   }
 
   @override
   Future<void> updateProfile(ProfileModel profile) async {
-    return SupabaseLogger.execute(
-      operationName: 'Profile.updateProfile',
-      requestData: profile.toJson(),
-      operation: () => _client.from('profiles').upsert(profile.toJson()),
-    );
+    await _client.from(ApiEndpoints.tableProfiles).upsert(profile.toJson());
   }
 
   @override
@@ -52,25 +42,18 @@ class SupabaseProfileDataSourceImpl implements ProfileRemoteDataSource {
   }) async {
     final fileName = '$userId/profile.jpg';
 
-    return SupabaseLogger.execute(
-      operationName: 'Profile.uploadAvatar',
-      requestData: {'userId': userId, 'fileName': fileName},
-      operation: () async {
-        // Upload image to the 'profiles' bucket
-        await _client.storage
-            .from('profiles')
-            .upload(
-              fileName,
-              imageFile,
-              fileOptions: const FileOptions(
-                cacheControl: '3600',
-                upsert: true,
-              ),
-            );
+    // Upload image to the 'profiles' bucket
+    await _client.storage
+        .from(ApiEndpoints.bucketProfiles)
+        .upload(
+          fileName,
+          imageFile,
+          fileOptions: const FileOptions(cacheControl: '3600', upsert: true),
+        );
 
-        // Get the public URL
-        return _client.storage.from('profiles').getPublicUrl(fileName);
-      },
-    );
+    // Get the public URL
+    return _client.storage
+        .from(ApiEndpoints.bucketProfiles)
+        .getPublicUrl(fileName);
   }
 }

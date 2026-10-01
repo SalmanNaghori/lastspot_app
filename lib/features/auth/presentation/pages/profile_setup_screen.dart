@@ -6,8 +6,10 @@ import '../../../../core/utils/image_cropper_helper.dart';
 import '../../../../core/di/service_locator.dart';
 import '../../domain/entities/user_profile.dart';
 import '../bloc/profile_cubit.dart';
-import '../widgets/city_picker_bottom_sheet.dart';
+import 'package:lastspot_app/core/widgets/selection_bottom_sheet.dart';
 import '../../../cities/domain/entities/city_entity.dart';
+import '../../../cities/presentation/bloc/city_cubit.dart';
+import '../../../cities/presentation/bloc/city_state.dart';
 
 class ProfileSetupScreen extends StatefulWidget {
   const ProfileSetupScreen({super.key});
@@ -58,7 +60,41 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
   }
 
   void _onCityTap() async {
-    final city = await CityPickerBottomSheet.show(context, selectedCity: _selectedCity);
+    final cityCubit = sl<CityCubit>();
+    if (cityCubit.state is! CityLoaded) {
+      await cityCubit.fetchCities();
+    }
+
+    if (!mounted) return;
+
+    final state = cityCubit.state;
+    List<CityEntity> cities = [];
+    bool hasError = false;
+    bool isLoading = false;
+
+    if (state is CityLoaded) {
+      cities = state.cities;
+    } else if (state is CityError) {
+      hasError = true;
+    } else {
+      isLoading = true;
+    }
+
+    final city = await SelectionBottomSheet.show<CityEntity>(
+      context,
+      title: context.loc.selectCity,
+      searchHint: 'Search city...',
+      items: cities,
+      itemText: (city) => city.name,
+      onSearch: (city, query) => city.name.toLowerCase().contains(query),
+      selectedItem: _selectedCity,
+      isLoading: isLoading,
+      hasError: hasError,
+      onRetry: () => cityCubit.fetchCities(),
+      leadingIcon: (city) =>
+          Icon(Icons.location_on, color: context.textSecondary),
+    );
+
     if (city != null) {
       setState(() {
         _selectedCity = city;
@@ -72,11 +108,11 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
         setState(() {}); // Trigger rebuild to show error
         return;
       }
-      
+
       final currentState = context.read<ProfileCubit>().state;
       String? existingAvatarUrl;
       String? existingEmail;
-      
+
       if (currentState is ProfileLoaded) {
         existingAvatarUrl = currentState.profile.avatarUrl;
         existingEmail = currentState.profile.email;
@@ -233,10 +269,13 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                       // City Picker
                       AppTextField(
                         labelText: context.loc.cityLabel,
-                        hintText: _selectedCity?.name ?? context.loc.selectCityHint,
+                        hintText:
+                            _selectedCity?.name ?? context.loc.selectCityHint,
                         readOnly: true,
                         onTap: _onCityTap,
-                        errorText: _selectedCity == null && (_formKey.currentState?.validate() == false)
+                        errorText:
+                            _selectedCity == null &&
+                                (_formKey.currentState?.validate() == false)
                             ? context.loc.cityRequiredError
                             : null,
                       ),

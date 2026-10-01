@@ -17,6 +17,8 @@ import 'features/auth/domain/usecases/resend_otp_usecase.dart';
 import 'features/auth/domain/usecases/check_auth_status_usecase.dart';
 import 'features/auth/domain/usecases/get_profile_usecase.dart';
 import 'features/auth/domain/usecases/register_device_usecase.dart';
+import 'features/cities/presentation/bloc/city_cubit.dart';
+import 'features/categories/presentation/bloc/category_bloc.dart';
 
 class LastSpotApp extends StatelessWidget {
   const LastSpotApp({super.key});
@@ -26,7 +28,10 @@ class LastSpotApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => StartupBloc(supabaseClient: sl<SupabaseClient>(), prefs: sl<SharedPrefsUtil>()),
+          create: (context) => StartupBloc(
+            supabaseClient: sl<SupabaseClient>(),
+            prefs: sl<SharedPrefsUtil>(),
+          ),
         ),
         BlocProvider(
           create: (context) => AuthBloc(
@@ -42,12 +47,15 @@ class LastSpotApp extends StatelessWidget {
           ),
         ),
         BlocProvider(create: (context) => sl<SettingsCubit>()),
+        BlocProvider(create: (context) => sl<CityCubit>()),
+        BlocProvider(create: (context) => sl<CategoryBloc>()),
       ],
       child: BlocBuilder<SettingsCubit, SettingsState>(
         builder: (context, settingsState) {
           return MaterialApp.router(
             title: AppString.appName,
-            onGenerateTitle: (context) => AppLocalizations.of(context)?.appName ?? AppString.appName,
+            onGenerateTitle: (context) =>
+                AppLocalizations.of(context)?.appName ?? AppString.appName,
             debugShowCheckedModeBanner: false,
             localizationsDelegates: AppLocalizations.localizationsDelegates,
             supportedLocales: AppLocalizations.supportedLocales,
@@ -66,7 +74,9 @@ class LastSpotApp extends StatelessWidget {
                   listener: (context, state) {
                     if (state is Unauthenticated) {
                       appRouter.go(AppRoutes.login);
-                    } else if (state is AuthSuspended || state is AuthBanned || state is AuthDeleted) {
+                    } else if (state is AuthSuspended ||
+                        state is AuthBanned ||
+                        state is AuthDeleted) {
                       appRouter.go(AppRoutes.accountStatus);
                     }
                   },

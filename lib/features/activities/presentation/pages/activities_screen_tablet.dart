@@ -1,81 +1,188 @@
 import 'package:lastspot_app/core/base_import.dart';
-import '../bloc/activities_bloc.dart';
-import '../bloc/activities_state.dart';
-import '../../../spot/presentation/widgets/home_spot_card.dart';
 
-class ActivitiesScreenTablet extends StatelessWidget {
+import '../widgets/activities_tab_bar.dart';
+import '../widgets/compact_activity_card.dart';
+import '../widgets/tab_preview_row.dart';
+import 'package:lastspot_app/core/widgets/custom_app_bar.dart';
+
+class ActivitiesScreenTablet extends StatefulWidget {
   const ActivitiesScreenTablet({super.key});
+
+  @override
+  State<ActivitiesScreenTablet> createState() => _ActivitiesScreenTabletState();
+}
+
+class _ActivitiesScreenTabletState extends State<ActivitiesScreenTablet> {
+  int _selectedTab = 0;
 
   @override
   Widget build(BuildContext context) {
     final loc = context.loc;
-    final theme = Theme.of(context);
 
     return Scaffold(
       backgroundColor: context.backgroundColor,
-      appBar: AppBar(
-        title: Text(loc.navActivities),
-        backgroundColor: context.backgroundColor,
-        systemOverlayStyle: AppTheme.systemUiOverlayStyle(context),
+      appBar: CustomAppBar.dashboard(
+        context: context,
+        title: loc.navActivities,
       ),
-      body: Center(
-        child: Container(
-          constraints: const BoxConstraints(maxWidth: 850),
-          margin: const EdgeInsets.all(Dimensions.r24),
-          padding: const EdgeInsets.all(Dimensions.r32),
-          decoration: BoxDecoration(
-            color: theme.colorScheme.surface,
-            borderRadius: BorderRadius.circular(Dimensions.r20),
-            border: Border.all(color: AppColor.helpCardBorderColor, width: 0.5),
-            boxShadow: [
-              BoxShadow(
-                color: AppColor.blackColor.withValues(alpha: 0.04),
-                blurRadius: Dimensions.r20,
-                offset: const Offset(0, 8),
+      body: SafeArea(
+        top: false,
+        child: Center(
+          child: Container(
+            constraints: const BoxConstraints(maxWidth: 850),
+            margin: const EdgeInsets.all(Dimensions.r24),
+            decoration: BoxDecoration(
+              color: context.colorScheme.surface,
+              borderRadius: BorderRadius.circular(Dimensions.r20),
+              border: Border.all(
+                color: AppColor.helpCardBorderColor,
+                width: 0.5,
               ),
-            ],
-          ),
-          child: BlocBuilder<ActivitiesBloc, ActivitiesState>(
-            builder: (context, state) {
-              if (state is ActivitiesLoading) {
-                return const Center(child: CircularProgressIndicator());
-              } else if (state is ActivitiesLoaded) {
-                if (state.activities.isEmpty) {
-                  return EmptyState(
-                    message: loc.activitiesEmptyMessage,
-                    actionLabel: loc.exploreActivitiesAction,
-                    onActionPressed: () {
-                      context.go(AppRoutes.explore);
-                    },
-                  );
-                }
-                return GridView.builder(
-                  shrinkWrap: true,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    crossAxisSpacing: Dimensions.r16.dynamicW,
-                    mainAxisSpacing: Dimensions.r16.dynamicH,
-                    childAspectRatio: 0.85,
+              boxShadow: [
+                BoxShadow(
+                  color: AppColor.blackColor.withValues(alpha: 0.04),
+                  blurRadius: Dimensions.r20,
+                  offset: const Offset(0, 8),
+                ),
+              ],
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(Dimensions.r20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: Dimensions.r32.dynamicW,
+                      vertical: Dimensions.r24.dynamicH,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ActivitiesTabBar(
+                          selectedIndex: _selectedTab,
+                          onTabChanged: (index) {
+                            setState(() {
+                              _selectedTab = index;
+                            });
+                          },
+                          tab1Label: loc.tabMyActivitiesCount('4'),
+                          tab2Label: loc.tabJoinedCount('2'),
+                          tab3Label: loc.tabRequestsCount('3'),
+                        ),
+                        SizedBox(height: Dimensions.r16.dynamicH),
+                        Text(
+                          loc.manageActivitiesDesc,
+                          style: context.bodySmall?.copyWith(
+                            color: context.textSecondary,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                  itemCount: state.activities.length,
-                  itemBuilder: (context, index) {
-                    return HomeSpotCard(
-                      spot: state.activities[index],
-                      heroTagPrefix: 'activities',
-                      onTap: () {
-                        context.safePush(AppRoutes.spotDetailsPath(state.activities[index].id));
-                      },
-                    );
-                  },
-                );
-              } else if (state is ActivitiesError) {
-                return Center(child: Text(state.message, style: TextStyle(color: context.errorColor)));
-              }
-              return const SizedBox();
-            },
+                  Expanded(
+                    child: CustomScrollView(
+                      slivers: [
+                        SliverPadding(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: Dimensions.r32.dynamicW,
+                          ),
+                          sliver: SliverList(
+                            delegate: SliverChildBuilderDelegate(
+                              (context, index) {
+                                if (_selectedTab == 0) {
+                                  return _buildMyActivities()[index];
+                                } else if (_selectedTab == 1) {
+                                  return Center(
+                                    child: Text('Joined content here'),
+                                  );
+                                } else {
+                                  return Center(
+                                    child: Text('Requests content here'),
+                                  );
+                                }
+                              },
+                              childCount: _selectedTab == 0
+                                  ? _buildMyActivities().length
+                                  : 1,
+                            ),
+                          ),
+                        ),
+                        SliverToBoxAdapter(
+                          child: Padding(
+                            padding: EdgeInsets.all(Dimensions.r32.dynamicW),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                SizedBox(height: Dimensions.r24.dynamicH),
+                                Text(
+                                  loc.tabPreviewData,
+                                  style: context.titleSmall?.copyWith(
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                                SizedBox(height: Dimensions.r12.dynamicH),
+                                TabPreviewRow(text: loc.previewJoined),
+                                SizedBox(height: Dimensions.r8.dynamicH),
+                                TabPreviewRow(text: loc.previewRequests),
+                                SizedBox(
+                                  height: Dimensions.r32.dynamicH,
+                                ), // extra padding for bottom navigation
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ),
         ),
       ),
     );
+  }
+
+  List<Widget> _buildMyActivities() {
+    final loc = context.loc;
+    return [
+      CompactActivityCard(
+        title: loc.mockGoldenGateTitle,
+        date: loc.mockGoldenGateDate,
+        location: loc.mockGoldenGateLoc,
+        stats: loc.mockGoldenGateStats,
+        status: loc.statusHosted,
+        onTap: () {},
+      ),
+      SizedBox(height: Dimensions.r16.dynamicH),
+      CompactActivityCard(
+        title: loc.mockSunsetVolleyballTitle,
+        date: loc.mockSunsetVolleyballDate,
+        location: loc.mockSunsetVolleyballLoc,
+        stats: loc.mockGoldenGateStats,
+        status: loc.statusHosted,
+        onTap: () {},
+      ),
+      SizedBox(height: Dimensions.r16.dynamicH),
+      CompactActivityCard(
+        title: loc.mockRooftopCookingTitle,
+        date: loc.mockRooftopCookingDate,
+        location: loc.mockRooftopCookingLoc,
+        stats: loc.mockRooftopCookingStats,
+        status: loc.statusFull,
+        isFull: true,
+        onTap: () {},
+      ),
+      SizedBox(height: Dimensions.r16.dynamicH),
+      CompactActivityCard(
+        title: loc.mockSalsaTitle,
+        date: loc.mockSalsaDate,
+        location: loc.mockSalsaLoc,
+        stats: loc.mockSalsaStats,
+        status: loc.statusHosted,
+        onTap: () {},
+      ),
+    ];
   }
 }

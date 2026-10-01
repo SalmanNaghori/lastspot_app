@@ -1,11 +1,14 @@
 import 'dart:io';
+import 'package:lastspot_app/core/network/base/base_repository.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+
+import '../../../../core/network/api_endpoints.dart';
 import '../../domain/entities/request_entity.dart';
 import '../../domain/entities/join_request_entity.dart';
 import '../../domain/repositories/spot_repository.dart';
 import '../datasources/spot_remote_datasource.dart';
 
-class SpotRepositoryImpl implements SpotRepository {
+class SpotRepositoryImpl extends BaseRepository implements SpotRepository {
   final SpotRemoteDataSource _remoteDataSource;
   final SupabaseClient _supabaseClient;
 
@@ -16,8 +19,12 @@ class SpotRepositoryImpl implements SpotRepository {
        _supabaseClient = supabaseClient;
 
   @override
-  Future<List<RequestEntity>> getFeedPosts({String? categoryId}) async {
-    return _remoteDataSource.getFeedPosts(categoryId: categoryId);
+  Future<List<RequestEntity>> getFeedPosts({String? categoryId, String? cityId}) {
+    return executeApiRaw(
+      operationName: ApiEndpoints.spotGetFeed,
+      requestData: {'categoryId': categoryId, 'cityId': cityId},
+      operation: () => _remoteDataSource.getFeedPosts(categoryId: categoryId, cityId: cityId),
+    );
   }
 
   @override
@@ -27,24 +34,42 @@ class SpotRepositoryImpl implements SpotRepository {
     String? searchQuery,
     int limit = 20,
     int offset = 0,
-  }) async {
-    return _remoteDataSource.getExplorePosts(
-      cityId: cityId,
-      categoryId: categoryId,
-      searchQuery: searchQuery,
-      limit: limit,
-      offset: offset,
+  }) {
+    return executeApiRaw(
+      operationName: ApiEndpoints.spotGetExplore,
+      requestData: {
+        'cityId': cityId,
+        'categoryId': categoryId,
+        'searchQuery': searchQuery,
+        'limit': limit,
+        'offset': offset,
+      },
+      operation: () => _remoteDataSource.getExplorePosts(
+        cityId: cityId,
+        categoryId: categoryId,
+        searchQuery: searchQuery,
+        limit: limit,
+        offset: offset,
+      ),
     );
   }
 
   @override
-  Future<RequestEntity> getSpotDetails(String spotId) async {
-    return _remoteDataSource.getSpotDetails(spotId);
+  Future<RequestEntity> getSpotDetails(String spotId) {
+    return executeApiRaw(
+      operationName: ApiEndpoints.spotGetDetails,
+      requestData: {'spotId': spotId},
+      operation: () => _remoteDataSource.getSpotDetails(spotId),
+    );
   }
 
   @override
-  Future<List<JoinRequestEntity>> getConfirmedPlayers(String spotId) async {
-    return _remoteDataSource.getConfirmedPlayers(spotId);
+  Future<List<JoinRequestEntity>> getConfirmedPlayers(String spotId) {
+    return executeApiRaw(
+      operationName: ApiEndpoints.spotGetConfirmedPlayers,
+      requestData: {'spotId': spotId},
+      operation: () => _remoteDataSource.getConfirmedPlayers(spotId),
+    );
   }
 
   @override
@@ -63,7 +88,7 @@ class SpotRepositoryImpl implements SpotRepository {
     required int maxParticipants,
     required double pricePerPerson,
     required List<File> images,
-  }) async {
+  }) {
     final userId = _supabaseClient.auth.currentUser!.id;
 
     final requestData = {
@@ -82,25 +107,41 @@ class SpotRepositoryImpl implements SpotRepository {
       'city_id': cityId,
     };
 
-    await _remoteDataSource.createRequest(requestData, images);
+    return executeApiRaw(
+      operationName: ApiEndpoints.spotCreate,
+      requestData: {...requestData, 'image_count': images.length},
+      operation: () => _remoteDataSource.createRequest(requestData, images),
+    );
   }
 
   @override
-  Future<void> requestToJoin(String spotId) async {
-    return _remoteDataSource.requestToJoin(spotId);
+  Future<void> requestToJoin(String spotId) {
+    return executeApiRaw(
+      operationName: ApiEndpoints.spotRequestJoin,
+      requestData: {'spotId': spotId},
+      operation: () => _remoteDataSource.requestToJoin(spotId),
+    );
   }
 
   @override
   Future<void> updateJoinRequestStatus({
     required String joinRequestId,
     required String status,
-  }) async {
-    return _remoteDataSource.updateRequestStatus(joinRequestId, status);
+  }) {
+    return executeApiRaw(
+      operationName: ApiEndpoints.spotUpdateJoinRequest,
+      requestData: {'joinRequestId': joinRequestId, 'status': status},
+      operation: () =>
+          _remoteDataSource.updateRequestStatus(joinRequestId, status),
+    );
   }
 
   @override
-  Future<List<RequestEntity>> getUserActivities() async {
-    return _remoteDataSource.getUserActivities();
+  Future<List<RequestEntity>> getUserActivities() {
+    return executeApiRaw(
+      operationName: ApiEndpoints.spotGetUserActivities,
+      operation: () => _remoteDataSource.getUserActivities(),
+    );
   }
 
   @override
@@ -122,7 +163,8 @@ class SpotRepositoryImpl implements SpotRepository {
     if (title != null) updates['title'] = title;
     if (description != null) updates['description'] = description;
     if (locationName != null) updates['location_name'] = locationName;
-    if (eventDateTime != null) updates['event_date_time'] = eventDateTime.toIso8601String();
+    if (eventDateTime != null)
+      updates['event_date_time'] = eventDateTime.toIso8601String();
     if (maxParticipants != null) updates['max_participants'] = maxParticipants;
     if (pricePerPerson != null) updates['price_per_person'] = pricePerPerson;
 
@@ -130,6 +172,19 @@ class SpotRepositoryImpl implements SpotRepository {
     // For now, we only update the simple text fields as requested by the basic edit flow.
     // A robust image update requires modifying updateRequest in remoteDataSource to handle the newImages list.
 
-    return _remoteDataSource.updateRequest(spotId, updates);
+    return executeApiRaw(
+      operationName: ApiEndpoints.spotUpdate,
+      requestData: {'spotId': spotId, ...updates},
+      operation: () => _remoteDataSource.updateRequest(spotId, updates),
+    );
+  }
+
+  @override
+  Future<JoinRequestEntity?> getUserJoinRequest(String spotId) {
+    return executeApiRaw(
+      operationName: 'spotGetUserJoinRequest',
+      requestData: {'spotId': spotId},
+      operation: () => _remoteDataSource.getUserJoinRequest(spotId),
+    );
   }
 }

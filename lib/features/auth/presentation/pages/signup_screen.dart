@@ -15,17 +15,19 @@ class _SignupScreenState extends State<SignupScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
-  
+
   bool _termsAccepted = false;
   bool _obscurePassword = true;
   bool _obscureConfirmPassword = true;
-  
+
   final _formKey = GlobalKey<FormState>();
 
   void _onSignup() {
     if (_formKey.currentState?.validate() ?? false) {
       if (!_termsAccepted) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(context.loc.acceptTermsError)));
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(context.loc.acceptTermsError)));
         return;
       }
       context.read<AuthBloc>().add(
@@ -46,13 +48,20 @@ class _SignupScreenState extends State<SignupScreen> {
           context.go(AppRoutes.home);
         } else if (state is AuthProfileIncomplete) {
           context.go(AppRoutes.profileSetup);
-        } else if (state is AuthSuspended || state is AuthBanned || state is AuthDeleted) {
+        } else if (state is AuthSuspended ||
+            state is AuthBanned ||
+            state is AuthDeleted) {
           context.go(AppRoutes.accountStatus);
         } else if (state is AuthError) {
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.message)));
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(state.message)));
         }
       },
-      child: ResponsiveLayout(mobile: _buildContent(context), tablet: _buildContent(context)),
+      child: ResponsiveLayout(
+        mobile: _buildContent(context),
+        tablet: _buildContent(context),
+      ),
     );
   }
 
@@ -76,12 +85,19 @@ class _SignupScreenState extends State<SignupScreen> {
                 children: [
                   Text(
                     context.loc.createAccount,
-                    style: TextStyle(fontSize: Dimensions.r32, fontWeight: FontWeight.bold, color: context.textPrimary),
+                    style: TextStyle(
+                      fontSize: Dimensions.r32,
+                      fontWeight: FontWeight.bold,
+                      color: context.textPrimary,
+                    ),
                   ),
                   const SizedBox(height: Dimensions.r8),
                   Text(
                     context.loc.joinCommunitySubtitle,
-                    style: TextStyle(fontSize: Dimensions.r16, color: context.textSecondary),
+                    style: TextStyle(
+                      fontSize: Dimensions.r16,
+                      color: context.textSecondary,
+                    ),
                   ),
                   const SizedBox(height: Dimensions.r32),
                   // Full Name
@@ -92,7 +108,8 @@ class _SignupScreenState extends State<SignupScreen> {
                     textCapitalization: TextCapitalization.words,
                     textInputAction: TextInputAction.next,
                     validator: (value) {
-                      if (value == null || value.trim().isEmpty) return context.loc.fullNameRequired;
+                      if (value == null || value.trim().isEmpty)
+                        return context.loc.fullNameRequired;
                       return null;
                     },
                   ),
@@ -105,7 +122,8 @@ class _SignupScreenState extends State<SignupScreen> {
                     keyboardType: TextInputType.emailAddress,
                     textInputAction: TextInputAction.next,
                     validator: (value) {
-                      if (value == null || value.trim().isEmpty) return context.loc.emailRequired;
+                      if (value == null || value.trim().isEmpty)
+                        return context.loc.emailRequired;
                       if (!RegExp(
                         r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+",
                       ).hasMatch(value)) {
@@ -129,8 +147,10 @@ class _SignupScreenState extends State<SignupScreen> {
                     },
                     textInputAction: TextInputAction.next,
                     validator: (value) {
-                      if (value == null || value.isEmpty) return context.loc.passwordRequired;
-                      if (value.length < 6) return context.loc.passwordLengthError;
+                      if (value == null || value.isEmpty)
+                        return context.loc.passwordRequired;
+                      if (value.length < 6)
+                        return context.loc.passwordLengthError;
                       return null;
                     },
                   ),
@@ -149,7 +169,8 @@ class _SignupScreenState extends State<SignupScreen> {
                     },
                     textInputAction: TextInputAction.done,
                     validator: (value) {
-                      if (value != _passwordController.text) return context.loc.passwordsDoNotMatch;
+                      if (value != _passwordController.text)
+                        return context.loc.passwordsDoNotMatch;
                       return null;
                     },
                   ),
@@ -173,17 +194,30 @@ class _SignupScreenState extends State<SignupScreen> {
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppColor.primaryColor,
                           foregroundColor: AppColor.whiteColor,
-                          padding: const EdgeInsets.symmetric(vertical: Dimensions.r16),
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(Dimensions.r16)),
+                          padding: const EdgeInsets.symmetric(
+                            vertical: Dimensions.r16,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(Dimensions.r16),
+                          ),
                         ),
                         onPressed: state is AuthLoading ? null : _onSignup,
                         child: state is AuthLoading
                             ? SizedBox(
                                 height: 20,
                                 width: 20,
-                                child: CircularProgressIndicator(strokeWidth: 2, color: context.textPrimary),
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                  color: context.textPrimary,
+                                ),
                               )
-                            : Text(context.loc.signup, style: TextStyle(fontSize: Dimensions.r16, fontWeight: FontWeight.bold)),
+                            : Text(
+                                context.loc.signup,
+                                style: TextStyle(
+                                  fontSize: Dimensions.r16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                       );
                     },
                   ),
@@ -192,7 +226,10 @@ class _SignupScreenState extends State<SignupScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(context.loc.alreadyHaveAccount, style: TextStyle(color: context.textSecondary)),
+                      Text(
+                        context.loc.alreadyHaveAccount,
+                        style: TextStyle(color: context.textSecondary),
+                      ),
                       GestureDetector(
                         onTap: () => context.go(AppRoutes.login),
                         child: Text(

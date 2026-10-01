@@ -4,7 +4,8 @@ import '../base_import.dart';
 
 class DateFormats {
   static const String dateFormatServer = 'yyyy-MM-dd';
-  static const String dateFormatServerDisplay = 'MMM dd, yyyy'; // e.g. "Jun 01, 2026"
+  static const String dateFormatServerDisplay =
+      'MMM dd, yyyy'; // e.g. "Jun 01, 2026"
   static const String dateFormatServer1 = 'yyyy-MM-ddTHH:mm:ss.SSSSSSZ';
   static const String dateFormatToday = 'yyyy-MM-dd HH:mm:ss';
   static const String dateFormatYYYYMMSSHHMMSS = 'yyyy-MM-dd HH:mm:ss';
@@ -57,7 +58,11 @@ String formatRelativeDate(BuildContext context, DateTime date) {
   final now = DateTime.now();
   final today = DateTime(now.year, now.month, now.day);
   final yesterday = today.subtract(const Duration(days: 1));
-  final dateToCompare = DateTime(localDate.year, localDate.month, localDate.day);
+  final dateToCompare = DateTime(
+    localDate.year,
+    localDate.month,
+    localDate.day,
+  );
 
   final timeFormat = DateFormats.dateFormatHHMMA; // hh:mm a
   final loc = context.loc;

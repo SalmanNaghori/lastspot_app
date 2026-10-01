@@ -8,8 +8,8 @@ class ExploreBloc extends Bloc<ExploreEvent, ExploreState> {
   static const int _limit = 20;
 
   ExploreBloc({required SpotRepository spotRepository})
-      : _spotRepository = spotRepository,
-        super(ExploreInitial()) {
+    : _spotRepository = spotRepository,
+      super(ExploreInitial()) {
     on<LoadExplorePosts>(_onLoadExplorePosts);
     on<SearchQueryChanged>(_onSearchQueryChanged);
     on<CategorySelected>(_onCategorySelected);
@@ -27,12 +27,12 @@ class ExploreBloc extends Bloc<ExploreEvent, ExploreState> {
     String? currentSearch;
     String? currentCategory;
     int offset = 0;
-    
+
     if (currentState is ExploreLoaded) {
       currentCityId = currentState.cityId;
       currentSearch = currentState.searchQuery;
       currentCategory = currentState.categoryId;
-      
+
       if (event.refresh) {
         offset = 0;
       } else {
@@ -47,12 +47,14 @@ class ExploreBloc extends Bloc<ExploreEvent, ExploreState> {
 
     if (currentCityId == null && currentState is ExploreLoaded) {
       // Need city to fetch. Return if no city is available.
-      return; 
+      return;
     }
 
     try {
       final posts = await _spotRepository.getExplorePosts(
-        cityId: currentCityId ?? '', // Will fail safely or load empty if cityId is empty initially
+        cityId:
+            currentCityId ??
+            '', // Will fail safely or load empty if cityId is empty initially
         categoryId: currentCategory,
         searchQuery: currentSearch,
         limit: _limit,
@@ -62,20 +64,24 @@ class ExploreBloc extends Bloc<ExploreEvent, ExploreState> {
       final hasReachedMax = posts.length < _limit;
 
       if (currentState is ExploreLoaded && !event.refresh) {
-        emit(currentState.copyWith(
-          posts: List.of(currentState.posts)..addAll(posts),
-          hasReachedMax: hasReachedMax,
-          isPaginating: false,
-        ));
+        emit(
+          currentState.copyWith(
+            posts: List.of(currentState.posts)..addAll(posts),
+            hasReachedMax: hasReachedMax,
+            isPaginating: false,
+          ),
+        );
       } else {
-        emit(ExploreLoaded(
-          posts: posts,
-          searchQuery: currentSearch,
-          categoryId: currentCategory,
-          cityId: currentCityId,
-          hasReachedMax: hasReachedMax,
-          isPaginating: false,
-        ));
+        emit(
+          ExploreLoaded(
+            posts: posts,
+            searchQuery: currentSearch,
+            categoryId: currentCategory,
+            cityId: currentCityId,
+            hasReachedMax: hasReachedMax,
+            isPaginating: false,
+          ),
+        );
       }
     } catch (e) {
       if (currentState is ExploreLoaded) {
@@ -102,10 +108,7 @@ class ExploreBloc extends Bloc<ExploreEvent, ExploreState> {
     }
   }
 
-  void _onCategorySelected(
-    CategorySelected event,
-    Emitter<ExploreState> emit,
-  ) {
+  void _onCategorySelected(CategorySelected event, Emitter<ExploreState> emit) {
     if (state is ExploreLoaded) {
       final currentState = state as ExploreLoaded;
       if (event.categoryId == null || event.categoryId!.isEmpty) {
@@ -117,10 +120,7 @@ class ExploreBloc extends Bloc<ExploreEvent, ExploreState> {
     }
   }
 
-  void _onCitySelected(
-    CitySelected event,
-    Emitter<ExploreState> emit,
-  ) {
+  void _onCitySelected(CitySelected event, Emitter<ExploreState> emit) {
     if (state is ExploreLoaded) {
       emit((state as ExploreLoaded).copyWith(cityId: event.cityId));
     } else {
@@ -129,23 +129,19 @@ class ExploreBloc extends Bloc<ExploreEvent, ExploreState> {
     add(const LoadExplorePosts(refresh: true));
   }
 
-  void _onApplyFilters(
-    ApplyFilters event,
-    Emitter<ExploreState> emit,
-  ) {
+  void _onApplyFilters(ApplyFilters event, Emitter<ExploreState> emit) {
     if (state is ExploreLoaded) {
-      emit((state as ExploreLoaded).copyWith(
-        dateFilter: event.dateFilter,
-        priceFilter: event.priceFilter,
-        participantsFilter: event.participantsFilter,
-      ));
+      emit(
+        (state as ExploreLoaded).copyWith(
+          dateFilter: event.dateFilter,
+          priceFilter: event.priceFilter,
+          participantsFilter: event.participantsFilter,
+        ),
+      );
     }
   }
 
-  void _onClearFilters(
-    ClearFilters event,
-    Emitter<ExploreState> emit,
-  ) {
+  void _onClearFilters(ClearFilters event, Emitter<ExploreState> emit) {
     if (state is ExploreLoaded) {
       emit((state as ExploreLoaded).clearFilters());
     }

@@ -26,8 +26,9 @@ class AppRoutes {
   // Spot Feature Routes
   static const String spotDetails = '/spot/:id';
   static String spotDetailsPath(String id) => '/spot/$id';
-  
+
   static const String editSpot = '/edit-spot';
+  static const String previewSpot = '/preview-spot';
 
   static const String manageRequests = '/manage-requests/:id';
   static String manageRequestsPath(String id) => '/manage-requests/$id';

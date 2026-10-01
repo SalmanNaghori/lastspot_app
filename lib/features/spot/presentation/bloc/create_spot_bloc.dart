@@ -33,6 +33,7 @@ class SubmitSpotEvent extends CreateSpotEvent {
     required this.images,
   });
 }
+
 class UpdateSpotEvent extends CreateSpotEvent {
   final String spotId;
   final String? categoryId;
@@ -56,6 +57,7 @@ class UpdateSpotEvent extends CreateSpotEvent {
     this.pricePerPerson,
   });
 }
+
 abstract class CreateSpotState {}
 
 class CreateSpotInitial extends CreateSpotState {}
@@ -80,8 +82,6 @@ class CreateSpotError extends CreateSpotState {
   final String message;
   CreateSpotError({required this.message});
 }
-
-
 
 class CreateSpotBloc extends Bloc<CreateSpotEvent, CreateSpotState> {
   final CreateSpotUseCase _createSpotUseCase;

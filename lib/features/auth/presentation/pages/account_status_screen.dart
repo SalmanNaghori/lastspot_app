@@ -91,12 +91,12 @@ class AccountStatusScreen extends StatelessWidget {
                 onPressed: () {
                   // E.g., launch url for support or just show a snackbar
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Support contact feature coming soon.'),
+                    SnackBar(
+                      content: Text(context.loc.supportContactComingSoon),
                     ),
                   );
                 },
-                child: const Text('Contact Support'),
+                child: Text(context.loc.contactSupport),
               ),
               const SizedBox(height: Dimensions.r16),
               TextButton(
@@ -104,8 +104,8 @@ class AccountStatusScreen extends StatelessWidget {
                   context.read<AuthBloc>().add(AuthLogoutRequested());
                 },
                 child: Text(
-                  'Log Out',
-                  style: TextStyle(color: context.textSecondary),
+                  context.loc.logout,
+                  style: const TextStyle(color: Colors.redAccent),
                 ),
               ),
             ],

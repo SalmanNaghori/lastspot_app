@@ -34,7 +34,10 @@ extension StringExtension on String {
     String cleaned = replaceAllMapped(RegExp(r'[_\-]'), (match) => ' ');
 
     // Insert space before camelCase/PascalCase transitions
-    cleaned = cleaned.replaceAllMapped(RegExp(r'(?<=[a-z])(?=[A-Z])'), (match) => ' ');
+    cleaned = cleaned.replaceAllMapped(
+      RegExp(r'(?<=[a-z])(?=[A-Z])'),
+      (match) => ' ',
+    );
     // Capitalize each word
     List<String> list = cleaned.split(RegExp(r'\s+'));
     list.asMap().forEach((index, element) {

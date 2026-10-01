@@ -6,7 +6,7 @@ class GetSpotsUseCase {
 
   GetSpotsUseCase(this._repository);
 
-  Future<List<RequestEntity>> call({String? category}) async {
-    return _repository.getFeedPosts(categoryId: category);
+  Future<List<RequestEntity>> call({String? category, String? cityId}) async {
+    return _repository.getFeedPosts(categoryId: category, cityId: cityId);
   }
 }

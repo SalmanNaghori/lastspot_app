@@ -25,38 +25,38 @@ class AuthenticatedAppShell extends StatelessWidget {
       child: Scaffold(
         backgroundColor: context.backgroundColor,
         body: navigationShell,
-      bottomNavigationBar: NavigationBar(
-        selectedIndex: navigationShell.currentIndex,
-        onDestinationSelected: _goBranch,
-        destinations: [
-          NavigationDestination(
-            icon: const Icon(Icons.home_outlined),
-            selectedIcon: const Icon(Icons.home),
-            label: loc.navHome,
-          ),
-          NavigationDestination(
-            icon: const Icon(Icons.search_outlined),
-            selectedIcon: const Icon(Icons.search),
-            label: loc.navExplore,
-          ),
-          NavigationDestination(
-            icon: const Icon(Icons.add_circle_outline),
-            selectedIcon: const Icon(Icons.add_circle),
-            label: loc.navCreate,
-          ),
-          NavigationDestination(
-            icon: const Icon(Icons.calendar_today_outlined),
-            selectedIcon: const Icon(Icons.calendar_today),
-            label: loc.navActivities,
-          ),
-          NavigationDestination(
-            icon: const Icon(Icons.person_outline),
-            selectedIcon: const Icon(Icons.person),
-            label: loc.navProfile,
-          ),
-        ],
+        bottomNavigationBar: NavigationBar(
+          selectedIndex: navigationShell.currentIndex,
+          onDestinationSelected: _goBranch,
+          destinations: [
+            NavigationDestination(
+              icon: const Icon(Icons.home_outlined),
+              selectedIcon: const Icon(Icons.home),
+              label: loc.navHome,
+            ),
+            NavigationDestination(
+              icon: const Icon(Icons.search_outlined),
+              selectedIcon: const Icon(Icons.search),
+              label: loc.navExplore,
+            ),
+            NavigationDestination(
+              icon: const Icon(Icons.add_circle_outline),
+              selectedIcon: const Icon(Icons.add_circle),
+              label: loc.navCreate,
+            ),
+            NavigationDestination(
+              icon: const Icon(Icons.calendar_today_outlined),
+              selectedIcon: const Icon(Icons.calendar_today),
+              label: loc.navActivities,
+            ),
+            NavigationDestination(
+              icon: const Icon(Icons.person_outline),
+              selectedIcon: const Icon(Icons.person),
+              label: loc.navProfile,
+            ),
+          ],
+        ),
       ),
-    ),
-  );
-}
+    );
+  }
 }

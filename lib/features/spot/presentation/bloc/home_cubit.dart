@@ -1,0 +1,155 @@
+import 'dart:io';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../domain/usecases/get_home_activities_usecase.dart';
+import '../../../categories/domain/usecases/get_categories_usecase.dart';
+import '../../../auth/domain/usecases/update_user_city_usecase.dart';
+import 'home_state.dart';
+import '../../../../core/utils/result.dart';
+import '../../../categories/domain/entities/category.dart';
+import '../../../cities/domain/entities/city_entity.dart';
+import '../../domain/entities/request_entity.dart';
+import '../../../cities/domain/usecases/get_active_cities_usecase.dart';
+
+class HomeCubit extends Cubit<HomeState> {
+  final GetHomeActivitiesUseCase _getHomeActivitiesUseCase;
+  final GetCategoriesUseCase _getCategoriesUseCase;
+  final UpdateUserCityUseCase _updateUserCityUseCase;
+  final GetActiveCitiesUseCase _getActiveCitiesUseCase;
+
+  HomeCubit({
+    required GetHomeActivitiesUseCase getHomeActivitiesUseCase,
+    required GetCategoriesUseCase getCategoriesUseCase,
+    required UpdateUserCityUseCase updateUserCityUseCase,
+    required GetActiveCitiesUseCase getActiveCitiesUseCase,
+  }) : _getHomeActivitiesUseCase = getHomeActivitiesUseCase,
+       _getCategoriesUseCase = getCategoriesUseCase,
+       _updateUserCityUseCase = updateUserCityUseCase,
+       _getActiveCitiesUseCase = getActiveCitiesUseCase,
+       super(HomeInitial());
+
+  bool _isNetworkException(Exception e) {
+    return e is SocketException || e.toString().contains('SocketException') || e.toString().contains('TimeoutException');
+  }
+
+  Future<void> loadHomeData({String? cityId}) async {
+    emit(HomeLoading());
+    try {
+      final categoriesFuture = _getCategoriesUseCase()
+          .then<Result<List<CategoryEntity>, Exception>>((val) => Success(val))
+          .catchError((e) => Failure<List<CategoryEntity>, Exception>(e is Exception ? e : Exception(e.toString())));
+          
+      final citiesFuture = _getActiveCitiesUseCase();
+      
+      final activitiesFuture = _getHomeActivitiesUseCase(cityId: cityId)
+          .then<Result<List<RequestEntity>, Exception>>((val) => Success(val))
+          .catchError((e) => Failure<List<RequestEntity>, Exception>(e is Exception ? e : Exception(e.toString())));
+
+      final results = await Future.wait<dynamic>([
+        categoriesFuture,
+        citiesFuture,
+        activitiesFuture,
+      ]);
+
+      final categoriesResult = results[0] as Result<List<CategoryEntity>, Exception>;
+      final citiesResult = results[1] as Result<List<CityEntity>, Exception>;
+      final activitiesResult = results[2] as Result<List<RequestEntity>, Exception>;
+
+      bool hasCategoriesError = false;
+      List<CategoryEntity> categories = [];
+      if (categoriesResult is Success<List<CategoryEntity>, Exception>) {
+        categories = categoriesResult.value;
+      } else {
+        hasCategoriesError = true;
+      }
+
+      bool hasCitiesError = false;
+      List<CityEntity> cities = [];
+      if (citiesResult is Success<List<CityEntity>, Exception>) {
+        cities = citiesResult.value;
+      } else {
+        hasCitiesError = true;
+      }
+
+      bool hasFeedError = false;
+      bool isFeedNetworkError = false;
+      List<RequestEntity> allActivities = [];
+      
+      if (activitiesResult is Success<List<RequestEntity>, Exception>) {
+        allActivities = activitiesResult.value;
+      } else if (activitiesResult is Failure<List<RequestEntity>, Exception>) {
+        hasFeedError = true;
+        if (_isNetworkException(activitiesResult.exception)) {
+          isFeedNetworkError = true;
+        }
+      }
+
+      // We always emit HomeSuccess to preserve the Home UI structure,
+      // relying on the individual error flags to show localized retry buttons.
+
+      final now = DateTime.now().toUtc();
+      final in24Hours = now.add(const Duration(hours: 24));
+
+      // 1. Only include future activities
+      final futureActivities = allActivities.where((a) => a.eventDateTime.isAfter(now)).toList();
+
+      // 2. Urgent matches
+      final urgent = futureActivities.where((a) {
+        return a.eventDateTime.isBefore(in24Hours) &&
+            (a.maxParticipants - a.currentParticipants) > 0;
+      }).toList();
+      final urgentIds = urgent.map((e) => e.id).toSet();
+
+      // 3. Nearby activities (future activities not in urgent)
+      final nearby = futureActivities.where((a) => !urgentIds.contains(a.id)).toList();
+      final nearbyIds = nearby.map((e) => e.id).toSet();
+
+      // 4. Coming up activities (future activities not in urgent and not in nearby)
+      final comingUp = futureActivities.where((a) {
+        return !urgentIds.contains(a.id) && !nearbyIds.contains(a.id);
+      }).toList()
+        ..sort((a, b) => a.eventDateTime.compareTo(b.eventDateTime));
+
+      emit(
+        HomeSuccess(
+          urgentMatches: urgent,
+          nearbyActivities: nearby,
+          comingUp: comingUp,
+          categories: categories..sort((a, b) => a.sortOrder.compareTo(b.sortOrder)),
+          cities: cities..sort((a, b) => a.displayOrder.compareTo(b.displayOrder)),
+          selectedCityId: cityId,
+          unreadNotifications: 0,
+          hasFeedError: hasFeedError,
+          isFeedNetworkError: isFeedNetworkError,
+          hasCitiesError: hasCitiesError,
+          hasCategoriesError: hasCategoriesError,
+        ),
+      );
+    } catch (e) {
+      if (_isNetworkException(e is Exception ? e : Exception(e.toString()))) {
+        emit(HomeNetworkError(message: 'No internet connection. Please try again.'));
+      } else {
+        emit(HomeServerError(message: 'Something went wrong. Please try again.'));
+      }
+    }
+  }
+
+  Future<void> updateSelectedCity(
+    String userId,
+    String cityId,
+    String cityName,
+  ) async {
+    final currentState = state;
+    if (currentState is HomeSuccess) {
+      try {
+        await _updateUserCityUseCase(
+          userId: userId,
+          cityId: cityId,
+          cityName: cityName,
+        );
+        await loadHomeData(cityId: cityId);
+      } catch (e) {
+        // Fallback or log if user update fails, but home load will retry anyway if we called it
+      }
+    }
+  }
+}

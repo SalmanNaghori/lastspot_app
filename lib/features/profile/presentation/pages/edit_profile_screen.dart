@@ -61,7 +61,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       final currentState = context.read<ProfileCubit>().state;
       String? existingAvatarUrl;
       String? existingEmail;
-      
+
       if (currentState is ProfileLoaded) {
         existingAvatarUrl = currentState.profile.avatarUrl;
         existingEmail = currentState.profile.email;

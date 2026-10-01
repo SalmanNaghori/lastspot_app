@@ -48,21 +48,27 @@ class AppTheme {
   /// Generates the appropriate [SystemUiOverlayStyle] for the given brightness.
   /// Ensures transparent status and navigation bars with high-contrast icons
   /// (dark icons on light background, light icons on dark background) on both Android & iOS.
-  static SystemUiOverlayStyle systemUiOverlayStyleForBrightness(Brightness brightness) {
+  static SystemUiOverlayStyle systemUiOverlayStyleForBrightness(
+    Brightness brightness,
+  ) {
     final isDark = brightness == Brightness.dark;
     return SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
-      statusBarIconBrightness: isDark ? Brightness.light : Brightness.dark, // Android
-      statusBarBrightness: isDark ? Brightness.dark : Brightness.light,      // iOS
+      statusBarIconBrightness: isDark
+          ? Brightness.light
+          : Brightness.dark, // Android
+      statusBarBrightness: isDark ? Brightness.dark : Brightness.light, // iOS
       systemNavigationBarColor: Colors.transparent,
-      systemNavigationBarIconBrightness: isDark ? Brightness.light : Brightness.dark,
+      systemNavigationBarIconBrightness: isDark
+          ? Brightness.light
+          : Brightness.dark,
       systemNavigationBarDividerColor: Colors.transparent,
     );
   }
 
   /// Convenience getter for [SystemUiOverlayStyle] from current [BuildContext].
   static SystemUiOverlayStyle systemUiOverlayStyle(BuildContext context) {
-    return systemUiOverlayStyleForBrightness(Theme.of(context).brightness);
+    return systemUiOverlayStyleForBrightness(context.theme.brightness);
   }
 
   // ============================================================
@@ -335,19 +341,19 @@ class CategoryColors {
 
   static const Color cricketDark = Color(0xFF064E3B);
   static const Color cricketLight = Color(0xFF10B981);
-  
+
   static const Color footballDark = Color(0xFF1E3A8A);
   static const Color footballLight = Color(0xFF3B82F6);
-  
+
   static const Color basketballDark = Color(0xFF7C2D12);
   static const Color basketballLight = Color(0xFFF97316);
-  
+
   static const Color tennisDark = Color(0xFF4C1D95);
   static const Color tennisLight = Color(0xFF8B5CF6);
-  
+
   static const Color badmintonDark = Color(0xFF713F12);
   static const Color badmintonLight = Color(0xFFF59E0B);
-  
+
   static const Color defaultDark = Color(0xFF0F172A);
   static const Color defaultLight = Color(0xFF334155);
 }

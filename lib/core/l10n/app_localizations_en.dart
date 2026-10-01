@@ -304,6 +304,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get nearbyActivities => 'Nearby Activities';
 
   @override
+  String get comingUp => 'Coming Up';
+
+  @override
   String spotsLeft(Object count) {
     return '$count SPOTS LEFT';
   }
@@ -338,10 +341,10 @@ class AppLocalizationsEn extends AppLocalizations {
       'Title, Location, and Category are required.';
 
   @override
-  String get activityGeneratedSuccess => 'Activity generated successfully!';
+  String get activityGeneratedSuccess => 'Activity Created!';
 
   @override
-  String get generateActivity => 'Generate Activity';
+  String get generateActivity => 'Create Activity';
 
   @override
   String get activityImages => 'Activity Images';
@@ -383,7 +386,34 @@ class AppLocalizationsEn extends AppLocalizations {
   String get maxParticipants => 'Max Participants';
 
   @override
-  String get pricePerPerson => 'Price per person (\$)';
+  String get pricePerPerson => 'Price per person';
+
+  @override
+  String get previewActivity => 'Preview Activity';
+
+  @override
+  String get publishActivity => 'Publish Activity';
+
+  @override
+  String get noCategoriesAvailable => 'No categories available';
+
+  @override
+  String get noCitiesFound => 'No cities found';
+
+  @override
+  String get createAnother => 'Create Another';
+
+  @override
+  String get youAreParticipant1 => 'Current participants: 1 (You)';
+
+  @override
+  String get addPhotos => 'Add Photos';
+
+  @override
+  String get gallery => 'Gallery';
+
+  @override
+  String get camera => 'Camera';
 
   @override
   String get acceptTerms => 'I accept the Terms & Conditions';
@@ -617,4 +647,196 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get deleteImageNotSupported =>
       'Deleting existing images is not supported yet.';
+
+  @override
+  String get howManyPeopleCanJoin => 'How many people can join?';
+
+  @override
+  String get youAreIncluded => 'You are included (1)';
+
+  @override
+  String get morning => 'Morning';
+
+  @override
+  String get afternoon => 'Afternoon';
+
+  @override
+  String get evening => 'Evening';
+
+  @override
+  String get night => 'Night';
+
+  @override
+  String get pleaseSelectFutureTime => 'Please select a future time';
+
+  @override
+  String get supportContactComingSoon => 'Support contact feature coming soon.';
+
+  @override
+  String get contactSupport => 'Contact Support';
+
+  @override
+  String get thisIsHowActivityAppears =>
+      'This is how your activity will appear to others.';
+
+  @override
+  String get viewOnMap => 'View on Map';
+
+  @override
+  String get noPendingRequests => 'No pending requests.';
+
+  @override
+  String get matchGroupChat => 'Match Group Chat';
+
+  @override
+  String get chatComingSoon => 'Chat coming soon!';
+
+  @override
+  String get realtimeMessagingAvailableHere =>
+      'Realtime messaging will be available here.';
+
+  @override
+  String get pleaseEnterValidPrice => 'Please enter a valid price';
+
+  @override
+  String get statusActive => 'Status: Active';
+
+  @override
+  String neededPlayers(Object count) {
+    return ' • Needed: $count Players';
+  }
+
+  @override
+  String get openInGoogleMaps => 'Open in Google Maps';
+
+  @override
+  String get player => 'Player';
+
+  @override
+  String get inviteAFriend => 'Invite a Friend';
+
+  @override
+  String get reportThisActivityOrHost => 'Report this activity or host';
+
+  @override
+  String get learnAboutSafetyGuidelines => 'Learn about Safety Guidelines';
+
+  @override
+  String get manageActivitiesDesc =>
+      'Manage the activities you host, joined, or need to review.';
+
+  @override
+  String tabMyActivitiesCount(String count) {
+    return 'My activities $count';
+  }
+
+  @override
+  String tabJoinedCount(String count) {
+    return 'Joined $count';
+  }
+
+  @override
+  String tabRequestsCount(String count) {
+    return 'Requests $count';
+  }
+
+  @override
+  String get mockGoldenGateTitle => 'Golden Gate Sunset Walk';
+
+  @override
+  String get mockGoldenGateDate => 'Today · 6:00 PM';
+
+  @override
+  String get mockGoldenGateLoc => 'Golden Gate Park';
+
+  @override
+  String get mockGoldenGateStats => '6/10 participants · FREE';
+
+  @override
+  String get mockSunsetVolleyballTitle => 'Sunset beach volleyball';
+
+  @override
+  String get mockSunsetVolleyballDate => 'Thu, Jun 20 · 6:30 PM';
+
+  @override
+  String get mockSunsetVolleyballLoc => 'Ocean Beach';
+
+  @override
+  String get mockRooftopCookingTitle => 'Rooftop cooking class';
+
+  @override
+  String get mockRooftopCookingDate => 'Sat, Jun 22 · 6:30 PM';
+
+  @override
+  String get mockRooftopCookingLoc => 'Mission District rooftop';
+
+  @override
+  String get mockRooftopCookingStats => '8/8 participants · \$24';
+
+  @override
+  String get mockSalsaTitle => 'Beginner salsa class';
+
+  @override
+  String get mockSalsaDate => 'Sun, Jun 23 · 5:00 PM';
+
+  @override
+  String get mockSalsaLoc => 'Mission Dance Hall';
+
+  @override
+  String get mockSalsaStats => '2/10 participants · \$12';
+
+  @override
+  String get tabPreviewData => 'Tab preview data';
+
+  @override
+  String get previewJoined =>
+      'Joined · Weekend pottery class · Saturday · 4 participants';
+
+  @override
+  String get previewRequests =>
+      'Requests · 3 pending join requests · Review now';
+
+  @override
+  String get statusHosted => 'Hosted';
+
+  @override
+  String get statusFull => 'Full';
+
+  @override
+  String get pendingRequest => 'Pending Request';
+
+  @override
+  String get joined => 'Joined';
+
+  @override
+  String get requestRejected => 'Request Rejected';
+
+  @override
+  String get requestCancelled => 'Request Cancelled';
+
+  @override
+  String get share => 'Share';
+
+  @override
+  String get cancelActivity => 'Cancel Activity';
+
+  @override
+  String get closeActivity => 'Close Activity';
+
+  @override
+  String get reportActivityAction => 'Report Activity';
+
+  @override
+  String get aboutSection => 'ABOUT';
+
+  @override
+  String get scheduleSection => 'SCHEDULE';
+
+  @override
+  String statusLabel(Object status) {
+    return 'Status: $status';
+  }
+
+  @override
+  String get errorUnknownState => 'Error or unknown state';
 }

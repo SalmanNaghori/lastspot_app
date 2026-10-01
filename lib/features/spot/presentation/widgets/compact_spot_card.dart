@@ -6,9 +6,10 @@ import 'spot_hero_image.dart';
 
 class CompactSpotCard extends StatefulWidget {
   final RequestEntity spot;
+  final String? heroTagPrefix;
   final VoidCallback onTap;
 
-  const CompactSpotCard({super.key, required this.spot, required this.onTap});
+  const CompactSpotCard({super.key, required this.spot, this.heroTagPrefix, required this.onTap});
 
   @override
   State<CompactSpotCard> createState() => _CompactSpotCardState();
@@ -25,6 +26,14 @@ class _CompactSpotCardState extends State<CompactSpotCard> {
 
   String _formatDate(DateTime dt) => DateFormat('MMM d').format(dt);
   String _formatTime(DateTime dt) => DateFormat('h:mm a').format(dt);
+
+  String _getDisplayLocation(String location) {
+    final lower = location.toLowerCase();
+    if (lower.startsWith('http://') || lower.startsWith('https://')) {
+      return 'Map Location';
+    }
+    return location;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -62,12 +71,15 @@ class _CompactSpotCardState extends State<CompactSpotCard> {
                 width: Dimensions.r24.dynamicW * 4.5,
                 height: Dimensions.r24.dynamicH * 4.5,
                 child: ClipRRect(
-                  borderRadius: BorderRadius.horizontal(left: Radius.circular(Dimensions.r12.dynamicR - 1)),
+                  borderRadius: BorderRadius.horizontal(
+                    left: Radius.circular(Dimensions.r12.dynamicR - 1),
+                  ),
                   child: SpotHeroImage(
                     spot: widget.spot,
                     isUrgent: false,
                     spotsLeftText: '',
-                    perPersonLabel: '',
+                    perPersonLabel: '/ person',
+                    heroTagPrefix: widget.heroTagPrefix,
                   ),
                 ),
               ),
@@ -80,7 +92,9 @@ class _CompactSpotCardState extends State<CompactSpotCard> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        widget.spot.title.trim().isNotEmpty ? widget.spot.title.trim() : widget.spot.locationName,
+                        widget.spot.title.trim().isNotEmpty
+                            ? widget.spot.title.trim()
+                            : _getDisplayLocation(widget.spot.locationName),
                         style: TextStyle(
                           fontSize: Dimensions.r15.dynamicSP,
                           fontWeight: FontWeight.w700,
@@ -93,11 +107,18 @@ class _CompactSpotCardState extends State<CompactSpotCard> {
                       SizedBox(height: Dimensions.r6.dynamicH),
                       Row(
                         children: [
-                          Icon(Icons.calendar_today_outlined, size: Dimensions.r14.dynamicH, color: context.textSecondary),
+                          Icon(
+                            Icons.calendar_today_outlined,
+                            size: Dimensions.r14.dynamicH,
+                            color: context.textSecondary,
+                          ),
                           SizedBox(width: Dimensions.r4.dynamicW),
                           Text(
                             '${_formatDate(widget.spot.eventDateTime)}, ${_formatTime(widget.spot.eventDateTime)}',
-                            style: TextStyle(fontSize: Dimensions.r12.dynamicSP, color: context.textSecondary),
+                            style: TextStyle(
+                              fontSize: Dimensions.r12.dynamicSP,
+                              color: context.textSecondary,
+                            ),
                           ),
                         ],
                       ),
@@ -109,18 +130,32 @@ class _CompactSpotCardState extends State<CompactSpotCard> {
                             height: Dimensions.r20.dynamicH,
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
-                              color: AppColor.primaryColor.withValues(alpha: 0.1),
+                              color: AppColor.primaryColor.withValues(
+                                alpha: 0.1,
+                              ),
                             ),
                             clipBehavior: Clip.antiAlias,
                             child: widget.spot.hostProfile?.avatarUrl != null
-                                ? Image.network(widget.spot.hostProfile!.avatarUrl!, fit: BoxFit.cover)
-                                : Icon(Icons.person, size: Dimensions.r14.dynamicH, color: AppColor.primaryColor),
+                                ? AppCachedNetworkImage(
+                                    imageUrl: widget.spot.hostProfile!.avatarUrl,
+                                    fit: BoxFit.cover,
+                                    memCacheWidth: 100,
+                                    memCacheHeight: 100,
+                                  )
+                                : Icon(
+                                    Icons.person,
+                                    size: Dimensions.r14.dynamicH,
+                                    color: AppColor.primaryColor,
+                                  ),
                           ),
                           SizedBox(width: Dimensions.r6.dynamicW),
                           Expanded(
                             child: Text(
                               widget.spot.hostProfile?.fullName ?? 'Host',
-                              style: TextStyle(fontSize: Dimensions.r12.dynamicSP, color: context.textSecondary),
+                              style: TextStyle(
+                                fontSize: Dimensions.r12.dynamicSP,
+                                color: context.textSecondary,
+                              ),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                             ),

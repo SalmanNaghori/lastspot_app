@@ -56,15 +56,31 @@ class RequestModel extends RequestEntity {
       description: json['description'] as String?,
       cityId: json['city_id'] as String?,
       locationName: json['location_name'] as String,
-      latitude: json['latitude'] != null ? double.tryParse(json['latitude'].toString()) ?? 0.0 : 0.0,
-      longitude: json['longitude'] != null ? double.tryParse(json['longitude'].toString()) ?? 0.0 : 0.0,
-      eventDateTime: DateTime.tryParse(json['event_date_time']?.toString() ?? '') ?? DateTime.now(),
-      maxParticipants: json['max_participants'] != null ? int.tryParse(json['max_participants'].toString()) ?? 0 : 0,
-      currentParticipants: json['current_participants'] != null ? int.tryParse(json['current_participants'].toString()) ?? 0 : 0,
-      pricePerPerson: json['price_per_person'] != null ? double.tryParse(json['price_per_person'].toString()) ?? 0.0 : 0.0,
+      latitude: json['latitude'] != null
+          ? double.tryParse(json['latitude'].toString()) ?? 0.0
+          : 0.0,
+      longitude: json['longitude'] != null
+          ? double.tryParse(json['longitude'].toString()) ?? 0.0
+          : 0.0,
+      eventDateTime:
+          DateTime.tryParse(json['event_date_time']?.toString() ?? '') ??
+          DateTime.now(),
+      maxParticipants: json['max_participants'] != null
+          ? int.tryParse(json['max_participants'].toString()) ?? 0
+          : 0,
+      currentParticipants: json['current_participants'] != null
+          ? int.tryParse(json['current_participants'].toString()) ?? 0
+          : 0,
+      pricePerPerson: json['price_per_person'] != null
+          ? double.tryParse(json['price_per_person'].toString()) ?? 0.0
+          : 0.0,
       status: parseStatus(json['status'] as String?),
-      createdAt: DateTime.tryParse(json['created_at']?.toString() ?? '') ?? DateTime.now(),
-      updatedAt: DateTime.tryParse(json['updated_at']?.toString() ?? '') ?? DateTime.now(),
+      createdAt:
+          DateTime.tryParse(json['created_at']?.toString() ?? '') ??
+          DateTime.now(),
+      updatedAt:
+          DateTime.tryParse(json['updated_at']?.toString() ?? '') ??
+          DateTime.now(),
       hostProfile: json['profiles'] != null
           ? ProfileModel.fromJson(json['profiles'])
           : null,

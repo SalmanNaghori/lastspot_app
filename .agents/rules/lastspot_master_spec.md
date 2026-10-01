@@ -1,7 +1,7 @@
 ---
+trigger: always_on
 description: "LastSpot master product, UX, UI & development specification. Applied to every task in this project."
 globs: "**/*"
-alwaysApply: true
 ---
 
 # ============================================================
@@ -78,20 +78,20 @@ Profile → Edit Profile → Save → Updated Profile
 
 Build in this exact order:
 
-- **FLOW 0** — Foundation & Design System
-- **FLOW 1** — Authentication & Initial Account Setup
-- **FLOW 2** — Home
-- **FLOW 3** — Explore / Search / Filters
-- **FLOW 4** — Create Activity
-- **FLOW 5** — Activity Details
-- **FLOW 6** — Join Request
-- **FLOW 7** — My Activities & Creator Management
-- **FLOW 8** — Chat
-- **FLOW 9** — Notifications
-- **FLOW 10** — Profile & Settings
-- **FLOW 11** — Reports & Moderation
-- **FLOW 12** — Account Deletion
-- **FLOW 13** — Final Security / Performance / Testing / Release
+- [x] **FLOW 0** — Foundation & Design System
+- [x] **FLOW 1** — Authentication & Initial Account Setup
+- [x] **FLOW 2** — Home
+- [x] **FLOW 3** — Explore / Search / Filters
+- [x] **FLOW 4** — Create Activity
+- [ ] **FLOW 5** — Activity Details
+- [ ] **FLOW 6** — Join Request
+- [ ] **FLOW 7** — My Activities & Creator Management
+- [ ] **FLOW 8** — Chat
+- [ ] **FLOW 9** — Notifications
+- [ ] **FLOW 10** — Profile & Settings
+- [ ] **FLOW 11** — Reports & Moderation
+- [ ] **FLOW 12** — Account Deletion
+- [ ] **FLOW 13** — Final Security / Performance / Testing / Release
 
 Do not skip directly from Flow 1 to Flow 8.
 
@@ -158,6 +158,8 @@ Use Google Inter typography.
 Design direction: premium, modern, friendly, sporty, social, clean, minimal, approachable.
 
 Use: rounded cards, subtle shadows, proper spacing, clear typography, large primary CTAs, meaningful icons, visual hierarchy, subtle animations.
+
+**Hero Animations:** ALWAYS use the `Hero` effect when navigating from a list/card view (e.g., Home or Explore) to a detail screen (e.g., Activity Details). The image and title should seamlessly transition to provide a fluid user experience. Ensure tags are unique by prefixing them properly.
 
 Avoid: generic CRUD UI, excessive borders, excessive gradients, too many colors, giant empty areas, unnecessary animations.
 
@@ -636,3 +638,24 @@ Primary user journey:
 DISCOVER → VIEW → JOIN
 or
 CREATE → FIND PEOPLE → ACCEPT → CHAT → PARTICIPATE → COMPLETE
+## WIDGET ARCHITECTURE & REUSABILITY
+
+- **Avoid Widget-Building Methods:** NEVER write private widget-building methods (e.g., `Widget _buildRow() { ... }`) inside a screen file.
+- **No Private Widget Classes:** Do NOT create private widget classes (e.g., `class _MyWidget extends StatelessWidget`) inside screen files. It is not required to make them private; always extract them into their own public files in the `widgets/` folder.
+- **Use Separate Classes:** ALWAYS create separate `StatelessWidget` or `StatefulWidget` classes for UI components. This improves performance (via `const` constructors) and maintains a clean widget tree.
+- **Common Widgets:** If a widget or design is used across multiple features, it MUST be extracted and placed in `lib/core/widgets/`.
+
+---
+
+## LOCALIZATION & STRINGS
+
+- **No Hardcoded Strings:** NEVER embed user-facing text directly in widget code. ALWAYS add strings to `lib/core/l10n/intl_en.arb` and access via `AppLocalizations.of(context)` (typically bound to `l10n`).
+- **No Redundant Static String Files:** Do NOT create static string helper files (like `AppStrings`) if the string is user-facing; use `.arb` files exclusively.
+
+---
+
+## CONSTANTS & UTILITIES
+
+- **No Inline Formatting Logic:** NEVER write inline formatting or utility methods (e.g., `String _getMonthName(int month)`) directly inside widget files.
+- **Centralize Helpers:** ALWAYS extract static data, constants, and helper utilities into `lib/core/constants/app_constants.dart` or `lib/core/utils/app_utils.dart` to maximize reuse and prevent duplication.
+

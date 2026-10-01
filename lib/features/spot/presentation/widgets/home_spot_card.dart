@@ -1,6 +1,8 @@
 import 'package:intl/intl.dart';
 import 'package:lastspot_app/core/base_import.dart';
 import 'package:lastspot_app/features/spot/domain/entities/request_entity.dart';
+import '../../../cities/presentation/bloc/city_cubit.dart';
+import '../../../cities/presentation/bloc/city_state.dart';
 
 import 'spot_hero_image.dart';
 import 'spot_host_avatar.dart';
@@ -15,7 +17,13 @@ class HomeSpotCard extends StatefulWidget {
   final VoidCallback? onMapTap;
   final String? heroTagPrefix;
 
-  const HomeSpotCard({super.key, required this.spot, required this.onTap, this.onMapTap, this.heroTagPrefix});
+  const HomeSpotCard({
+    super.key,
+    required this.spot,
+    required this.onTap,
+    this.onMapTap,
+    this.heroTagPrefix,
+  });
 
   @override
   State<HomeSpotCard> createState() => _HomeSpotCardState();
@@ -51,7 +59,8 @@ class _HomeSpotCardState extends State<HomeSpotCard> {
   @override
   Widget build(BuildContext context) {
     final loc = context.loc;
-    final isUrgent = widget.spot.eventDateTime.difference(DateTime.now()).inHours < 24;
+    final isUrgent =
+        widget.spot.eventDateTime.difference(DateTime.now()).inHours < 24;
 
     return GestureDetector(
       onTapDown: (_) => _isPressed.value = true,
@@ -73,7 +82,11 @@ class _HomeSpotCardState extends State<HomeSpotCard> {
             borderRadius: BorderRadius.circular(Dimensions.r16.dynamicR),
             border: Border.all(color: context.borderColor, width: 1),
             boxShadow: [
-              BoxShadow(color: AppColor.blackColor.withValues(alpha: 0.06), blurRadius: 16, offset: const Offset(0, 4)),
+              BoxShadow(
+                color: AppColor.blackColor.withValues(alpha: 0.06),
+                blurRadius: 16,
+                offset: const Offset(0, 4),
+              ),
             ],
           ),
           child: Column(
@@ -90,21 +103,48 @@ class _HomeSpotCardState extends State<HomeSpotCard> {
 
               // ── Location row ────────────────────────────────────
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: Dimensions.r16.dynamicW, vertical: Dimensions.r8.dynamicH),
+                padding: EdgeInsets.symmetric(
+                  horizontal: Dimensions.r16.dynamicW,
+                  vertical: Dimensions.r8.dynamicH,
+                ),
                 child: Row(
                   children: [
-                    Icon(Icons.location_on_outlined, size: Dimensions.r14.dynamicH, color: context.textSecondary),
+                    Icon(
+                      Icons.location_on_outlined,
+                      size: Dimensions.r14.dynamicH,
+                      color: context.textSecondary,
+                    ),
                     SizedBox(width: Dimensions.r4.dynamicW),
                     Expanded(
-                      child: Text(
-                        widget.spot.locationName,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          fontSize: Dimensions.r12.dynamicSP,
-                          color: context.textSecondary,
-                          fontWeight: FontWeight.w500,
-                        ),
+                      child: BlocBuilder<CityCubit, CityState>(
+                        builder: (context, state) {
+                          String locationText = widget.spot.locationName;
+
+                          if (widget.spot.cityId != null &&
+                              state is CityLoaded) {
+                            final city = state.cities
+                                .where((c) => c.id == widget.spot.cityId)
+                                .firstOrNull;
+                            if (city != null) {
+                              locationText = city.name;
+                            }
+                          }
+
+                          if (locationText.startsWith('http')) {
+                            locationText = loc.viewOnMap;
+                          }
+
+                          return Text(
+                            locationText,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              fontSize: Dimensions.r12.dynamicSP,
+                              color: context.textSecondary,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          );
+                        },
                       ),
                     ),
                   ],
@@ -122,7 +162,11 @@ class _HomeSpotCardState extends State<HomeSpotCard> {
                   children: [
                     // Title
                     Text(
-                      widget.spot.title.trim().isNotEmpty ? widget.spot.title.trim() : widget.spot.locationName,
+                      widget.spot.title.trim().isNotEmpty
+                          ? widget.spot.title.trim()
+                          : (widget.spot.locationName.startsWith('http')
+                                ? loc.viewOnMap
+                                : widget.spot.locationName),
                       style: TextStyle(
                         fontSize: Dimensions.r16.dynamicSP,
                         fontWeight: FontWeight.w800,
@@ -145,26 +189,41 @@ class _HomeSpotCardState extends State<HomeSpotCard> {
                         SizedBox(width: Dimensions.r4.dynamicW),
                         Text(
                           '${_formatDate(widget.spot.eventDateTime)} • ${_formatTime(widget.spot.eventDateTime)}',
-                          style: TextStyle(fontSize: Dimensions.r12.dynamicSP, color: context.textSecondary),
+                          style: TextStyle(
+                            fontSize: Dimensions.r12.dynamicSP,
+                            color: context.textSecondary,
+                          ),
                         ),
                         SizedBox(width: Dimensions.r16.dynamicW),
-                        Icon(Icons.people_outline, size: Dimensions.r14.dynamicH, color: context.textSecondary),
+                        Icon(
+                          Icons.people_outline,
+                          size: Dimensions.r14.dynamicH,
+                          color: context.textSecondary,
+                        ),
                         SizedBox(width: Dimensions.r4.dynamicW),
                         Text(
                           '${widget.spot.maxParticipants - widget.spot.currentParticipants}/${widget.spot.maxParticipants} players',
-                          style: TextStyle(fontSize: Dimensions.r12.dynamicSP, color: context.textSecondary),
+                          style: TextStyle(
+                            fontSize: Dimensions.r12.dynamicSP,
+                            color: context.textSecondary,
+                          ),
                         ),
                       ],
                     ),
 
                     // Notes / description
-                    if (widget.spot.description != null && widget.spot.description!.isNotEmpty) ...[
+                    if (widget.spot.description != null &&
+                        widget.spot.description!.isNotEmpty) ...[
                       SizedBox(height: Dimensions.r10.dynamicH),
                       Text(
                         widget.spot.description!,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
-                        style: TextStyle(fontSize: Dimensions.r13.dynamicSP, color: context.textSecondary, height: 1.4),
+                        style: TextStyle(
+                          fontSize: Dimensions.r13.dynamicSP,
+                          color: context.textSecondary,
+                          height: 1.4,
+                        ),
                       ),
                     ],
 
@@ -186,7 +245,8 @@ class _HomeSpotCardState extends State<HomeSpotCard> {
                                 children: [
                                   Flexible(
                                     child: Text(
-                                      widget.spot.hostProfile?.fullName ?? 'Host',
+                                      widget.spot.hostProfile?.fullName ??
+                                          'Host',
                                       overflow: TextOverflow.ellipsis,
                                       style: TextStyle(
                                         fontSize: Dimensions.r13.dynamicSP,
@@ -196,12 +256,19 @@ class _HomeSpotCardState extends State<HomeSpotCard> {
                                     ),
                                   ),
                                   SizedBox(width: Dimensions.r4.dynamicW),
-                                  Icon(Icons.verified, size: Dimensions.r14.dynamicH, color: context.primaryColor),
+                                  Icon(
+                                    Icons.verified,
+                                    size: Dimensions.r14.dynamicH,
+                                    color: context.primaryColor,
+                                  ),
                                 ],
                               ),
                               Text(
                                 loc.verifiedHost,
-                                style: TextStyle(fontSize: Dimensions.r11.dynamicSP, color: context.textSecondary),
+                                style: TextStyle(
+                                  fontSize: Dimensions.r11.dynamicSP,
+                                  color: context.textSecondary,
+                                ),
                               ),
                             ],
                           ),
@@ -219,4 +286,3 @@ class _HomeSpotCardState extends State<HomeSpotCard> {
     );
   }
 }
-

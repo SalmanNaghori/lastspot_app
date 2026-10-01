@@ -15,6 +15,8 @@ class AppCachedNetworkImage extends StatelessWidget {
   final Color? backgroundColor;
   final int? memCacheWidth;
   final int? memCacheHeight;
+  final int? maxWidthDiskCache;
+  final int? maxHeightDiskCache;
 
   const AppCachedNetworkImage({
     super.key,
@@ -29,26 +31,40 @@ class AppCachedNetworkImage extends StatelessWidget {
     this.backgroundColor,
     this.memCacheWidth,
     this.memCacheHeight,
+    this.maxWidthDiskCache,
+    this.maxHeightDiskCache,
   });
 
   @override
   Widget build(BuildContext context) {
     Widget content;
+    
+    String? safeUrl = imageUrl?.trim();
+    if (safeUrl != null && safeUrl.contains('api.dicebear.com') && safeUrl.contains('/svg?')) {
+      safeUrl = safeUrl.replaceAll('/svg?', '/png?');
+    }
 
-    if (imageUrl == null || imageUrl!.trim().isEmpty) {
+    if (safeUrl == null || safeUrl.isEmpty) {
       content = _buildErrorWidget(context);
     } else {
       content = CachedNetworkImage(
-        imageUrl: imageUrl!.trim(),
+        imageUrl: safeUrl,
         width: width,
         height: height,
         fit: fit,
         memCacheWidth: memCacheWidth,
         memCacheHeight: memCacheHeight,
+        maxWidthDiskCache: maxWidthDiskCache ?? memCacheWidth,
+        maxHeightDiskCache: maxHeightDiskCache ?? memCacheHeight,
         fadeInDuration: const Duration(milliseconds: 300),
         fadeOutDuration: const Duration(milliseconds: 200),
         placeholder: (context, url) =>
-            placeholder ?? _AnimatedImagePlaceholder(width: width, height: height, isCircle: isCircle),
+            placeholder ??
+            _AnimatedImagePlaceholder(
+              width: width,
+              height: height,
+              isCircle: isCircle,
+            ),
         errorWidget: (context, url, error) => _buildErrorWidget(context),
       );
     }
@@ -67,7 +83,12 @@ class AppCachedNetworkImage extends StatelessWidget {
   Widget _buildErrorWidget(BuildContext context) {
     if (errorWidget != null) return errorWidget!;
 
-    return _AnimatedImageError(width: width, height: height, isCircle: isCircle, backgroundColor: backgroundColor);
+    return _AnimatedImageError(
+      width: width,
+      height: height,
+      isCircle: isCircle,
+      backgroundColor: backgroundColor,
+    );
   }
 }
 
@@ -77,12 +98,18 @@ class _AnimatedImagePlaceholder extends StatelessWidget {
   final double? height;
   final bool isCircle;
 
-  const _AnimatedImagePlaceholder({this.width, this.height, required this.isCircle});
+  const _AnimatedImagePlaceholder({
+    this.width,
+    this.height,
+    required this.isCircle,
+  });
 
   @override
   Widget build(BuildContext context) {
     final isDark = context.isDarkMode;
-    final baseColor = isDark ? const Color(0xFF1E293B) : const Color(0xFFE2E8F0);
+    final baseColor = isDark
+        ? const Color(0xFF1E293B)
+        : const Color(0xFFE2E8F0);
 
     return AppShimmer(
       child: Container(
@@ -111,7 +138,12 @@ class _AnimatedImageError extends StatelessWidget {
   final bool isCircle;
   final Color? backgroundColor;
 
-  const _AnimatedImageError({this.width, this.height, required this.isCircle, this.backgroundColor});
+  const _AnimatedImageError({
+    this.width,
+    this.height,
+    required this.isCircle,
+    this.backgroundColor,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -127,7 +159,11 @@ class _AnimatedImageError extends StatelessWidget {
             height: height,
             decoration: BoxDecoration(
               shape: isCircle ? BoxShape.circle : BoxShape.rectangle,
-              color: backgroundColor ?? (context.isDarkMode ? context.surfaceColor : const Color(0xFFF1F5F9)),
+              color:
+                  backgroundColor ??
+                  (context.isDarkMode
+                      ? context.surfaceColor
+                      : const Color(0xFFF1F5F9)),
             ),
             child: Center(
               child: Icon(

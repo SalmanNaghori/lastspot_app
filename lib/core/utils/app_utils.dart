@@ -49,6 +49,22 @@ class AppUtils {
     return false;
   }
 
+  static Future<void> launchMap(String query) async {
+    try {
+      if (query.trim().startsWith('http://') ||
+          query.trim().startsWith('https://')) {
+        await launchWebUrl(query.trim());
+        return;
+      }
+      final encodedQuery = Uri.encodeComponent(query);
+      final url =
+          'https://www.google.com/maps/search/?api=1&query=$encodedQuery';
+      await launchWebUrl(url);
+    } catch (e) {
+      debugPrint('Error launching map: $e');
+    }
+  }
+
   /// Formats DateTime to readable string (e.g., "Sep 4, 2026")
   static String formatDate(DateTime dateTime) {
     return DateFormat.yMMMd().format(dateTime);
@@ -67,7 +83,7 @@ class AppUtils {
   /// Calculates and formats the time passed since the given DateTime (e.g., "2 hours ago")
   static String timeAgo(DateTime dateTime) {
     final Duration diff = DateTime.now().difference(dateTime);
-    
+
     if (diff.inDays > 365) {
       return '${(diff.inDays / 365).floor()} ${diff.inDays / 365 >= 2 ? 'years' : 'year'} ago';
     }

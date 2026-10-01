@@ -11,7 +11,11 @@ class AppSectionTitle extends StatelessWidget {
       padding: EdgeInsets.only(bottom: Dimensions.r12.dynamicH),
       child: Text(
         title,
-        style: TextStyle(fontSize: Dimensions.r16, fontWeight: FontWeight.w600, color: context.textPrimary),
+        style: TextStyle(
+          fontSize: Dimensions.r16,
+          fontWeight: FontWeight.w600,
+          color: context.textPrimary,
+        ),
       ),
     );
   }

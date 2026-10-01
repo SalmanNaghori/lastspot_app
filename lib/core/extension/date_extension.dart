@@ -1,5 +1,9 @@
 extension DateTimeExtensions on DateTime {
-  String diffForHumans({bool abbreviatedUnits = false, bool showRelativeDates = false, int precision = 2}) {
+  String diffForHumans({
+    bool abbreviatedUnits = false,
+    bool showRelativeDates = false,
+    int precision = 2,
+  }) {
     final DateTime now = DateTime.now();
     final Duration difference = now.difference(this);
     final int seconds = difference.inSeconds;
@@ -37,7 +41,9 @@ extension DateTimeExtensions on DateTime {
   }
 
   String _formatUnit(int count, bool abbreviated, String unit) {
-    final String pluralUnit = abbreviated ? '${unit[0]}${unit[1]}' : '$unit${count != 1 ? 's' : ''}';
+    final String pluralUnit = abbreviated
+        ? '${unit[0]}${unit[1]}'
+        : '$unit${count != 1 ? 's' : ''}';
     if (count == 1) {
       return '1 $pluralUnit';
     } else {
@@ -52,7 +58,14 @@ extension DateTimeExtensions on DateTime {
 
   bool isTimeBeforeNow() {
     final now = DateTime.now();
-    final selected = DateTime(now.year, now.month, now.day, hour, minute, second);
+    final selected = DateTime(
+      now.year,
+      now.month,
+      now.day,
+      hour,
+      minute,
+      second,
+    );
     return selected.isBefore(now);
   }
 

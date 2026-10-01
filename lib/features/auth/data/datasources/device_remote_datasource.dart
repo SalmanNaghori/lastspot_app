@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:lastspot_app/core/network/supabase_logger.dart';
+import 'package:lastspot_app/core/network/api_endpoints.dart';
 
 abstract class DeviceRemoteDataSource {
   Future<void> registerDevice(String userId);
@@ -50,12 +50,8 @@ class SupabaseDeviceDataSourceImpl implements DeviceRemoteDataSource {
       'build_number': packageInfo.buildNumber,
     };
 
-    return SupabaseLogger.execute(
-      operationName: 'Device.registerDevice',
-      requestData: params,
-      operation: () => _client
-          .from('user_devices')
-          .upsert(params, onConflict: 'user_id, device_identifier'),
-    );
+    await _client
+        .from(ApiEndpoints.tableUserDevices)
+        .upsert(params, onConflict: 'user_id, device_identifier');
   }
 }

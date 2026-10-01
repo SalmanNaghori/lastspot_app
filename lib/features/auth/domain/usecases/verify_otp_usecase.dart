@@ -14,4 +14,3 @@ class VerifyOtpUseCase {
     return _repository.verifyOtp(email: email, token: token, type: type);
   }
 }
-

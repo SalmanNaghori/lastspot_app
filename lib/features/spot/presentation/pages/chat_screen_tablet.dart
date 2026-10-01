@@ -12,8 +12,8 @@ class ChatScreenTablet extends StatelessWidget {
           icon: const Icon(Icons.arrow_back),
           onPressed: () => context.pop(),
         ),
-        title: const Text(
-          'Match Group Chat',
+        title: Text(
+          context.loc.matchGroupChat,
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
       ),
@@ -31,15 +31,15 @@ class ChatScreenTablet extends StatelessWidget {
                   ),
                   SizedBox(height: Dimensions.r16.dynamicH),
                   Text(
-                    'Chat coming soon!',
-                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                    context.loc.chatComingSoon,
+                    style: context.titleLarge?.copyWith(
                       color: context.textSecondary,
                     ),
                   ),
                   SizedBox(height: Dimensions.r8.dynamicH),
                   Text(
-                    'Realtime messaging will be available here.',
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    context.loc.realtimeMessagingAvailableHere,
+                    style: context.bodyMedium?.copyWith(
                       color: context.textSecondary,
                     ),
                   ),

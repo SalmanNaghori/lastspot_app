@@ -44,7 +44,6 @@ class ProfileScreenMobile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final loc = context.loc;
-    final theme = Theme.of(context);
 
     return Scaffold(
       backgroundColor: context.backgroundColor,
@@ -147,7 +146,7 @@ class ProfileScreenMobile extends StatelessWidget {
                 TextButton(
                   onPressed: () => _onLogout(context, loc),
                   style: TextButton.styleFrom(
-                    foregroundColor: theme.colorScheme.error,
+                    foregroundColor: context.colorScheme.error,
                     minimumSize: const Size.fromHeight(48),
                   ),
                   child: Text(loc.logout),
@@ -166,7 +165,6 @@ class ProfileScreenMobile extends StatelessWidget {
     required String title,
     required List<Widget> items,
   }) {
-    final theme = Theme.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -177,8 +175,8 @@ class ProfileScreenMobile extends StatelessWidget {
           ),
           child: Text(
             title.toUpperCase(),
-            style: theme.textTheme.labelMedium?.copyWith(
-              color: theme.colorScheme.onSurfaceVariant,
+            style: context.labelMedium?.copyWith(
+              color: context.colorScheme.onSurfaceVariant,
               fontWeight: FontWeight.bold,
               letterSpacing: 1.2,
             ),
@@ -186,7 +184,7 @@ class ProfileScreenMobile extends StatelessWidget {
         ),
         Container(
           decoration: BoxDecoration(
-            color: theme.colorScheme.surfaceContainerLow,
+            color: context.colorScheme.surfaceContainerLow,
             borderRadius: BorderRadius.circular(Dimensions.r12),
           ),
           child: Column(children: items),

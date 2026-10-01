@@ -16,7 +16,9 @@ class RequestImageModel extends RequestImageEntity {
       requestId: json['request_id'] as String? ?? '',
       storagePath: json['storage_path'] as String? ?? '',
       sortOrder: json['sort_order'] as int? ?? 0,
-      createdAt: DateTime.tryParse(json['created_at']?.toString() ?? '') ?? DateTime.now(),
+      createdAt:
+          DateTime.tryParse(json['created_at']?.toString() ?? '') ??
+          DateTime.now(),
     );
   }
 

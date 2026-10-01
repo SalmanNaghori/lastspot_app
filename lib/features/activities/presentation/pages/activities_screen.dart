@@ -14,9 +14,9 @@ class ActivitiesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => ActivitiesBloc(
-        spotRepository: sl<SpotRepository>(),
-      )..add(LoadActivitiesEvent()),
+      create: (context) =>
+          ActivitiesBloc(spotRepository: sl<SpotRepository>())
+            ..add(LoadActivitiesEvent()),
       child: const ResponsiveLayout(
         mobile: ActivitiesScreenMobile(),
         tablet: ActivitiesScreenTablet(),

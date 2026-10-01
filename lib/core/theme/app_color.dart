@@ -319,9 +319,11 @@ extension ThemeColors on BuildContext {
 
   Color get surfaceContainer => colorScheme.surfaceContainerHighest;
 
-  Color get surfaceContainerLow => colorScheme.surfaceContainerHighest; // Adjust if needed based on scheme
+  Color get surfaceContainerLow =>
+      colorScheme.surfaceContainerHighest; // Adjust if needed based on scheme
 
-  Color get surfaceContainerHigh => colorScheme.surfaceContainerHighest; // Adjust if needed based on scheme
+  Color get surfaceContainerHigh =>
+      colorScheme.surfaceContainerHighest; // Adjust if needed based on scheme
 
   // ------------------------------------------------------------
   // Text

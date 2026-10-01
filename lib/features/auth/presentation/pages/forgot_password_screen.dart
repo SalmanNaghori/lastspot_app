@@ -17,7 +17,9 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
 
   void _onResetPassword() {
     if (_formKey.currentState?.validate() ?? false) {
-      context.read<AuthBloc>().add(ForgotPasswordRequested(email: _emailController.text.trim()));
+      context.read<AuthBloc>().add(
+        ForgotPasswordRequested(email: _emailController.text.trim()),
+      );
     }
   }
 
@@ -26,15 +28,22 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
         if (state is AuthOtpSent) {
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(context.loc.passwordResetSent)));
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(context.loc.passwordResetSent)),
+          );
           // Optional: navigate to OTP screen if handling deep links,
           // or just go back to login with success message.
           context.pop();
         } else if (state is AuthError) {
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.message)));
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(state.message)));
         }
       },
-      child: ResponsiveLayout(mobile: _buildContent(context), tablet: _buildContent(context)),
+      child: ResponsiveLayout(
+        mobile: _buildContent(context),
+        tablet: _buildContent(context),
+      ),
     );
   }
 
@@ -58,23 +67,33 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                 children: [
                   Text(
                     context.loc.resetPassword,
-                    style: TextStyle(fontSize: Dimensions.r32, fontWeight: FontWeight.bold, color: context.textPrimary),
+                    style: TextStyle(
+                      fontSize: Dimensions.r32,
+                      fontWeight: FontWeight.bold,
+                      color: context.textPrimary,
+                    ),
                   ),
                   const SizedBox(height: Dimensions.r8),
                   Text(
                     context.loc.resetPasswordDesc,
-                    style: TextStyle(fontSize: Dimensions.r16, color: context.textSecondary),
+                    style: TextStyle(
+                      fontSize: Dimensions.r16,
+                      color: context.textSecondary,
+                    ),
                   ),
                   const SizedBox(height: Dimensions.r32),
                   TextFormField(
                     controller: _emailController,
                     decoration: InputDecoration(
                       labelText: context.loc.email,
-                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(Dimensions.r12)),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(Dimensions.r12),
+                      ),
                     ),
                     keyboardType: TextInputType.emailAddress,
                     validator: (value) {
-                      if (value == null || value.trim().isEmpty) return 'Email is required';
+                      if (value == null || value.trim().isEmpty)
+                        return 'Email is required';
                       if (!RegExp(
                         r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+",
                       ).hasMatch(value)) {
@@ -90,15 +109,24 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppColor.primaryColor,
                           foregroundColor: AppColor.whiteColor,
-                          padding: const EdgeInsets.symmetric(vertical: Dimensions.r16),
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(Dimensions.r12)),
+                          padding: const EdgeInsets.symmetric(
+                            vertical: Dimensions.r16,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(Dimensions.r12),
+                          ),
                         ),
-                        onPressed: state is AuthLoading ? null : _onResetPassword,
+                        onPressed: state is AuthLoading
+                            ? null
+                            : _onResetPassword,
                         child: state is AuthLoading
                             ? SizedBox(
                                 height: 20,
                                 width: 20,
-                                child: CircularProgressIndicator(strokeWidth: 2, color: context.textPrimary),
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                  color: context.textPrimary,
+                                ),
                               )
                             : Text(context.loc.sendResetLink),
                       );

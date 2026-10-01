@@ -15,7 +15,7 @@ class SettingsScreen extends StatelessWidget {
         iconTheme: IconThemeData(color: context.textPrimary),
         title: Text(
           context.loc.settingsTitle,
-          style: Theme.of(context).textTheme.titleLarge?.copyWith(
+          style: context.titleLarge?.copyWith(
             fontWeight: FontWeight.bold,
             color: context.textPrimary,
           ),
@@ -53,7 +53,7 @@ class SettingsScreen extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: Dimensions.r8),
       child: Text(
         title.toUpperCase(),
-        style: Theme.of(context).textTheme.labelMedium?.copyWith(
+        style: context.labelMedium?.copyWith(
           color: context.textSecondary,
           fontWeight: FontWeight.bold,
           letterSpacing: 1.2,
@@ -163,7 +163,7 @@ class SettingsScreen extends StatelessWidget {
     required ValueChanged<T?> onChanged,
   }) {
     return RadioListTile<T>(
-      title: Text(title, style: Theme.of(context).textTheme.bodyLarge),
+      title: Text(title, style: context.bodyLarge),
       value: value,
       // ignore: deprecated_member_use
       groupValue: groupValue,

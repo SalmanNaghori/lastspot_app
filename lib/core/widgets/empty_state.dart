@@ -29,7 +29,7 @@ class EmptyState extends StatelessWidget {
           Text(
             message,
             textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+            style: context.bodyLarge?.copyWith(
               color: Theme.of(
                 context,
               ).colorScheme.onSurface.withValues(alpha: 0.6),

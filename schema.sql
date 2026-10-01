@@ -171,3 +171,74 @@ CREATE TABLE IF NOT EXISTS public.join_requests (
 ALTER TABLE public.join_requests ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "Applicants can view their own requests." ON public.join_requests FOR SELECT USING (auth.uid() = applicant_id);
 CREATE POLICY "Hosts can view requests for their posts." ON public.join_requests FOR SELECT USING (auth.uid() = (SELECT host_id FROM public.posts WHERE id = post_id));
+
+-- ==========================================
+-- 5. RPCs (EDGE FUNCTIONS)
+-- ==========================================
+
+-- RPC: request_to_join
+-- Safely inserts a join request while enforcing business rules (Flow 6)
+CREATE OR REPLACE FUNCTION public.request_to_join(p_request_id uuid)
+RETURNS void AS $$
+BEGIN
+  -- Prevent joining own activity
+  IF EXISTS (SELECT 1 FROM public.posts WHERE id = p_request_id AND host_id = auth.uid()) THEN
+    RAISE EXCEPTION 'Cannot join your own activity';
+  END IF;
+
+  -- Prevent joining non-active activity (cancelled/expired/full)
+  IF EXISTS (SELECT 1 FROM public.posts WHERE id = p_request_id AND status != 'active') THEN
+    RAISE EXCEPTION 'Cannot join this activity because it is not active';
+  END IF;
+
+  -- Prevent duplicate requests (handled by unique constraint unique_post_applicant as well)
+  IF EXISTS (SELECT 1 FROM public.join_requests WHERE post_id = p_request_id AND applicant_id = auth.uid()) THEN
+    RAISE EXCEPTION 'You have already requested to join this activity';
+  END IF;
+
+  -- Insert into join_requests
+  INSERT INTO public.join_requests (post_id, applicant_id, status)
+  VALUES (p_request_id, auth.uid(), 'pending');
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+-- RPC: update_request_status
+-- Safely updates request status (accept/reject) and handles capacity
+CREATE OR REPLACE FUNCTION public.update_request_status(p_request_id uuid, p_status text)
+RETURNS void AS $$
+DECLARE
+  v_post_id uuid;
+  v_host_id uuid;
+  v_spots_needed int;
+BEGIN
+  -- Get post info from request
+  SELECT post_id INTO v_post_id FROM public.join_requests WHERE id = p_request_id;
+  IF v_post_id IS NULL THEN
+    RAISE EXCEPTION 'Request not found';
+  END IF;
+
+  -- Check if caller is host
+  SELECT host_id, spots_needed INTO v_host_id, v_spots_needed FROM public.posts WHERE id = v_post_id;
+  IF v_host_id != auth.uid() THEN
+    RAISE EXCEPTION 'Only the host can update request status';
+  END IF;
+
+  -- If accepting, check capacity and update spots
+  IF p_status = 'accepted' THEN
+    IF v_spots_needed <= 0 THEN
+      RAISE EXCEPTION 'Activity is already full';
+    END IF;
+    
+    -- Decrement spots
+    UPDATE public.posts SET spots_needed = spots_needed - 1 WHERE id = v_post_id;
+    
+    -- If now full, update post status
+    IF v_spots_needed - 1 = 0 THEN
+      UPDATE public.posts SET status = 'full' WHERE id = v_post_id;
+    END IF;
+  END IF;
+
+  -- Update request status
+  UPDATE public.join_requests SET status = p_status, updated_at = now() WHERE id = p_request_id;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;

@@ -3,7 +3,7 @@ import '../entities/join_request_entity.dart';
 import 'dart:io';
 
 abstract class SpotRepository {
-  Future<List<RequestEntity>> getFeedPosts({String? categoryId});
+  Future<List<RequestEntity>> getFeedPosts({String? categoryId, String? cityId});
 
   Future<List<RequestEntity>> getExplorePosts({
     required String cityId,
@@ -52,4 +52,6 @@ abstract class SpotRepository {
     double? pricePerPerson,
     List<File>? newImages,
   });
+
+  Future<JoinRequestEntity?> getUserJoinRequest(String spotId);
 }

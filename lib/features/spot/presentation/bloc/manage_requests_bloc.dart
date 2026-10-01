@@ -81,13 +81,18 @@ class ManageRequestsBloc
     }
 
     _requestsSubscription?.cancel();
-    _requestsSubscription = _streamRequestsUseCase(event.spotId).listen((
-      requests,
-    ) {
-      add(_RequestsUpdatedEvent(requests));
-    }, onError: (error) {
-      add(_RequestsErrorEvent('Failed to stream requests. Please check if Realtime is enabled for the join_requests table in your Supabase Dashboard.'));
-    });
+    _requestsSubscription = _streamRequestsUseCase(event.spotId).listen(
+      (requests) {
+        add(_RequestsUpdatedEvent(requests));
+      },
+      onError: (error) {
+        add(
+          _RequestsErrorEvent(
+            'Failed to stream requests. Please check if Realtime is enabled for the join_requests table in your Supabase Dashboard.',
+          ),
+        );
+      },
+    );
   }
 
   void _onRequestsUpdated(

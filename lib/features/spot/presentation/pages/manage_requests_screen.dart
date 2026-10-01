@@ -61,9 +61,12 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        post.title.trim().isNotEmpty ? post.title.trim() : post.locationName,
-                        style: Theme.of(context).textTheme.titleMedium
-                            ?.copyWith(fontWeight: FontWeight.bold),
+                        post.title.trim().isNotEmpty
+                            ? post.title.trim()
+                            : post.locationName,
+                        style: context.titleMedium?.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                       SizedBox(height: Dimensions.r8.dynamicH),
                       Text(
@@ -71,7 +74,7 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen> {
                           post.currentParticipants,
                           post.maxParticipants,
                         ),
-                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                        style: context.bodyLarge?.copyWith(
                           color: post.currentParticipants == 0
                               ? AppColor.errorColor
                               : AppColor.primaryColor,
@@ -86,7 +89,7 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen> {
                   padding: EdgeInsets.all(Dimensions.r16.dynamicW),
                   child: Text(
                     l10n.pendingRequests(pendingRequests.length),
-                    style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                    style: context.labelLarge?.copyWith(
                       color: context.textSecondary,
                       fontWeight: FontWeight.bold,
                     ),
@@ -94,7 +97,7 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen> {
                 ),
                 Expanded(
                   child: pendingRequests.isEmpty
-                      ? const Center(child: Text("No pending requests."))
+                      ? Center(child: Text(context.loc.noPendingRequests))
                       : ListView.builder(
                           padding: EdgeInsets.symmetric(
                             horizontal: Dimensions.r16.dynamicW,
@@ -132,7 +135,8 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen> {
                                           child: Text(
                                             req.userProfile?.fullName ??
                                                 'Player',
-                                            style: Theme.of(context)
+                                            style: context
+                                                .theme
                                                 .textTheme
                                                 .titleMedium
                                                 ?.copyWith(
@@ -147,7 +151,8 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen> {
                                       SizedBox(height: Dimensions.r8.dynamicH),
                                       Text(
                                         '"${req.message}"',
-                                        style: Theme.of(context)
+                                        style: context
+                                            .theme
                                             .textTheme
                                             .bodyMedium
                                             ?.copyWith(

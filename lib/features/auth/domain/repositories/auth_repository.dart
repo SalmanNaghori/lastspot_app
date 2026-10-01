@@ -12,13 +12,18 @@ abstract class AuthRepository {
   });
 
   /// Signs in an existing user with email and password.
-  Future<Result<void, Exception>> signIn({required String email, required String password});
+  Future<Result<void, Exception>> signIn({
+    required String email,
+    required String password,
+  });
 
   /// Signs out the current user.
   Future<Result<void, Exception>> signOut();
 
   /// Sends a password-reset OTP email to [email].
-  Future<Result<void, Exception>> sendPasswordResetEmail({required String email});
+  Future<Result<void, Exception>> sendPasswordResetEmail({
+    required String email,
+  });
 
   /// Verifies the OTP entered by the user.
   Future<Result<void, Exception>> verifyOtp({

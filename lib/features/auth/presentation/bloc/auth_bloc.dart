@@ -84,7 +84,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     Emitter<AuthState> emit,
   ) async {
     emit(AuthLoading());
-    final result = await _loginUseCase(email: event.email, password: event.password);
+    final result = await _loginUseCase(
+      email: event.email,
+      password: event.password,
+    );
     switch (result) {
       case Success():
         final userId = _checkAuthStatusUseCase();
@@ -119,7 +122,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       case Success():
         final userId = _checkAuthStatusUseCase();
         if (userId != null) {
-          await Future.delayed(const Duration(seconds: 1)); // Wait for trigger to complete
+          await Future.delayed(
+            const Duration(seconds: 1),
+          ); // Wait for trigger to complete
           await _handleUserSession(userId, emit);
         } else {
           emit(Unauthenticated());
@@ -186,7 +191,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       token: event.token,
       type: typeStr,
     );
-    
+
     switch (result) {
       case Success():
         emit(AuthOtpVerified());
@@ -208,7 +213,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     emit(AuthLoading());
     String typeStr = event.type == OtpType.signup ? 'signup' : 'email';
     final result = await _resendOtpUseCase(email: event.email, type: typeStr);
-    
+
     switch (result) {
       case Success():
         emit(AuthOtpSent(email: event.email));

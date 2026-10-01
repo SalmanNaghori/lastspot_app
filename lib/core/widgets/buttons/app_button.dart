@@ -69,7 +69,8 @@ class AppButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final semantics = context.semantics;
 
-    final isFilledPrimary = type == AppButtonType.primary || type == AppButtonType.danger;
+    final isFilledPrimary =
+        type == AppButtonType.primary || type == AppButtonType.danger;
     final spinnerColor = isFilledPrimary ? Colors.white : AppColor.primaryColor;
 
     final Widget child = AnimatedSwitcher(

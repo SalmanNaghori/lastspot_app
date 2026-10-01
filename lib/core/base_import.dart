@@ -9,6 +9,7 @@ export 'package:go_router/go_router.dart';
 // ========================================================
 // CORE CONSTANTS & BRANDING
 // ========================================================
+export 'constants/app_constants.dart';
 export 'constants/app_string.dart';
 export 'constants/dimensions.dart';
 
@@ -35,6 +36,7 @@ export 'network/app_routes.dart';
 // CORE UTILITIES & EXTENSIONS
 // ========================================================
 export 'extension/string_extension.dart';
+export 'extension/theme_extension.dart';
 export 'utils/app_utils.dart';
 export 'utils/context_extensions.dart';
 

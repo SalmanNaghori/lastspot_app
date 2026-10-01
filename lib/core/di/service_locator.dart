@@ -3,6 +3,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../network/supabase_config.dart';
 import '../utils/shared_prefs_util.dart';
+import '../services/image_service.dart';
 
 // Auth Data
 import '../../features/auth/data/datasources/auth_remote_datasource.dart';
@@ -48,6 +49,7 @@ import '../../features/auth/domain/usecases/get_profile_usecase.dart';
 import '../../features/auth/domain/usecases/update_profile_usecase.dart';
 import '../../features/auth/domain/usecases/upload_avatar_usecase.dart';
 import '../../features/auth/domain/usecases/register_device_usecase.dart';
+import '../../features/auth/domain/usecases/update_user_city_usecase.dart';
 import '../../features/auth/presentation/bloc/profile_cubit.dart';
 
 // Spot Data
@@ -66,7 +68,9 @@ import '../../features/spot/domain/usecases/join_spot_usecase.dart';
 import '../../features/spot/domain/usecases/manage_join_request_usecase.dart';
 import '../../features/spot/domain/usecases/stream_spot_join_requests_usecase.dart';
 import '../../features/spot/domain/usecases/get_confirmed_players_usecase.dart';
-import '../../features/spot/presentation/bloc/feed_bloc.dart';
+import '../../features/spot/domain/usecases/get_user_join_request_usecase.dart';
+import '../../features/spot/domain/usecases/get_home_activities_usecase.dart';
+import '../../features/spot/presentation/bloc/home_cubit.dart';
 
 // Settings
 import '../../features/settings/presentation/bloc/settings_cubit.dart';
@@ -83,6 +87,8 @@ Future<void> setupServiceLocator() async {
   sl.registerLazySingleton<SharedPrefsUtil>(
     () => SharedPrefsUtilImpl(sl<SharedPreferences>()),
   );
+
+  sl.registerLazySingleton<ImageService>(() => ImageService());
 
   // ── Blocs ─────────────────────────────────────────────
   sl.registerFactory<SettingsCubit>(
@@ -168,10 +174,20 @@ Future<void> setupServiceLocator() async {
   sl.registerSingleton<UploadAvatarUseCase>(
     UploadAvatarUseCase(sl<ProfileRepository>()),
   );
+  sl.registerSingleton<UpdateUserCityUseCase>(
+    UpdateUserCityUseCase(sl<ProfileRepository>()),
+  );
 
-  // Feed
-  sl.registerFactory(() => FeedBloc(getSpotsUseCase: sl()));
-  
+  // Home
+  sl.registerFactory(
+    () => HomeCubit(
+      getHomeActivitiesUseCase: sl(),
+      getCategoriesUseCase: sl(),
+      updateUserCityUseCase: sl(),
+      getActiveCitiesUseCase: sl(),
+    ),
+  );
+
   // Explore
   sl.registerFactory(() => ExploreBloc(spotRepository: sl()));
 
@@ -192,7 +208,7 @@ Future<void> setupServiceLocator() async {
     GetActiveCitiesUseCase(sl<CityRepository>()),
   );
 
-  sl.registerFactory<CityCubit>(
+  sl.registerLazySingleton<CityCubit>(
     () => CityCubit(getActiveCitiesUseCase: sl<GetActiveCitiesUseCase>()),
   );
 
@@ -200,7 +216,7 @@ Future<void> setupServiceLocator() async {
     GetCategoriesUseCase(sl<CategoryRepository>()),
   );
 
-  sl.registerFactory<CategoryBloc>(
+  sl.registerLazySingleton<CategoryBloc>(
     () => CategoryBloc(getCategoriesUseCase: sl<GetCategoriesUseCase>()),
   );
 
@@ -213,6 +229,9 @@ Future<void> setupServiceLocator() async {
   sl.registerSingleton<GetSpotDetailsUseCase>(
     GetSpotDetailsUseCase(sl<SpotRepository>()),
   );
+  sl.registerSingleton<GetHomeActivitiesUseCase>(
+    GetHomeActivitiesUseCase(sl<SpotRepository>()),
+  );
   sl.registerSingleton<GetSpotsUseCase>(GetSpotsUseCase(sl<SpotRepository>()));
   sl.registerSingleton<JoinSpotUseCase>(JoinSpotUseCase(sl<SpotRepository>()));
   sl.registerSingleton<GetConfirmedPlayersUseCase>(
@@ -223,5 +242,8 @@ Future<void> setupServiceLocator() async {
   );
   sl.registerSingleton<StreamSpotJoinRequestsUseCase>(
     StreamSpotJoinRequestsUseCase(sl<SpotRepository>()),
+  );
+  sl.registerSingleton<GetUserJoinRequestUseCase>(
+    GetUserJoinRequestUseCase(sl<SpotRepository>()),
   );
 }

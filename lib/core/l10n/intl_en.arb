@@ -7,17 +7,13 @@
   "todayAt": "Today at {time}",
   "@todayAt": {
     "placeholders": {
-      "time": {
-        "type": "String"
-      }
+      "time": {}
     }
   },
   "yesterdayAt": "Yesterday at {time}",
   "@yesterdayAt": {
     "placeholders": {
-      "time": {
-        "type": "String"
-      }
+      "time": {}
     }
   },
   "appDescription": "On-Demand Sports & Activity Partner Finder",
@@ -29,7 +25,7 @@
   "searchHint": "Search turfs, sports, players...",
   "urgentMatches": "URGENT MATCHES (STARTING TODAY)",
   "recentPosts": "RECENT POSTS",
-  "openGroundMap": "Open Ground Map ↗",
+  "openGroundMap": "Open Ground Map \u2197",
   "viewSpot": "View Spot",
   "spotsNeeded": "{count} SPOTS",
   "@spotsNeeded": {
@@ -64,7 +60,7 @@
   "mapsGuidance": "Users will tap this to get turn-by-turn directions directly in Google Maps.",
   "additionalGuidelines": "Additional Guidelines (Optional)",
   "matchOverviewTitle": "Match Overview",
-  "statusActiveNeeded": "Status: Active • Needed: {count} Players",
+  "statusActiveNeeded": "Status: Active \u2022 Needed: {count} Players",
   "@statusActiveNeeded": {
     "placeholders": {
       "count": {}
@@ -78,7 +74,7 @@
   },
   "locationAndDirections": "LOCATION & DIRECTIONS",
   "tapForNavigation": "Tap below for live navigation",
-  "openInMaps": "🧭 Open in Google / Apple Maps ↗",
+  "openInMaps": "\ud83e\udded Open in Google / Apple Maps \u2197",
   "confirmedPlayers": "CONFIRMED PLAYERS ({current}/{total})",
   "@confirmedPlayers": {
     "placeholders": {
@@ -87,7 +83,7 @@
     }
   },
   "safetyAndConduct": "SAFETY & CONDUCT",
-  "reportActivity": "🚩 Report this activity or host",
+  "reportActivity": "\ud83d\udea9 Report this activity or host",
   "manageMatchRequests": "Manage Match Requests",
   "openSpotsRemaining": "Open Spots Remaining: {current} / {total}",
   "@openSpotsRemaining": {
@@ -102,9 +98,9 @@
       "count": {}
     }
   },
-  "reject": "❌ Reject",
-  "accept": "✅ Accept",
-  "openMatchChat": "💬 Open Match Group Chat",
+  "reject": "\u274c Reject",
+  "accept": "\u2705 Accept",
+  "openMatchChat": "\ud83d\udcac Open Match Group Chat",
   "login": "Login",
   "signup": "Sign Up",
   "email": "Email",
@@ -149,6 +145,7 @@
   "popularSports": "Popular Sports",
   "popularSportsSubtitle": "Find your favorite sport and join the action",
   "nearbyActivities": "Nearby Activities",
+  "comingUp": "Coming Up",
   "spotsLeft": "{count} SPOTS LEFT",
   "@spotsLeft": {
     "placeholders": {
@@ -164,8 +161,8 @@
   "verifiedHost": "Host",
   "noSpotsFound": "No active spots found.\nBe the first to create one!",
   "validationTitleLocationCategory": "Title, Location, and Category are required.",
-  "activityGeneratedSuccess": "Activity generated successfully!",
-  "generateActivity": "Generate Activity",
+  "activityGeneratedSuccess": "Activity Created!",
+  "generateActivity": "Create Activity",
   "activityImages": "Activity Images",
   "category": "Category",
   "selectCategory": "Select a category",
@@ -179,7 +176,16 @@
   "date": "Date",
   "time": "Time",
   "maxParticipants": "Max Participants",
-  "pricePerPerson": "Price per person ($)",
+  "pricePerPerson": "Price per person",
+  "previewActivity": "Preview Activity",
+  "publishActivity": "Publish Activity",
+  "noCategoriesAvailable": "No categories available",
+  "noCitiesFound": "No cities found",
+  "createAnother": "Create Another",
+  "youAreParticipant1": "Current participants: 1 (You)",
+  "addPhotos": "Add Photos",
+  "gallery": "Gallery",
+  "camera": "Camera",
   "acceptTerms": "I accept the Terms & Conditions",
   "acceptTermsError": "Please accept the Terms & Conditions",
   "confirmPassword": "Confirm Password",
@@ -235,18 +241,6 @@
   "retry": "Retry",
   "allFilter": "All",
   "selectYourCity": "Select your city",
-  "todayAt": "Today at {time}",
-  "@todayAt": {
-    "placeholders": {
-      "time": {}
-    }
-  },
-  "yesterdayAt": "Yesterday at {time}",
-  "@yesterdayAt": {
-    "placeholders": {
-      "time": {}
-    }
-  },
   "filters": "Filters",
   "anyDate": "Any date",
   "today": "Today",
@@ -257,8 +251,8 @@
   "free": "Free",
   "paid": "Paid",
   "participants": "Participants",
-  "spots1to2": "1–2 spots",
-  "spots3to5": "3–5 spots",
+  "spots1to2": "1\u20132 spots",
+  "spots3to5": "3\u20135 spots",
   "spots5plus": "5+ spots",
   "reset": "Reset",
   "applyFilters": "Apply Filters",
@@ -271,5 +265,95 @@
   "city": "City",
   "selectCity": "Select City",
   "edit": "Edit",
-  "deleteImageNotSupported": "Deleting existing images is not supported yet."
+  "deleteImageNotSupported": "Deleting existing images is not supported yet.",
+  "howManyPeopleCanJoin": "How many people can join?",
+  "youAreIncluded": "You are included (1)",
+  "morning": "Morning",
+  "afternoon": "Afternoon",
+  "evening": "Evening",
+  "night": "Night",
+  "pleaseSelectFutureTime": "Please select a future time",
+  "supportContactComingSoon": "Support contact feature coming soon.",
+  "contactSupport": "Contact Support",
+  "thisIsHowActivityAppears": "This is how your activity will appear to others.",
+  "viewOnMap": "View on Map",
+  "noPendingRequests": "No pending requests.",
+  "matchGroupChat": "Match Group Chat",
+  "chatComingSoon": "Chat coming soon!",
+  "realtimeMessagingAvailableHere": "Realtime messaging will be available here.",
+  "pleaseEnterValidPrice": "Please enter a valid price",
+  "statusActive": "Status: Active",
+  "neededPlayers": " \u2022 Needed: {count} Players",
+  "@neededPlayers": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "openInGoogleMaps": "Open in Google Maps",
+  "player": "Player",
+  "inviteAFriend": "Invite a Friend",
+  "reportThisActivityOrHost": "Report this activity or host",
+  "learnAboutSafetyGuidelines": "Learn about Safety Guidelines",
+  "manageActivitiesDesc": "Manage the activities you host, joined, or need to review.",
+  "tabMyActivitiesCount": "My activities {count}",
+  "@tabMyActivitiesCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "tabJoinedCount": "Joined {count}",
+  "@tabJoinedCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "tabRequestsCount": "Requests {count}",
+  "@tabRequestsCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "mockGoldenGateTitle": "Golden Gate Sunset Walk",
+  "mockGoldenGateDate": "Today \u00b7 6:00 PM",
+  "mockGoldenGateLoc": "Golden Gate Park",
+  "mockGoldenGateStats": "6/10 participants \u00b7 FREE",
+  "mockSunsetVolleyballTitle": "Sunset beach volleyball",
+  "mockSunsetVolleyballDate": "Thu, Jun 20 \u00b7 6:30 PM",
+  "mockSunsetVolleyballLoc": "Ocean Beach",
+  "mockRooftopCookingTitle": "Rooftop cooking class",
+  "mockRooftopCookingDate": "Sat, Jun 22 \u00b7 6:30 PM",
+  "mockRooftopCookingLoc": "Mission District rooftop",
+  "mockRooftopCookingStats": "8/8 participants \u00b7 $24",
+  "mockSalsaTitle": "Beginner salsa class",
+  "mockSalsaDate": "Sun, Jun 23 \u00b7 5:00 PM",
+  "mockSalsaLoc": "Mission Dance Hall",
+  "mockSalsaStats": "2/10 participants \u00b7 $12",
+  "tabPreviewData": "Tab preview data",
+  "previewJoined": "Joined \u00b7 Weekend pottery class \u00b7 Saturday \u00b7 4 participants",
+  "previewRequests": "Requests \u00b7 3 pending join requests \u00b7 Review now",
+  "statusHosted": "Hosted",
+  "statusFull": "Full",
+  "pendingRequest": "Pending Request",
+  "joined": "Joined",
+  "requestRejected": "Request Rejected",
+  "requestCancelled": "Request Cancelled",
+  "share": "Share",
+  "cancelActivity": "Cancel Activity",
+  "closeActivity": "Close Activity",
+  "reportActivityAction": "Report Activity",
+  "aboutSection": "ABOUT",
+  "scheduleSection": "SCHEDULE",
+  "statusLabel": "Status: {status}",
+  "@statusLabel": {
+    "placeholders": {
+      "status": {}
+    }
+  },
+  "errorUnknownState": "Error or unknown state"
 }

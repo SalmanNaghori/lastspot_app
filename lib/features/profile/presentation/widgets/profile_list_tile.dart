@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:lastspot_app/core/base_import.dart';
 
 class ProfileListTile extends StatelessWidget {
   final IconData icon;
@@ -14,13 +14,12 @@ class ProfileListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     return ListTile(
-      leading: Icon(icon, color: theme.colorScheme.onSurface),
-      title: Text(title, style: theme.textTheme.bodyLarge),
+      leading: Icon(icon, color: context.colorScheme.onSurface),
+      title: Text(title, style: context.bodyLarge),
       trailing: Icon(
         Icons.chevron_right,
-        color: theme.colorScheme.onSurfaceVariant,
+        color: context.colorScheme.onSurfaceVariant,
       ),
       onTap: onTap,
     );

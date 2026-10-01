@@ -9,7 +9,6 @@ class ProfileHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     final loc = context.loc;
 
     return Column(
@@ -19,22 +18,22 @@ class ProfileHeader extends StatelessWidget {
           width: 104,
           height: 104,
           isCircle: true,
+          memCacheWidth: 300,
+          memCacheHeight: 300,
           errorWidget: CircleAvatar(
             radius: 52,
-            backgroundColor: theme.colorScheme.surfaceContainerHighest,
+            backgroundColor: context.colorScheme.surfaceContainerHighest,
             child: Icon(
               Icons.person,
               size: 52,
-              color: theme.colorScheme.onSurfaceVariant,
+              color: context.colorScheme.onSurfaceVariant,
             ),
           ),
         ),
         const SizedBox(height: Dimensions.r16),
         Text(
           profile.fullName ?? loc.yourName,
-          style: theme.textTheme.headlineSmall?.copyWith(
-            fontWeight: FontWeight.bold,
-          ),
+          style: context.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
           textAlign: TextAlign.center,
         ),
         if (profile.city != null && profile.city!.isNotEmpty) ...[
@@ -45,13 +44,13 @@ class ProfileHeader extends StatelessWidget {
               Icon(
                 Icons.location_on,
                 size: 16,
-                color: theme.colorScheme.primary,
+                color: context.colorScheme.primary,
               ),
               const SizedBox(width: 4),
               Text(
                 profile.city!,
-                style: theme.textTheme.titleMedium?.copyWith(
-                  color: theme.colorScheme.onSurfaceVariant,
+                style: context.titleMedium?.copyWith(
+                  color: context.colorScheme.onSurfaceVariant,
                 ),
                 textAlign: TextAlign.center,
               ),
@@ -62,7 +61,7 @@ class ProfileHeader extends StatelessWidget {
           const SizedBox(height: Dimensions.r12),
           Text(
             profile.bio!,
-            style: theme.textTheme.bodyMedium,
+            style: context.bodyMedium,
             textAlign: TextAlign.center,
           ),
         ],
@@ -75,13 +74,12 @@ class ProfileHeader extends StatelessWidget {
             children: profile.sportsInterests.map((sport) {
               return Chip(
                 label: Text(sport),
-                labelStyle: theme.textTheme.bodySmall?.copyWith(
-                  color: theme.colorScheme.onPrimaryContainer,
+                labelStyle: context.bodySmall?.copyWith(
+                  color: context.colorScheme.onPrimaryContainer,
                   fontWeight: FontWeight.w600,
                 ),
-                backgroundColor: theme.colorScheme.primaryContainer.withValues(
-                  alpha: 0.5,
-                ),
+                backgroundColor: context.colorScheme.primaryContainer
+                    .withValues(alpha: 0.5),
                 side: BorderSide.none,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(Dimensions.r8),

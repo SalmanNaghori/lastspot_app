@@ -4,10 +4,7 @@ import '../../../../core/base_import.dart';
 class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
   final VoidCallback? onNotificationTap;
 
-  const HomeAppBar({
-    super.key,
-    this.onNotificationTap,
-  });
+  const HomeAppBar({super.key, this.onNotificationTap});
 
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);

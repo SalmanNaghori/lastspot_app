@@ -8,7 +8,12 @@ class ExploreFilterBottomSheet extends StatefulWidget {
   final ExploreDateFilter initialDateFilter;
   final ExplorePriceFilter initialPriceFilter;
   final ExploreParticipantsFilter initialParticipantsFilter;
-  final void Function(ExploreDateFilter, ExplorePriceFilter, ExploreParticipantsFilter) onApply;
+  final void Function(
+    ExploreDateFilter,
+    ExplorePriceFilter,
+    ExploreParticipantsFilter,
+  )
+  onApply;
 
   const ExploreFilterBottomSheet({
     super.key,
@@ -19,7 +24,8 @@ class ExploreFilterBottomSheet extends StatefulWidget {
   });
 
   @override
-  State<ExploreFilterBottomSheet> createState() => _ExploreFilterBottomSheetState();
+  State<ExploreFilterBottomSheet> createState() =>
+      _ExploreFilterBottomSheetState();
 }
 
 class _ExploreFilterBottomSheetState extends State<ExploreFilterBottomSheet> {
@@ -51,7 +57,11 @@ class _ExploreFilterBottomSheetState extends State<ExploreFilterBottomSheet> {
   }
 
   void _apply() {
-    widget.onApply(_dateFilter.value, _priceFilter.value, _participantsFilter.value);
+    widget.onApply(
+      _dateFilter.value,
+      _priceFilter.value,
+      _participantsFilter.value,
+    );
     context.pop();
   }
 
@@ -183,11 +193,17 @@ class _ExploreFilterBottomSheetState extends State<ExploreFilterBottomSheet> {
             child: Row(
               children: [
                 Expanded(
-                  child: AppButton.outline(onPressed: _reset, label: context.loc.reset),
+                  child: AppButton.outline(
+                    onPressed: _reset,
+                    label: context.loc.reset,
+                  ),
                 ),
                 SizedBox(width: Dimensions.r16.dynamicW),
                 Expanded(
-                  child: AppButton.primary(onPressed: _apply, label: context.loc.applyFilters),
+                  child: AppButton.primary(
+                    onPressed: _apply,
+                    label: context.loc.applyFilters,
+                  ),
                 ),
               ],
             ),

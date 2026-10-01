@@ -39,8 +39,8 @@ class JoinRequestModel extends JoinRequestEntity {
       userProfile: json['profiles'] != null
           ? ProfileModel.fromJson(json['profiles'])
           : null,
-      post: (json['requests'] ?? json['posts']) != null 
-          ? RequestModel.fromJson(json['requests'] ?? json['posts']) 
+      post: (json['requests'] ?? json['posts']) != null
+          ? RequestModel.fromJson(json['requests'] ?? json['posts'])
           : null,
     );
   }

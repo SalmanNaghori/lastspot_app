@@ -8,8 +8,8 @@ class CityCubit extends Cubit<CityState> {
   final GetActiveCitiesUseCase _getActiveCitiesUseCase;
 
   CityCubit({required GetActiveCitiesUseCase getActiveCitiesUseCase})
-      : _getActiveCitiesUseCase = getActiveCitiesUseCase,
-        super(CityInitial());
+    : _getActiveCitiesUseCase = getActiveCitiesUseCase,
+      super(CityInitial());
 
   Future<void> fetchCities() async {
     emit(CityLoading());

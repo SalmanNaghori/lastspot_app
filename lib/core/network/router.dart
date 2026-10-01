@@ -10,9 +10,10 @@ import '../../features/auth/presentation/pages/forgot_password_screen.dart';
 import '../../features/auth/presentation/pages/profile_setup_screen.dart';
 import '../../features/auth/presentation/pages/account_status_screen.dart';
 import '../../features/auth/presentation/pages/auth_check_screen.dart';
-import '../../features/spot/presentation/pages/feed_screen.dart';
-import '../../features/spot/presentation/bloc/feed_bloc.dart';
+import '../../features/spot/presentation/pages/home_screen.dart';
+import '../../features/spot/presentation/bloc/home_cubit.dart';
 import '../../features/spot/presentation/pages/create_spot_screen.dart';
+import '../../features/spot/presentation/pages/preview_spot_screen.dart';
 import '../../features/auth/presentation/bloc/profile_cubit.dart';
 import '../../features/spot/presentation/bloc/create_spot_bloc.dart';
 import '../../features/spot/presentation/pages/spot_details_screen.dart';
@@ -23,12 +24,13 @@ import '../../features/spot/presentation/pages/chat_screen.dart';
 import '../../features/spot/domain/usecases/create_spot_usecase.dart';
 import '../../features/spot/domain/usecases/update_spot_usecase.dart';
 import '../../features/spot/domain/usecases/get_spot_details_usecase.dart';
-import '../../features/spot/domain/usecases/get_spots_usecase.dart';
+
 import '../../features/spot/domain/usecases/join_spot_usecase.dart';
 import '../../features/spot/domain/entities/request_entity.dart';
 import '../../features/spot/domain/usecases/manage_join_request_usecase.dart';
 import '../../features/spot/domain/usecases/stream_spot_join_requests_usecase.dart';
 import '../../features/spot/domain/usecases/get_confirmed_players_usecase.dart';
+import '../../features/spot/domain/usecases/get_user_join_request_usecase.dart';
 import '../../features/categories/domain/usecases/get_categories_usecase.dart';
 import '../../features/auth/domain/repositories/auth_repository.dart';
 import '../../features/categories/presentation/bloc/category_bloc.dart';
@@ -111,14 +113,13 @@ final GoRouter appRouter = GoRouter(
                 final userId = Supabase.instance.client.auth.currentUser!.id;
                 return MultiBlocProvider(
                   providers: [
+                    BlocProvider(create: (context) => sl<HomeCubit>()),
                     BlocProvider(
-                      create: (context) => FeedBloc(getSpotsUseCase: sl<GetSpotsUseCase>()),
-                    ),
-                    BlocProvider(
-                      create: (context) => sl<ProfileCubit>()..fetchProfile(userId),
+                      create: (context) =>
+                          sl<ProfileCubit>()..fetchProfile(userId),
                     ),
                   ],
-                  child: const FeedScreen(),
+                  child: const HomeScreen(),
                 );
               },
             ),
@@ -132,7 +133,10 @@ final GoRouter appRouter = GoRouter(
               builder: (context, state) => MultiBlocProvider(
                 providers: [
                   BlocProvider(create: (context) => sl<ExploreBloc>()),
-                  BlocProvider(create: (context) => sl<CategoryBloc>()..add(ce.LoadCategoriesEvent())),
+                  BlocProvider(
+                    create: (context) =>
+                        sl<CategoryBloc>()..add(ce.LoadCategoriesEvent()),
+                  ),
                 ],
                 child: const ExploreScreen(),
               ),
@@ -184,14 +188,19 @@ final GoRouter appRouter = GoRouter(
       path: AppRoutes.spotDetails,
       builder: (context, state) {
         final id = state.pathParameters['id']!;
+        final extra = state.extra as Map<String, dynamic>? ?? {};
+        final heroTag = extra['heroTag'] as String?;
+        final initialSpot = extra['spot'] as RequestEntity?;
+        
         return BlocProvider(
           create: (context) => SpotDetailsBloc(
             getSpotDetailsUseCase: sl<GetSpotDetailsUseCase>(),
             joinSpotUseCase: sl<JoinSpotUseCase>(),
             authRepository: sl<AuthRepository>(),
             getConfirmedPlayersUseCase: sl<GetConfirmedPlayersUseCase>(),
+            getUserJoinRequestUseCase: sl<GetUserJoinRequestUseCase>(),
           ),
-          child: SpotDetailsScreen(postId: id),
+          child: SpotDetailsScreen(postId: id, heroTag: heroTag, initialSpot: initialSpot),
         );
       },
     ),
@@ -206,6 +215,23 @@ final GoRouter appRouter = GoRouter(
             getCategoriesUseCase: sl<GetCategoriesUseCase>(),
           )..add(LoadCategoriesEvent()),
           child: CreateSpotScreen(spotToEdit: spotToEdit),
+        );
+      },
+    ),
+    GoRoute(
+      path: AppRoutes.previewSpot,
+      builder: (context, state) {
+        final extra = state.extra as Map<String, dynamic>;
+        final bloc = extra['bloc'] as CreateSpotBloc;
+        final formState = extra['formState'] as CreateSpotFormState;
+        final spotToEdit = extra['spotToEdit'] as RequestEntity?;
+
+        return BlocProvider.value(
+          value: bloc,
+          child: PreviewSpotScreen(
+            formState: formState,
+            spotToEdit: spotToEdit,
+          ),
         );
       },
     ),

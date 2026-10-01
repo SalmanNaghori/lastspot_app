@@ -634,6 +634,12 @@ abstract class AppLocalizations {
   /// **'Nearby Activities'**
   String get nearbyActivities;
 
+  /// No description provided for @comingUp.
+  ///
+  /// In en, this message translates to:
+  /// **'Coming Up'**
+  String get comingUp;
+
   /// No description provided for @spotsLeft.
   ///
   /// In en, this message translates to:
@@ -697,13 +703,13 @@ abstract class AppLocalizations {
   /// No description provided for @activityGeneratedSuccess.
   ///
   /// In en, this message translates to:
-  /// **'Activity generated successfully!'**
+  /// **'Activity Created!'**
   String get activityGeneratedSuccess;
 
   /// No description provided for @generateActivity.
   ///
   /// In en, this message translates to:
-  /// **'Generate Activity'**
+  /// **'Create Activity'**
   String get generateActivity;
 
   /// No description provided for @activityImages.
@@ -787,8 +793,62 @@ abstract class AppLocalizations {
   /// No description provided for @pricePerPerson.
   ///
   /// In en, this message translates to:
-  /// **'Price per person (\$)'**
+  /// **'Price per person'**
   String get pricePerPerson;
+
+  /// No description provided for @previewActivity.
+  ///
+  /// In en, this message translates to:
+  /// **'Preview Activity'**
+  String get previewActivity;
+
+  /// No description provided for @publishActivity.
+  ///
+  /// In en, this message translates to:
+  /// **'Publish Activity'**
+  String get publishActivity;
+
+  /// No description provided for @noCategoriesAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'No categories available'**
+  String get noCategoriesAvailable;
+
+  /// No description provided for @noCitiesFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No cities found'**
+  String get noCitiesFound;
+
+  /// No description provided for @createAnother.
+  ///
+  /// In en, this message translates to:
+  /// **'Create Another'**
+  String get createAnother;
+
+  /// No description provided for @youAreParticipant1.
+  ///
+  /// In en, this message translates to:
+  /// **'Current participants: 1 (You)'**
+  String get youAreParticipant1;
+
+  /// No description provided for @addPhotos.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Photos'**
+  String get addPhotos;
+
+  /// No description provided for @gallery.
+  ///
+  /// In en, this message translates to:
+  /// **'Gallery'**
+  String get gallery;
+
+  /// No description provided for @camera.
+  ///
+  /// In en, this message translates to:
+  /// **'Camera'**
+  String get camera;
 
   /// No description provided for @acceptTerms.
   ///
@@ -1239,6 +1299,360 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Deleting existing images is not supported yet.'**
   String get deleteImageNotSupported;
+
+  /// No description provided for @howManyPeopleCanJoin.
+  ///
+  /// In en, this message translates to:
+  /// **'How many people can join?'**
+  String get howManyPeopleCanJoin;
+
+  /// No description provided for @youAreIncluded.
+  ///
+  /// In en, this message translates to:
+  /// **'You are included (1)'**
+  String get youAreIncluded;
+
+  /// No description provided for @morning.
+  ///
+  /// In en, this message translates to:
+  /// **'Morning'**
+  String get morning;
+
+  /// No description provided for @afternoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Afternoon'**
+  String get afternoon;
+
+  /// No description provided for @evening.
+  ///
+  /// In en, this message translates to:
+  /// **'Evening'**
+  String get evening;
+
+  /// No description provided for @night.
+  ///
+  /// In en, this message translates to:
+  /// **'Night'**
+  String get night;
+
+  /// No description provided for @pleaseSelectFutureTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select a future time'**
+  String get pleaseSelectFutureTime;
+
+  /// No description provided for @supportContactComingSoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Support contact feature coming soon.'**
+  String get supportContactComingSoon;
+
+  /// No description provided for @contactSupport.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact Support'**
+  String get contactSupport;
+
+  /// No description provided for @thisIsHowActivityAppears.
+  ///
+  /// In en, this message translates to:
+  /// **'This is how your activity will appear to others.'**
+  String get thisIsHowActivityAppears;
+
+  /// No description provided for @viewOnMap.
+  ///
+  /// In en, this message translates to:
+  /// **'View on Map'**
+  String get viewOnMap;
+
+  /// No description provided for @noPendingRequests.
+  ///
+  /// In en, this message translates to:
+  /// **'No pending requests.'**
+  String get noPendingRequests;
+
+  /// No description provided for @matchGroupChat.
+  ///
+  /// In en, this message translates to:
+  /// **'Match Group Chat'**
+  String get matchGroupChat;
+
+  /// No description provided for @chatComingSoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Chat coming soon!'**
+  String get chatComingSoon;
+
+  /// No description provided for @realtimeMessagingAvailableHere.
+  ///
+  /// In en, this message translates to:
+  /// **'Realtime messaging will be available here.'**
+  String get realtimeMessagingAvailableHere;
+
+  /// No description provided for @pleaseEnterValidPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a valid price'**
+  String get pleaseEnterValidPrice;
+
+  /// No description provided for @statusActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Status: Active'**
+  String get statusActive;
+
+  /// No description provided for @neededPlayers.
+  ///
+  /// In en, this message translates to:
+  /// **' • Needed: {count} Players'**
+  String neededPlayers(Object count);
+
+  /// No description provided for @openInGoogleMaps.
+  ///
+  /// In en, this message translates to:
+  /// **'Open in Google Maps'**
+  String get openInGoogleMaps;
+
+  /// No description provided for @player.
+  ///
+  /// In en, this message translates to:
+  /// **'Player'**
+  String get player;
+
+  /// No description provided for @inviteAFriend.
+  ///
+  /// In en, this message translates to:
+  /// **'Invite a Friend'**
+  String get inviteAFriend;
+
+  /// No description provided for @reportThisActivityOrHost.
+  ///
+  /// In en, this message translates to:
+  /// **'Report this activity or host'**
+  String get reportThisActivityOrHost;
+
+  /// No description provided for @learnAboutSafetyGuidelines.
+  ///
+  /// In en, this message translates to:
+  /// **'Learn about Safety Guidelines'**
+  String get learnAboutSafetyGuidelines;
+
+  /// No description provided for @manageActivitiesDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage the activities you host, joined, or need to review.'**
+  String get manageActivitiesDesc;
+
+  /// No description provided for @tabMyActivitiesCount.
+  ///
+  /// In en, this message translates to:
+  /// **'My activities {count}'**
+  String tabMyActivitiesCount(String count);
+
+  /// No description provided for @tabJoinedCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Joined {count}'**
+  String tabJoinedCount(String count);
+
+  /// No description provided for @tabRequestsCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Requests {count}'**
+  String tabRequestsCount(String count);
+
+  /// No description provided for @mockGoldenGateTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Golden Gate Sunset Walk'**
+  String get mockGoldenGateTitle;
+
+  /// No description provided for @mockGoldenGateDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Today · 6:00 PM'**
+  String get mockGoldenGateDate;
+
+  /// No description provided for @mockGoldenGateLoc.
+  ///
+  /// In en, this message translates to:
+  /// **'Golden Gate Park'**
+  String get mockGoldenGateLoc;
+
+  /// No description provided for @mockGoldenGateStats.
+  ///
+  /// In en, this message translates to:
+  /// **'6/10 participants · FREE'**
+  String get mockGoldenGateStats;
+
+  /// No description provided for @mockSunsetVolleyballTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sunset beach volleyball'**
+  String get mockSunsetVolleyballTitle;
+
+  /// No description provided for @mockSunsetVolleyballDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Thu, Jun 20 · 6:30 PM'**
+  String get mockSunsetVolleyballDate;
+
+  /// No description provided for @mockSunsetVolleyballLoc.
+  ///
+  /// In en, this message translates to:
+  /// **'Ocean Beach'**
+  String get mockSunsetVolleyballLoc;
+
+  /// No description provided for @mockRooftopCookingTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Rooftop cooking class'**
+  String get mockRooftopCookingTitle;
+
+  /// No description provided for @mockRooftopCookingDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Sat, Jun 22 · 6:30 PM'**
+  String get mockRooftopCookingDate;
+
+  /// No description provided for @mockRooftopCookingLoc.
+  ///
+  /// In en, this message translates to:
+  /// **'Mission District rooftop'**
+  String get mockRooftopCookingLoc;
+
+  /// No description provided for @mockRooftopCookingStats.
+  ///
+  /// In en, this message translates to:
+  /// **'8/8 participants · \$24'**
+  String get mockRooftopCookingStats;
+
+  /// No description provided for @mockSalsaTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Beginner salsa class'**
+  String get mockSalsaTitle;
+
+  /// No description provided for @mockSalsaDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Sun, Jun 23 · 5:00 PM'**
+  String get mockSalsaDate;
+
+  /// No description provided for @mockSalsaLoc.
+  ///
+  /// In en, this message translates to:
+  /// **'Mission Dance Hall'**
+  String get mockSalsaLoc;
+
+  /// No description provided for @mockSalsaStats.
+  ///
+  /// In en, this message translates to:
+  /// **'2/10 participants · \$12'**
+  String get mockSalsaStats;
+
+  /// No description provided for @tabPreviewData.
+  ///
+  /// In en, this message translates to:
+  /// **'Tab preview data'**
+  String get tabPreviewData;
+
+  /// No description provided for @previewJoined.
+  ///
+  /// In en, this message translates to:
+  /// **'Joined · Weekend pottery class · Saturday · 4 participants'**
+  String get previewJoined;
+
+  /// No description provided for @previewRequests.
+  ///
+  /// In en, this message translates to:
+  /// **'Requests · 3 pending join requests · Review now'**
+  String get previewRequests;
+
+  /// No description provided for @statusHosted.
+  ///
+  /// In en, this message translates to:
+  /// **'Hosted'**
+  String get statusHosted;
+
+  /// No description provided for @statusFull.
+  ///
+  /// In en, this message translates to:
+  /// **'Full'**
+  String get statusFull;
+
+  /// No description provided for @pendingRequest.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending Request'**
+  String get pendingRequest;
+
+  /// No description provided for @joined.
+  ///
+  /// In en, this message translates to:
+  /// **'Joined'**
+  String get joined;
+
+  /// No description provided for @requestRejected.
+  ///
+  /// In en, this message translates to:
+  /// **'Request Rejected'**
+  String get requestRejected;
+
+  /// No description provided for @requestCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'Request Cancelled'**
+  String get requestCancelled;
+
+  /// No description provided for @share.
+  ///
+  /// In en, this message translates to:
+  /// **'Share'**
+  String get share;
+
+  /// No description provided for @cancelActivity.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel Activity'**
+  String get cancelActivity;
+
+  /// No description provided for @closeActivity.
+  ///
+  /// In en, this message translates to:
+  /// **'Close Activity'**
+  String get closeActivity;
+
+  /// No description provided for @reportActivityAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Report Activity'**
+  String get reportActivityAction;
+
+  /// No description provided for @aboutSection.
+  ///
+  /// In en, this message translates to:
+  /// **'ABOUT'**
+  String get aboutSection;
+
+  /// No description provided for @scheduleSection.
+  ///
+  /// In en, this message translates to:
+  /// **'SCHEDULE'**
+  String get scheduleSection;
+
+  /// No description provided for @statusLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Status: {status}'**
+  String statusLabel(Object status);
+
+  /// No description provided for @errorUnknownState.
+  ///
+  /// In en, this message translates to:
+  /// **'Error or unknown state'**
+  String get errorUnknownState;
 }
 
 class _AppLocalizationsDelegate

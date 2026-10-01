@@ -8,17 +8,41 @@ class SportGradientBackground extends StatelessWidget {
   (Color, Color, IconData) get _style {
     switch (categoryId.toLowerCase()) {
       case 'cricket':
-        return (CategoryColors.cricketDark, CategoryColors.cricketLight, Icons.sports_cricket);
+        return (
+          CategoryColors.cricketDark,
+          CategoryColors.cricketLight,
+          Icons.sports_cricket,
+        );
       case 'football':
-        return (CategoryColors.footballDark, CategoryColors.footballLight, Icons.sports_soccer);
+        return (
+          CategoryColors.footballDark,
+          CategoryColors.footballLight,
+          Icons.sports_soccer,
+        );
       case 'basketball':
-        return (CategoryColors.basketballDark, CategoryColors.basketballLight, Icons.sports_basketball);
+        return (
+          CategoryColors.basketballDark,
+          CategoryColors.basketballLight,
+          Icons.sports_basketball,
+        );
       case 'tennis':
-        return (CategoryColors.tennisDark, CategoryColors.tennisLight, Icons.sports_tennis);
+        return (
+          CategoryColors.tennisDark,
+          CategoryColors.tennisLight,
+          Icons.sports_tennis,
+        );
       case 'badminton':
-        return (CategoryColors.badmintonDark, CategoryColors.badmintonLight, Icons.sports_tennis);
+        return (
+          CategoryColors.badmintonDark,
+          CategoryColors.badmintonLight,
+          Icons.sports_tennis,
+        );
       default:
-        return (CategoryColors.defaultDark, CategoryColors.defaultLight, Icons.sports);
+        return (
+          CategoryColors.defaultDark,
+          CategoryColors.defaultLight,
+          Icons.sports,
+        );
     }
   }
 
@@ -27,10 +51,18 @@ class SportGradientBackground extends StatelessWidget {
     final (darkColor, lightColor, icon) = _style;
     return Container(
       decoration: BoxDecoration(
-        gradient: LinearGradient(colors: [darkColor, lightColor], begin: Alignment.topLeft, end: Alignment.bottomRight),
+        gradient: LinearGradient(
+          colors: [darkColor, lightColor],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
       ),
       child: Center(
-        child: Icon(icon, size: Dimensions.r64.dynamicH * 1.25, color: AppColor.whiteColor.withValues(alpha: 0.12)),
+        child: Icon(
+          icon,
+          size: Dimensions.r64.dynamicH * 1.25,
+          color: AppColor.whiteColor.withValues(alpha: 0.12),
+        ),
       ),
     );
   }

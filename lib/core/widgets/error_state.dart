@@ -23,14 +23,14 @@ class ErrorState extends StatelessWidget {
             Icon(
               Icons.error_outline,
               size: Dimensions.r48,
-              color: Theme.of(context).colorScheme.error,
+              color: context.colorScheme.error,
             ),
             const SizedBox(height: Dimensions.r16),
             Text(
               message,
               textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                color: Theme.of(context).colorScheme.onSurface,
+              style: context.bodyLarge?.copyWith(
+                color: context.colorScheme.onSurface,
               ),
             ),
             if (onRetry != null) ...[

@@ -11,12 +11,19 @@ class ViewSpotButton extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: Dimensions.r16.dynamicW, vertical: Dimensions.r10.dynamicH),
+        padding: EdgeInsets.symmetric(
+          horizontal: Dimensions.r16.dynamicW,
+          vertical: Dimensions.r10.dynamicH,
+        ),
         decoration: BoxDecoration(
           color: context.primaryColor,
           borderRadius: BorderRadius.circular(Dimensions.r12.dynamicR),
           boxShadow: [
-            BoxShadow(color: context.primaryColor.withValues(alpha: 0.35), blurRadius: 8, offset: const Offset(0, 3)),
+            BoxShadow(
+              color: context.primaryColor.withValues(alpha: 0.35),
+              blurRadius: 8,
+              offset: const Offset(0, 3),
+            ),
           ],
         ),
         child: Row(
@@ -31,7 +38,11 @@ class ViewSpotButton extends StatelessWidget {
               ),
             ),
             SizedBox(width: Dimensions.r4.dynamicW),
-            Icon(Icons.arrow_forward, color: AppColor.whiteColor, size: Dimensions.r14.dynamicH),
+            Icon(
+              Icons.arrow_forward,
+              color: AppColor.whiteColor,
+              size: Dimensions.r14.dynamicH,
+            ),
           ],
         ),
       ),

@@ -1,40 +1,88 @@
 import 'package:lastspot_app/core/base_import.dart';
+import '../../../categories/domain/entities/category.dart';
 
 class SportFilterChips extends StatelessWidget {
-  final String? selectedCategory;
+  final List<CategoryEntity> categories;
+  final String? selectedCategoryId;
   final ValueChanged<String?> onCategorySelected;
 
   const SportFilterChips({
     super.key,
-    required this.selectedCategory,
+    required this.categories,
+    required this.selectedCategoryId,
     required this.onCategorySelected,
   });
 
-  static const List<_SportFilter> _sports = [
-    _SportFilter('Cricket', Icons.sports_cricket),
-    _SportFilter('Football', Icons.sports_soccer),
-    _SportFilter('Badminton', Icons.sports_tennis),
-    _SportFilter('Tennis', Icons.sports_tennis),
-    _SportFilter('Basketball', Icons.sports_basketball),
-    _SportFilter('Running', Icons.directions_run),
-  ];
+  IconData _getIconForCategory(String iconString) {
+    switch (iconString.toLowerCase()) {
+      case 'cricket':
+        return Icons.sports_cricket;
+      case 'football':
+        return Icons.sports_soccer;
+      case 'badminton':
+        return Icons.sports_tennis;
+      case 'tennis':
+        return Icons.sports_tennis;
+      case 'basketball':
+        return Icons.sports_basketball;
+      case 'running':
+        return Icons.directions_run;
+      case 'travel':
+        return Icons.flight_takeoff;
+      case 'cycling':
+        return Icons.directions_bike;
+      case 'events':
+        return Icons.event;
+      case 'hiking':
+        return Icons.landscape;
+      default:
+        return Icons.sports;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    if (categories.isEmpty) {
+      return SizedBox(
+        height: Dimensions.r24.dynamicH * 1.67,
+        child: ListView.separated(
+          scrollDirection: Axis.horizontal,
+          padding: EdgeInsets.symmetric(horizontal: Dimensions.r16.dynamicW),
+          itemCount: 5,
+          separatorBuilder: (_, _) => SizedBox(width: Dimensions.r8.dynamicW),
+          itemBuilder: (context, index) {
+            return Container(
+              width: Dimensions.r48.dynamicW * 2,
+              height: double.infinity,
+              decoration: BoxDecoration(
+                color: context.surfaceColor,
+                borderRadius: BorderRadius.circular(9999),
+                border: Border.all(
+                  color: context.borderColor,
+                  width: 1.5,
+                ),
+              ),
+            );
+          },
+        ),
+      );
+    }
+
     return SizedBox(
       height: Dimensions.r24.dynamicH * 1.67,
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
         padding: EdgeInsets.symmetric(horizontal: Dimensions.r16.dynamicW),
-        itemCount: _sports.length,
+        itemCount: categories.length,
         separatorBuilder: (_, _) => SizedBox(width: Dimensions.r8.dynamicW),
         itemBuilder: (context, index) {
-          final sport = _sports[index];
-          final isSelected = selectedCategory == sport.name;
+          final category = categories[index];
+          final isSelected = selectedCategoryId == category.id;
           return _SportChip(
-            sport: sport,
+            category: category,
+            iconData: _getIconForCategory(category.icon),
             isSelected: isSelected,
-            onTap: () => onCategorySelected(isSelected ? null : sport.name),
+            onTap: () => onCategorySelected(isSelected ? null : category.id),
           );
         },
       ),
@@ -43,12 +91,14 @@ class SportFilterChips extends StatelessWidget {
 }
 
 class _SportChip extends StatelessWidget {
-  final _SportFilter sport;
+  final CategoryEntity category;
+  final IconData iconData;
   final bool isSelected;
   final VoidCallback onTap;
 
   const _SportChip({
-    required this.sport,
+    required this.category,
+    required this.iconData,
     required this.isSelected,
     required this.onTap,
   });
@@ -85,13 +135,13 @@ class _SportChip extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Icon(
-              sport.icon,
+              iconData,
               size: Dimensions.r16.dynamicH,
               color: isSelected ? AppColor.whiteColor : context.textSecondary,
             ),
             SizedBox(width: Dimensions.r6.dynamicW),
             Text(
-              sport.name,
+              category.name,
               style: TextStyle(
                 fontSize: Dimensions.r13.dynamicSP,
                 fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
@@ -103,11 +153,4 @@ class _SportChip extends StatelessWidget {
       ),
     );
   }
-}
-
-class _SportFilter {
-  final String name;
-  final IconData icon;
-
-  const _SportFilter(this.name, this.icon);
 }

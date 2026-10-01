@@ -2,7 +2,9 @@ import 'package:equatable/equatable.dart';
 import '../../../spot/domain/entities/request_entity.dart';
 
 enum ExploreDateFilter { any, today, tomorrow, thisWeekend }
+
 enum ExplorePriceFilter { any, free, paid }
+
 enum ExploreParticipantsFilter { any, spots1to2, spots3to5, spots5plus }
 
 abstract class ExploreState extends Equatable {
@@ -52,8 +54,12 @@ class ExploreLoaded extends ExploreState {
   }) {
     return ExploreLoaded(
       posts: posts ?? this.posts,
-      searchQuery: searchQuery != null && searchQuery.isEmpty ? null : (searchQuery ?? this.searchQuery),
-      categoryId: categoryId != null && categoryId.isEmpty ? null : (categoryId ?? this.categoryId),
+      searchQuery: searchQuery != null && searchQuery.isEmpty
+          ? null
+          : (searchQuery ?? this.searchQuery),
+      categoryId: categoryId != null && categoryId.isEmpty
+          ? null
+          : (categoryId ?? this.categoryId),
       cityId: cityId ?? this.cityId,
       dateFilter: dateFilter ?? this.dateFilter,
       priceFilter: priceFilter ?? this.priceFilter,
@@ -105,13 +111,23 @@ class ExploreLoaded extends ExploreState {
     );
   }
 
-  bool get hasActiveFilters => 
-    dateFilter != ExploreDateFilter.any || 
-    priceFilter != ExplorePriceFilter.any || 
-    participantsFilter != ExploreParticipantsFilter.any;
+  bool get hasActiveFilters =>
+      dateFilter != ExploreDateFilter.any ||
+      priceFilter != ExplorePriceFilter.any ||
+      participantsFilter != ExploreParticipantsFilter.any;
 
   @override
-  List<Object?> get props => [posts, searchQuery, categoryId, cityId, dateFilter, priceFilter, participantsFilter, hasReachedMax, isPaginating];
+  List<Object?> get props => [
+    posts,
+    searchQuery,
+    categoryId,
+    cityId,
+    dateFilter,
+    priceFilter,
+    participantsFilter,
+    hasReachedMax,
+    isPaginating,
+  ];
 }
 
 class ExploreError extends ExploreState {
