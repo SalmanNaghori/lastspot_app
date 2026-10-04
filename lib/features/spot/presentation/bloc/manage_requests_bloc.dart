@@ -5,6 +5,7 @@ import '../../domain/usecases/stream_spot_join_requests_usecase.dart';
 import '../../domain/usecases/manage_join_request_usecase.dart';
 import '../../domain/usecases/get_spot_details_usecase.dart';
 import '../../domain/entities/request_entity.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 abstract class ManageRequestsEvent {}
 
@@ -121,12 +122,17 @@ class ManageRequestsBloc
     Emitter<ManageRequestsState> emit,
   ) async {
     try {
-      await _manageRequestUseCase(
-        joinRequestId: event.requestId,
-        status: event.status,
-      );
+      if (event.status == 'accepted') {
+        await _manageRequestUseCase.accept(event.requestId);
+      } else if (event.status == 'rejected') {
+        await _manageRequestUseCase.reject(event.requestId);
+      } else if (event.status == 'cancelled') {
+        await _manageRequestUseCase.cancel(event.requestId);
+      }
+    } on PostgrestException catch (e) {
+      emit(ManageRequestsError(message: e.message));
     } catch (e) {
-      // In a more complex app, we might emit a temporary error state, but this is sufficient for now
+      emit(ManageRequestsError(message: 'An unexpected error occurred.'));
     }
   }
 

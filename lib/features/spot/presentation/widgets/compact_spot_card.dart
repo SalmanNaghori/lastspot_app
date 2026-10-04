@@ -1,4 +1,3 @@
-import 'package:intl/intl.dart';
 import 'package:lastspot_app/core/base_import.dart';
 import 'package:lastspot_app/features/spot/domain/entities/request_entity.dart';
 
@@ -9,7 +8,12 @@ class CompactSpotCard extends StatefulWidget {
   final String? heroTagPrefix;
   final VoidCallback onTap;
 
-  const CompactSpotCard({super.key, required this.spot, this.heroTagPrefix, required this.onTap});
+  const CompactSpotCard({
+    super.key,
+    required this.spot,
+    this.heroTagPrefix,
+    required this.onTap,
+  });
 
   @override
   State<CompactSpotCard> createState() => _CompactSpotCardState();
@@ -22,17 +26,6 @@ class _CompactSpotCardState extends State<CompactSpotCard> {
   void dispose() {
     _isPressed.dispose();
     super.dispose();
-  }
-
-  String _formatDate(DateTime dt) => DateFormat('MMM d').format(dt);
-  String _formatTime(DateTime dt) => DateFormat('h:mm a').format(dt);
-
-  String _getDisplayLocation(String location) {
-    final lower = location.toLowerCase();
-    if (lower.startsWith('http://') || lower.startsWith('https://')) {
-      return 'Map Location';
-    }
-    return location;
   }
 
   @override
@@ -94,7 +87,10 @@ class _CompactSpotCardState extends State<CompactSpotCard> {
                       Text(
                         widget.spot.title.trim().isNotEmpty
                             ? widget.spot.title.trim()
-                            : _getDisplayLocation(widget.spot.locationName),
+                            : AppUtils.getDisplayLocation(
+                                context,
+                                widget.spot.locationName,
+                              ),
                         style: TextStyle(
                           fontSize: Dimensions.r15.dynamicSP,
                           fontWeight: FontWeight.w700,
@@ -114,7 +110,7 @@ class _CompactSpotCardState extends State<CompactSpotCard> {
                           ),
                           SizedBox(width: Dimensions.r4.dynamicW),
                           Text(
-                            '${_formatDate(widget.spot.eventDateTime)}, ${_formatTime(widget.spot.eventDateTime)}',
+                            '${AppUtils.formatDateShort(widget.spot.eventDateTime)}, ${AppUtils.formatTime(widget.spot.eventDateTime)}',
                             style: TextStyle(
                               fontSize: Dimensions.r12.dynamicSP,
                               color: context.textSecondary,
@@ -137,7 +133,8 @@ class _CompactSpotCardState extends State<CompactSpotCard> {
                             clipBehavior: Clip.antiAlias,
                             child: widget.spot.hostProfile?.avatarUrl != null
                                 ? AppCachedNetworkImage(
-                                    imageUrl: widget.spot.hostProfile!.avatarUrl,
+                                    imageUrl:
+                                        widget.spot.hostProfile!.avatarUrl,
                                     fit: BoxFit.cover,
                                     memCacheWidth: 100,
                                     memCacheHeight: 100,
@@ -151,7 +148,8 @@ class _CompactSpotCardState extends State<CompactSpotCard> {
                           SizedBox(width: Dimensions.r6.dynamicW),
                           Expanded(
                             child: Text(
-                              widget.spot.hostProfile?.fullName ?? 'Host',
+                              widget.spot.hostProfile?.fullName ??
+                                  context.loc.verifiedHost,
                               style: TextStyle(
                                 fontSize: Dimensions.r12.dynamicSP,
                                 color: context.textSecondary,

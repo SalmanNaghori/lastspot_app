@@ -29,7 +29,9 @@ class SpotDetailsScreenMobile extends StatelessWidget {
     Widget content;
     if (state is SpotDetailsLoading || state is SpotDetailsInitial) {
       content = Scaffold(
-        backgroundColor: showAppBar ? context.backgroundColor : Colors.transparent,
+        backgroundColor: showAppBar
+            ? context.backgroundColor
+            : Colors.transparent,
         appBar: showAppBar
             ? AppBar(
                 leading: IconButton(
@@ -49,7 +51,10 @@ class SpotDetailsScreenMobile extends StatelessWidget {
       final post = loadedState.post;
 
       content = Scaffold(
-        backgroundColor: showAppBar ? context.backgroundColor : Colors.transparent, // Fixes dark theme issue on mobile while preserving tablet transparency
+        backgroundColor: showAppBar
+            ? context.backgroundColor
+            : Colors
+                  .transparent, // Fixes dark theme issue on mobile while preserving tablet transparency
 
         appBar: showAppBar
             ? AppBar(
@@ -493,7 +498,6 @@ class SpotDetailsScreenMobile extends StatelessWidget {
               SizedBox(height: Dimensions.r8.dynamicH),
               Container(
                 decoration: BoxDecoration(
-                  color: context.surfaceColor,
                   borderRadius: BorderRadius.circular(Dimensions.r16.dynamicR),
                   border: Border.all(color: context.borderColor),
                   boxShadow: [
@@ -504,63 +508,68 @@ class SpotDetailsScreenMobile extends StatelessWidget {
                     ),
                   ],
                 ),
-                child: Column(
-                  children: [
-                    ListTile(
-                      leading: Icon(
-                        Icons.shield_outlined,
-                        color: context.textPrimary,
-                        size: Dimensions.r20.dynamicH,
-                      ),
-                      title: Text(
-                        l10n.reportThisActivityOrHost,
-                        style: context.bodyMedium?.copyWith(
-                          fontWeight: FontWeight.w600,
+                child: Material(
+                  color: context.surfaceColor,
+                  borderRadius: BorderRadius.circular(Dimensions.r16.dynamicR),
+                  clipBehavior: Clip.antiAlias,
+                  child: Column(
+                    children: [
+                      ListTile(
+                        leading: Icon(
+                          Icons.shield_outlined,
+                          color: context.textPrimary,
+                          size: Dimensions.r20.dynamicH,
                         ),
-                      ),
-                      trailing: Icon(
-                        Icons.chevron_right,
-                        color: context.textSecondary,
-                        size: Dimensions.r20.dynamicH,
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.vertical(
-                          top: Radius.circular(Dimensions.r16.dynamicR),
+                        title: Text(
+                          l10n.reportThisActivityOrHost,
+                          style: context.bodyMedium?.copyWith(
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
-                      ),
-                      onTap: () {},
-                    ),
-                    Divider(
-                      height: 1,
-                      color: context.borderColor,
-                      indent: Dimensions.r16.dynamicW,
-                      endIndent: Dimensions.r16.dynamicW,
-                    ),
-                    ListTile(
-                      leading: Icon(
-                        Icons.menu_book_outlined,
-                        color: context.textPrimary,
-                        size: Dimensions.r20.dynamicH,
-                      ),
-                      title: Text(
-                        l10n.learnAboutSafetyGuidelines,
-                        style: context.bodyMedium?.copyWith(
-                          fontWeight: FontWeight.w600,
+                        trailing: Icon(
+                          Icons.chevron_right,
+                          color: context.textSecondary,
+                          size: Dimensions.r20.dynamicH,
                         ),
-                      ),
-                      trailing: Icon(
-                        Icons.chevron_right,
-                        color: context.textSecondary,
-                        size: Dimensions.r20.dynamicH,
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.vertical(
-                          bottom: Radius.circular(Dimensions.r16.dynamicR),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.vertical(
+                            top: Radius.circular(Dimensions.r16.dynamicR),
+                          ),
                         ),
+                        onTap: () {},
                       ),
-                      onTap: () {},
-                    ),
-                  ],
+                      Divider(
+                        height: 1,
+                        color: context.borderColor,
+                        indent: Dimensions.r16.dynamicW,
+                        endIndent: Dimensions.r16.dynamicW,
+                      ),
+                      ListTile(
+                        leading: Icon(
+                          Icons.menu_book_outlined,
+                          color: context.textPrimary,
+                          size: Dimensions.r20.dynamicH,
+                        ),
+                        title: Text(
+                          l10n.learnAboutSafetyGuidelines,
+                          style: context.bodyMedium?.copyWith(
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        trailing: Icon(
+                          Icons.chevron_right,
+                          color: context.textSecondary,
+                          size: Dimensions.r20.dynamicH,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.vertical(
+                            bottom: Radius.circular(Dimensions.r16.dynamicR),
+                          ),
+                        ),
+                        onTap: () {},
+                      ),
+                    ],
+                  ),
                 ),
               ),
 

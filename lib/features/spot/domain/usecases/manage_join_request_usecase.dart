@@ -5,13 +5,15 @@ class ManageJoinRequestUseCase {
 
   ManageJoinRequestUseCase(this._repository);
 
-  Future<void> call({
-    required String joinRequestId,
-    required String status,
-  }) async {
-    return _repository.updateJoinRequestStatus(
-      joinRequestId: joinRequestId,
-      status: status,
-    );
+  Future<void> accept(String joinRequestId) async {
+    return _repository.acceptJoinRequest(joinRequestId);
+  }
+
+  Future<void> reject(String joinRequestId) async {
+    return _repository.rejectJoinRequest(joinRequestId);
+  }
+
+  Future<void> cancel(String joinRequestId) async {
+    return _repository.cancelJoinRequest(joinRequestId);
   }
 }

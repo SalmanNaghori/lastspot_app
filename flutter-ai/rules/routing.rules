@@ -1,0 +1,23 @@
+# routing.rules — navigation
+# SOP: sop/routing.md
+# Guardrails: guardrails/routing.md
+
+MUST      ROUTE-1  Register every screen in AppRouter.routes as @RoutePage() class XScreen -> generated XRoute.
+MUST      ROUTE-10 After adding/renaming a screen, regenerate and commit app_router.gr.dart in the same PR.
+MUST-NOT  ROUTE-1b Add screens reachable via Navigator.push/pushReplacement with MaterialPageRoute/CupertinoPageRoute, or via the legacy navigateToPage helper.
+MUST-NOT  ROUTE-2  Hardcode route path strings in feature code.
+MUST      ROUTE-3  Navigate from widgets/BlocListeners with context.router.*; from non-widget handlers (notifications, deep links, boot) with NavigationService.
+MUST-NOT  ROUTE-3b Navigate from a Cubit, Bloc, repository, data source or service.
+MUST      ROUTE-4  Add guards: [_authGuard] to every session-only route (or place it under a guarded shell).
+MUST      ROUTE-5  Pass typed constructor parameters as route args; prefer ids over whole objects when the target can fetch. No Map argument bags.
+MUST      ROUTE-6  Validate deep links (known host, path, id format); require an active session for protected destinations; ignore + log unknown links.
+MUST      ROUTE-7  Route notification taps through NotificationHandlerRegistry -> typed route; validate payload fields first.
+SHOULD    ROUTE-8  Provide screen Cubits in AutoRouteWrapper.wrappedRoute, not in main.dart.
+MUST      ROUTE-9  Show dialogs/sheets via project helpers (showXSheet/showXDialog); pass existing Cubits with BlocProvider.value; never create repository-backed Cubits inside a sheet.
+MUST      ROUTE-11 Type navigation results: `final r = await context.router.push<T>(XRoute())`; return with context.router.pop(result).
+MAY       ROUTE-12 Use Navigator.push with PageRouteBuilder only for non-addressable overlays (media viewer, action overlay) with a comment citing this exception.
+SHOULD    ROUTE-13 Register one RouteObserver on the router for analytics/active-screen tracking.
+
+## Project
+PROJECT   See project/project-rules.md for overrides and open decisions.
+MUST-NOT  Invent class/file names from profiles/reference/ or example ADRs when project/ still has _TBD_ stubs.

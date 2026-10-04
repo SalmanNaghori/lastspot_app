@@ -1,0 +1,38 @@
+# state.rules — choosing and shaping state
+# SOP: sop/state-management.md
+# Guardrails: guardrails/state-management.md
+
+## Choosing
+MUST      STATE-1  Use exactly one feature-level paradigm per project (recorded in ADR + project/project-rules.md). setState/ValueNotifier only for widget-local ephemera.
+MUST-NOT  STATE-1b Introduce a second feature-level paradigm alongside the chosen one.
+SHOULD    STATE-2  Prefer the simplest holder that fits (e.g. Cubit over Bloc; Notifier over complex graphs) unless the ADR says otherwise.
+
+## Shape
+MUST      STATE-3  Make state immutable (freezed / Equatable+copyWith / sealed immutable types). Never mutate lists/maps in place.
+MUST      STATE-4  Represent async with one shared status model (or sealed states) so data can survive loading/refresh. No boolean flag soup.
+MUST-NOT  STATE-4b Add isLoading/isSuccess/hasError flag sets or per-feature copies of the status enum.
+MAY       STATE-4c Use sealed state hierarchies for small finite flows that never need data-during-loading.
+SHOULD    STATE-17 Expose derived getters on state (isEmpty, isReady, isNoInternet) instead of computing in widgets.
+
+## Situations -> status
+MUST      STATE-18 Map: initial; first load -> loading; next page -> paginating (keep data); background refresh -> syncing (keep data); success (+ empty if no data); failure without data -> error view; failure with data -> keep data + toast; offline -> noInternet + retry on restore.
+
+## Pagination
+MUST      STATE-13 Use skip/limit/hasMore + a paginating status; ignore loadMore when !hasMore or in-flight; append on loadMore, replace on fresh fetch.
+MUST      STATE-13b Retry and refresh reuse the same fetch entry point; refresh uses syncing when data exists.
+
+## Cross-feature
+MUST-NOT  STATE-8  Call or inject another feature state holder from a state holder. Use a typed event bus, repository streams, or the DI/graph pattern the ADR chose.
+MUST      STATE-9  Cancel every subscription and debounce key in dispose/close.
+
+## Scoping and reading
+SHOULD    DI-7     Scope screen state to the route/wrapper; root providers only for session-wide state.
+SHOULD    STATE-15 Rebuild narrowly (selector/select/buildWhen); read for actions; avoid watching large subtrees.
+MUST      STATE-12 Perform navigation, toasts, dialogs, blocking loaders and haptics only in listeners / UI-edge callbacks — not inside state holders.
+
+## Size
+SHOULD    STATE-14 Keep a state holder under ~400 lines; split by responsibility beyond that.
+
+## Project
+PROJECT   See project/project-rules.md for overrides and open decisions.
+MUST-NOT  Invent class/file names from profiles/reference/ or example ADRs when project/ still has _TBD_ stubs.

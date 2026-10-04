@@ -1,0 +1,52 @@
+# bloc.rules — flutter_bloc mechanics (load only if ADR chose flutter_bloc)
+# SOP: sop/bloc.md
+# Guardrails: guardrails/state-management.md
+# If project ADR chose Riverpod or another paradigm, skip this file; use state.rules + project rules.
+
+## Files
+MUST      BLOC-1  Layout: <x>_cubit/{x_cubit.dart, x_state.dart} or <x>_bloc/{x_bloc.dart, x_event.dart, x_state.dart}; state class name = owner stem + State.
+MUST      BLOC-2  Class names XCubit / XBloc / XState / XEvent in files x_cubit.dart etc.
+
+## Events
+MUST      STATE-11 Declare `sealed class XEvent extends Equatable` with const constructors and props.
+MUST      BLOC-3  Name events as facts or requests: LoginRequested, OtpSubmitted, ChatPinned. No `On` prefix, no `Event` suffix on subclasses.
+MUST      STATE-10 Register an on<E> handler for every declared event; delete unused events.
+MUST-NOT  STATE-10b Add public methods on a Bloc that emit directly; the Bloc API is add(event).
+
+## Emit safety
+MUST      STATE-5  Write `if (isClosed) return;` after every await and at the top of every stream/bus handler before emit.
+MUST      BLOC-4   Guard re-entry: `if (state.status == Status.loading) return;` at the start of fetch/submit methods.
+MUST-NOT  STATE-16 Use Future.delayed in a Bloc/Cubit to wait for another component.
+
+## Concurrency (no bloc_concurrency in project)
+SHOULD    BLOC-5  Submit/create/delete: early-return while in flight (droppable). Search: debounce + ignore stale results by request id (restartable). Ordered mutations: sequential queue.
+MAY       BLOC-6  Propose bloc_concurrency transformers via ADR when a Bloc genuinely needs per-event policies.
+
+## Dependencies
+MUST      DI-1    Constructor-inject abstractions (XRepository, NetworkMonitor, GlobalEventBus, AuthStateProvider).
+MUST-NOT  STATE-7 Call sl<>() inside a Cubit/Bloc.
+MUST-NOT  STATE-6 Import Flutter UI, hold BuildContext, navigate, toast, show loaders, or context.read another Bloc inside a Cubit/Bloc.
+
+## Providing
+MUST      BLOC-7  Provide via BlocProvider(create: (_) => sl<XCubit>()..load()) in AutoRouteWrapper.wrappedRoute for screen state.
+MUST      BLOC-8  Use BlocProvider.value only to pass an existing instance into dialogs, sheets or nested routes.
+MUST-NOT  DI-6    Register Cubits/Blocs as singletons; BlocProvider owns and closes factories.
+MAY       PR-B4   Construct dependency-free UI cubits directly in BlocProvider without DI registration.
+
+## Consuming
+SHOULD    STATE-15 BlocSelector or BlocBuilder+buildWhen for rendering; BlocListener+listenWhen for one-shot side effects; BlocConsumer when both; context.read<X>() for actions.
+MUST      STATE-12 Keep navigation/toast/loader/dialog in listeners only.
+
+## Cross-Bloc
+MUST      STATE-8  Subscribe to typed bus events in the constructor via listenTo<T>(bus, handler); never inject or read another Bloc.
+MUST      STATE-9  close(): cancel debounce keys, await disposeSubscriptions(), cancel stream subs, then super.close().
+
+## Debounce
+MUST      PR-C6   Use EasyDebounce.debounce(key, duration, fn) with a per-instance key; EasyDebounce.cancel(key) in close().
+
+## Testing
+MUST      TEST-1  Ship state-holder tests for success, failure, no-internet (if applicable), pagination stop, and dispose/closed safety where relevant. Use the test stack in project/project-rules.md.
+
+## Project
+PROJECT   See project/project-rules.md for overrides and open decisions.
+MUST-NOT  Invent class/file names from profiles/reference/ or example ADRs when project/ still has _TBD_ stubs.

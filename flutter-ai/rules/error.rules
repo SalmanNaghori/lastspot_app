@@ -1,0 +1,40 @@
+# error.rules — failures, catches, logging, crash reporting
+# SOP: sop/error-handling.md
+# Guardrails: guardrails/networking.md (ERR-*), guardrails/security.md (SEC-10..12)
+
+## Failure model
+MUST      ERR-1   Return Future<Either<Failure, T>> from every repository method; never throw across the repository boundary; never return raw Map/dynamic.
+MUST      ERR-10  Translate at the origin: DioException -> DioErrorMapper in the gateway; parse errors -> Failure in backToUI/parseResponse; storage errors -> Failure in the data source; plugin errors -> Failure in the wrapping service.
+SHOULD    ERR-11  Add FailureKind {network, timeout, unauthorized, forbidden, validation, notFound, server, parse, storage, unknown} so UI branches on an enum, not magic status codes.
+MUST      ERR-4   Keep Failure.error user-safe (from AppString/generic); log stack traces, never put them in state.error.
+
+## Propagation
+MUST      ERR-12  Cubit: `result.fold(handleFailure, (data) => emit(success...))` after `if (isClosed) return;`. Status.noInternet for noInternetErrorCode, Status.failure otherwise.
+MUST-NOT  ERR-2   Wrap repository calls in try/catch inside Cubits/Blocs; try/catch only around non-repository async (plugins), converting to state.
+MUST      ERR-13  Let the AuthFailureInterceptor handle 401 (clear session + LogoutEvent); do not special-case 401 in Cubits.
+MUST      ERR-7   Represent client validation as state (fieldErrors map), not Failure and not toast-only; map server 422 to the same shape in the repository.
+
+## Catch discipline
+MUST-NOT  ERR-3   Write empty catches (`catch (_) {}`), `catch (e) { print(e); }`, or catches that return fake success.
+MUST      ERR-3b  Every catch: return left(Failure), rethrow, or DebugLog with context + a comment stating why continuing is safe.
+MUST      ERR-14  Catch specific types first (DioException, SocketException, TypeError, FormatException), then a documented fallback `catch (e, st)`.
+
+## Storage
+SHOULD    ERR-15  Cache read failure -> treat as miss + log; cache write failure -> log, don't fail the user action (unless offline-first).
+
+## Global handlers
+MUST      ERR-5   Assign FlutterError.onError and PlatformDispatcher.instance.onError exactly once each; both log in debug and record to Crashlytics in release.
+MUST      ERR-16  Wrap runApp in runZonedGuarded; background isolates set their own handlers.
+
+## Presenting
+MUST      ERR-17  Failure w/o data -> error view + retry; failure with data -> toast, keep data; noInternet -> offline view + auto-retry; 401 -> interceptor+guard redirect; validation -> inline field error; parse/unknown -> generic message + retry.
+MUST-NOT  ERR-18  Show exception.toString() or stack traces to users.
+
+## Logging
+MUST      ERR-6   Log via DebugLog (kDebugMode-gated). Never print/debugPrint in lib/.
+MUST-NOT  SEC-10  Log tokens, FCM tokens, OTPs, phone numbers, emails, PII bodies, full notification payloads, or URLs with credentials — in any build mode.
+SHOULD    ERR-19  Log with context: DebugLog.e('<Class.method> <what failed>', e, st).
+
+## Project
+PROJECT   See project/project-rules.md for overrides and open decisions.
+MUST-NOT  Invent class/file names from profiles/reference/ or example ADRs when project/ still has _TBD_ stubs.

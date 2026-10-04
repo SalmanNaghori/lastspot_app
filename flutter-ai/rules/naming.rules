@@ -1,0 +1,47 @@
+# naming.rules — files, classes, members, state, data, routes, tests
+# SOP: sop/naming-conventions.md
+# Guardrails: guardrails/architecture.md (STRUCT-1)
+
+## Files and directories
+MUST      NAME-1  snake_case for every new directory and file; file stem = primary class in snake_case (orbit_list_cubit.dart -> OrbitListCubit).
+MUST      NAME-2  Generated suffixes: x.g.dart, x.freezed.dart, app_router.gr.dart. Test files: <source>_test.dart mirroring the lib path.
+MUST      NAME-3  Widgets folder is `widgets/` (never `widget/`).
+MUST-NOT  NAME-4  Create camelCase directories or files (chatDetailsScreen/, completeProfile_request_model_entity.dart are LEGACY).
+
+## Types and members
+MUST      NAME-5  UpperCamelCase for classes/enums/typedefs/extensions/mixins; lowerCamelCase for members, parameters, constants (no SCREAMING_CAPS) and enum values.
+MUST      NAME-6  Private injected dependencies: `final XRepository _repository;`.
+MUST      NAME-7  Booleans read as predicates: isLoading, hasMore, canProceed, shouldRetry.
+MUST      NAME-8  Async methods are verbs without an Async suffix (fetchOrbits, not fetchOrbitsAsync). Callbacks: onX (onInternetRestored).
+SHOULD    NAME-9  Constants holders as plural nouns for new classes (AppStrings, AppConstants); keep existing AppString/AppConstant as-is.
+
+## Role suffixes
+MUST      NAME-10 XRepository (abstract, domain) / XRepositoryImpl (data); XRemoteDataSource / XLocalDataSource; XService (interface) / XServiceImpl; BaseX for inheritance helpers; XMixin for mixins; XGuard; XInterceptor; XMapper.
+MUST-NOT  NAME-11 Prefix an interface with Base (Base means inheritance helper, not contract). Existing BaseApiService is LEGACY naming — keep, do not copy.
+
+## Presentation
+MUST      NAME-12 Routed screens: XScreen -> generated XRoute. Tab bodies: XTabScreen. Sheets: XSheet + showXSheet(). Dialogs: showXDialog().
+MUST      NAME-13 UI models: XUiModel (or XViewData) in ui/<feature>/models/.
+SHOULD    NAME-14 New widgets use descriptive nouns (AppButton, PrimaryButton, UserAvatar); no My/Custom prefixes.
+
+## State management
+MUST      NAME-15 XCubit / XBloc / XState / XEvent share one stem; state is named after the owner, never after a field (LastMessageState is LEGACY).
+MUST      NAME-16 Event base: `sealed class XEvent extends Equatable`. Subclasses are facts or requests — LoginRequested, OtpSubmitted, ChatPinned, PinnedMessagesRequested. No `On` prefix, no `Event` suffix on subclasses.
+MUST      NAME-17 The single status enum is `Status` (base_status.dart). No per-feature *Status enums.
+MUST      NAME-18 Cubit folder = snake_case stem: orbit_list_cubit/ (existing orbitListCubit/ is LEGACY).
+
+## Data
+MUST      NAME-19 Response models: XEntity. Request models: XReqModel. Never Model*Response*Entity, *ModelEntity, or *ResponseModelEntity.
+MUST      NAME-20 Local (Hive) models: XEntity + XEntityAdapter (existing) — for new ones prefer XLocalModel + XLocalModelAdapter.
+MUST      NAME-21 Endpoint constants: lowerCamelCase verb-noun, no `API` suffix, no duplicates (fetchOrbitList, aboutUs). Existing *API names are LEGACY; reuse, do not add new duplicates.
+MUST      NAME-22 Storage keys: StorageKeys.x; config fields mirror JSON keys in lowerCamelCase (BASE_URL -> baseUrl).
+
+## Realtime
+MUST      NAME-23 Bus events: <Noun><PastTenseVerb>Event (NewOrbitAddedEvent, LogoutEvent) in core/realtime/events/<domain>_realtime_event.dart.
+
+## Tests
+MUST      NAME-24 group('<ClassName>') > group('<method>') > test('<behaviour>'); mocks `MockXRepository`; fixtures test/fixtures/<endpoint>_response.json.
+
+## Project
+PROJECT   See project/project-rules.md for overrides and open decisions.
+MUST-NOT  Invent class/file names from profiles/reference/ or example ADRs when project/ still has _TBD_ stubs.

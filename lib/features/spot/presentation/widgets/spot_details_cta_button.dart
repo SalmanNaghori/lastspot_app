@@ -103,6 +103,24 @@ class SpotDetailsCtaButton extends StatelessWidget {
       );
     }
 
+    if (post.eventDateTime.difference(DateTime.now()).inMinutes < 15) {
+      return ElevatedButton(
+        onPressed: null,
+        style: ElevatedButton.styleFrom(
+          disabledBackgroundColor: context.textSecondary,
+          disabledForegroundColor: AppColor.whiteColor,
+          minimumSize: Size(double.infinity, Dimensions.r50.dynamicH),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(Dimensions.r12.dynamicR),
+          ),
+        ),
+        child: Text(
+          'JOINING CLOSED',
+          style: const TextStyle(fontWeight: FontWeight.bold),
+        ),
+      );
+    }
+
     return ElevatedButton(
       onPressed: () => context.read<SpotDetailsBloc>().add(
         RequestToJoinEvent(spotId: post.id),

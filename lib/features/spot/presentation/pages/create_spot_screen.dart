@@ -86,15 +86,17 @@ class _CreateSpotScreenState extends State<CreateSpotScreen> {
     _formState.dispose();
     super.dispose();
   }
+
   bool _isPickingImages = false;
 
   Future<void> _pickImages() async {
     if (_isPickingImages) return;
-    
+
     _isPickingImages = true;
     try {
       final imageService = sl<ImageService>();
-      final compressedFiles = await imageService.pickAndCompressMultipleImages();
+      final compressedFiles = await imageService
+          .pickAndCompressMultipleImages();
       if (compressedFiles.isNotEmpty) {
         final updatedList = List<File>.from(_formState.selectedImages.value)
           ..addAll(compressedFiles);

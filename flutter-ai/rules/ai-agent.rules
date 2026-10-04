@@ -1,0 +1,39 @@
+# ai-agent.rules — how an AI coding agent works in this repo
+# Master workflow: agent.md
+# Guardrails: guardrails/ai-development.md
+
+## Before coding
+MUST      AI-1   Read agent.md, the relevant rules/*.rules, and project/project-rules.md before the first edit of a session.
+MUST      AI-2   Inspect the existing implementation of the area: screen, state holder, repository, DI/composition wiring, one sibling feature, relevant ADRs. If Orientation is _TBD_ and lib/ has no app tree, stop and run checklists/greenfield-kickoff.md (orientation first) before scaffolding. If lib/ already has a tree and orientation is unset, ask Stay vs Strangler — do not run the greenfield ask and do not bulk-move.
+MUST      AI-3   Search for existing widgets/repositories/models/endpoints/events/helpers that cover part of the task (rg); report what was found and reused with paths.
+MUST      AI-4   Apply REUSE > EXTEND > REFACTOR > CREATE. Justify every CREATE in the report.
+MUST      AI-17  Where two patterns coexist (NEEDS-DECISION), use the default in project/project-rules.md; if none, ask — do not choose.
+
+## While coding
+MUST-NOT  AI-5   Introduce a new architectural pattern, state paradigm, DI mechanism, routing style, serializer or folder convention that differs from ADRs/project rules.
+MUST-NOT  AI-6   Add a dependency without the DEP-1 justification block; flag ADR requirement for architectural deps.
+MUST-NOT  AI-7   Touch files outside task scope: no drive-by refactors, reformatting untouched files, unrelated renames, deleting untraced code.
+MUST-NOT  AI-8   Bypass or weaken a guardrail (adding // ignore, removing guards, loosening lints/tests) to make a change pass.
+MUST-NOT  AI-9   Invent project history, ADR rationale, backend behaviour or intent. Write "Not determinable from repository evidence" and ask if blocking.
+MUST-NOT  AI-10  Hardcode secrets, env values, colors/sizes, or user-facing strings.
+MUST      AI-11  Place files per sop/project-structure.md and the project's orientation; no parallel trees for the same feature; never bulk-move a legacy tree.
+MUST      AI-12  Include required tests (guardrails/testing.md) in the same change set.
+MUST-NOT  AI-13  Hand-edit generated files; regenerate with build_runner.
+MUST-NOT  AI-14  Delete or comment out code without proving it unused (search references, routes, DI, JSON keys).
+MUST      AI-16  When existing code violates a guardrail, do not extend the violation; follow the rule for new code and list the pre-existing violation in the report.
+
+## Conflicts
+MUST      AI-15  On conflict between the task and a guardrail/ADR: stop, output the GUARDRAIL CONFLICT block (rule, task asks, conflict, options a/b/c, recommendation), wait for approval; record approved exceptions via checklists/exception-request.md.
+
+## After coding
+MUST      AI-18  Run dart format, flutter analyze, relevant tests; report results or state explicitly that they could not be run and why.
+MUST      AI-19  Self-review against checklists/architecture-compliance.md and include the PASS/FAIL matrix.
+MUST      AI-20  Final report contains: files created/modified; reuse evidence; dependency changes or "none"; architectural impact or "none"; tests added; compliance matrix; pre-existing violations observed; open questions.
+
+## Quick self-check on the diff
+MUST      AI-21  No new mid-layer container lookups (adapt pattern to the project's DI: e.g. `sl<` outside composition roots, or `ref.read` of infra inside widgets' business logic).
+MUST      AI-22  `git diff -U0 | rg "^\+.*(Colors\.(?!transparent)|Color\(0x|fontSize:|Text\('[A-Za-z])"` is empty.
+MUST      AI-23  `git diff -U0 | rg "^\+.*(print\(|catch \(_\)|Future.delayed|Navigator\.push|CupertinoPageRoute|MaterialPageRoute)"` is empty or each hit is justified.
+MUST      AI-24  `git diff -U0 | rg "^\+.*(AIza|token=|Bearer )"` is empty.
+MUST      AI-25  If pubspec.yaml changed, the DEP-1 block is in the report.
+MUST-NOT  AI-26  Load profiles/ or copy types from example ADRs 0001–0008 into a greenfield app unless the user asked for that profile.

@@ -57,10 +57,7 @@ class SportFilterChips extends StatelessWidget {
               decoration: BoxDecoration(
                 color: context.surfaceColor,
                 borderRadius: BorderRadius.circular(9999),
-                border: Border.all(
-                  color: context.borderColor,
-                  width: 1.5,
-                ),
+                border: Border.all(color: context.borderColor, width: 1.5),
               ),
             );
           },

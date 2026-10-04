@@ -1,0 +1,31 @@
+# dependency.rules — packages and DI registration
+# SOP: sop/dependency-management.md, sop/dependency-injection.md
+# Guardrails: guardrails/dependencies.md, guardrails/architecture.md (DI-*)
+
+## Adding packages
+MUST      DEP-1  Include the justification block in the PR when adding a dependency: problem, existing-code check, existing-dep check, SDK alternative, version/score/last release, maintenance, license, platforms, size/native code, security, transitive deps, owner, wrapped-or-direct.
+MUST      DEP-0  Prefer in order: existing project code > existing dependency > Flutter/Dart SDK > new package.
+MUST-NOT  DEP-2  Add a package that duplicates an existing capability (second HTTP client, connectivity checker, serializer, HTML renderer, image cache, toast, logger).
+MUST      DEP-3  Wrap architectural packages (HTTP, DI, state, routing, storage, logging, analytics, realtime) behind a project abstraction; import them only from the wrapper and DI modules.
+MUST      DEP-4  Write an ADR when adding, replacing or removing an architectural package.
+MUST-NOT  DEP-5  Import transitive dependencies directly or use `// ignore: depend_on_referenced_packages`; declare the dependency instead.
+MUST      DEP-6  Pin git dependencies with `ref:` plus a comment (upstream issue, removal condition); comment every dependency_overrides entry with reason and review each release.
+MUST-NOT  DEP-7  Put path dependencies under lib/; use packages/.
+MUST      DEP-8  Remove a dependency in the same PR that removes its last import (`rg "package:<name>/" lib` empty => remove).
+MUST-NOT  DEP-9  Add GPL/AGPL-licensed packages without recorded legal approval.
+MUST      DEP-10 Keep codegen, lint and test packages under dev_dependencies.
+MUST      DEP-11 Keep pubspec `environment.sdk`, README and the single version pin file in agreement.
+MAY       DEP-12 Use feature-only packages directly inside the owning feature without a wrapper.
+SHOULD    DEP-13 Keep pubspec.yaml grouped by category with a one-line purpose comment per package.
+SHOULD    DEP-14 Run `flutter pub outdated` each sprint; do major upgrades in dedicated PRs.
+
+## Registering (get_it)
+MUST      DI-3   registerLazySingleton<Abstract>(() => Impl(dep: sl())) for repositories/services/gateways; registerFactory for Blocs/Cubits.
+MUST      DI-4   Add registrations to the module matching the type; preserve order Config -> EventBus -> LifeCycle -> MainConfig -> External -> Hive -> AppLevel -> DataSources -> Repositories -> DomainServices -> Blocs -> Cubits -> Boot.
+MUST      DI-8   Pass `dispose:` for lazy singletons owning streams, sockets, controllers or boxes.
+MUST-NOT  DI-6   Register Blocs/Cubits as singletons.
+SHOULD    DI-9   Resolve every registration once in a debug smoke check after setupLocator() to catch ordering errors early.
+
+## Project
+PROJECT   See project/project-rules.md for overrides and open decisions.
+MUST-NOT  Invent class/file names from profiles/reference/ or example ADRs when project/ still has _TBD_ stubs.

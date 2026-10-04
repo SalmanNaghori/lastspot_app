@@ -228,11 +228,10 @@ class ProfileScreenTablet extends StatelessWidget {
             ),
           ),
         ),
-        Container(
-          decoration: BoxDecoration(
-            color: context.colorScheme.surfaceContainerLow,
-            borderRadius: BorderRadius.circular(Dimensions.r12),
-          ),
+        Material(
+          color: context.colorScheme.surfaceContainerLow,
+          borderRadius: BorderRadius.circular(Dimensions.r12),
+          clipBehavior: Clip.antiAlias,
           child: Column(children: items),
         ),
         const SizedBox(height: Dimensions.r24),

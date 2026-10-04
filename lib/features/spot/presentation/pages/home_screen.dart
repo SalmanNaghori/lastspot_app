@@ -147,10 +147,7 @@ class _HomeScreenState extends State<HomeScreen> {
             style: TextStyle(color: context.textSecondary),
           ),
           SizedBox(height: Dimensions.r16.dynamicH),
-          FilledButton(
-            onPressed: _onRefresh,
-            child: const Text("Try Again"),
-          ),
+          FilledButton(onPressed: _onRefresh, child: const Text("Try Again")),
         ],
       ),
     );
@@ -207,7 +204,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 style: FilledButton.styleFrom(
                   backgroundColor: AppColor.primaryColor,
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(Dimensions.r12.dynamicR),
+                    borderRadius: BorderRadius.circular(
+                      Dimensions.r12.dynamicR,
+                    ),
                   ),
                 ),
                 child: Text(
@@ -228,7 +227,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 style: OutlinedButton.styleFrom(
                   side: BorderSide(color: context.borderColor, width: 1.5),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(Dimensions.r12.dynamicR),
+                    borderRadius: BorderRadius.circular(
+                      Dimensions.r12.dynamicR,
+                    ),
                   ),
                 ),
                 child: Text(
@@ -263,28 +264,35 @@ class _HomeScreenState extends State<HomeScreen> {
             final bool isLoading = state is HomeLoading || state is HomeInitial;
             final bool isNetworkError = state is HomeNetworkError;
             final bool isServerError = state is HomeServerError;
-            final HomeSuccess? successState = state is HomeSuccess ? state : null;
+            final HomeSuccess? successState = state is HomeSuccess
+                ? state
+                : null;
 
-            final List<CategoryEntity> categories = successState?.categories ?? [];
+            final List<CategoryEntity> categories =
+                successState?.categories ?? [];
             final List<CityEntity> cities = successState?.cities ?? [];
             final String? selectedCityId = successState?.selectedCityId;
             final bool hasCitiesError = successState?.hasCitiesError ?? false;
-            final bool hasCategoriesError = successState?.hasCategoriesError ?? false;
+            final bool hasCategoriesError =
+                successState?.hasCategoriesError ?? false;
             final bool hasFeedError = successState?.hasFeedError ?? false;
-            final bool isFeedNetworkError = successState?.isFeedNetworkError ?? false;
+            final bool isFeedNetworkError =
+                successState?.isFeedNetworkError ?? false;
 
             final userCityName = hasCitiesError
                 ? "Failed to load cities"
                 : cities
-                        .where((c) => c.id == selectedCityId)
-                        .map((c) => c.name)
-                        .firstOrNull ??
-                    loc.selectCity;
+                          .where((c) => c.id == selectedCityId)
+                          .map((c) => c.name)
+                          .firstOrNull ??
+                      loc.selectCity;
 
             // Debug logs
             if (isLoading) {
               debugPrint("FeedState: Loading");
-            } else if (isNetworkError || isServerError || (successState != null && hasFeedError)) {
+            } else if (isNetworkError ||
+                isServerError ||
+                (successState != null && hasFeedError)) {
               debugPrint("FeedState: Error");
             } else if (successState != null && successState.isEmpty) {
               debugPrint("FeedState: Success Empty");
@@ -310,16 +318,17 @@ class _HomeScreenState extends State<HomeScreen> {
                           onCityTap: (isLoading || hasCitiesError)
                               ? () => _onRefresh()
                               : () => _showCityPicker(
-                                    context,
-                                    cities,
-                                    selectedCityId,
-                                  ),
+                                  context,
+                                  cities,
+                                  selectedCityId,
+                                ),
                         ),
                         SizedBox(height: Dimensions.r20.dynamicH),
                         if (hasCategoriesError)
                           Padding(
                             padding: EdgeInsets.symmetric(
-                                horizontal: Dimensions.r16.dynamicW),
+                              horizontal: Dimensions.r16.dynamicW,
+                            ),
                             child: TextButton(
                               onPressed: _onRefresh,
                               child: const Text("Retry Categories"),
@@ -343,7 +352,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   // --- ACTIVITY FEED SECTION ---
                   if (isLoading)
                     const SliverToBoxAdapter(child: FeedSkeletonLoading())
-                  else if (isNetworkError || (successState != null && hasFeedError && isFeedNetworkError))
+                  else if (isNetworkError ||
+                      (successState != null &&
+                          hasFeedError &&
+                          isFeedNetworkError))
                     SliverToBoxAdapter(
                       child: _buildFeedError(
                         context,
@@ -351,7 +363,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         Icons.wifi_off,
                       ),
                     )
-                  else if (isServerError || (successState != null && hasFeedError))
+                  else if (isServerError ||
+                      (successState != null && hasFeedError))
                     SliverToBoxAdapter(
                       child: _buildFeedError(
                         context,
@@ -383,20 +396,22 @@ class _HomeScreenState extends State<HomeScreen> {
                           horizontal: Dimensions.r16.dynamicW,
                         ),
                         sliver: SliverList(
-                          delegate: SliverChildBuilderDelegate(
-                            (context, index) {
-                              final spot = successState.urgentMatches[index];
-                              final category = categories.where((c) => c.id == spot.categoryId).firstOrNull;
-                              return ActivityCard(
-                                spot: spot,
-                                categoryName: category?.name ?? 'Sport',
-                                categoryIcon: category?.icon ?? '🎯',
-                                heroTagPrefix: 'urgent',
-                                onTap: () => _onSpotTap(spot, 'urgent'),
-                              );
-                            },
-                            childCount: successState.urgentMatches.length,
-                          ),
+                          delegate: SliverChildBuilderDelegate((
+                            context,
+                            index,
+                          ) {
+                            final spot = successState.urgentMatches[index];
+                            final category = categories
+                                .where((c) => c.id == spot.categoryId)
+                                .firstOrNull;
+                            return ActivityCard(
+                              spot: spot,
+                              categoryName: category?.name ?? 'Sport',
+                              categoryIcon: category?.icon ?? '🎯',
+                              heroTagPrefix: 'urgent',
+                              onTap: () => _onSpotTap(spot, 'urgent'),
+                            );
+                          }, childCount: successState.urgentMatches.length),
                         ),
                       ),
                     ],
@@ -415,16 +430,27 @@ class _HomeScreenState extends State<HomeScreen> {
                             SizedBox(height: Dimensions.r16.dynamicH),
                             SingleChildScrollView(
                               scrollDirection: Axis.horizontal,
-                              padding: EdgeInsets.symmetric(horizontal: Dimensions.r16.dynamicW),
+                              padding: EdgeInsets.symmetric(
+                                horizontal: Dimensions.r16.dynamicW,
+                              ),
                               child: IntrinsicHeight(
                                 child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                                  children: successState.nearbyActivities.map((spot) {
-                                    final category = categories.where((c) => c.id == spot.categoryId).firstOrNull;
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.stretch,
+                                  children: successState.nearbyActivities.map((
+                                    spot,
+                                  ) {
+                                    final category = categories
+                                        .where((c) => c.id == spot.categoryId)
+                                        .firstOrNull;
                                     return Padding(
-                                      padding: EdgeInsets.only(right: Dimensions.r12.dynamicW),
+                                      padding: EdgeInsets.only(
+                                        right: Dimensions.r12.dynamicW,
+                                      ),
                                       child: ActivityCard(
-                                        width: MediaQuery.of(context).size.width * 0.88,
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                            0.88,
                                         spot: spot,
                                         categoryName: category?.name ?? 'Sport',
                                         categoryIcon: category?.icon ?? '🎯',
@@ -461,20 +487,22 @@ class _HomeScreenState extends State<HomeScreen> {
                           horizontal: Dimensions.r16.dynamicW,
                         ),
                         sliver: SliverList(
-                          delegate: SliverChildBuilderDelegate(
-                            (context, index) {
-                              final spot = successState.comingUp[index];
-                              final category = categories.where((c) => c.id == spot.categoryId).firstOrNull;
-                              return ActivityCard(
-                                spot: spot,
-                                categoryName: category?.name ?? 'Sport',
-                                categoryIcon: category?.icon ?? '🎯',
-                                heroTagPrefix: 'coming',
-                                onTap: () => _onSpotTap(spot, 'coming'),
-                              );
-                            },
-                            childCount: successState.comingUp.length,
-                          ),
+                          delegate: SliverChildBuilderDelegate((
+                            context,
+                            index,
+                          ) {
+                            final spot = successState.comingUp[index];
+                            final category = categories
+                                .where((c) => c.id == spot.categoryId)
+                                .firstOrNull;
+                            return ActivityCard(
+                              spot: spot,
+                              categoryName: category?.name ?? 'Sport',
+                              categoryIcon: category?.icon ?? '🎯',
+                              heroTagPrefix: 'coming',
+                              onTap: () => _onSpotTap(spot, 'coming'),
+                            );
+                          }, childCount: successState.comingUp.length),
                         ),
                       ),
                     ],

@@ -1,57 +1,28 @@
-import 'package:equatable/equatable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+part 'user_profile.freezed.dart';
+part 'user_profile.g.dart';
 
 enum AccountStatus { active, suspended, banned }
 
-class UserProfile extends Equatable {
-  final String id;
-  final String? fullName;
-  final String? avatarUrl; // live DB: avatar_url
-  final String? phone; // live DB: phone
-  final String? email; // live DB: email
-  final AccountStatus status; // live DB: status (NOT NULL)
-  final bool isProfileCompleted; // live DB: is_profile_completed (NOT NULL)
-  final DateTime createdAt;
-  final DateTime? deletedAt;
+@freezed
+abstract class UserProfile with _$UserProfile {
+  const factory UserProfile({
+    required String id,
+    @JsonKey(name: 'full_name') String? fullName,
+    @JsonKey(name: 'avatar_url') String? avatarUrl,
+    String? phone,
+    String? email,
+    @JsonKey(unknownEnumValue: AccountStatus.active) @Default(AccountStatus.active) AccountStatus status,
+    @JsonKey(name: 'is_profile_completed', defaultValue: false) @Default(false) bool isProfileCompleted,
+    @JsonKey(name: 'created_at') required DateTime createdAt,
+    @JsonKey(name: 'deleted_at') DateTime? deletedAt,
+    String? bio,
+    String? city,
+    @JsonKey(name: 'city_id') String? cityId,
+    @JsonKey(name: 'sports_interests', defaultValue: []) @Default([]) List<String> sportsInterests,
+    @JsonKey(defaultValue: 0.0) @Default(0.0) double rating,
+  }) = _UserProfile;
 
-  // Extended profile fields — stored in live DB after migration
-  final String? bio;
-  final String? city;
-  final String? cityId; // NEW source of truth for city
-  final List<String> sportsInterests;
-  final double rating;
-
-  const UserProfile({
-    required this.id,
-    this.fullName,
-    this.avatarUrl,
-    this.phone,
-    this.email,
-    this.status = AccountStatus.active,
-    this.isProfileCompleted = false,
-    required this.createdAt,
-    this.deletedAt,
-    this.bio,
-    this.city,
-    this.cityId,
-    this.sportsInterests = const [],
-    this.rating = 0.0,
-  });
-
-  @override
-  List<Object?> get props => [
-    id,
-    fullName,
-    avatarUrl,
-    phone,
-    email,
-    status,
-    isProfileCompleted,
-    createdAt,
-    deletedAt,
-    bio,
-    city,
-    cityId,
-    sportsInterests,
-    rating,
-  ];
+  factory UserProfile.fromJson(Map<String, dynamic> json) => _$UserProfileFromJson(json);
 }

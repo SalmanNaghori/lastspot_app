@@ -7,6 +7,6 @@ class GetHomeActivitiesUseCase {
   GetHomeActivitiesUseCase(this._repository);
 
   Future<List<RequestEntity>> call({String? cityId}) async {
-    return _repository.getFeedPosts(cityId: cityId);
+    return _repository.getFeedRequests(cityId: cityId);
   }
 }

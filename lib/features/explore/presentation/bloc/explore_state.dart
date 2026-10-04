@@ -19,7 +19,7 @@ class ExploreInitial extends ExploreState {}
 class ExploreLoading extends ExploreState {}
 
 class ExploreLoaded extends ExploreState {
-  final List<RequestEntity> posts;
+  final List<RequestEntity> requests;
   final String? searchQuery;
   final String? categoryId;
   final String? cityId;
@@ -30,7 +30,7 @@ class ExploreLoaded extends ExploreState {
   final bool isPaginating;
 
   const ExploreLoaded({
-    required this.posts,
+    required this.requests,
     this.searchQuery,
     this.categoryId,
     this.cityId,
@@ -42,7 +42,7 @@ class ExploreLoaded extends ExploreState {
   });
 
   ExploreLoaded copyWith({
-    List<RequestEntity>? posts,
+    List<RequestEntity>? requests,
     String? searchQuery,
     String? categoryId,
     String? cityId,
@@ -53,7 +53,7 @@ class ExploreLoaded extends ExploreState {
     bool? isPaginating,
   }) {
     return ExploreLoaded(
-      posts: posts ?? this.posts,
+      requests: requests ?? this.requests,
       searchQuery: searchQuery != null && searchQuery.isEmpty
           ? null
           : (searchQuery ?? this.searchQuery),
@@ -71,7 +71,7 @@ class ExploreLoaded extends ExploreState {
 
   ExploreLoaded clearCategory() {
     return ExploreLoaded(
-      posts: posts,
+      requests: requests,
       searchQuery: searchQuery,
       categoryId: null,
       cityId: cityId,
@@ -85,7 +85,7 @@ class ExploreLoaded extends ExploreState {
 
   ExploreLoaded clearSearch() {
     return ExploreLoaded(
-      posts: posts,
+      requests: requests,
       searchQuery: null,
       categoryId: categoryId,
       cityId: cityId,
@@ -99,7 +99,7 @@ class ExploreLoaded extends ExploreState {
 
   ExploreLoaded clearFilters() {
     return ExploreLoaded(
-      posts: posts,
+      requests: requests,
       searchQuery: searchQuery,
       categoryId: categoryId,
       cityId: cityId,
@@ -118,7 +118,7 @@ class ExploreLoaded extends ExploreState {
 
   @override
   List<Object?> get props => [
-    posts,
+    requests,
     searchQuery,
     categoryId,
     cityId,

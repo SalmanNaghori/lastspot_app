@@ -3,6 +3,7 @@ import 'package:lastspot_app/core/base_import.dart';
 import '../bloc/startup_bloc.dart';
 import '../bloc/startup_event.dart';
 import '../bloc/startup_state.dart';
+import '../../data/models/app_settings_model.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -22,22 +23,28 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return BlocListener<StartupBloc, StartupState>(
       listener: (context, state) {
-        if (state is StartupSuccess) {
-          // Proceed to Auth check (we will handle auth routing next)
-          context.go(AppRoutes.authCheck);
-        } else if (state is StartupMaintenanceMode) {
-          context.go(
-            AppRoutes.maintenance,
-            extra: {'title': state.title, 'message': state.message},
-          );
-        } else if (state is StartupUpdateRequired) {
-          if (state.isForced) {
-            context.go(AppRoutes.forceUpdate, extra: state);
-          } else {
-            // Soft update: show dialog, then proceed
-            _showSoftUpdateDialog(context, state);
-          }
-        }
+        state.maybeWhen(
+          success: () {
+            context.go(AppRoutes.authCheck);
+          },
+          maintenanceMode: (title, message) {
+            context.go(
+              AppRoutes.maintenance,
+              extra: {'title': title, 'message': message},
+            );
+          },
+          updateRequired: (messageData, storeUrl, isForced, latestVersion) {
+            if (isForced) {
+              context.go(AppRoutes.forceUpdate, extra: {
+                'messageData': messageData,
+                'storeUrl': storeUrl,
+              });
+            } else {
+              _showSoftUpdateDialog(context, messageData, storeUrl, latestVersion);
+            }
+          },
+          orElse: () {},
+        );
       },
       child: const Scaffold(
         backgroundColor: AppColor.primaryColor,
@@ -50,21 +57,23 @@ class _SplashScreenState extends State<SplashScreen> {
 
   void _showSoftUpdateDialog(
     BuildContext context,
-    StartupUpdateRequired state,
+    VersionMessage messageData,
+    String storeUrl,
+    String? latestVersion,
   ) {
     showDialog(
       context: context,
       barrierDismissible: false,
       builder: (dialogContext) {
         return AlertDialog(
-          title: Text(state.messageData.title),
+          title: Text(messageData.title),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(state.messageData.message),
+              Text(messageData.message),
               const SizedBox(height: 16),
-              ...state.messageData.releaseNotes.map((note) => Text('• $note')),
+              ...messageData.releaseNotes.map((note) => Text('• $note')),
             ],
           ),
           actions: [
@@ -72,8 +81,8 @@ class _SplashScreenState extends State<SplashScreen> {
               onPressed: () {
                 final startupBloc = context.read<StartupBloc>();
                 Navigator.pop(dialogContext);
-                if (state.latestVersion != null) {
-                  startupBloc.add(StartupUpdateSkipped(state.latestVersion!));
+                if (latestVersion != null) {
+                  startupBloc.add(StartupUpdateSkipped(latestVersion));
                 } else {
                   context.go(AppRoutes.authCheck);
                 }
@@ -84,14 +93,14 @@ class _SplashScreenState extends State<SplashScreen> {
               onPressed: () async {
                 final startupBloc = context.read<StartupBloc>();
                 Navigator.pop(dialogContext);
-                if (state.storeUrl.isNotEmpty) {
-                  final uri = Uri.tryParse(state.storeUrl);
+                if (storeUrl.isNotEmpty) {
+                  final uri = Uri.tryParse(storeUrl);
                   if (uri != null && await canLaunchUrl(uri)) {
                     await launchUrl(uri, mode: LaunchMode.externalApplication);
                   }
                 }
-                if (state.latestVersion != null) {
-                  startupBloc.add(StartupUpdateSkipped(state.latestVersion!));
+                if (latestVersion != null) {
+                  startupBloc.add(StartupUpdateSkipped(latestVersion));
                 } else if (context.mounted) {
                   context.go(AppRoutes.authCheck);
                 }

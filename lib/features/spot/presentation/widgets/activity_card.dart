@@ -24,14 +24,18 @@ class ActivityCard extends StatelessWidget {
   String _formatDate(DateTime dt) {
     final now = DateTime.now();
     final localDt = dt.toLocal();
-    if (now.year == localDt.year && now.month == localDt.month && now.day == localDt.day) {
+    if (now.year == localDt.year &&
+        now.month == localDt.month &&
+        now.day == localDt.day) {
       return 'Today';
-    } else if (now.year == localDt.year && now.month == localDt.month && now.day == localDt.day - 1) {
+    } else if (now.year == localDt.year &&
+        now.month == localDt.month &&
+        now.day == localDt.day - 1) {
       return 'Tomorrow';
     }
     return DateFormat('MMM d').format(localDt);
   }
-  
+
   String _formatTime(DateTime dt) => DateFormat('h:mm a').format(dt.toLocal());
 
   String _getDisplayLocation(String location) {
@@ -52,17 +56,13 @@ class ActivityCard extends StatelessWidget {
       onTap: onTap,
       behavior: HitTestBehavior.opaque,
       child: Container(
-        width: width, // Parent constraints will also work, but explicit width helps horizontal lists
-        margin: EdgeInsets.only(
-          bottom: Dimensions.r16.dynamicH,
-        ),
+        width:
+            width, // Parent constraints will also work, but explicit width helps horizontal lists
+        margin: EdgeInsets.only(bottom: Dimensions.r16.dynamicH),
         decoration: BoxDecoration(
           color: context.surfaceColor,
           borderRadius: BorderRadius.circular(Dimensions.r16.dynamicR),
-          border: Border.all(
-            color: context.borderColor,
-            width: 0.5,
-          ),
+          border: Border.all(color: context.borderColor, width: 0.5),
           boxShadow: [
             BoxShadow(
               color: AppColor.blackColor.withValues(alpha: 0.04),
@@ -79,11 +79,12 @@ class ActivityCard extends StatelessWidget {
             SpotHeroImage(
               spot: spot,
               isUrgent: false,
-              spotsLeftText: '', // Hide spots left here, per user spec it goes below
+              spotsLeftText:
+                  '', // Hide spots left here, per user spec it goes below
               perPersonLabel: '/ person',
               heroTagPrefix: heroTagPrefix,
             ),
-            
+
             Padding(
               padding: EdgeInsets.all(Dimensions.r16.dynamicW),
               child: Column(
@@ -97,7 +98,9 @@ class ActivityCard extends StatelessWidget {
                     ),
                     decoration: BoxDecoration(
                       color: context.primaryColor.withValues(alpha: 0.1),
-                      borderRadius: BorderRadius.circular(Dimensions.r6.dynamicR),
+                      borderRadius: BorderRadius.circular(
+                        Dimensions.r6.dynamicR,
+                      ),
                     ),
                     child: Text(
                       '$categoryIcon $categoryName',
@@ -109,10 +112,12 @@ class ActivityCard extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: Dimensions.r12.dynamicH),
-                  
+
                   // Title
                   Text(
-                    spot.title.trim().isNotEmpty ? spot.title.trim() : _getDisplayLocation(spot.locationName),
+                    spot.title.trim().isNotEmpty
+                        ? spot.title.trim()
+                        : _getDisplayLocation(spot.locationName),
                     style: TextStyle(
                       fontSize: Dimensions.r18.dynamicSP,
                       fontWeight: FontWeight.w800,
@@ -123,7 +128,7 @@ class ActivityCard extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                   ),
                   SizedBox(height: Dimensions.r12.dynamicH),
-                  
+
                   // Date and Time
                   Text(
                     '📅 ${_formatDate(spot.eventDateTime)} • ${_formatTime(spot.eventDateTime)}',
@@ -134,7 +139,7 @@ class ActivityCard extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: Dimensions.r8.dynamicH),
-                  
+
                   // Location
                   Text(
                     '📍 ${_getDisplayLocation(spot.locationName)}',
@@ -147,21 +152,23 @@ class ActivityCard extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                   ),
                   SizedBox(height: Dimensions.r12.dynamicH),
-                  
+
                   // Spots Left
                   Text(
                     '👥 $spotsLeftText',
                     style: TextStyle(
                       fontSize: Dimensions.r14.dynamicSP,
-                      color: isFull ? AppColor.errorColor : AppColor.successColor,
+                      color: isFull
+                          ? AppColor.errorColor
+                          : AppColor.successColor,
                       fontWeight: FontWeight.w700,
                     ),
                   ),
-                  
+
                   SizedBox(height: Dimensions.r16.dynamicH),
                   Divider(height: 1, color: context.borderColor),
                   SizedBox(height: Dimensions.r12.dynamicH),
-                  
+
                   // Creator
                   Row(
                     children: [
@@ -178,7 +185,9 @@ class ActivityCard extends StatelessWidget {
                             : Container(
                                 width: Dimensions.r24.dynamicH,
                                 height: Dimensions.r24.dynamicH,
-                                color: context.primaryColor.withValues(alpha: 0.1),
+                                color: context.primaryColor.withValues(
+                                  alpha: 0.1,
+                                ),
                                 child: Icon(
                                   Icons.person,
                                   size: Dimensions.r16.dynamicH,

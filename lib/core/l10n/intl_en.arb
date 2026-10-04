@@ -26,6 +26,7 @@
   "urgentMatches": "URGENT MATCHES (STARTING TODAY)",
   "recentPosts": "RECENT POSTS",
   "openGroundMap": "Open Ground Map \u2197",
+  "mapLocation": "Map Location",
   "viewSpot": "View Spot",
   "spotsNeeded": "{count} SPOTS",
   "@spotsNeeded": {
@@ -347,6 +348,15 @@
   "cancelActivity": "Cancel Activity",
   "closeActivity": "Close Activity",
   "reportActivityAction": "Report Activity",
+  "statusCompleted": "Completed",
+  "statusCancelled": "Cancelled",
+  "statusExpired": "Expired",
+  "emptyHostedTitle": "No Hosted Activities",
+  "emptyHostedDesc": "You haven't created any activities yet.",
+  "emptyJoinedTitle": "No Joined Activities",
+  "emptyJoinedDesc": "You haven't joined any activities yet.",
+  "emptyRequestsTitle": "No Join Requests",
+  "emptyRequestsDesc": "Join requests functionality will be here.",
   "aboutSection": "ABOUT",
   "scheduleSection": "SCHEDULE",
   "statusLabel": "Status: {status}",
@@ -355,5 +365,11 @@
       "status": {}
     }
   },
-  "errorUnknownState": "Error or unknown state"
+  "errorUnknownState": "Error or unknown state",
+  "reportReasonRequired": "Please select a reason for reporting.",
+  "reportSubmittedSuccess": "Report submitted successfully. We will review it shortly.",
+  "whyReporting": "Why are you reporting this?",
+  "additionalDetailsOptional": "Additional Details (Optional)",
+  "reportDescHint": "Please provide more details to help us understand...",
+  "submitReport": "Submit Report"
 }

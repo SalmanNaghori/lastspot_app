@@ -1,0 +1,38 @@
+New project (greenfield)
+
+I just added flutter-ai/ to this repo. Treat it as the governance layer.
+
+Read in order:
+1. flutter-ai/agent.md
+2. flutter-ai/ADOPT.md (section A)
+3. flutter-ai/checklists/greenfield-kickoff.md
+4. flutter-ai/project/README.md and project/project-rules.md
+
+Rules for this chat:
+- Do NOT load profiles/ or copy example ADRs 0001–0008.
+- Do NOT create any lib/ files yet.
+- Do NOT invent stack choices.
+
+Run the greenfield kickoff. Ask me orientation FIRST (Feature First vs Layer First), then level, state, DI, routing, HTTP, storage.
+
+After I answer, fill project/*.md (replace every _TBD_), write ADR-0001+ from adr/TEMPLATE.md for those choices, and stop. Show me what you wrote and wait — do not scaffold features until I say so.
+
+Existing project (brownfield)
+I just added flutter-ai/ to this existing Flutter app. Treat it as the governance layer.
+
+Read in order:
+1. flutter-ai/agent.md
+2. flutter-ai/ADOPT.md (section B)
+3. flutter-ai/checklists/greenfield-kickoff.md (section 2 only — Stay vs Strangler)
+4. flutter-ai/sop/architecture.md → “Auditing an existing project”
+5. flutter-ai/project/README.md
+
+Rules for this chat:
+- Do NOT load profiles/ as the source of truth.
+- Do NOT invent history or class names from the reference profile.
+- Do NOT bulk-move folders (no lib/layers → lib/features migration).
+- Detect the tree that already exists.
+
+Audit this repo (pubspec, main/DI, 2–3 vertical slices, rg for pattern drift). Then ask me once: Stay on the current tree, or Strangler (legacy root + new-feature root).
+
+After I answer, replace flutter-ai/project/* stubs with THIS app’s reality, write ADRs for choices the code already made, and list open NEEDS-DECISION items. Stop there — no feature work until I approve the project profile.

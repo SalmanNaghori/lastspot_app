@@ -1,11 +1,11 @@
 import 'dart:io';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:lastspot_app/core/network/api_endpoints.dart';
-import '../models/profile_model.dart';
+import '../../domain/entities/user_profile.dart';
 
 abstract class ProfileRemoteDataSource {
-  Future<ProfileModel?> getProfile(String userId);
-  Future<void> updateProfile(ProfileModel profile);
+  Future<UserProfile?> getProfile(String userId);
+  Future<void> updateProfile(UserProfile profile);
   Future<String> uploadAvatar({
     required String userId,
     required File imageFile,
@@ -19,7 +19,7 @@ class SupabaseProfileDataSourceImpl implements ProfileRemoteDataSource {
     : _client = client;
 
   @override
-  Future<ProfileModel?> getProfile(String userId) async {
+  Future<UserProfile?> getProfile(String userId) async {
     final response = await _client
         .from(ApiEndpoints.tableProfiles)
         .select()
@@ -27,11 +27,11 @@ class SupabaseProfileDataSourceImpl implements ProfileRemoteDataSource {
         .maybeSingle();
 
     if (response == null) return null;
-    return ProfileModel.fromJson(response);
+    return UserProfile.fromJson(response);
   }
 
   @override
-  Future<void> updateProfile(ProfileModel profile) async {
+  Future<void> updateProfile(UserProfile profile) async {
     await _client.from(ApiEndpoints.tableProfiles).upsert(profile.toJson());
   }
 

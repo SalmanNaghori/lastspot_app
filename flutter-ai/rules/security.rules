@@ -1,0 +1,46 @@
+# security.rules — secrets, tokens, storage, logs, build
+# SOP: sop/security.md, sop/configuration.md
+# Guardrails: guardrails/security.md
+
+## Secrets and config
+MUST-NOT  SEC-1   Put API keys, tokens, passwords, encryption keys or salts in Dart, AndroidManifest.xml, Info.plist, Gradle or committed JSON/YAML.
+MUST      SEC-2   Supply env values via --dart-define-from-file=config/<env>.json -> ConfigInjection -> AppConfiguration (read once, injected). No String.fromEnvironment elsewhere.
+MUST      SEC-3   Gitignore config/*.json; commit config/*.json.example with key names only.
+MUST-NOT  SEC-4   Bundle .env files as assets for secrets (no flutter_dotenv for secrets).
+MUST      SEC-5   Restrict client-shipped third-party keys (Maps, Firebase) in the provider console to bundle id / SHA; document in README.
+MUST      SEC-21  Consume every config key and give every AppConfiguration field a key; fail fast (assert) on empty BASE_URL.
+MUST      SEC-22  Feed native keys (Maps) via manifestPlaceholders / xcconfig from the same env source.
+
+## Tokens and storage
+MUST      SEC-6   Store access/refresh tokens and encryption keys in OS secure storage (flutter_secure_storage or equivalent) behind AppStorage. Never derive keys from package name or use constant IVs for new data.
+MUST-NOT  SEC-7   Send tokens in URL query strings (HTTP or socket); use Authorization header / socket auth payload.
+MUST      SEC-8   On logout clear all session-scoped StorageKeys, in-memory session, offline queue, socket connection, sensitive caches.
+MUST      SEC-9   Encrypt cached PII/messages at rest with a key from secure storage; clear on logout/account deletion.
+MUST      SEC-23  Attach Bearer only when ApiRequest.requiresAuth and apiType == private.
+
+## Logging
+MUST-NOT  SEC-10  Log tokens, FCM tokens, OTPs, phone numbers, emails, PII bodies, full notification payloads, or URLs with credentials — in any build mode.
+MUST      SEC-11  Log only via DebugLog (kDebugMode-gated); never print.
+MUST      SEC-12  Wire FlutterError.onError and PlatformDispatcher.onError once each to Crashlytics; no PII in custom keys; user id as opaque identifier only.
+MUST      NET-7   Dio logger enabled only in debug with header redaction.
+
+## Network
+MUST      SEC-13  HTTPS only; usesCleartextTraffic=false on Android.
+MUST-NOT  SEC-14  Bypass TLS validation in release; guard any dev bypass with !kReleaseMode or remove it.
+
+## Inputs
+MUST      SEC-15  Validate deep links (host, path, id format) and notification payloads (required fields) before use; require session for protected destinations; ignore + log unknown.
+MUST      SEC-16  WebViews load allow-listed hosts only; no JS bridges to app internals without review.
+
+## Build
+MUST-NOT  SEC-17  Sign release with signingConfigs.debug; use a release keystore from gitignored key.properties.
+SHOULD    SEC-18  Build release with --obfuscate --split-debug-info and upload symbols to Crashlytics.
+MUST      SEC-19  Guard debug-only paths (mock servers, verbose interceptors, test creds) with kDebugMode.
+MUST      SEC-20  Document every permission/background mode in README; remove unused ones.
+
+## Dependencies
+MUST      SEC-24  Review native permissions/network access of a plugin before adding; run pub outdated + advisories per release.
+
+## Project
+PROJECT   See project/project-rules.md for overrides and open decisions.
+MUST-NOT  Invent class/file names from profiles/reference/ or example ADRs when project/ still has _TBD_ stubs.

@@ -1,0 +1,42 @@
+# architecture.rules — layers, structure, DI resolution
+# SOP: sop/architecture.md, sop/project-structure.md, sop/feature-architecture.md, sop/dependency-injection.md
+# Guardrails: guardrails/architecture.md
+
+## Layers
+MUST      ARCH-1  Dependencies point inward: presentation -> domain -> data -> core. Never import a higher layer from a lower one.
+MUST-NOT  ARCH-2  Import Flutter UI (material/widgets/cupertino, BuildContext, Navigator, EasyLoading, toasts, dialogs) in domain/ or data/ (Feature First: services/ and models/).
+MUST-NOT  ARCH-3  Import feature UI/state code from core/ except composition modules (di, navigation, notification routing).
+MUST-NOT  ARCH-4  Call repositories, data sources, the HTTP gateway, or storage from a widget.
+MUST      ARCH-5  Put business rules (filter/sort/threshold/validation/decrypt/eligibility) in a state holder, use case or policy — never in build/initState/UI helpers.
+MUST-NOT  ARCH-6  Create an interface, base class, use case, data source or mapper without a second implementation, a test-double need, or 2+ sources to orchestrate.
+MUST      ARCH-7  Follow the recorded architecture level and orientation (project/README.md + ADR). A feature lives in one tree. App-wide mixed (Strangler) only with a brownfield ADR naming legacy root + new-feature root. Never bulk-move. Never split one feature across lib/features and lib/layers.
+
+## Structure
+MUST      STRUCT-1 Name new directories and files snake_case; file stem = primary class in snake_case.
+MUST-NOT  STRUCT-2 Place third-party/vendored packages under lib/; use packages/<name> with a path dependency.
+MUST-NOT  STRUCT-3 List source directories under flutter.assets in pubspec.yaml.
+MUST-NOT  STRUCT-4 Create barrels that re-export third-party packages or more than one layer; don't import mega-barrels from data/domain/core.
+MUST      STRUCT-5 Commit generated files (*.g.dart, *.freezed.dart, *.gr.dart) consistently and never hand-edit them; regenerate with build_runner.
+MUST-NOT  STRUCT-6 Merge scratch files, empty files, fully commented-out files or unrouted legacy screens.
+SHOULD    STRUCT-7 Put tests at test/<mirror of lib path>/<file>_test.dart.
+SHOULD    STRUCT-8 Use one home per widget kind. Feature First: lib/shared/widgets for design-system and cross-feature widgets; feature-only widgets in features/<x>/widgets/. Layer First: core/widgets for design-system primitives, presentation/commonWidgets for domain-aware shared widgets.
+
+## Feature shape
+MUST      FEAT-1  Minimum feature (when it needs data) = models + repository interface/impl + state holder + screen + route + composition-root wiring + tests — per project orientation.
+MUST      FEAT-2  Before creating anything, search existing repositories, endpoints, models, widgets, events and helpers; search which tree this feature already occupies; reuse or extend first.
+SHOULD    FEAT-3  Start thin: repository calls the gateway directly; add a data source only with 2+ sources; add a use case only when orchestration spans 2+ repositories or is reused by 2+ holders.
+MUST-NOT  FEAT-4  Copy a maximal reference feature stack (extra data sources + use cases + policies) onto a simple list/detail feature.
+
+## Dependency injection (resolution)
+MUST      DI-1   Inject collaborators through constructors (or the project's declared graph) as abstractions; store as private finals.
+MUST      DI-2   Resolve from the DI container / overrides only at composition roots (bootstrap, route wrappers, provider scope) — never in the middle of feature logic.
+MUST-NOT  DI-2b  Look up the container inside widget build/initState/helpers, state-holder bodies, repositories, or services (unless the ADR explicitly allows a listed edge).
+MUST      DI-3   Register long-lived services/repos as singletons (or equivalent); register UI state holders as factories / per-route scope (or construct when dependency-free).
+MUST      DI-4   Register in the module/file matching the type and respect the documented order in project/architecture-map.md.
+MUST-NOT  DI-5   Introduce global mutable dependency channels: global BuildContext, static mutable fields, opening DB boxes by magic name inside class bodies.
+MUST-NOT  DI-6   Register UI state holders as app-wide singletons or inject one feature holder into another.
+SHOULD    DI-7   Provide screen state in the route wrapper; keep root providers to session-wide state only.
+
+## Project
+PROJECT   See project/project-rules.md for overrides and open decisions.
+MUST-NOT  Invent class/file names from profiles/reference/ or example ADRs when project/ still has _TBD_ stubs. MUST-NOT scaffold lib/ before ND-0 orientation is answered.

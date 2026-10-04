@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "830329000172",
+    "project_id": "lastspot-d54ac",
+    "storage_bucket": "lastspot-d54ac.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:830329000172:android:62184c55795dd0350c15c9",
+        "android_client_info": {
+          "package_name": "com.lastspot.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDaLl6iKl8bGu5u7YjxQ7jfdP_gU_nnM4Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

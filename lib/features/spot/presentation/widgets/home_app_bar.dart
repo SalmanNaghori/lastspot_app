@@ -1,4 +1,7 @@
 import '../../../../core/base_import.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../../features/notifications/presentation/bloc/notifications_cubit.dart';
+import '../../../../features/notifications/presentation/bloc/notifications_state.dart';
 
 /// Pinned application bar displaying the LastSpot brand logo and notification action.
 class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -70,17 +73,45 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
                 ),
                 onPressed: onNotificationTap,
               ),
-              Positioned(
-                top: Dimensions.r10.dynamicH,
-                right: Dimensions.r10.dynamicW,
-                child: Container(
-                  width: Dimensions.r8.dynamicW,
-                  height: Dimensions.r8.dynamicH,
-                  decoration: const BoxDecoration(
-                    color: AppColor.errorColor,
-                    shape: BoxShape.circle,
-                  ),
-                ),
+              BlocBuilder<NotificationsCubit, NotificationsState>(
+                builder: (context, state) {
+                  int unreadCount = 0;
+                  if (state is NotificationsLoaded) {
+                    unreadCount = state.unreadCount;
+                  }
+                  if (unreadCount == 0) return const SizedBox.shrink();
+
+                  return Positioned(
+                    top: Dimensions.r6.dynamicH,
+                    right: Dimensions.r6.dynamicW,
+                    child: Container(
+                      padding: EdgeInsets.all(Dimensions.r2.dynamicW),
+                      decoration: BoxDecoration(
+                        color: AppColor.errorColor,
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          color: context.backgroundColor,
+                          width: 1.5,
+                        ),
+                      ),
+                      constraints: BoxConstraints(
+                        minWidth: Dimensions.r14.dynamicW,
+                        minHeight: Dimensions.r14.dynamicH,
+                      ),
+                      child: Center(
+                        child: Text(
+                          unreadCount > 9 ? '9+' : unreadCount.toString(),
+                          style: TextStyle(
+                            color: AppColor.whiteColor,
+                            fontSize: Dimensions.r8.dynamicSP,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ),
+                  );
+                },
               ),
             ],
           ),

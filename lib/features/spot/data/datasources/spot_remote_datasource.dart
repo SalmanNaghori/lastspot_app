@@ -5,10 +5,15 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../models/join_request_model.dart';
 import '../models/request_model.dart';
+import '../../domain/entities/join_request_entity.dart';
+import '../../../auth/domain/entities/user_profile.dart';
 
 abstract class SpotRemoteDataSource {
-  Future<List<RequestModel>> getFeedPosts({String? categoryId, String? cityId});
-  Future<List<RequestModel>> getExplorePosts({
+  Future<List<RequestModel>> getFeedRequests({
+    String? categoryId,
+    String? cityId,
+  });
+  Future<List<RequestModel>> getExploreRequests({
     required String cityId,
     String? categoryId,
     String? searchQuery,
@@ -22,11 +27,15 @@ abstract class SpotRemoteDataSource {
   Future<RequestModel> getSpotDetails(String requestId);
   Future<List<JoinRequestModel>> getConfirmedPlayers(String requestId);
   Stream<List<JoinRequestModel>> streamPendingRequests(String requestId);
-  Future<void> requestToJoin(String requestId);
-  Future<void> updateRequestStatus(String joinRequestId, String status);
+  Future<void> requestToJoin(String requestId, {String message = ''});
+  Future<void> acceptJoinRequest(String joinRequestId);
+  Future<void> rejectJoinRequest(String joinRequestId);
+  Future<void> cancelJoinRequest(String joinRequestId);
   Future<List<RequestModel>> getUserActivities();
   Future<void> updateRequest(String spotId, Map<String, dynamic> updates);
   Future<JoinRequestModel?> getUserJoinRequest(String spotId);
+  Future<List<JoinRequestModel>> getReceivedJoinRequests();
+  Future<List<JoinRequestModel>> getSentJoinRequests();
 }
 
 class SupabaseSpotDataSourceImpl implements SpotRemoteDataSource {
@@ -36,7 +45,10 @@ class SupabaseSpotDataSourceImpl implements SpotRemoteDataSource {
     : _client = client;
 
   @override
-  Future<List<RequestModel>> getFeedPosts({String? categoryId, String? cityId}) async {
+  Future<List<RequestModel>> getFeedRequests({
+    String? categoryId,
+    String? cityId,
+  }) async {
     var query = _client
         .from(ApiEndpoints.tableRequests)
         .select('*, profiles:user_id(*), request_images(*)')
@@ -58,7 +70,7 @@ class SupabaseSpotDataSourceImpl implements SpotRemoteDataSource {
   }
 
   @override
-  Future<List<RequestModel>> getExplorePosts({
+  Future<List<RequestModel>> getExploreRequests({
     required String cityId,
     String? categoryId,
     String? searchQuery,
@@ -104,35 +116,32 @@ class SupabaseSpotDataSourceImpl implements SpotRemoteDataSource {
     List<File> images,
   ) async {
     // 1. Insert the request
+    final payload = Map<String, dynamic>.from(requestData);
+    payload['current_participants'] = 1;
+    payload['status'] = 'open';
     final response = await _client
         .from(ApiEndpoints.tableRequests)
-        .insert(requestData)
+        .insert(payload)
         .select()
         .single();
     final requestId = response['id'] as String;
 
-    // Add creator to join_requests as accepted
-    await _client.from(ApiEndpoints.tableJoinRequests).insert({
-      'request_id': requestId,
-      'user_id': requestData['user_id'],
-      'status': 'accepted',
-    });
-
     // 2. Upload images and insert into request_images
     for (int i = 0; i < images.length; i++) {
       final file = images[i];
+      final userId = _client.auth.currentUser?.id ?? '';
       final fileName = '${DateTime.now().millisecondsSinceEpoch}_$i.jpg';
-      final storagePath = '$requestId/$fileName';
+      final storagePath = '$userId/$fileName';
 
-      await _client.storage.from('request_images').upload(storagePath, file);
+      await _client.storage.from('request-images').upload(storagePath, file);
 
       final publicUrl = _client.storage
-          .from('request_images')
+          .from('request-images')
           .getPublicUrl(storagePath);
 
       await _client.from('request_images').insert({
         'request_id': requestId,
-        'storage_path': publicUrl, // or storagePath depending on schema needs
+        'storage_path': publicUrl,
         'sort_order': i,
       });
     }
@@ -151,14 +160,35 @@ class SupabaseSpotDataSourceImpl implements SpotRemoteDataSource {
   @override
   Future<List<JoinRequestModel>> getConfirmedPlayers(String requestId) async {
     final response = await _client
-        .from(ApiEndpoints.tableJoinRequests)
-        .select('*, profiles:user_id(*)')
-        .eq('request_id', requestId) // Updated from post_id to request_id
-        .eq('status', 'accepted');
+        .from('request_participants')
+        .select('*')
+        .eq('request_id', requestId);
 
-    return (response as List<dynamic>)
-        .map((e) => JoinRequestModel.fromJson(e as Map<String, dynamic>))
-        .toList();
+    final list = response as List<dynamic>;
+    if (list.isEmpty) return [];
+
+    final userIds = list.map((e) => e['user_id']).toSet().toList();
+    final profilesResponse = await _client
+        .from('profiles')
+        .select()
+        .inFilter('id', userIds);
+
+    final profilesMap = {for (var p in profilesResponse) p['id']: p};
+
+    return list.map((e) {
+      final userId = e['user_id'];
+      final profile = profilesMap[userId];
+      return JoinRequestModel(
+        id: e['id']?.toString() ?? e['request_id'] + e['user_id'],
+        requestId: e['request_id'] as String,
+        userId: userId as String,
+        status: JoinRequestStatus.accepted,
+        createdAt:
+            DateTime.tryParse(e['joined_at']?.toString() ?? '') ??
+            DateTime.now(),
+        userProfile: profile != null ? UserProfile.fromJson(profile) : null,
+      );
+    }).toList();
   }
 
   @override
@@ -166,28 +196,186 @@ class SupabaseSpotDataSourceImpl implements SpotRemoteDataSource {
     return _client
         .from(ApiEndpoints.tableJoinRequests)
         .stream(primaryKey: ['id'])
-        .eq('request_id', requestId) // Updated from post_id to request_id
+        .eq('request_id', requestId)
         .eq('status', 'pending')
-        .map((list) => list.map((e) => JoinRequestModel.fromJson(e)).toList());
+        .asyncMap((list) async {
+          if (list.isEmpty) return [];
+          try {
+            final userIds = list.map((e) => e['user_id']).toSet().toList();
+            final profilesResponse = await _client
+                .from('profiles')
+                .select(
+                  'id, full_name, avatar_url, bio, city, sports_interests, rating',
+                )
+                .inFilter('id', userIds);
+
+            final profilesMap = {for (var p in profilesResponse) p['id']: p};
+
+            return list
+                .map((e) {
+                  try {
+                    final userId = e['user_id'];
+                    final profile = profilesMap[userId];
+                    final json = Map<String, dynamic>.from(e);
+                    if (profile != null) {
+                      json['profiles'] = profile;
+                    }
+                    return JoinRequestModel.fromJson(json);
+                  } catch (err) {
+                    print('Error parsing stream join request: $err');
+                    return null;
+                  }
+                })
+                .whereType<JoinRequestModel>()
+                .toList();
+          } catch (e) {
+            print('Error in streamPendingRequests asyncMap: $e');
+            return [];
+          }
+        });
   }
 
   @override
-  Future<void> requestToJoin(String requestId) async {
+  Future<List<JoinRequestModel>> getReceivedJoinRequests() async {
     final userId = _client.auth.currentUser?.id;
-    if (userId == null) throw Exception('User not logged in');
+    if (userId == null) return [];
 
-    await _client.from(ApiEndpoints.tableJoinRequests).insert({
-      'request_id': requestId,
-      'user_id': userId,
-      'status': 'pending',
-    });
+    try {
+      final response = await _client
+          .from(ApiEndpoints.tableJoinRequests)
+          .select('''
+            *,
+            requests!inner(*)
+          ''')
+          .eq('requests.user_id', userId)
+          .eq('status', 'pending')
+          .order('created_at', ascending: false);
+
+      print('DEBUG: getReceivedJoinRequests raw response: $response');
+      final list = response as List<dynamic>;
+      if (list.isEmpty) return [];
+
+      final applicantIds = list.map((e) => e['user_id']).toSet().toList();
+      final profilesResponse = await _client
+          .from('profiles')
+          .select()
+          .inFilter('id', applicantIds);
+
+      final profilesMap = {for (var p in profilesResponse) p['id']: p};
+
+      final parsedList = list
+          .map((e) {
+            try {
+              final applicantId = e['user_id'];
+              final profile = profilesMap[applicantId];
+              final json = Map<String, dynamic>.from(e);
+              if (profile != null) {
+                json['profiles'] = profile;
+              }
+              return JoinRequestModel.fromJson(json);
+            } catch (err) {
+              print('DEBUG: Error parsing JoinRequestModel: $err for row: $e');
+              return null;
+            }
+          })
+          .whereType<JoinRequestModel>()
+          .toList();
+
+      final uniqueRequests = <String, JoinRequestModel>{};
+      for (final req in parsedList) {
+        final key = '${req.requestId}_${req.userId}';
+        if (!uniqueRequests.containsKey(key)) {
+          uniqueRequests[key] = req;
+        }
+      }
+
+      final finalList = uniqueRequests.values.toList();
+      print('DEBUG: getReceivedJoinRequests parsed count: ${finalList.length}');
+      return finalList;
+    } catch (e) {
+      print('DEBUG: getReceivedJoinRequests query error: $e');
+      rethrow;
+    }
   }
 
   @override
-  Future<void> updateRequestStatus(String requestId, String status) async {
+  Future<List<JoinRequestModel>> getSentJoinRequests() async {
+    final userId = _client.auth.currentUser?.id;
+    if (userId == null) return [];
+
+    try {
+      final response = await _client
+          .from(ApiEndpoints.tableJoinRequests)
+          .select('''
+            *,
+            requests(*)
+          ''')
+          .eq('user_id', userId)
+          .order('created_at', ascending: false);
+
+      print('DEBUG: getSentJoinRequests raw response: $response');
+
+      final parsedList = (response as List<dynamic>)
+          .map((e) {
+            try {
+              return JoinRequestModel.fromJson(e as Map<String, dynamic>);
+            } catch (err) {
+              print('DEBUG: Error parsing JoinRequestModel: $err for row: $e');
+              return null;
+            }
+          })
+          .whereType<JoinRequestModel>()
+          .toList();
+
+      final uniqueRequests = <String, JoinRequestModel>{};
+      for (final req in parsedList) {
+        final key = '${req.requestId}_${req.userId}';
+        if (!uniqueRequests.containsKey(key)) {
+          uniqueRequests[key] = req;
+        }
+      }
+
+      final finalList = uniqueRequests.values.toList();
+      print('DEBUG: getSentJoinRequests parsed count: ${finalList.length}');
+      return finalList;
+    } catch (e) {
+      print('DEBUG: getSentJoinRequests query error: $e');
+      rethrow;
+    }
+  }
+
+  @override
+  Future<void> requestToJoin(String requestId, {String message = ''}) async {
     await _client.rpc(
-      'update_request_status',
-      params: {'p_request_id': requestId, 'p_status': status},
+      'create_join_request',
+      params: {
+        'p_request_id': requestId,
+        'p_message': (message.trim().isEmpty) ? null : message.trim(),
+      },
+    );
+  }
+
+  @override
+  Future<void> acceptJoinRequest(String joinRequestId) async {
+    await _client.rpc(
+      'accept_join_request',
+      params: {'p_join_request_id': joinRequestId},
+    );
+  }
+
+  @override
+  Future<void> rejectJoinRequest(String joinRequestId) async {
+    await _client.rpc(
+      'reject_join_request',
+      params: {'p_join_request_id': joinRequestId},
+    );
+  }
+
+  @override
+  Future<void> cancelJoinRequest(String joinRequestId) async {
+    await _client.rpc(
+      'cancel_join_request',
+      params: {'p_join_request_id': joinRequestId},
     );
   }
 
@@ -199,10 +387,9 @@ class SupabaseSpotDataSourceImpl implements SpotRemoteDataSource {
     // Find spots where user is the creator OR is an accepted participant
     // First get accepted join requests
     final joinResponses = await _client
-        .from(ApiEndpoints.tableJoinRequests)
+        .from('request_participants')
         .select('request_id')
-        .eq('user_id', userId)
-        .eq('status', 'accepted');
+        .eq('user_id', userId);
 
     final joinedRequestIds = (joinResponses as List<dynamic>)
         .map((e) => e['request_id'] as String)

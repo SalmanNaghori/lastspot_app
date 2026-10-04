@@ -1,51 +1,24 @@
-import 'package:equatable/equatable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import '../../data/models/app_settings_model.dart';
 
-abstract class StartupState extends Equatable {
-  const StartupState();
+part 'startup_state.freezed.dart';
 
-  @override
-  List<Object?> get props => [];
-}
-
-class StartupInitial extends StartupState {}
-
-class StartupLoading extends StartupState {}
-
-class StartupMaintenanceMode extends StartupState {
-  final String title;
-  final String message;
-
-  const StartupMaintenanceMode({required this.title, required this.message});
-
-  @override
-  List<Object?> get props => [title, message];
-}
-
-class StartupUpdateRequired extends StartupState {
-  final VersionMessage messageData;
-  final String storeUrl;
-  final bool isForced;
-  final String? latestVersion;
-
-  const StartupUpdateRequired({
-    required this.messageData,
-    required this.storeUrl,
-    required this.isForced,
-    this.latestVersion,
-  });
-
-  @override
-  List<Object?> get props => [messageData, storeUrl, isForced, latestVersion];
-}
-
-class StartupSuccess extends StartupState {}
-
-class StartupError extends StartupState {
-  final String message;
-
-  const StartupError({required this.message});
-
-  @override
-  List<Object?> get props => [message];
+@freezed
+class StartupState with _$StartupState {
+  const factory StartupState.initial() = _Initial;
+  const factory StartupState.loading() = _Loading;
+  const factory StartupState.maintenanceMode({
+    required String title,
+    required String message,
+  }) = _MaintenanceMode;
+  const factory StartupState.updateRequired({
+    required VersionMessage messageData,
+    required String storeUrl,
+    required bool isForced,
+    String? latestVersion,
+  }) = _UpdateRequired;
+  const factory StartupState.success() = _Success;
+  const factory StartupState.error({
+    required String message,
+  }) = _Error;
 }

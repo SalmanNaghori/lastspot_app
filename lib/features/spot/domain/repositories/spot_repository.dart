@@ -3,9 +3,12 @@ import '../entities/join_request_entity.dart';
 import 'dart:io';
 
 abstract class SpotRepository {
-  Future<List<RequestEntity>> getFeedPosts({String? categoryId, String? cityId});
+  Future<List<RequestEntity>> getFeedRequests({
+    String? categoryId,
+    String? cityId,
+  });
 
-  Future<List<RequestEntity>> getExplorePosts({
+  Future<List<RequestEntity>> getExploreRequests({
     required String cityId,
     String? categoryId,
     String? searchQuery,
@@ -31,12 +34,13 @@ abstract class SpotRepository {
     required List<File> images,
   });
 
-  Future<void> requestToJoin(String spotId);
+  Future<void> requestToJoin(String spotId, {String message = ''});
 
-  Future<void> updateJoinRequestStatus({
-    required String joinRequestId,
-    required String status,
-  });
+  Future<void> acceptJoinRequest(String joinRequestId);
+
+  Future<void> rejectJoinRequest(String joinRequestId);
+
+  Future<void> cancelJoinRequest(String joinRequestId);
 
   Future<List<RequestEntity>> getUserActivities();
 
@@ -54,4 +58,6 @@ abstract class SpotRepository {
   });
 
   Future<JoinRequestEntity?> getUserJoinRequest(String spotId);
+  Future<List<JoinRequestEntity>> getReceivedJoinRequests();
+  Future<List<JoinRequestEntity>> getSentJoinRequests();
 }

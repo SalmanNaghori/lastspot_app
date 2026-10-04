@@ -1,6 +1,7 @@
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../base_import.dart';
+import 'context_extensions.dart';
 
 /// App-wide utility methods as specified in project Rule 13.
 class AppUtils {
@@ -68,6 +69,20 @@ class AppUtils {
   /// Formats DateTime to readable string (e.g., "Sep 4, 2026")
   static String formatDate(DateTime dateTime) {
     return DateFormat.yMMMd().format(dateTime);
+  }
+
+  /// Formats DateTime to short date (e.g., "Sep 4")
+  static String formatDateShort(DateTime dateTime) {
+    return DateFormat('MMM d').format(dateTime);
+  }
+
+  /// Extracts display location (resolving URLs to "Map Location")
+  static String getDisplayLocation(BuildContext context, String location) {
+    final lower = location.toLowerCase();
+    if (lower.startsWith('http://') || lower.startsWith('https://')) {
+      return context.loc.mapLocation;
+    }
+    return location;
   }
 
   /// Formats DateTime to readable time (e.g., "6:30 PM")

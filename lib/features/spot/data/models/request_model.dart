@@ -1,4 +1,4 @@
-import '../../../auth/data/models/profile_model.dart';
+import '../../../auth/domain/entities/user_profile.dart';
 import '../../domain/entities/request_entity.dart';
 import 'request_image_model.dart';
 
@@ -25,7 +25,20 @@ class RequestModel extends RequestEntity {
   });
 
   factory RequestModel.fromJson(Map<String, dynamic> json) {
+    final maxParticipants = json['max_participants'] != null
+        ? int.tryParse(json['max_participants'].toString()) ?? 0
+        : 0;
+
+    final currentParticipants = json['spots_needed'] != null
+        ? maxParticipants - (int.tryParse(json['spots_needed'].toString()) ?? 0)
+        : (json['current_participants'] != null
+              ? int.tryParse(json['current_participants'].toString()) ?? 0
+              : 0);
+
     RequestStatus parseStatus(String? statusStr) {
+      if (maxParticipants > 0 && currentParticipants >= maxParticipants) {
+        return RequestStatus.full;
+      }
       switch (statusStr?.toLowerCase()) {
         case 'full':
           return RequestStatus.full;
@@ -65,12 +78,8 @@ class RequestModel extends RequestEntity {
       eventDateTime:
           DateTime.tryParse(json['event_date_time']?.toString() ?? '') ??
           DateTime.now(),
-      maxParticipants: json['max_participants'] != null
-          ? int.tryParse(json['max_participants'].toString()) ?? 0
-          : 0,
-      currentParticipants: json['current_participants'] != null
-          ? int.tryParse(json['current_participants'].toString()) ?? 0
-          : 0,
+      maxParticipants: maxParticipants,
+      currentParticipants: currentParticipants,
       pricePerPerson: json['price_per_person'] != null
           ? double.tryParse(json['price_per_person'].toString()) ?? 0.0
           : 0.0,
@@ -82,7 +91,7 @@ class RequestModel extends RequestEntity {
           DateTime.tryParse(json['updated_at']?.toString() ?? '') ??
           DateTime.now(),
       hostProfile: json['profiles'] != null
-          ? ProfileModel.fromJson(json['profiles'])
+          ? UserProfile.fromJson(json['profiles'])
           : null,
       images: parsedImages,
     );

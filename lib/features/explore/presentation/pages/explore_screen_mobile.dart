@@ -116,8 +116,8 @@ class _ExploreScreenMobileState extends State<ExploreScreenMobile> {
     context.safePush(AppRoutes.spotDetailsPath(spotId));
   }
 
-  List<RequestEntity> _getDisplayedPosts(ExploreLoaded state) {
-    Iterable<RequestEntity> filtered = state.posts;
+  List<RequestEntity> _getDisplayedRequests(ExploreLoaded state) {
+    Iterable<RequestEntity> filtered = state.requests;
 
     // Local Category Filtering
     if (state.categoryId != null && state.categoryId!.isNotEmpty) {
@@ -521,7 +521,7 @@ class _ExploreScreenMobileState extends State<ExploreScreenMobile> {
                       child: BlocBuilder<ExploreBloc, ExploreState>(
                         builder: (context, state) {
                           if (state is ExploreLoaded) {
-                            final displayedPosts = _getDisplayedPosts(state);
+                            final displayedPosts = _getDisplayedRequests(state);
                             return Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -637,7 +637,7 @@ class _ExploreScreenMobileState extends State<ExploreScreenMobile> {
                       }
 
                       if (state is ExploreLoaded) {
-                        final displayedPosts = _getDisplayedPosts(state);
+                        final displayedPosts = _getDisplayedRequests(state);
 
                         if (displayedPosts.isEmpty) {
                           String emptyMessage = loc.noActivitiesFound;

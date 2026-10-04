@@ -19,16 +19,22 @@ class SpotRepositoryImpl extends BaseRepository implements SpotRepository {
        _supabaseClient = supabaseClient;
 
   @override
-  Future<List<RequestEntity>> getFeedPosts({String? categoryId, String? cityId}) {
+  Future<List<RequestEntity>> getFeedRequests({
+    String? categoryId,
+    String? cityId,
+  }) {
     return executeApiRaw(
       operationName: ApiEndpoints.spotGetFeed,
       requestData: {'categoryId': categoryId, 'cityId': cityId},
-      operation: () => _remoteDataSource.getFeedPosts(categoryId: categoryId, cityId: cityId),
+      operation: () => _remoteDataSource.getFeedRequests(
+        categoryId: categoryId,
+        cityId: cityId,
+      ),
     );
   }
 
   @override
-  Future<List<RequestEntity>> getExplorePosts({
+  Future<List<RequestEntity>> getExploreRequests({
     required String cityId,
     String? categoryId,
     String? searchQuery,
@@ -44,7 +50,7 @@ class SpotRepositoryImpl extends BaseRepository implements SpotRepository {
         'limit': limit,
         'offset': offset,
       },
-      operation: () => _remoteDataSource.getExplorePosts(
+      operation: () => _remoteDataSource.getExploreRequests(
         cityId: cityId,
         categoryId: categoryId,
         searchQuery: searchQuery,
@@ -101,9 +107,8 @@ class SpotRepositoryImpl extends BaseRepository implements SpotRepository {
       'longitude': 0.0, // Default as per plan
       'event_date_time': eventDateTime.toIso8601String(),
       'max_participants': maxParticipants,
-      'current_participants': 1, // Creator is the first participant
       'price_per_person': pricePerPerson,
-      'status': 'open', // Enum value string
+      'status': 'open',
       'city_id': cityId,
     };
 
@@ -115,24 +120,39 @@ class SpotRepositoryImpl extends BaseRepository implements SpotRepository {
   }
 
   @override
-  Future<void> requestToJoin(String spotId) {
+  Future<void> requestToJoin(String spotId, {String message = ''}) {
     return executeApiRaw(
       operationName: ApiEndpoints.spotRequestJoin,
-      requestData: {'spotId': spotId},
-      operation: () => _remoteDataSource.requestToJoin(spotId),
+      requestData: {'spotId': spotId, 'message': message},
+      operation: () =>
+          _remoteDataSource.requestToJoin(spotId, message: message),
     );
   }
 
   @override
-  Future<void> updateJoinRequestStatus({
-    required String joinRequestId,
-    required String status,
-  }) {
+  Future<void> acceptJoinRequest(String joinRequestId) {
     return executeApiRaw(
-      operationName: ApiEndpoints.spotUpdateJoinRequest,
-      requestData: {'joinRequestId': joinRequestId, 'status': status},
-      operation: () =>
-          _remoteDataSource.updateRequestStatus(joinRequestId, status),
+      operationName: 'acceptJoinRequest',
+      requestData: {'joinRequestId': joinRequestId},
+      operation: () => _remoteDataSource.acceptJoinRequest(joinRequestId),
+    );
+  }
+
+  @override
+  Future<void> rejectJoinRequest(String joinRequestId) {
+    return executeApiRaw(
+      operationName: 'rejectJoinRequest',
+      requestData: {'joinRequestId': joinRequestId},
+      operation: () => _remoteDataSource.rejectJoinRequest(joinRequestId),
+    );
+  }
+
+  @override
+  Future<void> cancelJoinRequest(String joinRequestId) {
+    return executeApiRaw(
+      operationName: 'cancelJoinRequest',
+      requestData: {'joinRequestId': joinRequestId},
+      operation: () => _remoteDataSource.cancelJoinRequest(joinRequestId),
     );
   }
 
@@ -179,12 +199,29 @@ class SpotRepositoryImpl extends BaseRepository implements SpotRepository {
     );
   }
 
-  @override
   Future<JoinRequestEntity?> getUserJoinRequest(String spotId) {
     return executeApiRaw(
       operationName: 'spotGetUserJoinRequest',
       requestData: {'spotId': spotId},
       operation: () => _remoteDataSource.getUserJoinRequest(spotId),
+    );
+  }
+
+  @override
+  Future<List<JoinRequestEntity>> getReceivedJoinRequests() {
+    return executeApiRaw(
+      operationName: 'getReceivedJoinRequests',
+      requestData: {},
+      operation: () => _remoteDataSource.getReceivedJoinRequests(),
+    );
+  }
+
+  @override
+  Future<List<JoinRequestEntity>> getSentJoinRequests() {
+    return executeApiRaw(
+      operationName: 'getSentJoinRequests',
+      requestData: {},
+      operation: () => _remoteDataSource.getSentJoinRequests(),
     );
   }
 }

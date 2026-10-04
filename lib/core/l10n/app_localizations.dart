@@ -172,6 +172,12 @@ abstract class AppLocalizations {
   /// **'Open Ground Map ↗'**
   String get openGroundMap;
 
+  /// No description provided for @mapLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Map Location'**
+  String get mapLocation;
+
   /// No description provided for @viewSpot.
   ///
   /// In en, this message translates to:
@@ -1630,6 +1636,60 @@ abstract class AppLocalizations {
   /// **'Report Activity'**
   String get reportActivityAction;
 
+  /// No description provided for @statusCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed'**
+  String get statusCompleted;
+
+  /// No description provided for @statusCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancelled'**
+  String get statusCancelled;
+
+  /// No description provided for @statusExpired.
+  ///
+  /// In en, this message translates to:
+  /// **'Expired'**
+  String get statusExpired;
+
+  /// No description provided for @emptyHostedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No Hosted Activities'**
+  String get emptyHostedTitle;
+
+  /// No description provided for @emptyHostedDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'You haven\'t created any activities yet.'**
+  String get emptyHostedDesc;
+
+  /// No description provided for @emptyJoinedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No Joined Activities'**
+  String get emptyJoinedTitle;
+
+  /// No description provided for @emptyJoinedDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'You haven\'t joined any activities yet.'**
+  String get emptyJoinedDesc;
+
+  /// No description provided for @emptyRequestsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No Join Requests'**
+  String get emptyRequestsTitle;
+
+  /// No description provided for @emptyRequestsDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Join requests functionality will be here.'**
+  String get emptyRequestsDesc;
+
   /// No description provided for @aboutSection.
   ///
   /// In en, this message translates to:
@@ -1653,6 +1713,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Error or unknown state'**
   String get errorUnknownState;
+
+  /// No description provided for @reportReasonRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select a reason for reporting.'**
+  String get reportReasonRequired;
+
+  /// No description provided for @reportSubmittedSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Report submitted successfully. We will review it shortly.'**
+  String get reportSubmittedSuccess;
+
+  /// No description provided for @whyReporting.
+  ///
+  /// In en, this message translates to:
+  /// **'Why are you reporting this?'**
+  String get whyReporting;
+
+  /// No description provided for @additionalDetailsOptional.
+  ///
+  /// In en, this message translates to:
+  /// **'Additional Details (Optional)'**
+  String get additionalDetailsOptional;
+
+  /// No description provided for @reportDescHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Please provide more details to help us understand...'**
+  String get reportDescHint;
+
+  /// No description provided for @submitReport.
+  ///
+  /// In en, this message translates to:
+  /// **'Submit Report'**
+  String get submitReport;
 }
 
 class _AppLocalizationsDelegate

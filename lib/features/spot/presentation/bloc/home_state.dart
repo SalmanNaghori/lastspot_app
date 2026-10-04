@@ -20,7 +20,7 @@ class HomeSuccess extends HomeState {
   final List<CityEntity> cities;
   final String? selectedCityId;
   final int unreadNotifications;
-  
+
   // Error flags for partial success
   final bool hasFeedError;
   final bool isFeedNetworkError;
@@ -41,8 +41,10 @@ class HomeSuccess extends HomeState {
     this.hasCategoriesError = false,
   });
 
-  bool get isEmpty => urgentMatches.isEmpty && nearbyActivities.isEmpty && comingUp.isEmpty;
-  bool get isPartialSuccess => hasFeedError || hasCitiesError || hasCategoriesError;
+  bool get isEmpty =>
+      urgentMatches.isEmpty && nearbyActivities.isEmpty && comingUp.isEmpty;
+  bool get isPartialSuccess =>
+      hasFeedError || hasCitiesError || hasCategoriesError;
 
   @override
   List<Object?> get props => [

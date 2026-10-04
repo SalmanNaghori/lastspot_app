@@ -1,0 +1,47 @@
+# ui.rules — screens, widgets, tokens, strings
+# SOP: sop/ui-architecture.md
+# Guardrails: guardrails/ui.md
+
+## Boundaries
+MUST-NOT  UI-1   Call sl<>(), repositories, data sources, the gateway, Hive/GetStorage/AppStorage from a widget; take values from state or constructor params.
+MUST-NOT  UI-2   Put network calls, storage access, decryption, heavy computation or business rules in build/initState/didChangeDependencies.
+MUST      ARCH-5 Move filtering/sorting/validation/threshold checks into the Cubit or a policy; the widget dispatches intent and renders state.
+MUST-NOT  UI-14  Use a global BuildContext (GlobalVariable.appContext) for sizing/theming; use the local context.
+
+## Screens
+MUST      UI-15  Screen = @RoutePage() XScreen (StatelessWidget unless it owns controllers/observers) implementing AutoRouteWrapper to provide its Cubit; initial load in wrappedRoute (..load()) or initState.
+MUST      UI-6   Render loading, error (with retry), empty and no-internet states for every data-driven screen.
+MUST      UI-7   One loader style per state: blocking EasyLoading from a listener OR inline LoadingWidget from the builder — never both.
+MUST      STATE-12 Keep navigation/toast/dialog/loader side effects in BlocListener (with listenWhen), not in build.
+SHOULD    UI-16  Use a shared state-render widget (loading/error/empty/content) instead of repeating status if-chains.
+
+## Widgets
+MUST      UI-4   Search core/widgets, presentation/commonWidgets and presentation/shared before creating a widget; never add a duplicate button, text field, loader, toast, sheet helper, avatar or network-image wrapper.
+SHOULD    UI-17  Extract a widget when reused in 2+ places, when it has local state, when build > ~100 lines, or when it needs its own BlocSelector. Don't fragment single-use 10-line pieces into files.
+SHOULD    UI-18  Prefer private widget classes over builder methods for rebuild scoping.
+MUST      UI-11  Dispose TextEditingController/ScrollController/AnimationController/FocusNode and remove observers/listeners in dispose().
+SHOULD    UI-9   Keep files < 400 lines, build < 100 lines, and <= ~8 BlocProviders per screen wrapper.
+MUST-NOT  UI-10  Keep fully commented-out widgets/screens in the tree.
+MUST-NOT  UI-12  Use Future.delayed to wait for a router/cubit/plugin; intentional UX delays use a named constant + comment.
+SHOULD    UI-19  Avoid My/Custom prefixes for new widgets; use descriptive nouns (AppButton, PrimaryButton, UserAvatar).
+
+## Design tokens
+MUST      UI-3   Use AppColors, Dimensions, context.fontStyle*/AppStyles. No new Colors.* (except transparent), Color(0x...), fontSize:, inline TextStyle(...) or magic EdgeInsets in feature code.
+MUST      UI-20  Keep one theme stack (MyAppTheme); do not touch the unused AppTheme/LightTheme/DarkTheme files except to delete them.
+
+## Strings
+MUST      UI-5   Take user-facing strings from AppString (until l10n adopted); never Text('literal') in feature code.
+DECISION  ND-6   Localization (.arb + AppLocalizations) not adopted; keep AppString.
+
+## Lists, images, forms
+MUST      UI-8   Use ListView.builder/SliverList for server lists; paginate; stable ValueKey(id) for items with state.
+MUST      UI-13  Load network images through MyNetworkImage/MyCircleNetworkImage/UserAvatar; no raw Image.network or unwrapped CachedNetworkImage; set cache sizes for large images.
+SHOULD    UI-21  New forms: Cubit-side validation exposing fieldErrors in state; regexes from RegExpressions. Do not add toast-only validation.
+MUST      UI-22  Show sheets/dialogs via CustomBottomSheet/showXDialog helpers; sheet content is a widget class when > 30 lines.
+
+## Responsive
+SHOULD    UI-23  Branch on breakpoints only when layouts differ; do not wrap screens in BaseResponsiveViewFull that returns the same widget for every size.
+
+## Project
+PROJECT   See project/project-rules.md for overrides and open decisions.
+MUST-NOT  Invent class/file names from profiles/reference/ or example ADRs when project/ still has _TBD_ stubs.

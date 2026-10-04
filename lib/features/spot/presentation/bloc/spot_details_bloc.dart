@@ -8,6 +8,7 @@ import '../../domain/usecases/get_confirmed_players_usecase.dart';
 import '../../domain/usecases/get_user_join_request_usecase.dart';
 import '../../domain/entities/join_request_entity.dart';
 import '../../../auth/domain/repositories/auth_repository.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 abstract class SpotDetailsEvent {}
 
@@ -36,7 +37,12 @@ class SpotDetailsLoaded extends SpotDetailsState {
   final List<JoinRequestEntity> confirmedPlayers;
   final JoinRequestEntity? userJoinRequest;
 
-  SpotDetailsLoaded({required this.post, required this.isHost, required this.confirmedPlayers, this.userJoinRequest});
+  SpotDetailsLoaded({
+    required this.post,
+    required this.isHost,
+    required this.confirmedPlayers,
+    this.userJoinRequest,
+  });
 }
 
 class SpotDetailsError extends SpotDetailsState {
@@ -74,7 +80,10 @@ class SpotDetailsBloc extends Bloc<SpotDetailsEvent, SpotDetailsState> {
     on<RequestToJoinEvent>(_onRequestToJoin);
   }
 
-  Future<void> _onLoadSpotDetails(LoadSpotDetailsEvent event, Emitter<SpotDetailsState> emit) async {
+  Future<void> _onLoadSpotDetails(
+    LoadSpotDetailsEvent event,
+    Emitter<SpotDetailsState> emit,
+  ) async {
     final currentUserId = _authRepository.getCurrentUserId();
     if (event.initialSpot != null) {
       emit(
@@ -105,7 +114,10 @@ class SpotDetailsBloc extends Bloc<SpotDetailsEvent, SpotDetailsState> {
     }
   }
 
-  Future<void> _onRequestToJoin(RequestToJoinEvent event, Emitter<SpotDetailsState> emit) async {
+  Future<void> _onRequestToJoin(
+    RequestToJoinEvent event,
+    Emitter<SpotDetailsState> emit,
+  ) async {
     final currentState = state;
     try {
       await _joinSpotUseCase(event.spotId);
@@ -113,8 +125,18 @@ class SpotDetailsBloc extends Bloc<SpotDetailsEvent, SpotDetailsState> {
       if (currentState is SpotDetailsLoaded) {
         add(LoadSpotDetailsEvent(spotId: event.spotId));
       }
+    } on PostgrestException catch (e) {
+      emit(SpotDetailsError(message: e.message));
+      if (currentState is SpotDetailsLoaded) {
+        emit(currentState);
+      }
     } catch (e, st) {
-      log('Unexpected error requesting to join', name: 'SpotDetailsBloc', error: e, stackTrace: st);
+      log(
+        'Unexpected error requesting to join',
+        name: 'SpotDetailsBloc',
+        error: e,
+        stackTrace: st,
+      );
       emit(SpotDetailsError(message: 'An unexpected error occurred.'));
       if (currentState is SpotDetailsLoaded) {
         emit(currentState);

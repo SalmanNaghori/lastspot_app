@@ -38,7 +38,7 @@ class ExploreBloc extends Bloc<ExploreEvent, ExploreState> {
       } else {
         if (currentState.hasReachedMax) return;
         if (currentState.isPaginating) return;
-        offset = currentState.posts.length;
+        offset = currentState.requests.length;
         emit(currentState.copyWith(isPaginating: true));
       }
     } else {
@@ -51,7 +51,7 @@ class ExploreBloc extends Bloc<ExploreEvent, ExploreState> {
     }
 
     try {
-      final posts = await _spotRepository.getExplorePosts(
+      final requests = await _spotRepository.getExploreRequests(
         cityId:
             currentCityId ??
             '', // Will fail safely or load empty if cityId is empty initially
@@ -61,12 +61,12 @@ class ExploreBloc extends Bloc<ExploreEvent, ExploreState> {
         offset: offset,
       );
 
-      final hasReachedMax = posts.length < _limit;
+      final hasReachedMax = requests.length < _limit;
 
       if (currentState is ExploreLoaded && !event.refresh) {
         emit(
           currentState.copyWith(
-            posts: List.of(currentState.posts)..addAll(posts),
+            requests: List.of(currentState.requests)..addAll(requests),
             hasReachedMax: hasReachedMax,
             isPaginating: false,
           ),
@@ -74,7 +74,7 @@ class ExploreBloc extends Bloc<ExploreEvent, ExploreState> {
       } else {
         emit(
           ExploreLoaded(
-            posts: posts,
+            requests: requests,
             searchQuery: currentSearch,
             categoryId: currentCategory,
             cityId: currentCityId,
@@ -124,7 +124,7 @@ class ExploreBloc extends Bloc<ExploreEvent, ExploreState> {
     if (state is ExploreLoaded) {
       emit((state as ExploreLoaded).copyWith(cityId: event.cityId));
     } else {
-      emit(ExploreLoaded(posts: const [], cityId: event.cityId));
+      emit(ExploreLoaded(requests: const [], cityId: event.cityId));
     }
     add(const LoadExplorePosts(refresh: true));
   }

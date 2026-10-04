@@ -1,0 +1,48 @@
+# networking.rules — gateway, requests, repositories, models
+# SOP: sop/networking.md, sop/repository.md, sop/models-and-data.md
+# Guardrails: guardrails/networking.md
+
+## Gateway
+MUST      NET-1  Route all HTTP through BaseApiService.executeAPI(ApiRequest). Import/construct Dio only in core/network and core/di/dioInjection.
+MUST      NET-2  Call the gateway only from repository impls or remote data sources — never from Cubits, Blocs, widgets or helpers.
+MUST      NET-4  Describe every call with ApiRequest(url, method, query, body, requiresAuth, allowQueued, apiType, onSendProgress). requiresAuth: false for public/third-party and login/OTP endpoints.
+MUST      NET-3  Define endpoints as constants/functions on ApiEndpoints; no inline URLs; reuse before adding; no duplicate constants.
+MUST      NET-5  Keep auth headers, 401 handling, retry and logging in interceptors — never in repositories.
+MUST      NET-6  Retry only idempotent GET/HEAD; never retry multipart.
+MUST      NET-7  Enable request/response logging only under kDebugMode with credential redaction.
+MUST-NOT  NET-8  Return true from badCertificateCallback in release; guard any dev bypass with !kReleaseMode.
+MUST-NOT  NET-9  Put tokens in URL query strings (HTTP or socket); use headers/auth payload.
+SHOULD    NET-10 Set timeouts <= 30s by default; override per request for uploads.
+MUST      NET-11 Use one connectivity abstraction (NetworkMonitor); do not import connectivity_plus.
+SHOULD    NET-12 Parse large payloads via compute; parsing never throws past the repository.
+MAY       NET-13 Set allowQueued: true only for idempotent mutations safe to replay offline.
+
+## Repositories
+MUST      ERR-1  Interface in domain/repositories returning Future<Either<Failure, T>> (Unit for void, Stream<T> for live data); impl in data/repositoryImpl with `Impl` suffix.
+MUST      REPO-1 Wrap calls with backToUI<T>(() => _apiService.executeAPI(...), parseJson: (r) => parseResponse(r, T.fromJson)).
+MUST      REPO-2 One repository per aggregate; check existing repositories and ApiEndpoints before adding one.
+MUST-NOT  REPO-3 Import Flutter UI, navigate, toast, hold UI state, or import presentation models in a repository.
+MUST      REPO-4 Constructor-inject the gateway, data sources, session provider, config; no sl<>() inside.
+SHOULD    REPO-5 Add XRemoteDataSource/XLocalDataSource only when coordinating 2+ sources; otherwise call the gateway directly.
+SHOULD    REPO-6 Add a use case only when logic spans 2+ repositories/services or is reused by 2+ cubits; no pass-through use cases.
+MUST      REPO-7 Keep cache policy (forceRefresh, versioned keys, encryption of sensitive content) inside the repository/data source, not the Cubit.
+MUST-NOT  REPO-8 Return dynamic or Map<String, dynamic> from a repository.
+
+## Models
+MUST      ERR-8  New models: @freezed + json_serializable with `part 'x.g.dart'`; factory fromJson. Handwritten fromJson only for <= 3 fields.
+MUST-NOT  ERR-8b Add models to FlutterJsonBeanFactory (lib/generated/json) or any IDE generator.
+MUST      ERR-9  Tolerate missing/unknown fields: @Default for required primitives/lists, nullable for optional, unknownEnumValue for enums. No `!` on parsed values in UI.
+MUST      MODEL-1 Name response models XEntity (project) and request models XReqModel; never Model*Response*Entity.
+MUST      MODEL-2 Put toQueryParams()/toJson()/toFormDataMap() on the request model, not in the repository.
+SHOULD    MODEL-3 Create a UI model only when the widget tree would otherwise compute derived values in build; create a domain entity layer only via ADR.
+MUST      STRUCT-5 Regenerate with `dart run build_runner build --delete-conflicting-outputs`; never edit generated files.
+SHOULD    MODEL-4 Add a fromJson(fixture) test for every response model with custom JSON handling.
+
+## Realtime
+MUST      RT-1   Socket ingress: SocketClient -> GlobalSocketRouter -> <Domain>SocketHandler -> typed AppRealtimeEvent on GlobalEventBus.
+MUST      RT-2   Define events as AppRealtimeEvent subclasses in core/realtime/events/<domain>_realtime_event.dart, named <Noun><PastVerb>Event.
+MUST-NOT  RT-3   Parse socket payloads inside Cubits; handlers parse into existing response models.
+
+## Project
+PROJECT   See project/project-rules.md for overrides and open decisions.
+MUST-NOT  Invent class/file names from profiles/reference/ or example ADRs when project/ still has _TBD_ stubs.

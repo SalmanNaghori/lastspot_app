@@ -1,9 +1,10 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:go_router/go_router.dart';
+import '../../features/notifications/presentation/pages/notifications_screen.dart';
 import '../../features/startup/presentation/pages/splash_screen.dart';
 import '../../features/startup/presentation/pages/maintenance_screen.dart';
 import '../../features/startup/presentation/pages/force_update_screen.dart';
-import '../../features/startup/presentation/bloc/startup_state.dart';
+import '../../features/startup/data/models/app_settings_model.dart';
 import '../../features/auth/presentation/pages/login_screen.dart';
 import '../../features/auth/presentation/pages/signup_screen.dart';
 import '../../features/auth/presentation/pages/forgot_password_screen.dart';
@@ -41,6 +42,7 @@ import '../../features/explore/presentation/bloc/explore_bloc.dart';
 import '../../features/activities/presentation/pages/activities_screen.dart';
 import '../../features/profile/presentation/pages/profile_screen.dart';
 import '../../features/profile/presentation/pages/edit_profile_screen.dart';
+import '../../features/reports/presentation/pages/report_screen.dart';
 import '../../features/settings/presentation/pages/settings_screen.dart';
 import '../di/service_locator.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -69,8 +71,11 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: AppRoutes.forceUpdate,
       builder: (context, state) {
-        final updateData = state.extra as StartupUpdateRequired;
-        return ForceUpdateScreen(updateData: updateData);
+        final extra = state.extra as Map<String, dynamic>;
+        return ForceUpdateScreen(
+          messageData: extra['messageData'] as VersionMessage,
+          storeUrl: extra['storeUrl'] as String,
+        );
       },
     ),
     GoRoute(
@@ -191,7 +196,7 @@ final GoRouter appRouter = GoRouter(
         final extra = state.extra as Map<String, dynamic>? ?? {};
         final heroTag = extra['heroTag'] as String?;
         final initialSpot = extra['spot'] as RequestEntity?;
-        
+
         return BlocProvider(
           create: (context) => SpotDetailsBloc(
             getSpotDetailsUseCase: sl<GetSpotDetailsUseCase>(),
@@ -200,7 +205,11 @@ final GoRouter appRouter = GoRouter(
             getConfirmedPlayersUseCase: sl<GetConfirmedPlayersUseCase>(),
             getUserJoinRequestUseCase: sl<GetUserJoinRequestUseCase>(),
           ),
-          child: SpotDetailsScreen(postId: id, heroTag: heroTag, initialSpot: initialSpot),
+          child: SpotDetailsScreen(
+            spotId: id,
+            heroTag: heroTag,
+            initialSpot: initialSpot,
+          ),
         );
       },
     ),
@@ -245,7 +254,7 @@ final GoRouter appRouter = GoRouter(
             manageRequestUseCase: sl<ManageJoinRequestUseCase>(),
             getSpotDetailsUseCase: sl<GetSpotDetailsUseCase>(),
           ),
-          child: ManageRequestsScreen(postId: id),
+          child: ManageRequestsScreen(spotId: id),
         );
       },
     ),
@@ -253,7 +262,7 @@ final GoRouter appRouter = GoRouter(
       path: AppRoutes.chat,
       builder: (context, state) {
         final id = state.pathParameters['id']!;
-        return ChatScreen(postId: id);
+        return ChatScreen(spotId: id);
       },
     ),
     GoRoute(
@@ -267,24 +276,21 @@ final GoRouter appRouter = GoRouter(
     // Future placeholders
     GoRoute(
       path: AppRoutes.notifications,
-      builder: (context, state) => Scaffold(
-        appBar: AppBar(title: const Text('Notifications')),
-        body: const Center(child: Text('Notifications')),
-      ),
+      builder: (context, state) => const NotificationsScreen(),
     ),
     GoRoute(
       path: AppRoutes.reportUser,
-      builder: (context, state) => Scaffold(
-        appBar: AppBar(title: const Text('Report User')),
-        body: const Center(child: Text('Report User')),
-      ),
+      builder: (context, state) {
+        final id = state.pathParameters['id'];
+        return ReportScreen(reportedUserId: id);
+      },
     ),
     GoRoute(
       path: AppRoutes.reportActivity,
-      builder: (context, state) => Scaffold(
-        appBar: AppBar(title: const Text('Report Activity')),
-        body: const Center(child: Text('Report Activity')),
-      ),
+      builder: (context, state) {
+        final id = state.pathParameters['id'];
+        return ReportScreen(reportedActivityId: id);
+      },
     ),
   ],
 );

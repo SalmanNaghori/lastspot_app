@@ -18,7 +18,7 @@ class StartupBloc extends Bloc<StartupEvent, StartupState> {
     required SharedPrefsUtil prefs,
   }) : _supabaseClient = supabaseClient,
        _prefs = prefs,
-       super(StartupInitial()) {
+       super(const StartupState.initial()) {
     on<StartupInitialCheckRequested>(_onInitialCheckRequested);
     on<StartupUpdateSkipped>(_onUpdateSkipped);
   }
@@ -27,7 +27,7 @@ class StartupBloc extends Bloc<StartupEvent, StartupState> {
     StartupInitialCheckRequested event,
     Emitter<StartupState> emit,
   ) async {
-    emit(StartupLoading());
+    emit(const StartupState.loading());
 
     try {
       // 1. Fetch remote settings
@@ -65,7 +65,7 @@ class StartupBloc extends Bloc<StartupEvent, StartupState> {
       // 2. Check Global Maintenance
       if (appSettings.maintenanceMode.globalMaintenance) {
         emit(
-          StartupMaintenanceMode(
+          StartupState.maintenanceMode(
             title: appSettings.maintenanceMode.globalTitle,
             message: appSettings.maintenanceMode.globalMessage,
           ),
@@ -79,7 +79,7 @@ class StartupBloc extends Bloc<StartupEvent, StartupState> {
             (rule.platform == 'all' || rule.platform == platform)) {
           if (rule.affectedVersions.contains(currentVersionString)) {
             emit(
-              StartupMaintenanceMode(title: rule.title, message: rule.message),
+              StartupState.maintenanceMode(title: rule.title, message: rule.message),
             );
             return;
           }
@@ -109,7 +109,7 @@ class StartupBloc extends Bloc<StartupEvent, StartupState> {
             );
 
         emit(
-          StartupUpdateRequired(
+          StartupState.updateRequired(
             messageData: messageData,
             storeUrl: vc.storeUrl,
             isForced: true,
@@ -142,7 +142,7 @@ class StartupBloc extends Bloc<StartupEvent, StartupState> {
               );
 
           emit(
-            StartupUpdateRequired(
+            StartupState.updateRequired(
               messageData: messageData,
               storeUrl: vc.storeUrl,
               isForced: false,
@@ -154,10 +154,10 @@ class StartupBloc extends Bloc<StartupEvent, StartupState> {
       }
 
       // 6. Success
-      emit(StartupSuccess());
+      emit(const StartupState.success());
     } catch (e) {
       // If offline or error, allow boot but log error (or emit error state based on requirements)
-      emit(StartupSuccess()); // Failing open for MVP
+      emit(const StartupState.success()); // Failing open for MVP
     }
   }
 
@@ -168,6 +168,6 @@ class StartupBloc extends Bloc<StartupEvent, StartupState> {
     try {
       await _prefs.setSkippedUpdateVersion(event.version);
     } catch (_) {}
-    emit(StartupSuccess());
+    emit(const StartupState.success());
   }
 }

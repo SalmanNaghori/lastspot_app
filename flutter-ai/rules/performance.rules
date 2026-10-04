@@ -1,0 +1,39 @@
+# performance.rules — rebuilds, lists, async, lifecycle
+# SOP: sop/performance.md, sop/async-programming.md
+# Guardrails: guardrails/performance.md
+
+## Required
+MUST      PERF-1  Use ListView.builder/SliverList/GridView.builder for server-backed or > ~20-item lists; paginate every server list.
+MUST-NOT  PERF-2  Do network, storage, decrypt, JSON parse, sort or O(n) work over large collections inside build.
+MUST      PERF-4  Declare const constructors and use const instances (prefer_const_* lints clean).
+MUST      PERF-7  Give stable ValueKey(id) to list items with per-item state or reordering.
+MUST      PERF-5  Set memCacheWidth/cacheWidth for large network images via the wrapper; parse large JSON via compute.
+MUST      PERF-6  Bound every global in-memory cache (size limit or eviction).
+MUST      ASYNC-2 Dispose Timer/AnimationController/TextEditingController/ScrollController/FocusNode/StreamController in the owner's dispose()/close().
+
+## Recommended
+SHOULD    PERF-3  Scope rebuilds with BlocSelector or buildWhen on hot screens (lists, chat); avoid whole-screen BlocBuilder for field-level changes.
+SHOULD    PERF-9  RepaintBoundary around maps/videos/canvases; AutomaticKeepAliveClientMixin for expensive tabs; ValueNotifier for > 10 updates/s values.
+SHOULD    PERF-10 Defer heavy init (all Hive boxes, socket connect) until after first frame or on demand; measure with --trace-startup.
+SHOULD    PERF-11 Debounce search 300–600 ms; throttle scroll handlers; MediaQuery.sizeOf over MediaQuery.of in leaves.
+
+## Premature (refuse without profiling data)
+MUST-NOT  PERF-8  Split widgets into files "for performance", add custom rebuild schedulers, hand-roll caches duplicating library caches, or use isolates for < 10 ms work without an attached profile.
+
+## Async
+MUST      ASYNC-1 Store every StreamSubscription and cancel it in dispose()/close(); no ownerless .listen(.
+MUST      ASYNC-3 Check `mounted` after every await in a State before using context/setState (use_build_context_synchronously clean).
+MUST      STATE-5 Check `isClosed` after every await in a Cubit/Bloc and at the top of handlers.
+MUST      ASYNC-4 await or unawaited(...) every Future, never drop silently (unawaited_futures lint).
+MUST-NOT  ASYNC-5 Use Future.delayed as a readiness/sync mechanism; wait for a Completer/onAppReady/stream event. Intentional UX delays need a named constant + comment.
+MUST      ASYNC-6 Ignore stale results for superseded work (request id / CancelToken) so an old response can't overwrite a newer one.
+MUST      ASYNC-7 Background isolates build their own minimal graph; never touch UI, sl, or main-isolate singletons.
+MUST      ASYNC-8 Subscription helper mixins cancel AND clear their lists.
+MUST      ASYNC-9 Long-lived services expose dispose() and register with `dispose:` in get_it.
+SHOULD    ASYNC-10 Prefer async/await over .then chains; Future.wait for independent calls with per-call Either.
+MUST      ASYNC-11 Register/remove WidgetsBindingObserver and TabsRouter listeners symmetrically in initState/dispose.
+SHOULD    ASYNC-12 Concurrency intent: submit=droppable, search=restartable, ordered mutations=sequential, independent reads=concurrent.
+
+## Project
+PROJECT   See project/project-rules.md for overrides and open decisions.
+MUST-NOT  Invent class/file names from profiles/reference/ or example ADRs when project/ still has _TBD_ stubs.

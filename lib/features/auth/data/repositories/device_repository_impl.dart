@@ -17,4 +17,13 @@ class DeviceRepositoryImpl extends BaseRepository implements DeviceRepository {
       operation: () => _remoteDataSource.registerDevice(userId),
     );
   }
+
+  @override
+  Future<void> unregisterDevice(String userId) {
+    return executeApiRaw(
+      operationName: 'device.unregister',
+      requestData: {'user_id': userId},
+      operation: () => _remoteDataSource.unregisterDevice(userId),
+    );
+  }
 }

@@ -214,34 +214,37 @@ class _SelectionBottomSheetState<T> extends State<SelectionBottomSheet<T>> {
         final item = filteredItems[index];
         final isSelected = widget.selectedItem == item;
 
-        return Container(
-          margin: EdgeInsets.only(bottom: Dimensions.r8.dynamicH),
-          decoration: BoxDecoration(
+        return Padding(
+          padding: EdgeInsets.only(bottom: Dimensions.r8.dynamicH),
+          child: Material(
             color: isSelected
                 ? context.primaryColor.withValues(alpha: 0.1)
                 : Colors.transparent,
             borderRadius: BorderRadius.circular(Dimensions.r8.dynamicR),
-          ),
-          child: ListTile(
-            leading: widget.leadingIcon != null
-                ? widget.leadingIcon!(item)
-                : null,
-            title: Text(
-              widget.itemText(item),
-              style: TextStyle(
-                color: isSelected ? context.primaryColor : context.textPrimary,
-                fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+            clipBehavior: Clip.antiAlias,
+            child: ListTile(
+              leading: widget.leadingIcon != null
+                  ? widget.leadingIcon!(item)
+                  : null,
+              title: Text(
+                widget.itemText(item),
+                style: TextStyle(
+                  color: isSelected
+                      ? context.primaryColor
+                      : context.textPrimary,
+                  fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                ),
               ),
+              trailing: isSelected
+                  ? Icon(Icons.check_circle, color: context.primaryColor)
+                  : const SizedBox.shrink(),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(Dimensions.r8.dynamicR),
+              ),
+              onTap: () {
+                Navigator.of(context).pop(item);
+              },
             ),
-            trailing: isSelected
-                ? Icon(Icons.check_circle, color: context.primaryColor)
-                : const SizedBox.shrink(),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(Dimensions.r8.dynamicR),
-            ),
-            onTap: () {
-              Navigator.of(context).pop(item);
-            },
           ),
         );
       },

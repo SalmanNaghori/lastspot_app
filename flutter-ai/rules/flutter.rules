@@ -1,0 +1,57 @@
+# flutter.rules — general Dart/Flutter code quality, tooling, git
+# SOP: sop/code-quality.md, sop/git-and-pr.md, sop/configuration.md, sop/definition-of-done.md
+# Guardrails: guardrails/architecture.md (STRUCT-*), guardrails/ai-development.md
+
+## Formatting and analysis
+MUST      FL-1   Run `dart format .` before committing; CI fails on unformatted files.
+MUST      FL-2   Keep `flutter analyze` clean on every PR: zero new warnings or infos.
+MUST      FL-3   Keep analysis_options.yaml including flutter_lints; enabled extras: prefer_const_*, prefer_final_locals, prefer_single_quotes, always_declare_return_types, avoid_print, avoid_dynamic_calls, unawaited_futures, cancel_subscriptions, close_sinks, use_key_in_widget_constructors, require_trailing_commas, directives_ordering (ND-10: adopt when touching the file).
+MUST-NOT  FL-4   Add `// ignore:` without a trailing reason; never `ignore_for_file` in hand-written files.
+MUST-NOT  FL-5   Use `print`/`debugPrint` in lib/; use DebugLog.
+
+## Imports
+MUST      FL-6   Order dart: -> package: -> relative, blank line between groups.
+SHOULD    FL-7   Use package: imports inside lib/ instead of deep ../../ paths.
+MUST-NOT  FL-8   Import transitive packages; declare them.
+MUST-NOT  FL-9   Import mega-barrels (utils/exports.dart) from new data/domain/core files.
+
+## Language
+MUST      FL-10  Prefer final/const; avoid `!` outside tests (use ?., ??, early return, or fix the type at source).
+MUST      FL-11  Keep `dynamic` at parse boundaries only; never in repository or cubit signatures.
+MUST      FL-12  Use sealed classes + switch expressions for finite hierarchies; exhaustive switches over enums (no default when all cases are known).
+MUST      FL-13  Write const constructors wherever possible; `const` widget instances in trees.
+SHOULD    FL-14  Prefer expression bodies (=>) for one-liners; named parameters for > 1 argument; required over positional for clarity.
+MUST      FL-15  Await every Future or wrap in unawaited() with a comment.
+
+## Comments, TODOs, dead code
+MUST      FL-16  Doc-comment (///) public classes in core/ and domain/ with one paragraph on responsibility; comments say why, not what.
+MUST-NOT  FL-17  Commit commented-out code blocks; delete (git remembers).
+MUST      FL-18  TODO format: `// TODO(owner): description [TICKET]`; no owner/ticket = not mergeable.
+MUST      FL-19  Remove unused classes, events, enums, assets, dependencies, files in the PR that orphans them.
+
+## Size (review triggers)
+SHOULD    FL-20  File <= 400 lines; class <= 300; method <= 60; build <= 100; constructor params <= 8; cyclomatic <= 10. Beyond: split or justify in PR.
+
+## Generated code
+MUST      FL-21  Regenerate with `dart run build_runner build --delete-conflicting-outputs`; never hand-edit *.g.dart/*.freezed.dart/*.gr.dart; commit generated files (project convention).
+
+## Tooling and versions
+MUST      FL-22  One Flutter version pin (align .fvmrc and .tool-versions — ND-11 default 3.38.3) matching pubspec environment and README.
+MUST      FL-23  Run with `--dart-define-from-file=config/<env>.json`; never edit constants to switch environments.
+SHOULD    FL-24  Keep run configs (.vscode/launch.json) per environment committed.
+
+## Git
+MUST      FL-25  Conventional Commits: `<type>(<scope>): <imperative summary <= 72>`; types feat|fix|refactor|perf|test|docs|chore|build|ci|style|revert.
+MUST-NOT  FL-26  Reuse one commit message verbatim across commits; write "fix"/"update"/"changes" summaries.
+MUST      FL-27  Branches: feature/<ticket>-<kebab>, fix/, refactor/, chore/, spike/ (never merged), release/, hotfix/.
+MUST      FL-28  One purpose per PR; <= ~400 changed lines excluding generated; large refactors as add -> migrate -> remove series.
+MUST      FL-29  Fill the PR template: summary, type, architectural impact (ADR link if any), dependency block, reuse check, tests, DoD checklist.
+MUST      FL-30  Architecture-changing PRs carry an ADR and the compliance matrix; refactor PRs state "no functional change".
+MUST-NOT  FL-31  Commit scratch files, empty files, or secrets (config/*.json, key.properties, *.jks are gitignored).
+
+## Definition of Done
+MUST      FL-32  Complete checklists/definition-of-done.md and checklists/architecture-compliance.md before declaring done.
+
+## Project
+PROJECT   See project/project-rules.md for overrides and open decisions.
+MUST-NOT  Invent class/file names from profiles/reference/ or example ADRs when project/ still has _TBD_ stubs.

@@ -1,4 +1,7 @@
 import 'package:lastspot_app/core/base_import.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../features/notifications/presentation/bloc/notifications_cubit.dart';
+import '../../features/notifications/presentation/bloc/notifications_state.dart';
 
 class CustomAppBar extends AppBar {
   CustomAppBar.dashboard({
@@ -21,18 +24,45 @@ class CustomAppBar extends AppBar {
                  ),
                  onPressed: onNotificationTap ?? () {},
                ),
-               Positioned(
-                 right: 8,
-                 top: 8,
-                 child: Container(
-                   width: 10,
-                   height: 10,
-                   decoration: BoxDecoration(
-                     color: context.accentColor,
-                     shape: BoxShape.circle,
-                     border: Border.all(color: context.surfaceColor, width: 2),
-                   ),
-                 ),
+               BlocBuilder<NotificationsCubit, NotificationsState>(
+                 builder: (context, state) {
+                   int unreadCount = 0;
+                   if (state is NotificationsLoaded) {
+                     unreadCount = state.unreadCount;
+                   }
+                   if (unreadCount == 0) return const SizedBox.shrink();
+
+                   return Positioned(
+                     right: 6,
+                     top: 6,
+                     child: Container(
+                       padding: const EdgeInsets.all(2),
+                       decoration: BoxDecoration(
+                         color: AppColor.errorColor,
+                         shape: BoxShape.circle,
+                         border: Border.all(
+                           color: context.backgroundColor,
+                           width: 1.5,
+                         ),
+                       ),
+                       constraints: const BoxConstraints(
+                         minWidth: 14,
+                         minHeight: 14,
+                       ),
+                       child: Center(
+                         child: Text(
+                           unreadCount > 9 ? '9+' : unreadCount.toString(),
+                           style: const TextStyle(
+                             color: AppColor.whiteColor,
+                             fontSize: 8,
+                             fontWeight: FontWeight.bold,
+                           ),
+                           textAlign: TextAlign.center,
+                         ),
+                       ),
+                     ),
+                   );
+                 },
                ),
              ],
            ),

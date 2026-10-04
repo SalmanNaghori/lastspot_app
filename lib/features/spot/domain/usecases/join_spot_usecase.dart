@@ -5,7 +5,7 @@ class JoinSpotUseCase {
 
   JoinSpotUseCase(this._repository);
 
-  Future<void> call(String spotId) async {
-    return _repository.requestToJoin(spotId);
+  Future<void> call(String spotId, {String message = ''}) async {
+    return _repository.requestToJoin(spotId, message: message);
   }
 }

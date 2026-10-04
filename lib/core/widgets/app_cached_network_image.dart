@@ -38,9 +38,11 @@ class AppCachedNetworkImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Widget content;
-    
+
     String? safeUrl = imageUrl?.trim();
-    if (safeUrl != null && safeUrl.contains('api.dicebear.com') && safeUrl.contains('/svg?')) {
+    if (safeUrl != null &&
+        safeUrl.contains('api.dicebear.com') &&
+        safeUrl.contains('/svg?')) {
       safeUrl = safeUrl.replaceAll('/svg?', '/png?');
     }
 

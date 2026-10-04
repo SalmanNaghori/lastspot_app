@@ -52,6 +52,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get openGroundMap => 'Open Ground Map ↗';
 
   @override
+  String get mapLocation => 'Map Location';
+
+  @override
   String get viewSpot => 'View Spot';
 
   @override
@@ -827,6 +830,33 @@ class AppLocalizationsEn extends AppLocalizations {
   String get reportActivityAction => 'Report Activity';
 
   @override
+  String get statusCompleted => 'Completed';
+
+  @override
+  String get statusCancelled => 'Cancelled';
+
+  @override
+  String get statusExpired => 'Expired';
+
+  @override
+  String get emptyHostedTitle => 'No Hosted Activities';
+
+  @override
+  String get emptyHostedDesc => 'You haven\'t created any activities yet.';
+
+  @override
+  String get emptyJoinedTitle => 'No Joined Activities';
+
+  @override
+  String get emptyJoinedDesc => 'You haven\'t joined any activities yet.';
+
+  @override
+  String get emptyRequestsTitle => 'No Join Requests';
+
+  @override
+  String get emptyRequestsDesc => 'Join requests functionality will be here.';
+
+  @override
   String get aboutSection => 'ABOUT';
 
   @override
@@ -839,4 +869,24 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get errorUnknownState => 'Error or unknown state';
+
+  @override
+  String get reportReasonRequired => 'Please select a reason for reporting.';
+
+  @override
+  String get reportSubmittedSuccess =>
+      'Report submitted successfully. We will review it shortly.';
+
+  @override
+  String get whyReporting => 'Why are you reporting this?';
+
+  @override
+  String get additionalDetailsOptional => 'Additional Details (Optional)';
+
+  @override
+  String get reportDescHint =>
+      'Please provide more details to help us understand...';
+
+  @override
+  String get submitReport => 'Submit Report';
 }

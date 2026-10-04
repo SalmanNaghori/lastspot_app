@@ -22,11 +22,10 @@ NEVER use raw double literals for padding, margin, font size, or border radius. 
 - `Dimensions.r12.dynamicR` (border radii)
 
 ## 4. No Hardcoded Colors
-NEVER use standard `Colors.*` or hex color literals. ALWAYS use `context.surfaceColor` / `context.primaryColor` / `context.textPrimary` via extensions on BuildContext (`ThemeColors` from `app_color.dart`) for System Theme compatibility. This ensures that colors automatically adapt when the theme changes from the app side.
-- Example: `context.primaryColor`, `context.textPrimary`
+NEVER use standard `Colors.*` or hex color literals. ALWAYS use `context.primaryColor` / `context.textPrimary` via extensions on BuildContext (`ThemeColors` from `app_color.dart`) or use `AppColor.*` directly from `lib/core/theme/app_color.dart`. This ensures that colors automatically adapt when the theme changes from the app side.
 
 ## 5. No Hardcoded Strings
-NEVER embed user-facing text directly in widget code. ALWAYS add strings to `lib/core/l10n/intl_en.arb` and access via `AppLocalizations.of(context)`. No redundant static string helper files.
+NEVER embed user-facing text directly in widget code. ALWAYS add static strings to `AppString` in `lib/core/constants/app_string.dart` and reference them from there. This centralizes string management across the app.
 
 ## 6. Architecture & State Management
 - **Feature-first Clean Architecture:** `lib/features/<feature_name>/` (data, domain, presentation).

@@ -75,6 +75,27 @@ import '../../features/spot/presentation/bloc/home_cubit.dart';
 // Settings
 import '../../features/settings/presentation/bloc/settings_cubit.dart';
 
+// Reports
+import '../../features/reports/data/datasources/report_remote_datasource.dart';
+import '../../features/reports/data/repositories/report_repository_impl.dart';
+import 'package:lastspot_app/core/services/push_notification_service.dart';
+import '../../features/reports/domain/repositories/report_repository.dart';
+import '../../features/reports/domain/usecases/submit_report_usecase.dart';
+import '../../features/reports/presentation/bloc/report_cubit.dart';
+
+// Notifications
+import '../../features/notifications/data/datasources/notifications_remote_data_source.dart';
+import '../../features/notifications/data/repositories/notifications_repository_impl.dart';
+import '../../features/notifications/domain/repositories/notifications_repository.dart';
+import '../../features/notifications/domain/usecases/get_notifications_usecase.dart';
+import '../../features/notifications/domain/usecases/get_unread_notification_count_usecase.dart';
+import '../../features/notifications/domain/usecases/mark_all_notifications_read_usecase.dart';
+import '../../features/notifications/domain/usecases/mark_notification_read_usecase.dart';
+import '../../features/notifications/domain/usecases/delete_notification_usecase.dart';
+import '../../features/notifications/domain/usecases/subscribe_to_notifications_usecase.dart';
+import '../../features/notifications/presentation/bloc/notifications_cubit.dart';
+import '../../features/notifications/presentation/bloc/notifications_list_cubit.dart';
+
 final sl = GetIt.instance;
 
 /// Call once in [main] before [runApp].
@@ -94,6 +115,8 @@ Future<void> setupServiceLocator() async {
   sl.registerFactory<SettingsCubit>(
     () => SettingsCubit(prefs: sl<SharedPrefsUtil>()),
   );
+
+  sl.registerSingleton<PushNotificationService>(PushNotificationService());
 
   // ── Data Sources ──────────────────────────────────────
   sl.registerSingleton<AuthRemoteDataSource>(
@@ -137,6 +160,14 @@ Future<void> setupServiceLocator() async {
     CategoryRepositoryImpl(remoteDataSource: sl<CategoryRemoteDataSource>()),
   );
 
+  sl.registerSingleton<NotificationsRemoteDataSource>(
+    NotificationsRemoteDataSourceImpl(sl<SupabaseClient>()),
+  );
+
+  sl.registerSingleton<NotificationsRepository>(
+    NotificationsRepositoryImpl(sl<NotificationsRemoteDataSource>()),
+  );
+
   sl.registerSingleton<SpotRemoteDataSource>(
     SupabaseSpotDataSourceImpl(client: sl<SupabaseClient>()),
   );
@@ -151,7 +182,9 @@ Future<void> setupServiceLocator() async {
   // ── Use Cases ─────────────────────────────────────────
   sl.registerSingleton<LoginUseCase>(LoginUseCase(sl<AuthRepository>()));
   sl.registerSingleton<SignupUseCase>(SignupUseCase(sl<AuthRepository>()));
-  sl.registerSingleton<LogoutUseCase>(LogoutUseCase(sl<AuthRepository>()));
+  sl.registerSingleton<LogoutUseCase>(
+    LogoutUseCase(sl<AuthRepository>(), sl<DeviceRepository>()),
+  );
   sl.registerSingleton<ResetPasswordUseCase>(
     ResetPasswordUseCase(sl<AuthRepository>()),
   );
@@ -245,5 +278,56 @@ Future<void> setupServiceLocator() async {
   );
   sl.registerSingleton<GetUserJoinRequestUseCase>(
     GetUserJoinRequestUseCase(sl<SpotRepository>()),
+  );
+
+  sl.registerSingleton<GetNotificationsUseCase>(
+    GetNotificationsUseCase(sl<NotificationsRepository>()),
+  );
+  sl.registerSingleton<GetUnreadNotificationCountUseCase>(
+    GetUnreadNotificationCountUseCase(sl<NotificationsRepository>()),
+  );
+  sl.registerSingleton<MarkAllNotificationsReadUseCase>(
+    MarkAllNotificationsReadUseCase(sl<NotificationsRepository>()),
+  );
+  sl.registerSingleton<MarkNotificationReadUseCase>(
+    MarkNotificationReadUseCase(sl<NotificationsRepository>()),
+  );
+  sl.registerSingleton<DeleteNotificationUseCase>(
+    DeleteNotificationUseCase(sl<NotificationsRepository>()),
+  );
+  sl.registerSingleton<SubscribeToNotificationsUseCase>(
+    SubscribeToNotificationsUseCase(sl<NotificationsRepository>()),
+  );
+
+  // Reports
+  sl.registerSingleton<ReportRemoteDataSource>(
+    SupabaseReportDataSourceImpl(client: sl<SupabaseClient>()),
+  );
+
+  sl.registerSingleton<ReportRepository>(
+    ReportRepositoryImpl(remoteDataSource: sl<ReportRemoteDataSource>()),
+  );
+
+  sl.registerSingleton<SubmitReportUseCase>(
+    SubmitReportUseCase(sl<ReportRepository>()),
+  );
+
+  sl.registerFactory<ReportCubit>(() => ReportCubit(sl<SubmitReportUseCase>()));
+
+  sl.registerFactory<NotificationsCubit>(
+    () => NotificationsCubit(
+      getUnreadCountUseCase: sl<GetUnreadNotificationCountUseCase>(),
+      subscribeUseCase: sl<SubscribeToNotificationsUseCase>(),
+    ),
+  );
+
+  sl.registerFactory<NotificationsListCubit>(
+    () => NotificationsListCubit(
+      getNotificationsUseCase: sl<GetNotificationsUseCase>(),
+      markAllReadUseCase: sl<MarkAllNotificationsReadUseCase>(),
+      markReadUseCase: sl<MarkNotificationReadUseCase>(),
+      deleteUseCase: sl<DeleteNotificationUseCase>(),
+      notificationsCubit: sl<NotificationsCubit>(),
+    ),
   );
 }

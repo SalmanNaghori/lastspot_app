@@ -1,8 +1,8 @@
 import '../../../../core/base_import.dart';
 
 class ChatScreenMobile extends StatelessWidget {
-  final String postId;
-  const ChatScreenMobile({super.key, required this.postId});
+  final String spotId;
+  const ChatScreenMobile({super.key, required this.spotId});
 
   @override
   Widget build(BuildContext context) {

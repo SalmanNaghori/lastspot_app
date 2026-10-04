@@ -28,7 +28,9 @@ class HomeCubit extends Cubit<HomeState> {
        super(HomeInitial());
 
   bool _isNetworkException(Exception e) {
-    return e is SocketException || e.toString().contains('SocketException') || e.toString().contains('TimeoutException');
+    return e is SocketException ||
+        e.toString().contains('SocketException') ||
+        e.toString().contains('TimeoutException');
   }
 
   Future<void> loadHomeData({String? cityId}) async {
@@ -36,13 +38,21 @@ class HomeCubit extends Cubit<HomeState> {
     try {
       final categoriesFuture = _getCategoriesUseCase()
           .then<Result<List<CategoryEntity>, Exception>>((val) => Success(val))
-          .catchError((e) => Failure<List<CategoryEntity>, Exception>(e is Exception ? e : Exception(e.toString())));
-          
+          .catchError(
+            (e) => Failure<List<CategoryEntity>, Exception>(
+              e is Exception ? e : Exception(e.toString()),
+            ),
+          );
+
       final citiesFuture = _getActiveCitiesUseCase();
-      
+
       final activitiesFuture = _getHomeActivitiesUseCase(cityId: cityId)
           .then<Result<List<RequestEntity>, Exception>>((val) => Success(val))
-          .catchError((e) => Failure<List<RequestEntity>, Exception>(e is Exception ? e : Exception(e.toString())));
+          .catchError(
+            (e) => Failure<List<RequestEntity>, Exception>(
+              e is Exception ? e : Exception(e.toString()),
+            ),
+          );
 
       final results = await Future.wait<dynamic>([
         categoriesFuture,
@@ -50,9 +60,11 @@ class HomeCubit extends Cubit<HomeState> {
         activitiesFuture,
       ]);
 
-      final categoriesResult = results[0] as Result<List<CategoryEntity>, Exception>;
+      final categoriesResult =
+          results[0] as Result<List<CategoryEntity>, Exception>;
       final citiesResult = results[1] as Result<List<CityEntity>, Exception>;
-      final activitiesResult = results[2] as Result<List<RequestEntity>, Exception>;
+      final activitiesResult =
+          results[2] as Result<List<RequestEntity>, Exception>;
 
       bool hasCategoriesError = false;
       List<CategoryEntity> categories = [];
@@ -73,7 +85,7 @@ class HomeCubit extends Cubit<HomeState> {
       bool hasFeedError = false;
       bool isFeedNetworkError = false;
       List<RequestEntity> allActivities = [];
-      
+
       if (activitiesResult is Success<List<RequestEntity>, Exception>) {
         allActivities = activitiesResult.value;
       } else if (activitiesResult is Failure<List<RequestEntity>, Exception>) {
@@ -90,7 +102,9 @@ class HomeCubit extends Cubit<HomeState> {
       final in24Hours = now.add(const Duration(hours: 24));
 
       // 1. Only include future activities
-      final futureActivities = allActivities.where((a) => a.eventDateTime.isAfter(now)).toList();
+      final futureActivities = allActivities
+          .where((a) => a.eventDateTime.isAfter(now))
+          .toList();
 
       // 2. Urgent matches
       final urgent = futureActivities.where((a) {
@@ -100,22 +114,25 @@ class HomeCubit extends Cubit<HomeState> {
       final urgentIds = urgent.map((e) => e.id).toSet();
 
       // 3. Nearby activities (future activities not in urgent)
-      final nearby = futureActivities.where((a) => !urgentIds.contains(a.id)).toList();
+      final nearby = futureActivities
+          .where((a) => !urgentIds.contains(a.id))
+          .toList();
       final nearbyIds = nearby.map((e) => e.id).toSet();
 
       // 4. Coming up activities (future activities not in urgent and not in nearby)
       final comingUp = futureActivities.where((a) {
         return !urgentIds.contains(a.id) && !nearbyIds.contains(a.id);
-      }).toList()
-        ..sort((a, b) => a.eventDateTime.compareTo(b.eventDateTime));
+      }).toList()..sort((a, b) => a.eventDateTime.compareTo(b.eventDateTime));
 
       emit(
         HomeSuccess(
           urgentMatches: urgent,
           nearbyActivities: nearby,
           comingUp: comingUp,
-          categories: categories..sort((a, b) => a.sortOrder.compareTo(b.sortOrder)),
-          cities: cities..sort((a, b) => a.displayOrder.compareTo(b.displayOrder)),
+          categories: categories
+            ..sort((a, b) => a.sortOrder.compareTo(b.sortOrder)),
+          cities: cities
+            ..sort((a, b) => a.displayOrder.compareTo(b.displayOrder)),
           selectedCityId: cityId,
           unreadNotifications: 0,
           hasFeedError: hasFeedError,
@@ -126,9 +143,15 @@ class HomeCubit extends Cubit<HomeState> {
       );
     } catch (e) {
       if (_isNetworkException(e is Exception ? e : Exception(e.toString()))) {
-        emit(HomeNetworkError(message: 'No internet connection. Please try again.'));
+        emit(
+          HomeNetworkError(
+            message: 'No internet connection. Please try again.',
+          ),
+        );
       } else {
-        emit(HomeServerError(message: 'Something went wrong. Please try again.'));
+        emit(
+          HomeServerError(message: 'Something went wrong. Please try again.'),
+        );
       }
     }
   }

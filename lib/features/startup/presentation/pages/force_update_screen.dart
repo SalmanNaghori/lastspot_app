@@ -1,11 +1,16 @@
 import 'package:url_launcher/url_launcher.dart';
 import 'package:lastspot_app/core/base_import.dart';
-import '../bloc/startup_state.dart';
+import '../../data/models/app_settings_model.dart';
 
 class ForceUpdateScreen extends StatelessWidget {
-  final StartupUpdateRequired updateData;
+  final VersionMessage messageData;
+  final String storeUrl;
 
-  const ForceUpdateScreen({super.key, required this.updateData});
+  const ForceUpdateScreen({
+    super.key,
+    required this.messageData,
+    required this.storeUrl,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +40,7 @@ class ForceUpdateScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: Dimensions.r24),
                 Text(
-                  updateData.messageData.title,
+                  messageData.title,
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: Dimensions.r24,
@@ -45,7 +50,7 @@ class ForceUpdateScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: Dimensions.r16),
                 Text(
-                  updateData.messageData.message,
+                  messageData.message,
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: Dimensions.r16,
@@ -53,7 +58,7 @@ class ForceUpdateScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: Dimensions.r24),
-                if (updateData.messageData.releaseNotes.isNotEmpty) ...[
+                if (messageData.releaseNotes.isNotEmpty) ...[
                   Text(
                     "What's New:",
                     style: TextStyle(
@@ -62,7 +67,7 @@ class ForceUpdateScreen extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: Dimensions.r8),
-                  ...updateData.messageData.releaseNotes.map(
+                  ...messageData.releaseNotes.map(
                     (note) => Padding(
                       padding: const EdgeInsets.only(bottom: Dimensions.r4),
                       child: Text(
@@ -85,7 +90,7 @@ class ForceUpdateScreen extends StatelessWidget {
                     ),
                   ),
                   onPressed: () async {
-                    final url = Uri.parse(updateData.storeUrl);
+                    final url = Uri.parse(storeUrl);
                     if (await canLaunchUrl(url)) {
                       await launchUrl(
                         url,

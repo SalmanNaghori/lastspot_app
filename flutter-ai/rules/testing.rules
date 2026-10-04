@@ -1,0 +1,36 @@
+# testing.rules — required tests and structure
+# SOP: sop/testing.md
+# Guardrails: guardrails/testing.md
+
+## Required
+MUST      TEST-1  New/modified Cubit or Bloc -> blocTest: success emissions, failure emissions, no-internet (if applicable), pagination stop, isClosed safety where async.
+MUST      TEST-2  New/modified repository impl -> tests mocking BaseApiService: successful parse, gateway failure pass-through, malformed payload -> Failure.
+MUST      TEST-3  New shared/design-system widget -> widget test: renders, callbacks fire, visual states (disabled/loading/error).
+MUST      TEST-4  Bug fix -> regression test that fails before the fix.
+MUST      TEST-12 Ship tests in the same change set. "Tests later" is a failed Definition of Done.
+
+## Recommended
+SHOULD    TEST-13 Test use cases, policies, DioErrorMapper table, interceptors (auth header only when requiresAuth; 401 -> logout), realtime reducers.
+SHOULD    TEST-14 One widget test per state (loading/error/empty/content) for critical screens.
+MAY       TEST-15 Golden tests for design-system components; integration tests for login->home, create item, send message.
+SHOULD    TEST-16 Do not test generated code, trivial copyWith, pure layout widgets, or DI registration (one boot smoke test covers it).
+
+## Structure
+MUST      TEST-7  test/<mirror of lib path>/<file>_test.dart; group('<ClassName>') > group('<method>') > test('<behaviour>').
+MUST      TEST-8  Fixtures in test/fixtures/<endpoint>_response.json; loader helper; no inline multi-hundred-line JSON.
+MUST      TEST-17 Mocks: `class MockXRepository extends Mock implements XRepository {}` (mocktail); registerFallbackValue in setUpAll; fresh mocks per test in setUp.
+MUST-NOT  TEST-5  Use the real DI container, network, storage, or Future.delayed sleeps in tests; construct classes directly with mocks.
+MUST-NOT  TEST-6  Delete or skip tests to pass CI; `skip:` requires a reason and ticket.
+MUST      TEST-11 Keep bloc_test/mocktail under dev_dependencies.
+
+## Templates
+MUST      TEST-18 Cubit: blocTest<XCubit, XState>(build: () => XCubit(repository: repo, networkMonitor: monitor), seed:, act:, expect: () => [isA<XState>().having(...)]). Stub monitor.onStatusChange with Stream.empty().
+MUST      TEST-19 Widget: pump MaterialApp + BlocProvider.value(value: mockCubit) with whenListen(mockCubit, Stream.value(state), initialState: state); assert by text/semantics/keys.
+
+## CI
+MUST      TEST-9  CI runs flutter analyze + flutter test; PR cannot merge on failure.
+SHOULD    TEST-10 Coverage gate on changed files (>= 70%), not whole repo.
+
+## Project
+PROJECT   See project/project-rules.md for overrides and open decisions.
+MUST-NOT  Invent class/file names from profiles/reference/ or example ADRs when project/ still has _TBD_ stubs.

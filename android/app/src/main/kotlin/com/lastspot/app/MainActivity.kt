@@ -1,4 +1,4 @@
-package com.lastspot.app.lastspot_app
+package com.lastspot.app
 
 import io.flutter.embedding.android.FlutterActivity
 

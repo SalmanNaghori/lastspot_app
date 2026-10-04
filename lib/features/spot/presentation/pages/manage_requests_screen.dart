@@ -2,8 +2,8 @@ import 'package:lastspot_app/core/base_import.dart';
 import '../bloc/manage_requests_bloc.dart';
 
 class ManageRequestsScreen extends StatefulWidget {
-  final String postId;
-  const ManageRequestsScreen({super.key, required this.postId});
+  final String spotId;
+  const ManageRequestsScreen({super.key, required this.spotId});
 
   @override
   State<ManageRequestsScreen> createState() => _ManageRequestsScreenState();
@@ -14,7 +14,7 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen> {
   void initState() {
     super.initState();
     context.read<ManageRequestsBloc>().add(
-      LoadPendingRequestsEvent(spotId: widget.postId),
+      LoadPendingRequestsEvent(spotId: widget.spotId),
     );
   }
 

@@ -6,11 +6,16 @@ import 'spot_details_screen_tablet.dart';
 import '../../domain/entities/request_entity.dart';
 
 class SpotDetailsScreen extends StatefulWidget {
-  final String postId;
+  final String spotId;
   final String? heroTag;
   final RequestEntity? initialSpot;
-  
-  const SpotDetailsScreen({super.key, required this.postId, this.heroTag, this.initialSpot});
+
+  const SpotDetailsScreen({
+    super.key,
+    required this.spotId,
+    this.heroTag,
+    this.initialSpot,
+  });
 
   @override
   State<SpotDetailsScreen> createState() => _SpotDetailsScreenState();
@@ -21,7 +26,10 @@ class _SpotDetailsScreenState extends State<SpotDetailsScreen> {
   void initState() {
     super.initState();
     context.read<SpotDetailsBloc>().add(
-      LoadSpotDetailsEvent(spotId: widget.postId, initialSpot: widget.initialSpot),
+      LoadSpotDetailsEvent(
+        spotId: widget.spotId,
+        initialSpot: widget.initialSpot,
+      ),
     );
   }
 

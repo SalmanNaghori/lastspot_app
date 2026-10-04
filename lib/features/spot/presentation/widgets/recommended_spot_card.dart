@@ -87,7 +87,8 @@ class _RecommendedSpotCardState extends State<RecommendedSpotCard> {
                         spot: widget.spot,
                         isUrgent: false,
                         spotsLeftText: '',
-                        perPersonLabel: '/ person', // Let the card's other logic or SpotHeroImage handle it natively
+                        perPersonLabel:
+                            '/ person', // Let the card's other logic or SpotHeroImage handle it natively
                         heroTagPrefix: widget.heroTagPrefix,
                       ),
                     ],
