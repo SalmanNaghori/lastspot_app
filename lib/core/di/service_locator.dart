@@ -314,7 +314,7 @@ Future<void> setupServiceLocator() async {
 
   sl.registerFactory<ReportCubit>(() => ReportCubit(sl<SubmitReportUseCase>()));
 
-  sl.registerFactory<NotificationsCubit>(
+  sl.registerLazySingleton<NotificationsCubit>(
     () => NotificationsCubit(
       getUnreadCountUseCase: sl<GetUnreadNotificationCountUseCase>(),
       subscribeUseCase: sl<SubscribeToNotificationsUseCase>(),

@@ -5,12 +5,13 @@ LastSpot is a mobile app for finding people to play sports and join local activi
 ## Features
 
 - Email authentication, sign-up, password reset, and OTP verification
-- Profile setup with sports interests and avatar upload
+- Profile setup and editing with searchable city selection, sports interests, and avatar upload
 - Home feed with sport filters, search, urgent activities, and recent posts
 - Create activities with a sport, venue, schedule, participant limit, notes, and images
 - Activity details with map links, confirmed players, and join requests
 - Host controls for accepting or rejecting join requests
 - Group chat for activity participants
+- Push notifications, including visible alerts while the app is in the foreground
 - Profile editing, settings, maintenance mode, and forced-update checks
 - Responsive layouts for phones and tablets
 - English localization with Flutter's generated localization files

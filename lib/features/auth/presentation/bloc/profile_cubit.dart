@@ -77,6 +77,7 @@ class ProfileCubit extends Cubit<ProfileState> {
         email: profile.email,
         bio: profile.bio,
         city: profile.city,
+        cityId: profile.cityId,
         status: profile.status,
         isProfileCompleted: true, // Mark completed on every save
         sportsInterests: profile.sportsInterests,

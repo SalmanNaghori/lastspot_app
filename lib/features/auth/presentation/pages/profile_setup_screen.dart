@@ -22,9 +22,10 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _bioController = TextEditingController();
-  CityEntity? _selectedCity;
-  File? _selectedAvatar;
-  List<String> _selectedSports = [];
+  final ValueNotifier<CityEntity?> _selectedCity = ValueNotifier(null);
+  final ValueNotifier<File?> _selectedAvatar = ValueNotifier(null);
+  final ValueNotifier<List<String>> _selectedSports = ValueNotifier([]);
+  final ValueNotifier<bool> _showCityError = ValueNotifier(false);
 
   final List<String> _availableSports = [
     'Soccer',
@@ -53,9 +54,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
       source: ImageSource.gallery,
     );
     if (file != null) {
-      setState(() {
-        _selectedAvatar = file;
-      });
+      _selectedAvatar.value = file;
     }
   }
 
@@ -87,7 +86,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
       items: cities,
       itemText: (city) => city.name,
       onSearch: (city, query) => city.name.toLowerCase().contains(query),
-      selectedItem: _selectedCity,
+      selectedItem: _selectedCity.value,
       isLoading: isLoading,
       hasError: hasError,
       onRetry: () => cityCubit.fetchCities(),
@@ -96,19 +95,18 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
     );
 
     if (city != null) {
-      setState(() {
-        _selectedCity = city;
-      });
+      _selectedCity.value = city;
+      _showCityError.value = false;
     }
   }
 
   void _onSave(BuildContext context) {
-    if (_formKey.currentState?.validate() ?? false) {
-      if (_selectedCity == null) {
-        setState(() {}); // Trigger rebuild to show error
-        return;
-      }
+    final isValid = _formKey.currentState?.validate() ?? false;
+    if (_selectedCity.value == null) {
+      _showCityError.value = true;
+    }
 
+    if (isValid && _selectedCity.value != null) {
       final currentState = context.read<ProfileCubit>().state;
       String? existingAvatarUrl;
       String? existingEmail;
@@ -122,29 +120,29 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
         id: _userId,
         fullName: _nameController.text.trim(),
         bio: _bioController.text.trim(),
-        city: _selectedCity?.name,
-        cityId: _selectedCity?.id,
+        city: _selectedCity.value?.name,
+        cityId: _selectedCity.value?.id,
         email: existingEmail,
         avatarUrl: existingAvatarUrl,
-        sportsInterests: _selectedSports,
+        sportsInterests: _selectedSports.value,
         createdAt: DateTime.now(), // Will be ignored by update if exists
       );
 
       context.read<ProfileCubit>().saveProfile(
         profile: profile,
-        avatarFile: _selectedAvatar,
+        avatarFile: _selectedAvatar.value,
       );
     }
   }
 
   void _toggleSport(String sport) {
-    setState(() {
-      if (_selectedSports.contains(sport)) {
-        _selectedSports.remove(sport);
-      } else {
-        _selectedSports.add(sport);
-      }
-    });
+    final sports = List<String>.from(_selectedSports.value);
+    if (sports.contains(sport)) {
+      sports.remove(sport);
+    } else {
+      sports.add(sport);
+    }
+    _selectedSports.value = sports;
   }
 
   @override
@@ -163,12 +161,12 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
             _nameController.text = state.profile.fullName ?? '';
             _bioController.text = state.profile.bio ?? '';
             if (state.profile.cityId != null && state.profile.city != null) {
-              _selectedCity = CityEntity(
+              _selectedCity.value = CityEntity(
                 id: state.profile.cityId!,
                 name: state.profile.city!,
               );
             }
-            _selectedSports = List.from(state.profile.sportsInterests);
+            _selectedSports.value = List.from(state.profile.sportsInterests);
           }
         },
         builder: (context, state) {
@@ -205,33 +203,38 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                           child: Stack(
                             alignment: Alignment.bottomRight,
                             children: [
-                              CircleAvatar(
-                                radius: 60,
-                                backgroundColor: context.surfaceColor,
-                                backgroundImage: _selectedAvatar != null
-                                    ? FileImage(_selectedAvatar!)
-                                    : (state is ProfileLoaded &&
-                                          state.profile.avatarUrl != null &&
-                                          state.profile.avatarUrl!.isNotEmpty)
-                                    ? NetworkImage(
-                                            state.profile.avatarUrl!.replaceAll(
-                                              '/svg?',
-                                              '/png?',
-                                            ),
+                              ValueListenableBuilder<File?>(
+                                valueListenable: _selectedAvatar,
+                                builder: (context, selectedAvatar, _) {
+                                  return CircleAvatar(
+                                    radius: 60,
+                                    backgroundColor: context.surfaceColor,
+                                    backgroundImage: selectedAvatar != null
+                                        ? FileImage(selectedAvatar)
+                                        : (state is ProfileLoaded &&
+                                              state.profile.avatarUrl != null &&
+                                              state.profile.avatarUrl!.isNotEmpty)
+                                        ? NetworkImage(
+                                                state.profile.avatarUrl!.replaceAll(
+                                                  '/svg?',
+                                                  '/png?',
+                                                ),
+                                              )
+                                              as ImageProvider
+                                        : null,
+                                    child:
+                                        selectedAvatar == null &&
+                                            (state is! ProfileLoaded ||
+                                                state.profile.avatarUrl == null ||
+                                                state.profile.avatarUrl!.isEmpty)
+                                        ? Icon(
+                                            Icons.person,
+                                            size: 60,
+                                            color: context.textSecondary,
                                           )
-                                          as ImageProvider
-                                    : null,
-                                child:
-                                    _selectedAvatar == null &&
-                                        (state is! ProfileLoaded ||
-                                            state.profile.avatarUrl == null ||
-                                            state.profile.avatarUrl!.isEmpty)
-                                    ? Icon(
-                                        Icons.person,
-                                        size: 60,
-                                        color: context.textSecondary,
-                                      )
-                                    : null,
+                                        : null,
+                                  );
+                                },
                               ),
                               CircleAvatar(
                                 radius: 18,
@@ -267,17 +270,24 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                       ),
                       const SizedBox(height: Dimensions.r16),
                       // City Picker
-                      AppTextField(
-                        labelText: context.loc.cityLabel,
-                        hintText:
-                            _selectedCity?.name ?? context.loc.selectCityHint,
-                        readOnly: true,
-                        onTap: _onCityTap,
-                        errorText:
-                            _selectedCity == null &&
-                                (_formKey.currentState?.validate() == false)
-                            ? context.loc.cityRequiredError
-                            : null,
+                      ValueListenableBuilder<bool>(
+                        valueListenable: _showCityError,
+                        builder: (context, showError, _) {
+                          return ValueListenableBuilder<CityEntity?>(
+                            valueListenable: _selectedCity,
+                            builder: (context, selectedCity, _) {
+                              return AppTextField(
+                                labelText: context.loc.cityLabel,
+                                hintText: selectedCity?.name ?? context.loc.selectCityHint,
+                                readOnly: true,
+                                onTap: _onCityTap,
+                                errorText: showError && selectedCity == null
+                                    ? context.loc.cityRequiredError
+                                    : null,
+                              );
+                            },
+                          );
+                        },
                       ),
                       const SizedBox(height: Dimensions.r24),
                       Text(
@@ -289,25 +299,30 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                         ),
                       ),
                       const SizedBox(height: Dimensions.r12),
-                      Wrap(
-                        spacing: Dimensions.r8,
-                        runSpacing: Dimensions.r8,
-                        children: _availableSports.map((sport) {
-                          final isSelected = _selectedSports.contains(sport);
-                          return ChoiceChip(
-                            label: Text(sport),
-                            selected: isSelected,
-                            onSelected: (_) => _toggleSport(sport),
-                            selectedColor: AppColor.primaryColor.withValues(
-                              alpha: 0.2,
-                            ),
-                            labelStyle: TextStyle(
-                              color: isSelected
-                                  ? AppColor.primaryColor
-                                  : context.textSecondary,
-                            ),
+                      ValueListenableBuilder<List<String>>(
+                        valueListenable: _selectedSports,
+                        builder: (context, selectedSports, _) {
+                          return Wrap(
+                            spacing: Dimensions.r8,
+                            runSpacing: Dimensions.r8,
+                            children: _availableSports.map((sport) {
+                              final isSelected = selectedSports.contains(sport);
+                              return ChoiceChip(
+                                label: Text(sport),
+                                selected: isSelected,
+                                onSelected: (_) => _toggleSport(sport),
+                                selectedColor: AppColor.primaryColor.withValues(
+                                  alpha: 0.2,
+                                ),
+                                labelStyle: TextStyle(
+                                  color: isSelected
+                                      ? AppColor.primaryColor
+                                      : context.textSecondary,
+                                ),
+                              );
+                            }).toList(),
                           );
-                        }).toList(),
+                        },
                       ),
                       const SizedBox(height: Dimensions.r48),
                       ElevatedButton(
@@ -347,6 +362,10 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
   void dispose() {
     _nameController.dispose();
     _bioController.dispose();
+    _selectedCity.dispose();
+    _selectedAvatar.dispose();
+    _selectedSports.dispose();
+    _showCityError.dispose();
     super.dispose();
   }
 }

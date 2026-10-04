@@ -6,6 +6,10 @@ import 'package:lastspot_app/core/utils/image_cropper_helper.dart';
 import 'package:lastspot_app/core/di/service_locator.dart';
 import 'package:lastspot_app/features/auth/domain/entities/user_profile.dart';
 import 'package:lastspot_app/features/auth/presentation/bloc/profile_cubit.dart';
+import 'package:lastspot_app/core/widgets/selection_bottom_sheet.dart';
+import 'package:lastspot_app/features/cities/domain/entities/city_entity.dart';
+import 'package:lastspot_app/features/cities/presentation/bloc/city_cubit.dart';
+import 'package:lastspot_app/features/cities/presentation/bloc/city_state.dart';
 
 class EditProfileScreen extends StatefulWidget {
   const EditProfileScreen({super.key});
@@ -18,10 +22,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _bioController = TextEditingController();
-  final _cityController = TextEditingController();
   final _emailController = TextEditingController();
-  File? _selectedAvatar;
-  List<String> _selectedSports = [];
+  final ValueNotifier<CityEntity?> _selectedCity = ValueNotifier(null);
+  final ValueNotifier<File?> _selectedAvatar = ValueNotifier(null);
+  final ValueNotifier<List<String>> _selectedSports = ValueNotifier([]);
+  final ValueNotifier<bool> _showCityError = ValueNotifier(false);
 
   final List<String> _availableSports = [
     'Soccer',
@@ -50,14 +55,59 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       source: ImageSource.gallery,
     );
     if (file != null) {
-      setState(() {
-        _selectedAvatar = file;
-      });
+      _selectedAvatar.value = file;
+    }
+  }
+
+  void _onCityTap() async {
+    final cityCubit = sl<CityCubit>();
+    if (cityCubit.state is! CityLoaded) {
+      await cityCubit.fetchCities();
+    }
+
+    if (!mounted) return;
+
+    final state = cityCubit.state;
+    List<CityEntity> cities = [];
+    bool hasError = false;
+    bool isLoading = false;
+
+    if (state is CityLoaded) {
+      cities = state.cities;
+    } else if (state is CityError) {
+      hasError = true;
+    } else {
+      isLoading = true;
+    }
+
+    final city = await SelectionBottomSheet.show<CityEntity>(
+      context,
+      title: context.loc.selectCity,
+      searchHint: 'Search city...',
+      items: cities,
+      itemText: (city) => city.name,
+      onSearch: (city, query) => city.name.toLowerCase().contains(query),
+      selectedItem: _selectedCity.value,
+      isLoading: isLoading,
+      hasError: hasError,
+      onRetry: () => cityCubit.fetchCities(),
+      leadingIcon: (city) =>
+          Icon(Icons.location_on, color: context.textSecondary),
+    );
+
+    if (city != null) {
+      _selectedCity.value = city;
+      _showCityError.value = false;
     }
   }
 
   void _onSave(BuildContext context) {
-    if (_formKey.currentState?.validate() ?? false) {
+    final isValid = _formKey.currentState?.validate() ?? false;
+    if (_selectedCity.value == null) {
+      _showCityError.value = true;
+    }
+
+    if (isValid && _selectedCity.value != null) {
       final currentState = context.read<ProfileCubit>().state;
       String? existingAvatarUrl;
       String? existingEmail;
@@ -71,28 +121,29 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         id: _userId,
         fullName: _nameController.text.trim(),
         bio: _bioController.text.trim(),
-        city: _cityController.text.trim(),
+        city: _selectedCity.value?.name,
+        cityId: _selectedCity.value?.id,
         email: existingEmail,
         avatarUrl: existingAvatarUrl,
-        sportsInterests: _selectedSports,
+        sportsInterests: _selectedSports.value,
         createdAt: DateTime.now(), // Will be ignored by update if exists
       );
 
       context.read<ProfileCubit>().saveProfile(
         profile: profile,
-        avatarFile: _selectedAvatar,
+        avatarFile: _selectedAvatar.value,
       );
     }
   }
 
   void _toggleSport(String sport) {
-    setState(() {
-      if (_selectedSports.contains(sport)) {
-        _selectedSports.remove(sport);
-      } else {
-        _selectedSports.add(sport);
-      }
-    });
+    final sports = List<String>.from(_selectedSports.value);
+    if (sports.contains(sport)) {
+      sports.remove(sport);
+    } else {
+      sports.add(sport);
+    }
+    _selectedSports.value = sports;
   }
 
   @override
@@ -110,9 +161,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           } else if (state is ProfileLoaded) {
             _nameController.text = state.profile.fullName ?? '';
             _bioController.text = state.profile.bio ?? '';
-            _cityController.text = state.profile.city ?? '';
+            if (state.profile.cityId != null && state.profile.city != null) {
+              _selectedCity.value = CityEntity(
+                id: state.profile.cityId!,
+                name: state.profile.city!,
+              );
+            }
             _emailController.text = state.profile.email ?? '';
-            _selectedSports = List.from(state.profile.sportsInterests);
+            _selectedSports.value = List.from(state.profile.sportsInterests);
           }
         },
         builder: (context, state) {
@@ -149,33 +205,38 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           child: Stack(
                             alignment: Alignment.bottomRight,
                             children: [
-                              CircleAvatar(
-                                radius: 60,
-                                backgroundColor: context.surfaceColor,
-                                backgroundImage: _selectedAvatar != null
-                                    ? FileImage(_selectedAvatar!)
-                                    : (state is ProfileLoaded &&
-                                          state.profile.avatarUrl != null &&
-                                          state.profile.avatarUrl!.isNotEmpty)
-                                    ? NetworkImage(
-                                            state.profile.avatarUrl!.replaceAll(
-                                              '/svg?',
-                                              '/png?',
-                                            ),
+                              ValueListenableBuilder<File?>(
+                                valueListenable: _selectedAvatar,
+                                builder: (context, selectedAvatar, _) {
+                                  return CircleAvatar(
+                                    radius: 60,
+                                    backgroundColor: context.surfaceColor,
+                                    backgroundImage: selectedAvatar != null
+                                        ? FileImage(selectedAvatar)
+                                        : (state is ProfileLoaded &&
+                                              state.profile.avatarUrl != null &&
+                                              state.profile.avatarUrl!.isNotEmpty)
+                                        ? NetworkImage(
+                                                state.profile.avatarUrl!.replaceAll(
+                                                  '/svg?',
+                                                  '/png?',
+                                                ),
+                                              )
+                                              as ImageProvider
+                                        : null,
+                                    child:
+                                        selectedAvatar == null &&
+                                            (state is! ProfileLoaded ||
+                                                state.profile.avatarUrl == null ||
+                                                state.profile.avatarUrl!.isEmpty)
+                                        ? Icon(
+                                            Icons.person,
+                                            size: 60,
+                                            color: context.textSecondary,
                                           )
-                                          as ImageProvider
-                                    : null,
-                                child:
-                                    _selectedAvatar == null &&
-                                        (state is! ProfileLoaded ||
-                                            state.profile.avatarUrl == null ||
-                                            state.profile.avatarUrl!.isEmpty)
-                                    ? Icon(
-                                        Icons.person,
-                                        size: 60,
-                                        color: context.textSecondary,
-                                      )
-                                    : null,
+                                        : null,
+                                  );
+                                },
                               ),
                               CircleAvatar(
                                 radius: 18,
@@ -217,15 +278,24 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         textCapitalization: TextCapitalization.sentences,
                       ),
                       const SizedBox(height: Dimensions.r16),
-                      AppTextField(
-                        controller: _cityController,
-                        labelText: context.loc.cityLabel,
-                        textCapitalization: TextCapitalization.words,
-                        validator: (value) {
-                          if (value == null || value.trim().isEmpty) {
-                            return context.loc.cityIsRequired;
-                          }
-                          return null;
+                      // City Picker
+                      ValueListenableBuilder<bool>(
+                        valueListenable: _showCityError,
+                        builder: (context, showError, _) {
+                          return ValueListenableBuilder<CityEntity?>(
+                            valueListenable: _selectedCity,
+                            builder: (context, selectedCity, _) {
+                              return AppTextField(
+                                labelText: context.loc.cityLabel,
+                                hintText: selectedCity?.name ?? context.loc.selectCityHint,
+                                readOnly: true,
+                                onTap: _onCityTap,
+                                errorText: showError && selectedCity == null
+                                    ? context.loc.cityRequiredError
+                                    : null,
+                              );
+                            },
+                          );
                         },
                       ),
                       const SizedBox(height: Dimensions.r24),
@@ -238,25 +308,30 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         ),
                       ),
                       const SizedBox(height: Dimensions.r12),
-                      Wrap(
-                        spacing: Dimensions.r8,
-                        runSpacing: Dimensions.r8,
-                        children: _availableSports.map((sport) {
-                          final isSelected = _selectedSports.contains(sport);
-                          return ChoiceChip(
-                            label: Text(sport),
-                            selected: isSelected,
-                            onSelected: (_) => _toggleSport(sport),
-                            selectedColor: AppColor.primaryColor.withValues(
-                              alpha: 0.2,
-                            ),
-                            labelStyle: TextStyle(
-                              color: isSelected
-                                  ? AppColor.primaryColor
-                                  : context.textSecondary,
-                            ),
+                      ValueListenableBuilder<List<String>>(
+                        valueListenable: _selectedSports,
+                        builder: (context, selectedSports, _) {
+                          return Wrap(
+                            spacing: Dimensions.r8,
+                            runSpacing: Dimensions.r8,
+                            children: _availableSports.map((sport) {
+                              final isSelected = selectedSports.contains(sport);
+                              return ChoiceChip(
+                                label: Text(sport),
+                                selected: isSelected,
+                                onSelected: (_) => _toggleSport(sport),
+                                selectedColor: AppColor.primaryColor.withValues(
+                                  alpha: 0.2,
+                                ),
+                                labelStyle: TextStyle(
+                                  color: isSelected
+                                      ? AppColor.primaryColor
+                                      : context.textSecondary,
+                                ),
+                              );
+                            }).toList(),
                           );
-                        }).toList(),
+                        },
                       ),
                       const SizedBox(height: Dimensions.r48),
                       ElevatedButton(
@@ -296,8 +371,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   void dispose() {
     _nameController.dispose();
     _bioController.dispose();
-    _cityController.dispose();
     _emailController.dispose();
+    _selectedCity.dispose();
+    _selectedAvatar.dispose();
+    _selectedSports.dispose();
+    _showCityError.dispose();
     super.dispose();
   }
 }
