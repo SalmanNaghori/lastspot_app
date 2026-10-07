@@ -63,7 +63,7 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen> {
                       Text(
                         post.title.trim().isNotEmpty
                             ? post.title.trim()
-                            : post.locationName,
+                            : AppUtils.getDisplayLocation(context, post.locationName, cityId: post.cityId),
                         style: context.titleMedium?.copyWith(
                           fontWeight: FontWeight.bold,
                         ),

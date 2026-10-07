@@ -10,6 +10,7 @@ import 'package:lastspot_app/core/widgets/selection_bottom_sheet.dart';
 import '../../../cities/domain/entities/city_entity.dart';
 import '../../../cities/presentation/bloc/city_cubit.dart';
 import '../../../cities/presentation/bloc/city_state.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class ProfileSetupScreen extends StatefulWidget {
   const ProfileSetupScreen({super.key});
@@ -26,19 +27,6 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
   final ValueNotifier<File?> _selectedAvatar = ValueNotifier(null);
   final ValueNotifier<List<String>> _selectedSports = ValueNotifier([]);
   final ValueNotifier<bool> _showCityError = ValueNotifier(false);
-
-  final List<String> _availableSports = [
-    'Soccer',
-    'Basketball',
-    'Tennis',
-    'Volleyball',
-    'Badminton',
-    'Table Tennis',
-    'Cricket',
-    'Swimming',
-    'Running',
-    'Cycling',
-  ];
 
   late String _userId;
 
@@ -188,9 +176,9 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
         elevation: 0,
       ),
       body: SafeArea(
-        child: state is ProfileLoading && _nameController.text.isEmpty
-            ? const Center(child: CircularProgressIndicator())
-            : SingleChildScrollView(
+        child: Skeletonizer(
+          enabled: state is ProfileLoading && _nameController.text.isEmpty,
+          child: SingleChildScrollView(
                 padding: const EdgeInsets.all(Dimensions.r24),
                 child: Form(
                   key: _formKey,
@@ -305,7 +293,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                           return Wrap(
                             spacing: Dimensions.r8,
                             runSpacing: Dimensions.r8,
-                            children: _availableSports.map((sport) {
+                            children: AppConstants.getAvailableSports(context).map((sport) {
                               final isSelected = selectedSports.contains(sport);
                               return ChoiceChip(
                                 label: Text(sport),
@@ -354,6 +342,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                   ),
                 ),
               ),
+        ),
       ),
     );
   }

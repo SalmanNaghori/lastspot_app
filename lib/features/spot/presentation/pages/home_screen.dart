@@ -69,14 +69,9 @@ class _HomeScreenState extends State<HomeScreen> {
     List<CityEntity> cities,
     String? selectedCityId,
   ) {
-    showModalBottomSheet(
+    AppBottomSheet.show(
       context: context,
-      backgroundColor: context.surfaceColor,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(
-          top: Radius.circular(Dimensions.r20.dynamicR),
-        ),
-      ),
+      isScrollControlled: false,
       builder: (context) {
         return SafeArea(
           child: Column(

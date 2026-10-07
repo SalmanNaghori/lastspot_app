@@ -193,7 +193,9 @@ class PreviewSpotScreen extends StatelessWidget {
               // Details List
               PreviewSpotDetailRow(
                 icon: Icons.location_on_outlined,
-                text: formState.locationController.text,
+                text: formState.selectedCity.value != null
+                    ? '${formState.selectedCity.value!.name} • ${AppUtils.getDisplayLocation(context, formState.locationController.text)}'
+                    : AppUtils.getDisplayLocation(context, formState.locationController.text),
                 onTap: () {
                   AppUtils.launchMap(formState.locationController.text);
                 },

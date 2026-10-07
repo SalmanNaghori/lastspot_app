@@ -70,7 +70,7 @@ class SpotDetailsCtaButton extends StatelessWidget {
     }
 
     if (post.status != RequestStatus.open) {
-      String text = post.status.name.toUpperCase();
+      String text = post.status.name.capitalizeFirst();
       return ElevatedButton(
         onPressed: null,
         style: ElevatedButton.styleFrom(
@@ -97,7 +97,7 @@ class SpotDetailsCtaButton extends StatelessWidget {
           ),
         ),
         child: Text(
-          l10n.statusFull.toUpperCase(),
+          l10n.statusFull.capitalizeFirst(),
           style: const TextStyle(fontWeight: FontWeight.bold),
         ),
       );

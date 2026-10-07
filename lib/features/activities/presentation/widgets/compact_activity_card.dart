@@ -40,7 +40,7 @@ class CompactActivityCard extends StatelessWidget {
               children: [
                 Expanded(
                   child: Text(
-                    title,
+                    title.capitalizeFirst(),
                     style: context.titleMedium?.copyWith(
                       fontWeight: FontWeight.bold,
                     ),

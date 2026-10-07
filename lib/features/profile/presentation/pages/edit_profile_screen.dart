@@ -10,6 +10,7 @@ import 'package:lastspot_app/core/widgets/selection_bottom_sheet.dart';
 import 'package:lastspot_app/features/cities/domain/entities/city_entity.dart';
 import 'package:lastspot_app/features/cities/presentation/bloc/city_cubit.dart';
 import 'package:lastspot_app/features/cities/presentation/bloc/city_state.dart';
+import '../widgets/edit_profile_content.dart';
 
 class EditProfileScreen extends StatefulWidget {
   const EditProfileScreen({super.key});
@@ -27,19 +28,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   final ValueNotifier<File?> _selectedAvatar = ValueNotifier(null);
   final ValueNotifier<List<String>> _selectedSports = ValueNotifier([]);
   final ValueNotifier<bool> _showCityError = ValueNotifier(false);
-
-  final List<String> _availableSports = [
-    'Soccer',
-    'Basketball',
-    'Tennis',
-    'Volleyball',
-    'Badminton',
-    'Table Tennis',
-    'Cricket',
-    'Swimming',
-    'Running',
-    'Cycling',
-  ];
 
   late String _userId;
 
@@ -173,196 +161,38 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         },
         builder: (context, state) {
           return ResponsiveLayout(
-            mobile: _buildContent(context, state),
-            tablet: _buildContent(context, state),
+            mobile: EditProfileContent(
+              state: state,
+              formKey: _formKey,
+              nameController: _nameController,
+              bioController: _bioController,
+              emailController: _emailController,
+              selectedCity: _selectedCity,
+              selectedAvatar: _selectedAvatar,
+              selectedSports: _selectedSports,
+              showCityError: _showCityError,
+              onPickAvatar: _pickAvatar,
+              onCityTap: _onCityTap,
+              onSave: () => _onSave(context),
+              onToggleSport: _toggleSport,
+            ),
+            tablet: EditProfileContent(
+              state: state,
+              formKey: _formKey,
+              nameController: _nameController,
+              bioController: _bioController,
+              emailController: _emailController,
+              selectedCity: _selectedCity,
+              selectedAvatar: _selectedAvatar,
+              selectedSports: _selectedSports,
+              showCityError: _showCityError,
+              onPickAvatar: _pickAvatar,
+              onCityTap: _onCityTap,
+              onSave: () => _onSave(context),
+              onToggleSport: _toggleSport,
+            ),
           );
         },
-      ),
-    );
-  }
-
-  Widget _buildContent(BuildContext context, ProfileState state) {
-    return Scaffold(
-      backgroundColor: context.backgroundColor,
-      appBar: AppBar(
-        title: Text(context.loc.editProfile),
-        backgroundColor: context.backgroundColor,
-        elevation: 0,
-      ),
-      body: SafeArea(
-        child: state is ProfileLoading && _nameController.text.isEmpty
-            ? const Center(child: CircularProgressIndicator())
-            : SingleChildScrollView(
-                padding: const EdgeInsets.all(Dimensions.r24),
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Center(
-                        child: GestureDetector(
-                          onTap: _pickAvatar,
-                          child: Stack(
-                            alignment: Alignment.bottomRight,
-                            children: [
-                              ValueListenableBuilder<File?>(
-                                valueListenable: _selectedAvatar,
-                                builder: (context, selectedAvatar, _) {
-                                  return CircleAvatar(
-                                    radius: 60,
-                                    backgroundColor: context.surfaceColor,
-                                    backgroundImage: selectedAvatar != null
-                                        ? FileImage(selectedAvatar)
-                                        : (state is ProfileLoaded &&
-                                              state.profile.avatarUrl != null &&
-                                              state.profile.avatarUrl!.isNotEmpty)
-                                        ? NetworkImage(
-                                                state.profile.avatarUrl!.replaceAll(
-                                                  '/svg?',
-                                                  '/png?',
-                                                ),
-                                              )
-                                              as ImageProvider
-                                        : null,
-                                    child:
-                                        selectedAvatar == null &&
-                                            (state is! ProfileLoaded ||
-                                                state.profile.avatarUrl == null ||
-                                                state.profile.avatarUrl!.isEmpty)
-                                        ? Icon(
-                                            Icons.person,
-                                            size: 60,
-                                            color: context.textSecondary,
-                                          )
-                                        : null,
-                                  );
-                                },
-                              ),
-                              CircleAvatar(
-                                radius: 18,
-                                backgroundColor: AppColor.primaryColor,
-                                child: const Icon(
-                                  Icons.camera_alt,
-                                  size: 20,
-                                  color: AppColor.whiteColor,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: Dimensions.r32),
-                      AppTextField(
-                        controller: _nameController,
-                        labelText: context.loc.fullName,
-                        textCapitalization: TextCapitalization.words,
-                        validator: (value) {
-                          if (value == null || value.trim().isEmpty) {
-                            return context.loc.fullNameRequired;
-                          }
-                          return null;
-                        },
-                      ),
-                      const SizedBox(height: Dimensions.r16),
-                      AppTextField(
-                        labelText: context.loc.email,
-                        controller: _emailController,
-                        readOnly: true,
-                        hintText: '',
-                      ),
-                      const SizedBox(height: Dimensions.r16),
-                      AppTextField(
-                        controller: _bioController,
-                        labelText: context.loc.bioOptional,
-                        maxLines: 3,
-                        textCapitalization: TextCapitalization.sentences,
-                      ),
-                      const SizedBox(height: Dimensions.r16),
-                      // City Picker
-                      ValueListenableBuilder<bool>(
-                        valueListenable: _showCityError,
-                        builder: (context, showError, _) {
-                          return ValueListenableBuilder<CityEntity?>(
-                            valueListenable: _selectedCity,
-                            builder: (context, selectedCity, _) {
-                              return AppTextField(
-                                labelText: context.loc.cityLabel,
-                                hintText: selectedCity?.name ?? context.loc.selectCityHint,
-                                readOnly: true,
-                                onTap: _onCityTap,
-                                errorText: showError && selectedCity == null
-                                    ? context.loc.cityRequiredError
-                                    : null,
-                              );
-                            },
-                          );
-                        },
-                      ),
-                      const SizedBox(height: Dimensions.r24),
-                      Text(
-                        context.loc.sportsPreferences,
-                        style: TextStyle(
-                          fontSize: Dimensions.r16,
-                          fontWeight: FontWeight.bold,
-                          color: context.textPrimary,
-                        ),
-                      ),
-                      const SizedBox(height: Dimensions.r12),
-                      ValueListenableBuilder<List<String>>(
-                        valueListenable: _selectedSports,
-                        builder: (context, selectedSports, _) {
-                          return Wrap(
-                            spacing: Dimensions.r8,
-                            runSpacing: Dimensions.r8,
-                            children: _availableSports.map((sport) {
-                              final isSelected = selectedSports.contains(sport);
-                              return ChoiceChip(
-                                label: Text(sport),
-                                selected: isSelected,
-                                onSelected: (_) => _toggleSport(sport),
-                                selectedColor: AppColor.primaryColor.withValues(
-                                  alpha: 0.2,
-                                ),
-                                labelStyle: TextStyle(
-                                  color: isSelected
-                                      ? AppColor.primaryColor
-                                      : context.textSecondary,
-                                ),
-                              );
-                            }).toList(),
-                          );
-                        },
-                      ),
-                      const SizedBox(height: Dimensions.r48),
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColor.primaryColor,
-                          foregroundColor: AppColor.whiteColor,
-                          padding: const EdgeInsets.symmetric(
-                            vertical: Dimensions.r16,
-                          ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(Dimensions.r12),
-                          ),
-                        ),
-                        onPressed: state is ProfileLoading
-                            ? null
-                            : () => _onSave(context),
-                        child: state is ProfileLoading
-                            ? const SizedBox(
-                                height: 20,
-                                width: 20,
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 2,
-                                  color: AppColor.whiteColor,
-                                ),
-                              )
-                            : Text(context.loc.saveChanges),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
       ),
     );
   }

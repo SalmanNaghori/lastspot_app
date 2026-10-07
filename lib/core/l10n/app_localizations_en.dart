@@ -928,4 +928,34 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get appeal => 'Appeal';
+
+  @override
+  String get sportSoccer => 'Soccer';
+
+  @override
+  String get sportBasketball => 'Basketball';
+
+  @override
+  String get sportTennis => 'Tennis';
+
+  @override
+  String get sportVolleyball => 'Volleyball';
+
+  @override
+  String get sportBadminton => 'Badminton';
+
+  @override
+  String get sportTableTennis => 'Table Tennis';
+
+  @override
+  String get sportCricket => 'Cricket';
+
+  @override
+  String get sportSwimming => 'Swimming';
+
+  @override
+  String get sportRunning => 'Running';
+
+  @override
+  String get sportCycling => 'Cycling';
 }

@@ -6,37 +6,24 @@ import '../widgets/profile_header.dart';
 import '../widgets/profile_list_tile.dart';
 import '../widgets/profile_skeleton.dart';
 import '../widgets/profile_statistics.dart';
+import '../widgets/profile_section.dart';
 
 class ProfileScreenTablet extends StatelessWidget {
   final ProfileState state;
   final Future<void> Function() onRefresh;
 
-  const ProfileScreenTablet({
-    super.key,
-    required this.state,
-    required this.onRefresh,
-  });
+  const ProfileScreenTablet({super.key, required this.state, required this.onRefresh});
 
   void _onLogout(BuildContext context, AppLocalizations loc) {
-    showDialog(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        title: Text(loc.logoutDialogTitle),
-        content: Text(loc.logoutDialogMessage),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(ctx).pop(),
-            child: Text(loc.cancel),
-          ),
-          FilledButton(
-            onPressed: () {
-              Navigator.of(ctx).pop();
-              context.read<AuthBloc>().add(AuthLogoutRequested());
-            },
-            child: Text(loc.logout),
-          ),
-        ],
-      ),
+    AppUtils.showConfirmationDialog(
+      context,
+      title: loc.logoutDialogTitle,
+      message: loc.logoutDialogMessage,
+      confirmText: loc.logout,
+      cancelText: loc.cancel,
+      onConfirm: () {
+        context.read<AuthBloc>().add(AuthLogoutRequested());
+      },
     );
   }
 
@@ -58,16 +45,13 @@ class ProfileScreenTablet extends StatelessWidget {
           physics: const AlwaysScrollableScrollPhysics(),
           child: Center(
             child: Container(
-              constraints: const BoxConstraints(maxWidth: 850),
+              constraints: BoxConstraints(maxWidth: 850),
               margin: const EdgeInsets.all(Dimensions.r24),
               padding: const EdgeInsets.all(Dimensions.r32),
               decoration: BoxDecoration(
                 color: context.colorScheme.surface,
                 borderRadius: BorderRadius.circular(Dimensions.r20),
-                border: Border.all(
-                  color: AppColor.helpCardBorderColor,
-                  width: 0.5,
-                ),
+                border: Border.all(color: AppColor.helpCardBorderColor, width: 0.5),
                 boxShadow: [
                   BoxShadow(
                     color: AppColor.blackColor.withValues(alpha: 0.04),
@@ -82,13 +66,8 @@ class ProfileScreenTablet extends StatelessWidget {
                     return const ProfileSkeleton();
                   } else if (state is ProfileError) {
                     return Padding(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: Dimensions.r48,
-                      ),
-                      child: ErrorState(
-                        message: (state as ProfileError).message,
-                        onRetry: onRefresh,
-                      ),
+                      padding: const EdgeInsets.symmetric(vertical: Dimensions.r48),
+                      child: ErrorState(message: (state as ProfileError).message, onRetry: onRefresh),
                     );
                   } else if (state is ProfileLoaded) {
                     final profile = (state as ProfileLoaded).profile;
@@ -102,11 +81,7 @@ class ProfileScreenTablet extends StatelessWidget {
                             children: [
                               ProfileHeader(profile: profile),
                               const SizedBox(height: Dimensions.r32),
-                              const ProfileStatistics(
-                                createdCount: 0,
-                                joinedCount: 0,
-                                completedCount: 0,
-                              ),
+                              const ProfileStatistics(createdCount: 0, joinedCount: 0, completedCount: 0),
                             ],
                           ),
                         ),
@@ -118,15 +93,10 @@ class ProfileScreenTablet extends StatelessWidget {
                           flex: 2,
                           child: Column(
                             children: [
-                              _buildSection(
-                                context,
+                              ProfileSection(
                                 title: loc.profileSectionActivity,
                                 items: [
-                                  ProfileListTile(
-                                    icon: Icons.assignment_outlined,
-                                    title: loc.myRequests,
-                                    onTap: () {},
-                                  ),
+                                  ProfileListTile(icon: Icons.assignment_outlined, title: loc.myRequests, onTap: () {}),
                                   ProfileListTile(
                                     icon: Icons.event_available_outlined,
                                     title: loc.myActivities,
@@ -136,8 +106,7 @@ class ProfileScreenTablet extends StatelessWidget {
                                   ),
                                 ],
                               ),
-                              _buildSection(
-                                context,
+                              ProfileSection(
                                 title: loc.profileSectionAccount,
                                 items: [
                                   ProfileListTile(
@@ -152,15 +121,10 @@ class ProfileScreenTablet extends StatelessWidget {
                                       context.safePush(AppRoutes.settings);
                                     },
                                   ),
-                                  ProfileListTile(
-                                    icon: Icons.help_outline,
-                                    title: loc.helpSupport,
-                                    onTap: () {},
-                                  ),
+                                  ProfileListTile(icon: Icons.help_outline, title: loc.helpSupport, onTap: () {}),
                                 ],
                               ),
-                              _buildSection(
-                                context,
+                              ProfileSection(
                                 title: loc.profileSectionLegal,
                                 items: [
                                   ProfileListTile(
@@ -203,39 +167,6 @@ class ProfileScreenTablet extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
-
-  Widget _buildSection(
-    BuildContext context, {
-    required String title,
-    required List<Widget> items,
-  }) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: Dimensions.r8,
-            vertical: Dimensions.r8,
-          ),
-          child: Text(
-            title.toUpperCase(),
-            style: context.labelMedium?.copyWith(
-              color: context.colorScheme.onSurfaceVariant,
-              fontWeight: FontWeight.bold,
-              letterSpacing: 1.2,
-            ),
-          ),
-        ),
-        Material(
-          color: context.colorScheme.surfaceContainerLow,
-          borderRadius: BorderRadius.circular(Dimensions.r12),
-          clipBehavior: Clip.antiAlias,
-          child: Column(children: items),
-        ),
-        const SizedBox(height: Dimensions.r24),
-      ],
     );
   }
 }

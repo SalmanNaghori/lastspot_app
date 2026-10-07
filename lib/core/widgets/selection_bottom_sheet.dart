@@ -30,6 +30,8 @@ class SelectionBottomSheet<T> extends StatefulWidget {
     this.leadingIcon,
   });
 
+  static bool _isSheetOpen = false;
+
   static Future<T?> show<T>(
     BuildContext context, {
     required String title,
@@ -44,31 +46,37 @@ class SelectionBottomSheet<T> extends StatefulWidget {
     String? emptyMessage,
     VoidCallback? onRetry,
     Widget Function(T)? leadingIcon,
-  }) {
-    return showModalBottomSheet<T>(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: context.surfaceColor,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(
-          top: Radius.circular(Dimensions.r24),
+  }) async {
+    if (_isSheetOpen) return null;
+    _isSheetOpen = true;
+    try {
+      return await showModalBottomSheet<T>(
+        context: context,
+        isScrollControlled: true,
+        backgroundColor: context.surfaceColor,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            top: Radius.circular(Dimensions.r24),
+          ),
         ),
-      ),
-      builder: (context) => SelectionBottomSheet<T>(
-        title: title,
-        searchHint: searchHint,
-        items: items,
-        itemText: itemText,
-        onSearch: onSearch,
-        selectedItem: selectedItem,
-        isLoading: isLoading,
-        hasError: hasError,
-        errorMessage: errorMessage,
-        emptyMessage: emptyMessage,
-        onRetry: onRetry,
-        leadingIcon: leadingIcon,
-      ),
-    );
+        builder: (context) => SelectionBottomSheet<T>(
+          title: title,
+          searchHint: searchHint,
+          items: items,
+          itemText: itemText,
+          onSearch: onSearch,
+          selectedItem: selectedItem,
+          isLoading: isLoading,
+          hasError: hasError,
+          errorMessage: errorMessage,
+          emptyMessage: emptyMessage,
+          onRetry: onRetry,
+          leadingIcon: leadingIcon,
+        ),
+      );
+    } finally {
+      _isSheetOpen = false;
+    }
   }
 
   @override

@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/foundation.dart';
-import 'app_string.dart';
+import 'package:lastspot_app/core/base_import.dart';
+import 'package:lastspot_app/features/spot/domain/entities/join_request_entity.dart';
 import 'date_formats.dart';
 
 class AppConstants {
@@ -20,6 +21,22 @@ class AppConstants {
   static const int paginationLimit = 20;
   static const int splashScreenDuration = 2; // seconds
   static const int connectionTimeout = 30; // seconds
+
+  // Data
+  static List<String> getAvailableSports(BuildContext context) {
+    return [
+      context.loc.sportSoccer,
+      context.loc.sportBasketball,
+      context.loc.sportTennis,
+      context.loc.sportVolleyball,
+      context.loc.sportBadminton,
+      context.loc.sportTableTennis,
+      context.loc.sportCricket,
+      context.loc.sportSwimming,
+      context.loc.sportRunning,
+      context.loc.sportCycling,
+    ];
+  }
 
   // Utility Methods
   static String getMonthName(int month) {
@@ -47,5 +64,23 @@ class AppConstants {
       return AppString.tomorrow;
     }
     return formatDate(localDt, DateFormats.dateFormatMMMD);
+  }
+
+  /// Returns the appropriate color for a given [JoinRequestStatus].
+  /// 
+  /// Example:
+  /// - Pending -> Warning color (Orange/Yellow)
+  /// - Accepted -> Success color (Green)
+  /// - Rejected/Cancelled -> Error color (Red)
+  static Color getStatusColor(BuildContext context, JoinRequestStatus status) {
+    switch (status) {
+      case JoinRequestStatus.pending:
+        return context.warningColor;
+      case JoinRequestStatus.accepted:
+        return context.successColor;
+      case JoinRequestStatus.rejected:
+      case JoinRequestStatus.cancelled:
+        return context.errorColor;
+    }
   }
 }

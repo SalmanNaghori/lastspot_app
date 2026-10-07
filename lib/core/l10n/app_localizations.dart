@@ -1821,6 +1821,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Appeal'**
   String get appeal;
+
+  /// No description provided for @sportSoccer.
+  ///
+  /// In en, this message translates to:
+  /// **'Soccer'**
+  String get sportSoccer;
+
+  /// No description provided for @sportBasketball.
+  ///
+  /// In en, this message translates to:
+  /// **'Basketball'**
+  String get sportBasketball;
+
+  /// No description provided for @sportTennis.
+  ///
+  /// In en, this message translates to:
+  /// **'Tennis'**
+  String get sportTennis;
+
+  /// No description provided for @sportVolleyball.
+  ///
+  /// In en, this message translates to:
+  /// **'Volleyball'**
+  String get sportVolleyball;
+
+  /// No description provided for @sportBadminton.
+  ///
+  /// In en, this message translates to:
+  /// **'Badminton'**
+  String get sportBadminton;
+
+  /// No description provided for @sportTableTennis.
+  ///
+  /// In en, this message translates to:
+  /// **'Table Tennis'**
+  String get sportTableTennis;
+
+  /// No description provided for @sportCricket.
+  ///
+  /// In en, this message translates to:
+  /// **'Cricket'**
+  String get sportCricket;
+
+  /// No description provided for @sportSwimming.
+  ///
+  /// In en, this message translates to:
+  /// **'Swimming'**
+  String get sportSwimming;
+
+  /// No description provided for @sportRunning.
+  ///
+  /// In en, this message translates to:
+  /// **'Running'**
+  String get sportRunning;
+
+  /// No description provided for @sportCycling.
+  ///
+  /// In en, this message translates to:
+  /// **'Cycling'**
+  String get sportCycling;
 }
 
 class _AppLocalizationsDelegate

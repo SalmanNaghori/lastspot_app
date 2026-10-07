@@ -3,10 +3,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import '../models/notification_model.dart';
 
 abstract class NotificationsRemoteDataSource {
-  Future<List<NotificationModel>> getNotifications({
-    required int limit,
-    int? offset,
-  });
+  Future<List<NotificationModel>> getNotifications({required int limit, int? offset});
   Future<int> getUnreadNotificationCount();
   Future<void> markAllNotificationsRead();
   Future<void> markNotificationRead(String id);
@@ -14,22 +11,14 @@ abstract class NotificationsRemoteDataSource {
   Stream<PostgresChangePayload> subscribeToNotifications(String userId);
 }
 
-class NotificationsRemoteDataSourceImpl
-    implements NotificationsRemoteDataSource {
+class NotificationsRemoteDataSourceImpl implements NotificationsRemoteDataSource {
   final SupabaseClient _supabaseClient;
 
   NotificationsRemoteDataSourceImpl(this._supabaseClient);
 
   @override
-  Future<List<NotificationModel>> getNotifications({
-    required int limit,
-    int? offset,
-  }) async {
-    final query = _supabaseClient
-        .from('notifications')
-        .select()
-        .order('created_at', ascending: false)
-        .limit(limit);
+  Future<List<NotificationModel>> getNotifications({required int limit, int? offset}) async {
+    final query = _supabaseClient.from('notifications').select().order('created_at', ascending: false).limit(limit);
 
     if (offset != null) {
       query.range(offset, offset + limit - 1);
@@ -52,10 +41,7 @@ class NotificationsRemoteDataSourceImpl
 
   @override
   Future<void> markNotificationRead(String id) async {
-    await _supabaseClient
-        .from('notifications')
-        .update({'is_read': true})
-        .eq('id', id);
+    await _supabaseClient.from('notifications').update({'is_read': true}).eq('id', id);
   }
 
   @override
@@ -66,20 +52,14 @@ class NotificationsRemoteDataSourceImpl
   @override
   Stream<PostgresChangePayload> subscribeToNotifications(String userId) {
     final controller = StreamController<PostgresChangePayload>.broadcast();
-    final channel = _supabaseClient.channel(
-      'public:notifications:user_$userId',
-    );
+    final channel = _supabaseClient.channel('public:notifications:user_$userId');
 
     channel
         .onPostgresChanges(
           event: PostgresChangeEvent.all,
           schema: 'public',
           table: 'notifications',
-          filter: PostgresChangeFilter(
-            type: PostgresChangeFilterType.eq,
-            column: 'user_id',
-            value: userId,
-          ),
+          filter: PostgresChangeFilter(type: PostgresChangeFilterType.eq, column: 'user_id', value: userId),
           callback: (payload) {
             if (!controller.isClosed) {
               controller.add(payload);

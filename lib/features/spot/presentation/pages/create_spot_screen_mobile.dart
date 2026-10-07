@@ -68,8 +68,7 @@ class CreateSpotScreenMobile extends StatelessWidget {
         isLoading: isLoading,
         hasError: hasError,
         onRetry: () => cityCubit.fetchCities(),
-        leadingIcon: (city) =>
-            Icon(Icons.location_on, color: context.textSecondary),
+        leadingIcon: (city) => Icon(Icons.location_on, color: context.textSecondary),
       );
 
       if (selected != null) {
@@ -96,9 +95,7 @@ class CreateSpotScreenMobile extends StatelessWidget {
       items: categories,
       itemText: (cat) => cat.name,
       onSearch: (cat, query) => cat.name.toLowerCase().contains(query),
-      selectedItem: categories
-          .where((c) => c.id == formState.selectedCategoryId.value)
-          .firstOrNull,
+      selectedItem: categories.where((c) => c.id == formState.selectedCategoryId.value).firstOrNull,
       isLoading: isLoading,
       hasError: hasError,
       emptyMessage: context.loc.noCategoriesAvailable,
@@ -130,13 +127,8 @@ class CreateSpotScreenMobile extends StatelessWidget {
                 },
               ),
               title: Text(
-                spotToEdit != null
-                    ? context.loc.edit
-                    : context.loc.generateActivity,
-                style: context.titleLarge?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: context.textPrimary,
-                ),
+                spotToEdit != null ? context.loc.edit : context.loc.generateActivity,
+                style: context.titleLarge?.copyWith(fontWeight: FontWeight.bold, color: context.textPrimary),
               ),
             )
           : null,
@@ -144,10 +136,7 @@ class CreateSpotScreenMobile extends StatelessWidget {
         child: Stack(
           children: [
             SingleChildScrollView(
-              padding: EdgeInsets.symmetric(
-                horizontal: Dimensions.r16.dynamicW,
-                vertical: Dimensions.r16.dynamicH,
-              ),
+              padding: EdgeInsets.symmetric(horizontal: Dimensions.r16.dynamicW, vertical: Dimensions.r16.dynamicH),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -157,9 +146,7 @@ class CreateSpotScreenMobile extends StatelessWidget {
                     children: [
                       Text(
                         context.loc.activityImages,
-                        style: context.titleMedium?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
+                        style: context.titleMedium?.copyWith(fontWeight: FontWeight.bold),
                       ),
                       Icon(Icons.chevron_right, color: context.textSecondary),
                     ],
@@ -175,16 +162,12 @@ class CreateSpotScreenMobile extends StatelessWidget {
                           clipBehavior: Clip.none,
                           children: [
                             if (spotToEdit != null)
-                              ...spotToEdit!.images.map(
-                                (img) => CreateSpotExistingImage(image: img),
-                              ),
+                              ...spotToEdit!.images.map((img) => CreateSpotExistingImage(image: img)),
                             ...images.map(
                               (file) => CreateSpotFileImage(
                                 file: file,
                                 onRemove: () {
-                                  final updatedList = List<File>.from(
-                                    formState.selectedImages.value,
-                                  )..remove(file);
+                                  final updatedList = List<File>.from(formState.selectedImages.value)..remove(file);
                                   formState.selectedImages.value = updatedList;
                                 },
                               ),
@@ -221,13 +204,9 @@ class CreateSpotScreenMobile extends StatelessWidget {
                     builder: (context, categoryId, _) {
                       // Find category name if possible
                       String label = context.loc.selectCategory;
-                      if (categoryId != null &&
-                          blocState is CreateSpotCategoriesLoaded) {
-                        final cats = (blocState as CreateSpotCategoriesLoaded)
-                            .categories;
-                        final found = cats
-                            .where((c) => c.id == categoryId)
-                            .firstOrNull;
+                      if (categoryId != null && blocState is CreateSpotCategoriesLoaded) {
+                        final cats = (blocState as CreateSpotCategoriesLoaded).categories;
+                        final found = cats.where((c) => c.id == categoryId).firstOrNull;
                         if (found != null) label = found.name;
                       }
 
@@ -246,6 +225,7 @@ class CreateSpotScreenMobile extends StatelessWidget {
                     controller: formState.titleController,
                     labelText: '${context.loc.activityTitle} *',
                     hintText: context.loc.activityTitleHint,
+                    textCapitalization: TextCapitalization.sentences,
                   ),
                   SizedBox(height: Dimensions.r16.dynamicH),
 
@@ -255,6 +235,7 @@ class CreateSpotScreenMobile extends StatelessWidget {
                     labelText: '${context.loc.description} *',
                     hintText: context.loc.descriptionHint,
                     maxLines: 4,
+                    textCapitalization: TextCapitalization.sentences,
                   ),
                   SizedBox(height: Dimensions.r16.dynamicH),
 
@@ -263,30 +244,21 @@ class CreateSpotScreenMobile extends StatelessWidget {
                     controller: formState.locationController,
                     labelText: '${context.loc.location} *',
                     hintText: context.loc.locationHint,
-                    prefixIcon: Icon(
-                      Icons.location_on_outlined,
-                      color: context.textSecondary,
-                    ),
+                    textCapitalization: TextCapitalization.sentences,
+                    prefixIcon: Icon(Icons.location_on_outlined, color: context.textSecondary),
                   ),
                   SizedBox(height: Dimensions.r24.dynamicH),
 
                   // 7. Date & Time
                   CreateSpotSectionTitle(title: 'Date & Time *'),
                   SizedBox(height: Dimensions.r8.dynamicH),
-                  CreateSpotDatetimeSelector(
-                    dateNotifier: formState.eventDate,
-                    timeNotifier: formState.eventTime,
-                  ),
+                  CreateSpotDatetimeSelector(dateNotifier: formState.eventDate, timeNotifier: formState.eventTime),
                   SizedBox(height: Dimensions.r32.dynamicH),
 
                   // 8. Participants
-                  CreateSpotSectionTitle(
-                    title: '${context.loc.maxParticipants} *',
-                  ),
+                  CreateSpotSectionTitle(title: '${context.loc.maxParticipants} *'),
                   SizedBox(height: Dimensions.r8.dynamicH),
-                  CreateSpotParticipantsSelector(
-                    maxParticipantsNotifier: formState.maxParticipants,
-                  ),
+                  CreateSpotParticipantsSelector(maxParticipantsNotifier: formState.maxParticipants),
                   SizedBox(height: Dimensions.r32.dynamicH),
 
                   // 9. Price
@@ -301,9 +273,7 @@ class CreateSpotScreenMobile extends StatelessWidget {
                           Container(
                             decoration: BoxDecoration(
                               color: context.surfaceColor,
-                              borderRadius: BorderRadius.circular(
-                                Dimensions.r24.dynamicR,
-                              ),
+                              borderRadius: BorderRadius.circular(Dimensions.r24.dynamicR),
                               border: Border.all(color: context.borderColor),
                             ),
                             child: Row(
@@ -312,24 +282,16 @@ class CreateSpotScreenMobile extends StatelessWidget {
                                   child: GestureDetector(
                                     onTap: () => formState.isFree.value = true,
                                     child: Container(
-                                      padding: EdgeInsets.symmetric(
-                                        vertical: Dimensions.r12.dynamicH,
-                                      ),
+                                      padding: EdgeInsets.symmetric(vertical: Dimensions.r12.dynamicH),
                                       decoration: BoxDecoration(
-                                        color: isFree
-                                            ? context.primaryColor
-                                            : Colors.transparent,
-                                        borderRadius: BorderRadius.circular(
-                                          Dimensions.r24.dynamicR,
-                                        ),
+                                        color: isFree ? context.primaryColor : Colors.transparent,
+                                        borderRadius: BorderRadius.circular(Dimensions.r24.dynamicR),
                                       ),
                                       child: Center(
                                         child: Text(
                                           context.loc.free,
                                           style: TextStyle(
-                                            color: isFree
-                                                ? Colors.white
-                                                : context.textPrimary,
+                                            color: isFree ? Colors.white : context.textPrimary,
                                             fontWeight: FontWeight.bold,
                                           ),
                                         ),
@@ -341,24 +303,16 @@ class CreateSpotScreenMobile extends StatelessWidget {
                                   child: GestureDetector(
                                     onTap: () => formState.isFree.value = false,
                                     child: Container(
-                                      padding: EdgeInsets.symmetric(
-                                        vertical: Dimensions.r12.dynamicH,
-                                      ),
+                                      padding: EdgeInsets.symmetric(vertical: Dimensions.r12.dynamicH),
                                       decoration: BoxDecoration(
-                                        color: !isFree
-                                            ? context.primaryColor
-                                            : Colors.transparent,
-                                        borderRadius: BorderRadius.circular(
-                                          Dimensions.r24.dynamicR,
-                                        ),
+                                        color: !isFree ? context.primaryColor : Colors.transparent,
+                                        borderRadius: BorderRadius.circular(Dimensions.r24.dynamicR),
                                       ),
                                       child: Center(
                                         child: Text(
                                           context.loc.paid,
                                           style: TextStyle(
-                                            color: !isFree
-                                                ? Colors.white
-                                                : context.textPrimary,
+                                            color: !isFree ? Colors.white : context.textPrimary,
                                             fontWeight: FontWeight.bold,
                                           ),
                                         ),
@@ -376,24 +330,16 @@ class CreateSpotScreenMobile extends StatelessWidget {
                             curve: Curves.easeInOut,
                             child: !isFree
                                 ? Padding(
-                                    padding: EdgeInsets.only(
-                                      top: Dimensions.r24.dynamicH,
-                                    ),
+                                    padding: EdgeInsets.only(top: Dimensions.r24.dynamicH),
                                     child: AppTextField(
                                       controller: formState.priceController,
-                                      labelText:
-                                          '${context.loc.pricePerPerson} *',
+                                      labelText: '${context.loc.pricePerPerson} *',
                                       hintText: '₹ Enter amount',
                                       keyboardType: TextInputType.number,
-                                      inputFormatters: [
-                                        CurrencyInputFormatter(),
-                                      ],
+                                      inputFormatters: [CurrencyInputFormatter()],
                                     ),
                                   )
-                                : const SizedBox(
-                                    width: double.infinity,
-                                    height: 0,
-                                  ),
+                                : const SizedBox(width: double.infinity, height: 0),
                           ),
                         ],
                       );
@@ -402,14 +348,8 @@ class CreateSpotScreenMobile extends StatelessWidget {
                   SizedBox(height: Dimensions.r48.dynamicH),
 
                   // 10. CTAs
-                  AppButton(
-                    label: context.loc.previewActivity,
-                    onPressed: onPreview,
-                    isFullWidth: true,
-                  ),
-                  SizedBox(
-                    height: Dimensions.r64.dynamicH,
-                  ), // Extra space for bottom nav
+                  AppButton(label: context.loc.previewActivity, onPressed: onPreview, isFullWidth: true),
+                  SizedBox(height: Dimensions.r64.dynamicH), // Extra space for bottom nav
                 ],
               ),
             ),

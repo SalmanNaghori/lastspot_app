@@ -383,5 +383,15 @@
   "accountDeletedTitle": "Account Deleted",
   "accountDeletedDesc": "This account has been deleted. If you believe this is a mistake, please contact support.",
   "signOut": "Sign Out",
-  "appeal": "Appeal"
+  "appeal": "Appeal",
+  "sportSoccer": "Soccer",
+  "sportBasketball": "Basketball",
+  "sportTennis": "Tennis",
+  "sportVolleyball": "Volleyball",
+  "sportBadminton": "Badminton",
+  "sportTableTennis": "Table Tennis",
+  "sportCricket": "Cricket",
+  "sportSwimming": "Swimming",
+  "sportRunning": "Running",
+  "sportCycling": "Cycling"
 }

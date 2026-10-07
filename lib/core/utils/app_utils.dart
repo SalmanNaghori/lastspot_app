@@ -1,6 +1,8 @@
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../base_import.dart';
+import 'package:lastspot_app/features/cities/presentation/bloc/city_cubit.dart';
+import 'package:lastspot_app/features/cities/presentation/bloc/city_state.dart';
 import 'context_extensions.dart';
 
 /// App-wide utility methods as specified in project Rule 13.
@@ -25,16 +27,11 @@ class AppUtils {
     ScaffoldMessenger.of(context).hideCurrentSnackBar();
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(
-          message,
-          style: const TextStyle(color: AppColor.whiteColor),
-        ),
+        content: Text(message, style: const TextStyle(color: AppColor.whiteColor)),
         backgroundColor: isError ? AppColor.errorColor : AppColor.primaryColor,
         duration: duration,
         behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(Dimensions.r12),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(Dimensions.r12)),
       ),
     );
   }
@@ -52,14 +49,12 @@ class AppUtils {
 
   static Future<void> launchMap(String query) async {
     try {
-      if (query.trim().startsWith('http://') ||
-          query.trim().startsWith('https://')) {
+      if (query.trim().startsWith('http://') || query.trim().startsWith('https://')) {
         await launchWebUrl(query.trim());
         return;
       }
       final encodedQuery = Uri.encodeComponent(query);
-      final url =
-          'https://www.google.com/maps/search/?api=1&query=$encodedQuery';
+      final url = 'https://www.google.com/maps/search/?api=1&query=$encodedQuery';
       await launchWebUrl(url);
     } catch (e) {
       debugPrint('Error launching map: $e');
@@ -71,15 +66,26 @@ class AppUtils {
     return DateFormat.yMMMd().format(dateTime);
   }
 
-
-
   /// Extracts display location (resolving URLs to "Map Location")
-  static String getDisplayLocation(BuildContext context, String location) {
+  static String getDisplayLocation(BuildContext context, String location, {String? cityId}) {
+    String finalLocation = location;
     final lower = location.toLowerCase();
     if (lower.startsWith('http://') || lower.startsWith('https://')) {
-      return context.loc.mapLocation;
+      finalLocation = context.loc.mapLocation;
     }
-    return location;
+
+    if (cityId != null) {
+      final cityState = context.read<CityCubit>().state;
+      if (cityState is CityLoaded) {
+        for (var c in cityState.cities) {
+          if (c.id == cityId) {
+            return '${c.name} • $finalLocation';
+          }
+        }
+      }
+    }
+
+    return finalLocation;
   }
 
   /// Formats DateTime to readable time (e.g., "6:30 PM")
@@ -117,6 +123,41 @@ class AppUtils {
   /// Formats currency with currency symbol
   static String formatCurrency(double amount, {String symbol = '₹'}) {
     return '$symbol${amount.toStringAsFixed(amount.truncateToDouble() == amount ? 0 : 2)}';
+  }
+
+  /// Shows a standard confirmation dialog
+  static void showConfirmationDialog(
+    BuildContext context, {
+    required String title,
+    required String message,
+    required String confirmText,
+    required String cancelText,
+    required VoidCallback onConfirm,
+    VoidCallback? onCancel,
+  }) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text(title),
+        content: Text(message),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(ctx).pop();
+              if (onCancel != null) onCancel();
+            },
+            child: Text(cancelText),
+          ),
+          FilledButton(
+            onPressed: () {
+              Navigator.of(ctx).pop();
+              onConfirm();
+            },
+            child: Text(confirmText),
+          ),
+        ],
+      ),
+    );
   }
 }
 

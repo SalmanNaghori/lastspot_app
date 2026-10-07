@@ -47,18 +47,31 @@ class _NotificationsScreenMobileState extends State<NotificationsScreenMobile> {
       context.read<NotificationsListCubit>().markAsRead(notification.id);
     }
 
+    // Attempt to extract the correct ID from the notification payload.
+    // The backend might send 'request_id', 'activity_id', or 'spot_id' depending on the event.
+    final String targetId = notification.data['request_id']?.toString() ??
+        notification.data['activity_id']?.toString() ??
+        notification.data['spot_id']?.toString() ??
+        '';
+
+    if (targetId.isEmpty) {
+      debugPrint('No target ID found in notification data: ${notification.data}');
+      return;
+    }
+
     if (notification.type == 'join_request') {
-      context.push(
-        AppRoutes.manageRequestsPath(notification.data['request_id'] ?? ''),
-      );
+      context.push(AppRoutes.manageRequestsPath(targetId));
     } else if ([
       'join_accepted',
       'join_rejected',
       'broadcast',
+      'spot_updated',
+      'spot_cancelled',
     ].contains(notification.type)) {
-      context.push(
-        AppRoutes.spotDetailsPath(notification.data['request_id'] ?? ''),
-      );
+      context.push(AppRoutes.spotDetailsPath(targetId));
+    } else {
+      // Fallback for general activity notifications
+      context.push(AppRoutes.spotDetailsPath(targetId));
     }
   }
 

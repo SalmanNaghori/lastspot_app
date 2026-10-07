@@ -29,19 +29,11 @@ class SpotDetailsScreenMobile extends StatelessWidget {
     Widget content;
     if (state is SpotDetailsLoading || state is SpotDetailsInitial) {
       content = Scaffold(
-        backgroundColor: showAppBar
-            ? context.backgroundColor
-            : Colors.transparent,
+        backgroundColor: showAppBar ? context.backgroundColor : Colors.transparent,
         appBar: showAppBar
             ? AppBar(
-                leading: IconButton(
-                  icon: const Icon(Icons.arrow_back),
-                  onPressed: onBack,
-                ),
-                title: Text(
-                  l10n.matchOverviewTitle,
-                  style: const TextStyle(fontWeight: FontWeight.bold),
-                ),
+                leading: IconButton(icon: const Icon(Icons.arrow_back), onPressed: onBack),
+                title: Text(l10n.matchOverviewTitle, style: const TextStyle(fontWeight: FontWeight.bold)),
               )
             : null,
         body: LoadingState.shimmerCard(),
@@ -53,33 +45,19 @@ class SpotDetailsScreenMobile extends StatelessWidget {
       content = Scaffold(
         backgroundColor: showAppBar
             ? context.backgroundColor
-            : Colors
-                  .transparent, // Fixes dark theme issue on mobile while preserving tablet transparency
+            : Colors.transparent, // Fixes dark theme issue on mobile while preserving tablet transparency
 
         appBar: showAppBar
             ? AppBar(
-                leading: IconButton(
-                  icon: const Icon(Icons.arrow_back),
-                  onPressed: onBack,
-                ),
-                title: Text(
-                  l10n.matchOverviewTitle,
-                  style: const TextStyle(fontWeight: FontWeight.bold),
-                ),
+                leading: IconButton(icon: const Icon(Icons.arrow_back), onPressed: onBack),
+                title: Text(l10n.matchOverviewTitle, style: const TextStyle(fontWeight: FontWeight.bold)),
                 actions: [
                   IconButton(
                     icon: const Icon(Icons.more_vert),
                     onPressed: () {
-                      showModalBottomSheet(
+                      AppBottomSheet.show(
                         context: context,
-                        backgroundColor: context.surfaceColor,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.vertical(
-                            top: Radius.circular(Dimensions.r16.dynamicR),
-                          ),
-                        ),
-                        builder: (_) =>
-                            SpotDetailsMenuSheet(loadedState: loadedState),
+                        builder: (_) => SpotDetailsMenuSheet(loadedState: loadedState),
                       );
                     },
                   ),
@@ -96,9 +74,7 @@ class SpotDetailsScreenMobile extends StatelessWidget {
                 Hero(
                   tag: heroTag ?? 'activity_image_${post.id}',
                   child: ClipRRect(
-                    borderRadius: BorderRadius.circular(
-                      Dimensions.r16.dynamicR,
-                    ),
+                    borderRadius: BorderRadius.circular(Dimensions.r16.dynamicR),
                     child: SizedBox(
                       height: Dimensions.r64.dynamicH * 3,
                       width: double.infinity,
@@ -121,15 +97,11 @@ class SpotDetailsScreenMobile extends StatelessWidget {
                 Hero(
                   tag: heroTag ?? 'activity_image_${post.id}',
                   child: ClipRRect(
-                    borderRadius: BorderRadius.circular(
-                      Dimensions.r16.dynamicR,
-                    ),
+                    borderRadius: BorderRadius.circular(Dimensions.r16.dynamicR),
                     child: SizedBox(
                       height: Dimensions.r64.dynamicH * 3,
                       width: double.infinity,
-                      child: SportGradientBackground(
-                        categoryId: post.categoryId,
-                      ),
+                      child: SportGradientBackground(categoryId: post.categoryId),
                     ),
                   ),
                 ),
@@ -139,8 +111,8 @@ class SpotDetailsScreenMobile extends StatelessWidget {
               // Title Header
               Text(
                 post.title.trim().isNotEmpty
-                    ? post.title.trim()
-                    : post.locationName,
+                    ? post.title.trim().capitalizeFirst()
+                    : AppUtils.getDisplayLocation(context, post.locationName, cityId: post.cityId),
                 style: context.headlineSmall?.copyWith(
                   fontWeight: FontWeight.w800,
                   color: context.textPrimary,
@@ -151,22 +123,16 @@ class SpotDetailsScreenMobile extends StatelessWidget {
               Row(
                 children: [
                   Text(
-                    l10n.statusLabel(post.status.name.toUpperCase()),
+                    l10n.statusLabel(post.status.name.capitalizeFirst()),
                     style: context.bodyMedium?.copyWith(
-                      color: post.status == RequestStatus.open
-                          ? AppColor.successColor
-                          : context.textSecondary,
+                      color: post.status == RequestStatus.open ? AppColor.successColor : context.textSecondary,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   Text(
-                    l10n.neededPlayers(
-                      post.maxParticipants - post.currentParticipants,
-                    ),
+                    l10n.neededPlayers(post.maxParticipants - post.currentParticipants),
                     style: context.bodyMedium?.copyWith(
-                      color: post.status == RequestStatus.open
-                          ? AppColor.successColor
-                          : context.textSecondary,
+                      color: post.status == RequestStatus.open ? AppColor.successColor : context.textSecondary,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -175,42 +141,28 @@ class SpotDetailsScreenMobile extends StatelessWidget {
               SizedBox(height: Dimensions.r4.dynamicH),
               Text(
                 l10n.hostedBy(post.hostProfile?.fullName ?? 'Anonymous'),
-                style: context.bodyMedium?.copyWith(
-                  color: context.textSecondary,
-                ),
+                style: context.bodyMedium?.copyWith(color: context.textSecondary),
               ),
               SizedBox(height: Dimensions.r8.dynamicH),
 
               // Price
               Container(
-                padding: EdgeInsets.symmetric(
-                  horizontal: Dimensions.r12.dynamicW,
-                  vertical: Dimensions.r6.dynamicH,
-                ),
+                padding: EdgeInsets.symmetric(horizontal: Dimensions.r12.dynamicW, vertical: Dimensions.r6.dynamicH),
                 decoration: BoxDecoration(
                   color: context.surfaceColor,
-                  border: Border.all(
-                    color: context.primaryColor.withValues(alpha: 0.3),
-                  ),
+                  border: Border.all(color: context.primaryColor.withValues(alpha: 0.3)),
                   borderRadius: BorderRadius.circular(Dimensions.r8.dynamicR),
                 ),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Icon(
-                      Icons.payments_outlined,
-                      size: Dimensions.r16.dynamicH,
-                      color: context.primaryColor,
-                    ),
+                    Icon(Icons.payments_outlined, size: Dimensions.r16.dynamicH, color: context.primaryColor),
                     SizedBox(width: Dimensions.r6.dynamicW),
                     Text(
                       post.pricePerPerson == 0
                           ? l10n.free
                           : '${AppUtils.formatCurrency(post.pricePerPerson)} ${l10n.perPerson}',
-                      style: context.bodyMedium?.copyWith(
-                        fontWeight: FontWeight.w700,
-                        color: context.primaryColor,
-                      ),
+                      style: context.bodyMedium?.copyWith(fontWeight: FontWeight.w700, color: context.primaryColor),
                     ),
                   ],
                 ),
@@ -218,44 +170,27 @@ class SpotDetailsScreenMobile extends StatelessWidget {
               SizedBox(height: Dimensions.r24.dynamicH),
 
               // Description (if present)
-              if (post.description != null &&
-                  post.description!.trim().isNotEmpty) ...[
+              if (post.description != null && post.description!.trim().isNotEmpty) ...[
                 Text(
                   l10n.aboutSection,
-                  style: context.labelLarge?.copyWith(
-                    color: context.textSecondary,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: context.labelLarge?.copyWith(color: context.textSecondary, fontWeight: FontWeight.bold),
                 ),
                 SizedBox(height: Dimensions.r8.dynamicH),
-                Text(
-                  post.description!,
-                  style: context.bodyMedium?.copyWith(height: 1.5),
-                ),
+                Text(post.description!, style: context.bodyMedium?.copyWith(height: 1.5)),
                 SizedBox(height: Dimensions.r24.dynamicH),
               ],
 
               // Schedule
               Text(
                 l10n.scheduleSection,
-                style: context.labelLarge?.copyWith(
-                  color: context.textSecondary,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: context.labelLarge?.copyWith(color: context.textSecondary, fontWeight: FontWeight.bold),
               ),
               SizedBox(height: Dimensions.r8.dynamicH),
               Row(
                 children: [
-                  Icon(
-                    Icons.calendar_today,
-                    size: Dimensions.r20.dynamicH,
-                    color: context.textPrimary,
-                  ),
+                  Icon(Icons.calendar_today, size: Dimensions.r20.dynamicH, color: context.textPrimary),
                   SizedBox(width: Dimensions.r12.dynamicW),
-                  Text(
-                    AppUtils.formatDateTime(post.eventDateTime),
-                    style: context.titleMedium,
-                  ),
+                  Text(AppUtils.formatDateTime(post.eventDateTime), style: context.titleMedium),
                 ],
               ),
               SizedBox(height: Dimensions.r24.dynamicH),
@@ -289,9 +224,7 @@ class SpotDetailsScreenMobile extends StatelessWidget {
                   children: [
                     // Map Image Placeholder
                     ClipRRect(
-                      borderRadius: BorderRadius.vertical(
-                        top: Radius.circular(Dimensions.r16.dynamicR),
-                      ),
+                      borderRadius: BorderRadius.vertical(top: Radius.circular(Dimensions.r16.dynamicR)),
                       child: InkWell(
                         onTap: () => AppUtils.launchMap(post.locationName),
                         child: Container(
@@ -303,17 +236,9 @@ class SpotDetailsScreenMobile extends StatelessWidget {
                             children: [
                               CustomPaint(
                                 size: Size.infinite,
-                                painter: MapPlaceholderPainter(
-                                  color: AppColor.successColor.withValues(
-                                    alpha: 0.2,
-                                  ),
-                                ),
+                                painter: MapPlaceholderPainter(color: AppColor.successColor.withValues(alpha: 0.2)),
                               ),
-                              Icon(
-                                Icons.location_on,
-                                size: Dimensions.r32,
-                                color: AppColor.successColor,
-                              ),
+                              Icon(Icons.location_on, size: Dimensions.r32, color: AppColor.successColor),
                             ],
                           ),
                         ),
@@ -325,21 +250,15 @@ class SpotDetailsScreenMobile extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            post.title.trim().isNotEmpty
-                                ? post.title.trim()
-                                : 'Location',
-                            style: context.titleMedium?.copyWith(
-                              fontWeight: FontWeight.w800,
-                            ),
+                            post.title.trim().isNotEmpty ? post.title.trim() : 'Location',
+                            style: context.titleMedium?.copyWith(fontWeight: FontWeight.w800),
                           ),
                           SizedBox(height: Dimensions.r4.dynamicH),
                           GestureDetector(
                             onTap: () => AppUtils.launchMap(post.locationName),
                             child: Text(
-                              post.locationName,
-                              style: context.bodyMedium?.copyWith(
-                                decoration: TextDecoration.underline,
-                              ),
+                              AppUtils.getDisplayLocation(context, post.locationName, cityId: post.cityId),
+                              style: context.bodyMedium?.copyWith(decoration: TextDecoration.underline),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                             ),
@@ -352,48 +271,30 @@ class SpotDetailsScreenMobile extends StatelessWidget {
                             child: Row(
                               children: [
                                 Container(
-                                  padding: EdgeInsets.all(
-                                    Dimensions.r8.dynamicW,
-                                  ),
+                                  padding: EdgeInsets.all(Dimensions.r8.dynamicW),
                                   decoration: BoxDecoration(
-                                    color: AppColor.successColor.withValues(
-                                      alpha: 0.1,
-                                    ),
-                                    borderRadius: BorderRadius.circular(
-                                      Dimensions.r8.dynamicR,
-                                    ),
+                                    color: AppColor.successColor.withValues(alpha: 0.1),
+                                    borderRadius: BorderRadius.circular(Dimensions.r8.dynamicR),
                                   ),
-                                  child: Icon(
-                                    Icons.map,
-                                    color: AppColor.successColor,
-                                    size: Dimensions.r20.dynamicH,
-                                  ),
+                                  child: Icon(Icons.map, color: AppColor.successColor, size: Dimensions.r20.dynamicH),
                                 ),
                                 SizedBox(width: Dimensions.r12.dynamicW),
                                 Expanded(
                                   child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         l10n.viewOnMap,
-                                        style: context.titleSmall?.copyWith(
-                                          fontWeight: FontWeight.bold,
-                                        ),
+                                        style: context.titleSmall?.copyWith(fontWeight: FontWeight.bold),
                                       ),
                                       Text(
                                         l10n.openInGoogleMaps,
-                                        style: context.bodySmall?.copyWith(
-                                          color: context.textSecondary,
-                                        ),
+                                        style: context.bodySmall?.copyWith(color: context.textSecondary),
                                       ),
                                     ],
                                   ),
                                 ),
-                                Icon(
-                                  Icons.chevron_right,
-                                  color: context.textSecondary,
-                                ),
+                                Icon(Icons.chevron_right, color: context.textSecondary),
                               ],
                             ),
                           ),
@@ -407,12 +308,7 @@ class SpotDetailsScreenMobile extends StatelessWidget {
               // Confirmed Players
               SizedBox(height: Dimensions.h10),
               Text(
-                l10n
-                    .confirmedPlayers(
-                      loadedState.confirmedPlayers.length,
-                      post.maxParticipants,
-                    )
-                    .toUpperCase(),
+                l10n.confirmedPlayers(loadedState.confirmedPlayers.length, post.maxParticipants).toUpperCase(),
                 style: context.labelLarge?.copyWith(
                   color: context.textSecondary,
                   fontWeight: FontWeight.w700,
@@ -436,15 +332,11 @@ class SpotDetailsScreenMobile extends StatelessWidget {
                           ),
                           decoration: BoxDecoration(
                             color: context.surfaceColor,
-                            borderRadius: BorderRadius.circular(
-                              Dimensions.r24.dynamicR,
-                            ),
+                            borderRadius: BorderRadius.circular(Dimensions.r24.dynamicR),
                             border: Border.all(color: context.borderColor),
                             boxShadow: [
                               BoxShadow(
-                                color: AppColor.blackColor.withValues(
-                                  alpha: 0.03,
-                                ),
+                                color: AppColor.blackColor.withValues(alpha: 0.03),
                                 blurRadius: Dimensions.r4.dynamicR,
                                 offset: Offset(0, Dimensions.r2.dynamicH),
                               ),
@@ -463,18 +355,12 @@ class SpotDetailsScreenMobile extends StatelessWidget {
                                         memCacheWidth: 100,
                                         memCacheHeight: 100,
                                       )
-                                    : Icon(
-                                        Icons.person,
-                                        size: Dimensions.r20.dynamicH,
-                                        color: context.textSecondary,
-                                      ),
+                                    : Icon(Icons.person, size: Dimensions.r20.dynamicH, color: context.textSecondary),
                               ),
                               SizedBox(width: Dimensions.r8.dynamicW),
                               Text(
                                 req.userProfile?.fullName ?? 'Player',
-                                style: context.bodyMedium?.copyWith(
-                                  fontWeight: FontWeight.w600,
-                                ),
+                                style: context.bodyMedium?.copyWith(fontWeight: FontWeight.w600),
                               ),
                             ],
                           ),
@@ -515,16 +401,10 @@ class SpotDetailsScreenMobile extends StatelessWidget {
                   child: Column(
                     children: [
                       ListTile(
-                        leading: Icon(
-                          Icons.shield_outlined,
-                          color: context.textPrimary,
-                          size: Dimensions.r20.dynamicH,
-                        ),
+                        leading: Icon(Icons.shield_outlined, color: context.textPrimary, size: Dimensions.r20.dynamicH),
                         title: Text(
                           l10n.reportThisActivityOrHost,
-                          style: context.bodyMedium?.copyWith(
-                            fontWeight: FontWeight.w600,
-                          ),
+                          style: context.bodyMedium?.copyWith(fontWeight: FontWeight.w600),
                         ),
                         trailing: Icon(
                           Icons.chevron_right,
@@ -532,9 +412,7 @@ class SpotDetailsScreenMobile extends StatelessWidget {
                           size: Dimensions.r20.dynamicH,
                         ),
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.vertical(
-                            top: Radius.circular(Dimensions.r16.dynamicR),
-                          ),
+                          borderRadius: BorderRadius.vertical(top: Radius.circular(Dimensions.r16.dynamicR)),
                         ),
                         onTap: () {},
                       ),
@@ -552,9 +430,7 @@ class SpotDetailsScreenMobile extends StatelessWidget {
                         ),
                         title: Text(
                           l10n.learnAboutSafetyGuidelines,
-                          style: context.bodyMedium?.copyWith(
-                            fontWeight: FontWeight.w600,
-                          ),
+                          style: context.bodyMedium?.copyWith(fontWeight: FontWeight.w600),
                         ),
                         trailing: Icon(
                           Icons.chevron_right,
@@ -562,9 +438,7 @@ class SpotDetailsScreenMobile extends StatelessWidget {
                           size: Dimensions.r20.dynamicH,
                         ),
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.vertical(
-                            bottom: Radius.circular(Dimensions.r16.dynamicR),
-                          ),
+                          borderRadius: BorderRadius.vertical(bottom: Radius.circular(Dimensions.r16.dynamicR)),
                         ),
                         onTap: () {},
                       ),

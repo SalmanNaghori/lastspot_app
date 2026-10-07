@@ -36,6 +36,7 @@ class Dimensions {
   static const double r56 = 56.0;
   static const double r60 = 60.0;
   static const double r64 = 64.0;
+  static const double r999 = 999.0;
 
   // ---------------------------------------------------------------------------
   // Shorthand responsive helpers — use these instead of `Dimensions.rX.dynamicY`
@@ -434,6 +435,7 @@ class Dimensions {
   static double get rad60 => 60.0.dynamicR;
   static double get rad64 => 64.0.dynamicR;
   static double get rad100 => 100.0.dynamicR;
+  static double get rad999 => 999.0.dynamicR;
 }
 
 // Extension to allow dynamic sizing based on screen width/height as per cursorrules

@@ -134,8 +134,8 @@ class _ActivityCardState extends State<ActivityCard> {
                     // Title
                     Text(
                       widget.spot.title.trim().isNotEmpty
-                          ? widget.spot.title.trim()
-                          : AppUtils.getDisplayLocation(context, widget.spot.locationName),
+                          ? widget.spot.title.trim().capitalizeFirst()
+                          : AppUtils.getDisplayLocation(context, widget.spot.locationName, cityId: widget.spot.cityId),
                       style: TextStyle(
                         fontSize: Dimensions.r18.dynamicSP,
                         fontWeight: FontWeight.w800,
@@ -188,7 +188,7 @@ class _ActivityCardState extends State<ActivityCard> {
                         SizedBox(width: Dimensions.r6.dynamicW),
                         Expanded(
                           child: Text(
-                            AppUtils.getDisplayLocation(context, widget.spot.locationName),
+                            AppUtils.getDisplayLocation(context, widget.spot.locationName, cityId: widget.spot.cityId),
                             style: TextStyle(
                               fontSize: Dimensions.r13.dynamicSP,
                               color: context.textSecondary,
