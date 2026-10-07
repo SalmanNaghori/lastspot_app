@@ -39,6 +39,9 @@ class AppRoutes {
   // Profile & Settings
   static const String editProfile = '/edit-profile';
   static const String settings = '/settings';
+  static const String helpSupport = '/help-support';
+  static const String privacyPolicy = '/privacy-policy';
+  static const String termsConditions = '/terms-conditions';
 
   // Notifications & Reports
   static const String notifications = '/notifications';

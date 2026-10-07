@@ -48,20 +48,14 @@ class AppTheme {
   /// Generates the appropriate [SystemUiOverlayStyle] for the given brightness.
   /// Ensures transparent status and navigation bars with high-contrast icons
   /// (dark icons on light background, light icons on dark background) on both Android & iOS.
-  static SystemUiOverlayStyle systemUiOverlayStyleForBrightness(
-    Brightness brightness,
-  ) {
+  static SystemUiOverlayStyle systemUiOverlayStyleForBrightness(Brightness brightness) {
     final isDark = brightness == Brightness.dark;
     return SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
-      statusBarIconBrightness: isDark
-          ? Brightness.light
-          : Brightness.dark, // Android
+      statusBarIconBrightness: isDark ? Brightness.light : Brightness.dark, // Android
       statusBarBrightness: isDark ? Brightness.dark : Brightness.light, // iOS
       systemNavigationBarColor: Colors.transparent,
-      systemNavigationBarIconBrightness: isDark
-          ? Brightness.light
-          : Brightness.dark,
+      systemNavigationBarIconBrightness: isDark ? Brightness.light : Brightness.dark,
       systemNavigationBarDividerColor: Colors.transparent,
     );
   }
@@ -80,11 +74,7 @@ class AppTheme {
     required Brightness brightness,
     required SemanticColors semanticColors,
   }) {
-    final baseTheme = ThemeData(
-      useMaterial3: true,
-      brightness: brightness,
-      colorScheme: colorScheme,
-    );
+    final baseTheme = ThemeData(useMaterial3: true, brightness: brightness, colorScheme: colorScheme);
 
     // Apply colorScheme overrides to typography
     final textTheme = AppTypography.textTheme.apply(
@@ -109,9 +99,7 @@ class AppTheme {
         centerTitle: false,
         surfaceTintColor: Colors.transparent,
         systemOverlayStyle: systemUiOverlayStyleForBrightness(brightness),
-        titleTextStyle: textTheme.titleLarge?.copyWith(
-          color: colorScheme.onSurface,
-        ),
+        titleTextStyle: textTheme.titleLarge?.copyWith(color: colorScheme.onSurface),
         iconTheme: IconThemeData(color: colorScheme.onSurface, size: 24),
       ),
 
@@ -123,25 +111,17 @@ class AppTheme {
         elevation: 0,
         backgroundColor: colorScheme.surface,
         surfaceTintColor: Colors.transparent,
-        indicatorColor:
-            Colors.transparent, // Let custom items handle indicators
+        indicatorColor: Colors.transparent, // Let custom items handle indicators
         labelTextStyle: WidgetStateProperty.resolveWith<TextStyle?>((states) {
           final isSelected = states.contains(WidgetState.selected);
           return textTheme.labelMedium?.copyWith(
             fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
-            color: isSelected
-                ? colorScheme.primary
-                : colorScheme.onSurfaceVariant,
+            color: isSelected ? colorScheme.primary : colorScheme.onSurfaceVariant,
           );
         }),
         iconTheme: WidgetStateProperty.resolveWith<IconThemeData?>((states) {
           final isSelected = states.contains(WidgetState.selected);
-          return IconThemeData(
-            size: 24,
-            color: isSelected
-                ? colorScheme.primary
-                : colorScheme.onSurfaceVariant,
-          );
+          return IconThemeData(size: 24, color: isSelected ? colorScheme.primary : colorScheme.onSurfaceVariant);
         }),
       ),
 
@@ -156,10 +136,7 @@ class AppTheme {
           disabledBackgroundColor: semanticColors.disabled,
           disabledForegroundColor: colorScheme.onSurface,
           shape: RoundedRectangleBorder(borderRadius: AppRadius.mdBorderRadius),
-          padding: const EdgeInsets.symmetric(
-            horizontal: AppSpacing.lg,
-            vertical: AppSpacing.smLg,
-          ),
+          padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg, vertical: AppSpacing.smLg),
           textStyle: textTheme.labelLarge,
         ),
       ),
@@ -173,10 +150,7 @@ class AppTheme {
           foregroundColor: colorScheme.primary,
           side: BorderSide(color: colorScheme.primary, width: 1.5),
           shape: RoundedRectangleBorder(borderRadius: AppRadius.mdBorderRadius),
-          padding: const EdgeInsets.symmetric(
-            horizontal: AppSpacing.lg,
-            vertical: AppSpacing.smLg,
-          ),
+          padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg, vertical: AppSpacing.smLg),
           textStyle: textTheme.labelLarge,
         ),
       ),
@@ -187,10 +161,7 @@ class AppTheme {
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
           foregroundColor: colorScheme.primary,
-          padding: const EdgeInsets.symmetric(
-            horizontal: AppSpacing.md,
-            vertical: AppSpacing.sm,
-          ),
+          padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md, vertical: AppSpacing.sm),
           textStyle: textTheme.labelLarge,
         ),
       ),
@@ -201,23 +172,11 @@ class AppTheme {
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
         fillColor: colorScheme.surface,
-        contentPadding: const EdgeInsets.symmetric(
-          horizontal: AppSpacing.md,
-          vertical: AppSpacing.md,
-        ),
-        labelStyle: textTheme.bodyMedium?.copyWith(
-          color: colorScheme.onSurfaceVariant,
-        ),
-        hintStyle: textTheme.bodyMedium?.copyWith(
-          color: colorScheme.onSurfaceVariant.withValues(alpha: 0.7),
-        ),
-        helperStyle: textTheme.bodySmall?.copyWith(
-          color: colorScheme.onSurfaceVariant,
-        ),
-        errorStyle: textTheme.bodySmall?.copyWith(
-          color: colorScheme.error,
-          fontWeight: FontWeight.w500,
-        ),
+        contentPadding: const EdgeInsets.symmetric(horizontal: AppSpacing.md, vertical: AppSpacing.md),
+        labelStyle: textTheme.bodyMedium?.copyWith(color: colorScheme.onSurfaceVariant),
+        hintStyle: textTheme.bodyMedium?.copyWith(color: colorScheme.onSurfaceVariant.withValues(alpha: 0.7)),
+        helperStyle: textTheme.bodySmall?.copyWith(color: colorScheme.onSurfaceVariant),
+        errorStyle: textTheme.bodySmall?.copyWith(color: colorScheme.error, fontWeight: FontWeight.w500),
         prefixIconColor: colorScheme.onSurfaceVariant,
         suffixIconColor: colorScheme.onSurfaceVariant,
         border: OutlineInputBorder(
@@ -257,22 +216,30 @@ class AppTheme {
       ),
 
       // ========================================================
+      // SEGMENTED BUTTON
+      // ========================================================
+      segmentedButtonTheme: SegmentedButtonThemeData(
+        style: SegmentedButton.styleFrom(
+          backgroundColor: colorScheme.surface,
+          selectedBackgroundColor: colorScheme.primaryContainer,
+          foregroundColor: colorScheme.onSurface,
+          selectedForegroundColor: colorScheme.onPrimaryContainer,
+          side: BorderSide(color: colorScheme.outline),
+          shape: RoundedRectangleBorder(borderRadius: AppRadius.pillBorderRadius),
+          textStyle: textTheme.labelMedium?.copyWith(fontWeight: FontWeight.w600),
+        ),
+      ),
+
+      // ========================================================
       // CHIP
       // ========================================================
       chipTheme: ChipThemeData(
         backgroundColor: colorScheme.surface,
         selectedColor: colorScheme.primaryContainer,
         disabledColor: semanticColors.disabled.withValues(alpha: 0.2),
-        labelStyle: textTheme.labelMedium?.copyWith(
-          color: colorScheme.onSurface,
-        ),
-        secondaryLabelStyle: textTheme.labelMedium?.copyWith(
-          color: colorScheme.onPrimaryContainer,
-        ),
-        padding: const EdgeInsets.symmetric(
-          horizontal: AppSpacing.smLg,
-          vertical: AppSpacing.sm,
-        ),
+        labelStyle: textTheme.labelMedium?.copyWith(color: colorScheme.onSurface),
+        secondaryLabelStyle: textTheme.labelMedium?.copyWith(color: colorScheme.onPrimaryContainer),
+        padding: const EdgeInsets.symmetric(horizontal: AppSpacing.smLg, vertical: AppSpacing.sm),
         shape: RoundedRectangleBorder(
           borderRadius: AppRadius.pillBorderRadius,
           side: BorderSide(color: colorScheme.outline),
@@ -287,11 +254,7 @@ class AppTheme {
         surfaceTintColor: Colors.transparent,
         elevation: 8,
         modalElevation: 8,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(
-            top: Radius.circular(AppRadius.xxl),
-          ),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(AppRadius.xxl))),
         clipBehavior: Clip.antiAlias,
       ),
 
@@ -303,22 +266,40 @@ class AppTheme {
         surfaceTintColor: Colors.transparent,
         elevation: 6,
         shape: RoundedRectangleBorder(borderRadius: AppRadius.xxlBorderRadius),
-        titleTextStyle: textTheme.titleLarge?.copyWith(
-          color: colorScheme.onSurface,
-        ),
-        contentTextStyle: textTheme.bodyMedium?.copyWith(
-          color: colorScheme.onSurfaceVariant,
-        ),
+        titleTextStyle: textTheme.titleLarge?.copyWith(color: colorScheme.onSurface),
+        contentTextStyle: textTheme.bodyMedium?.copyWith(color: colorScheme.onSurfaceVariant),
+      ),
+
+      // ========================================================
+      // LIST TILE
+      // ========================================================
+      listTileTheme: ListTileThemeData(
+        contentPadding: const EdgeInsets.symmetric(horizontal: AppSpacing.md, vertical: AppSpacing.sm),
+        shape: RoundedRectangleBorder(borderRadius: AppRadius.mdBorderRadius),
+        iconColor: colorScheme.onSurfaceVariant,
+        textColor: colorScheme.onSurface,
+      ),
+
+      // ========================================================
+      // PROGRESS INDICATOR
+      // ========================================================
+      progressIndicatorTheme: ProgressIndicatorThemeData(color: colorScheme.primary),
+
+      // ========================================================
+      // TAB BAR
+      // ========================================================
+      tabBarTheme: TabBarThemeData(
+        indicatorColor: colorScheme.primary,
+        labelColor: colorScheme.primary,
+        unselectedLabelColor: colorScheme.onSurfaceVariant,
+        dividerColor: colorScheme.outlineVariant,
+        indicatorSize: TabBarIndicatorSize.tab,
       ),
 
       // ========================================================
       // DIVIDER
       // ========================================================
-      dividerTheme: DividerThemeData(
-        color: colorScheme.outline,
-        thickness: 1,
-        space: 1,
-      ),
+      dividerTheme: DividerThemeData(color: colorScheme.outline, thickness: 1, space: 1),
 
       // ========================================================
       // SNACKBAR
@@ -326,9 +307,7 @@ class AppTheme {
       snackBarTheme: SnackBarThemeData(
         behavior: SnackBarBehavior.floating,
         backgroundColor: colorScheme.inverseSurface,
-        contentTextStyle: textTheme.bodyMedium?.copyWith(
-          color: colorScheme.onInverseSurface,
-        ),
+        contentTextStyle: textTheme.bodyMedium?.copyWith(color: colorScheme.onInverseSurface),
         shape: RoundedRectangleBorder(borderRadius: AppRadius.mdBorderRadius),
         insetPadding: const EdgeInsets.all(AppSpacing.md),
       ),

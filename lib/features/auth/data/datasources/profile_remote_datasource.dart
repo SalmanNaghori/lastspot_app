@@ -10,6 +10,7 @@ abstract class ProfileRemoteDataSource {
     required String userId,
     required File imageFile,
   });
+  Future<Map<String, int>> getProfileStats(String userId);
 }
 
 class SupabaseProfileDataSourceImpl implements ProfileRemoteDataSource {
@@ -55,5 +56,33 @@ class SupabaseProfileDataSourceImpl implements ProfileRemoteDataSource {
     return _client.storage
         .from(ApiEndpoints.bucketProfiles)
         .getPublicUrl(fileName);
+  }
+  @override
+  Future<Map<String, int>> getProfileStats(String userId) async {
+    final createdResponse = await _client
+        .from(ApiEndpoints.tableRequests)
+        .select('id')
+        .eq('user_id', userId)
+        .count(CountOption.exact);
+
+    final joinedResponse = await _client
+        .from(ApiEndpoints.tableRequestParticipants)
+        .select('id, requests!inner(user_id)')
+        .eq('user_id', userId)
+        .neq('requests.user_id', userId)
+        .count(CountOption.exact);
+
+    final completedResponse = await _client
+        .from(ApiEndpoints.tableRequests)
+        .select('id')
+        .eq('user_id', userId)
+        .eq('status', 'completed')
+        .count(CountOption.exact);
+
+    return {
+      'createdCount': createdResponse.count,
+      'joinedCount': joinedResponse.count,
+      'completedCount': completedResponse.count,
+    };
   }
 }

@@ -30,15 +30,35 @@ class ActivitiesLoaded extends ActivitiesState {
   /// Join requests sent by the current user.
   final List<JoinRequestEntity> sentRequests;
 
+  /// Indicates if the data is currently being silently refreshed
+  final bool isRefreshing;
+
   const ActivitiesLoaded({
     required this.hosted,
     required this.joined,
     required this.receivedRequests,
     required this.sentRequests,
+    this.isRefreshing = false,
   });
 
+  ActivitiesLoaded copyWith({
+    List<RequestEntity>? hosted,
+    List<RequestEntity>? joined,
+    List<JoinRequestEntity>? receivedRequests,
+    List<JoinRequestEntity>? sentRequests,
+    bool? isRefreshing,
+  }) {
+    return ActivitiesLoaded(
+      hosted: hosted ?? this.hosted,
+      joined: joined ?? this.joined,
+      receivedRequests: receivedRequests ?? this.receivedRequests,
+      sentRequests: sentRequests ?? this.sentRequests,
+      isRefreshing: isRefreshing ?? this.isRefreshing,
+    );
+  }
+
   @override
-  List<Object> get props => [hosted, joined, receivedRequests, sentRequests];
+  List<Object> get props => [hosted, joined, receivedRequests, sentRequests, isRefreshing];
 }
 
 class ActivitiesError extends ActivitiesState {

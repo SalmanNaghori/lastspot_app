@@ -1,3 +1,4 @@
+import 'package:skeletonizer/skeletonizer.dart';
 import 'core/base_import.dart';
 import 'core/utils/shared_prefs_util.dart';
 import 'core/network/router.dart';
@@ -52,7 +53,18 @@ class LastSpotApp extends StatelessWidget {
       ],
       child: BlocBuilder<SettingsCubit, SettingsState>(
         builder: (context, settingsState) {
-          return MaterialApp.router(
+          final isDark = settingsState.themeMode == ThemeMode.dark ||
+              (settingsState.themeMode == ThemeMode.system &&
+                  MediaQuery.platformBrightnessOf(context) == Brightness.dark);
+          
+          return SkeletonizerConfig(
+            data: SkeletonizerConfigData(
+              effect: ShimmerEffect(
+                baseColor: isDark ? AppColor.surfaceContainerDark : AppColor.dividerLight,
+                highlightColor: AppColor.primaryColor.withValues(alpha: 0.5),
+              ),
+            ),
+            child: MaterialApp.router(
             title: AppString.appName,
             onGenerateTitle: (context) =>
                 AppLocalizations.of(context)?.appName ?? AppString.appName,
@@ -84,7 +96,7 @@ class LastSpotApp extends StatelessWidget {
                 ),
               );
             },
-          );
+          ));
         },
       ),
     );

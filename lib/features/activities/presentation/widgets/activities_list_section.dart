@@ -1,27 +1,43 @@
 import 'package:lastspot_app/core/base_import.dart';
 
 import '../../../spot/domain/entities/request_entity.dart';
+import 'package:lastspot_app/core/widgets/animation/widget_animation.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'compact_activity_card.dart';
+import 'activity_shimmer_card.dart';
 
 class ActivitiesListSection extends StatelessWidget {
   final List<RequestEntity> activities;
   final double horizontalPadding;
+  final bool isLoading;
 
   const ActivitiesListSection({
     super.key,
     required this.activities,
     required this.horizontalPadding,
+    this.isLoading = false,
   });
 
   @override
   Widget build(BuildContext context) {
     return SliverPadding(
       padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
-      sliver: SliverList(
+      sliver: AnimationLimiter(
+        child: SliverList(
         delegate: SliverChildBuilderDelegate((context, index) {
+          if (isLoading) {
+            return AnimationWrapper(
+              index: index,
+              child: Padding(
+                padding: EdgeInsets.only(bottom: Dimensions.r16.dynamicH),
+                child: const ActivityShimmerCard(),
+              ),
+            );
+          }
+
           final activity = activities[index];
           final dateStr =
-              '${AppUtils.formatDateShort(activity.eventDateTime)} · ${AppUtils.formatTime(activity.eventDateTime)}';
+              '${AppConstants.formatActivityDate(activity.eventDateTime)} · ${AppUtils.formatTime(activity.eventDateTime)}';
           final locationStr = AppUtils.getDisplayLocation(
             context,
             activity.locationName,
@@ -40,22 +56,25 @@ class ActivitiesListSection extends StatelessWidget {
             statusStr = context.loc.statusExpired;
           }
 
-          return Padding(
-            padding: EdgeInsets.only(bottom: Dimensions.r16.dynamicH),
-            child: CompactActivityCard(
-              title: activity.title,
-              date: dateStr,
-              location: locationStr,
-              stats: statsStr,
-              status: statusStr,
-              isFull: activity.status == RequestStatus.full,
-              onTap: () {
-                context.push(AppRoutes.spotDetailsPath(activity.id));
-              },
+          return AnimationWrapper(
+            index: index,
+            child: Padding(
+              padding: EdgeInsets.only(bottom: Dimensions.r16.dynamicH),
+              child: CompactActivityCard(
+                title: activity.title,
+                date: dateStr,
+                location: locationStr,
+                stats: statsStr,
+                status: statusStr,
+                isFull: activity.status == RequestStatus.full,
+                onTap: () {
+                  context.push(AppRoutes.spotDetailsPath(activity.id));
+                },
+              ),
             ),
           );
-        }, childCount: activities.length),
-      ),
+        }, childCount: isLoading ? 4 : activities.length),
+      )),
     );
   }
 }

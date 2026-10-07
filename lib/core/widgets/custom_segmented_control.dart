@@ -1,36 +1,32 @@
 import 'package:lastspot_app/core/base_import.dart';
 
-class ActivitiesTabBar extends StatelessWidget {
+class CustomSegmentedControl extends StatelessWidget {
   final int selectedIndex;
   final ValueChanged<int> onTabChanged;
-  final String tab1Label;
-  final String tab2Label;
-  final String tab3Label;
+  final List<String> tabs;
+  final double? height;
 
-  const ActivitiesTabBar({
+  const CustomSegmentedControl({
     super.key,
     required this.selectedIndex,
     required this.onTabChanged,
-    required this.tab1Label,
-    required this.tab2Label,
-    required this.tab3Label,
+    required this.tabs,
+    this.height,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 44.0.dynamicH,
+      height: height ?? 44.0.dynamicH,
       padding: EdgeInsets.all(Dimensions.r4.dynamicW),
       decoration: BoxDecoration(
         color: context.surfaceContainer,
         borderRadius: BorderRadius.circular(Dimensions.r12.dynamicR),
       ),
       child: Row(
-        children: [
-          _buildTab(context, 0, tab1Label),
-          _buildTab(context, 1, tab2Label),
-          _buildTab(context, 2, tab3Label),
-        ],
+        children: tabs.asMap().entries.map((entry) {
+          return _buildTab(context, entry.key, entry.value);
+        }).toList(),
       ),
     );
   }

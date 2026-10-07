@@ -1,7 +1,7 @@
 import '../../../../core/base_import.dart';
 
 /// Skeleton shimmer loading state for the home feed screen.
-/// Matches the proportions and structure of [HomeSpotCard].
+/// Matches the proportions and structure of [ActivityCard].
 class FeedSkeletonLoading extends StatelessWidget {
   final int count;
 

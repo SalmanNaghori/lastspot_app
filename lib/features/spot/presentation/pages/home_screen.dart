@@ -428,38 +428,31 @@ class _HomeScreenState extends State<HomeScreen> {
                               onViewAll: _onViewAllTap,
                             ),
                             SizedBox(height: Dimensions.r16.dynamicH),
-                            SingleChildScrollView(
-                              scrollDirection: Axis.horizontal,
-                              padding: EdgeInsets.symmetric(
-                                horizontal: Dimensions.r16.dynamicW,
-                              ),
-                              child: IntrinsicHeight(
-                                child: Row(
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.stretch,
-                                  children: successState.nearbyActivities.map((
-                                    spot,
-                                  ) {
-                                    final category = categories
-                                        .where((c) => c.id == spot.categoryId)
-                                        .firstOrNull;
-                                    return Padding(
-                                      padding: EdgeInsets.only(
-                                        right: Dimensions.r12.dynamicW,
-                                      ),
-                                      child: ActivityCard(
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                            0.88,
-                                        spot: spot,
-                                        categoryName: category?.name ?? 'Sport',
-                                        categoryIcon: category?.icon ?? '🎯',
-                                        heroTagPrefix: 'nearby',
-                                        onTap: () => _onSpotTap(spot, 'nearby'),
-                                      ),
-                                    );
-                                  }).toList(),
+                            SizedBox(
+                              height: 450.0.dynamicH,
+                              child: ListView.separated(
+                                scrollDirection: Axis.horizontal,
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: Dimensions.r16.dynamicW,
                                 ),
+                                itemCount: successState.nearbyActivities.length,
+                                separatorBuilder: (context, index) => SizedBox(
+                                  width: Dimensions.r12.dynamicW,
+                                ),
+                                itemBuilder: (context, index) {
+                                  final spot = successState.nearbyActivities[index];
+                                  final category = categories
+                                      .where((c) => c.id == spot.categoryId)
+                                      .firstOrNull;
+                                  return ActivityCard(
+                                    width: MediaQuery.of(context).size.width * 0.88,
+                                    spot: spot,
+                                    categoryName: category?.name ?? 'Sport',
+                                    categoryIcon: category?.icon ?? '🎯',
+                                    heroTagPrefix: 'nearby',
+                                    onTap: () => _onSpotTap(spot, 'nearby'),
+                                  );
+                                },
                               ),
                             ),
                           ],

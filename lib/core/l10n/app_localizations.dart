@@ -1749,6 +1749,78 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Submit Report'**
   String get submitReport;
+
+  /// No description provided for @tabReceived.
+  ///
+  /// In en, this message translates to:
+  /// **'Received'**
+  String get tabReceived;
+
+  /// No description provided for @tabSent.
+  ///
+  /// In en, this message translates to:
+  /// **'Sent'**
+  String get tabSent;
+
+  /// No description provided for @noReceivedRequests.
+  ///
+  /// In en, this message translates to:
+  /// **'No received requests.'**
+  String get noReceivedRequests;
+
+  /// No description provided for @noSentRequests.
+  ///
+  /// In en, this message translates to:
+  /// **'No sent requests.'**
+  String get noSentRequests;
+
+  /// No description provided for @accountSuspendedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Account Suspended'**
+  String get accountSuspendedTitle;
+
+  /// No description provided for @accountSuspendedDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Your account has been temporarily suspended due to a violation of our terms of service.'**
+  String get accountSuspendedDesc;
+
+  /// No description provided for @accountBannedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Account Banned'**
+  String get accountBannedTitle;
+
+  /// No description provided for @accountBannedDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Your account has been permanently banned due to severe violations of our policies.'**
+  String get accountBannedDesc;
+
+  /// No description provided for @accountDeletedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Account Deleted'**
+  String get accountDeletedTitle;
+
+  /// No description provided for @accountDeletedDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'This account has been deleted. If you believe this is a mistake, please contact support.'**
+  String get accountDeletedDesc;
+
+  /// No description provided for @signOut.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign Out'**
+  String get signOut;
+
+  /// No description provided for @appeal.
+  ///
+  /// In en, this message translates to:
+  /// **'Appeal'**
+  String get appeal;
 }
 
 class _AppLocalizationsDelegate

@@ -9,12 +9,12 @@ class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesState> {
   final SpotRepository _spotRepository;
   final AuthRepository _authRepository;
 
-  ActivitiesBloc({
-    required SpotRepository spotRepository,
-    required AuthRepository authRepository,
-  }) : _spotRepository = spotRepository,
-       _authRepository = authRepository,
-       super(const ActivitiesInitial()) {
+  ActivitiesBloc({required SpotRepository spotRepository, required AuthRepository authRepository})
+    : _spotRepository = spotRepository,
+      _authRepository = authRepository,
+      super(
+        const ActivitiesLoaded(hosted: [], joined: [], receivedRequests: [], sentRequests: [], isRefreshing: true),
+      ) {
     on<LoadActivitiesEvent>(_onLoad);
     on<RefreshActivitiesEvent>(_onRefresh);
     on<AcceptJoinRequestEvent>(_onAcceptJoinRequest);
@@ -22,19 +22,21 @@ class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesState> {
     on<CancelJoinRequestEvent>(_onCancelJoinRequest);
   }
 
-  Future<void> _onLoad(
-    LoadActivitiesEvent event,
-    Emitter<ActivitiesState> emit,
-  ) async {
-    emit(const ActivitiesLoading());
+  Future<void> _onLoad(LoadActivitiesEvent event, Emitter<ActivitiesState> emit) async {
+    if (state is ActivitiesLoaded) {
+      emit((state as ActivitiesLoaded).copyWith(isRefreshing: true));
+    } else {
+      emit(const ActivitiesLoaded(hosted: [], joined: [], receivedRequests: [], sentRequests: [], isRefreshing: true));
+    }
     await _fetchActivities(emit);
   }
 
-  Future<void> _onRefresh(
-    RefreshActivitiesEvent event,
-    Emitter<ActivitiesState> emit,
-  ) async {
-    // Keep current state visible during refresh (silent refresh)
+  Future<void> _onRefresh(RefreshActivitiesEvent event, Emitter<ActivitiesState> emit) async {
+    if (state is ActivitiesLoaded) {
+      emit((state as ActivitiesLoaded).copyWith(isRefreshing: true));
+    } else {
+      emit(const ActivitiesLoaded(hosted: [], joined: [], receivedRequests: [], sentRequests: [], isRefreshing: true));
+    }
     await _fetchActivities(emit);
   }
 
@@ -60,21 +62,13 @@ class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesState> {
         ),
       );
     } on SocketException {
-      emit(
-        const ActivitiesError(
-          'No internet connection. Please try again.',
-          isNetworkError: true,
-        ),
-      );
+      emit(const ActivitiesError('No internet connection. Please try again.', isNetworkError: true));
     } catch (e) {
       emit(ActivitiesError('Could not load activities. Please try again.'));
     }
   }
 
-  Future<void> _onAcceptJoinRequest(
-    AcceptJoinRequestEvent event,
-    Emitter<ActivitiesState> emit,
-  ) async {
+  Future<void> _onAcceptJoinRequest(AcceptJoinRequestEvent event, Emitter<ActivitiesState> emit) async {
     try {
       await _spotRepository.acceptJoinRequest(event.joinRequestId);
       await _fetchActivities(emit);
@@ -83,10 +77,7 @@ class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesState> {
     }
   }
 
-  Future<void> _onRejectJoinRequest(
-    RejectJoinRequestEvent event,
-    Emitter<ActivitiesState> emit,
-  ) async {
+  Future<void> _onRejectJoinRequest(RejectJoinRequestEvent event, Emitter<ActivitiesState> emit) async {
     try {
       await _spotRepository.rejectJoinRequest(event.joinRequestId);
       await _fetchActivities(emit);
@@ -95,10 +86,7 @@ class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesState> {
     }
   }
 
-  Future<void> _onCancelJoinRequest(
-    CancelJoinRequestEvent event,
-    Emitter<ActivitiesState> emit,
-  ) async {
+  Future<void> _onCancelJoinRequest(CancelJoinRequestEvent event, Emitter<ActivitiesState> emit) async {
     try {
       await _spotRepository.cancelJoinRequest(event.joinRequestId);
       await _fetchActivities(emit);
@@ -107,10 +95,7 @@ class ActivitiesBloc extends Bloc<ActivitiesEvent, ActivitiesState> {
     }
   }
 
-  Future<void> _handleActionError(
-    dynamic e,
-    Emitter<ActivitiesState> emit,
-  ) async {
+  Future<void> _handleActionError(dynamic e, Emitter<ActivitiesState> emit) async {
     String message = 'An error occurred';
     if (e.runtimeType.toString() == 'PostgrestException') {
       message = (e as dynamic).message as String;

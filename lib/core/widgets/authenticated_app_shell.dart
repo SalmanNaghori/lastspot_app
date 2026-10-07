@@ -61,7 +61,20 @@ class _AuthenticatedAppShellState extends State<AuthenticatedAppShell> {
   }
 
   void _goBranch(int index) {
-    widget.navigationShell.goBranch(index, initialLocation: index == widget.navigationShell.currentIndex);
+    if (index == 2) {
+      context.push(AppRoutes.create);
+      return;
+    }
+    final branchIndex = index > 2 ? index - 1 : index;
+    widget.navigationShell.goBranch(
+      branchIndex,
+      initialLocation: branchIndex == widget.navigationShell.currentIndex,
+    );
+  }
+
+  int _getSelectedIndex() {
+    final branchIndex = widget.navigationShell.currentIndex;
+    return branchIndex >= 2 ? branchIndex + 1 : branchIndex;
   }
 
   @override
@@ -77,7 +90,7 @@ class _AuthenticatedAppShellState extends State<AuthenticatedAppShell> {
           backgroundColor: context.backgroundColor,
           body: widget.navigationShell,
           bottomNavigationBar: NavigationBar(
-            selectedIndex: widget.navigationShell.currentIndex,
+            selectedIndex: _getSelectedIndex(),
             onDestinationSelected: _goBranch,
             destinations: [
               NavigationDestination(

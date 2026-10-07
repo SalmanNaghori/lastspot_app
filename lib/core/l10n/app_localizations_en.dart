@@ -889,4 +889,43 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get submitReport => 'Submit Report';
+
+  @override
+  String get tabReceived => 'Received';
+
+  @override
+  String get tabSent => 'Sent';
+
+  @override
+  String get noReceivedRequests => 'No received requests.';
+
+  @override
+  String get noSentRequests => 'No sent requests.';
+
+  @override
+  String get accountSuspendedTitle => 'Account Suspended';
+
+  @override
+  String get accountSuspendedDesc =>
+      'Your account has been temporarily suspended due to a violation of our terms of service.';
+
+  @override
+  String get accountBannedTitle => 'Account Banned';
+
+  @override
+  String get accountBannedDesc =>
+      'Your account has been permanently banned due to severe violations of our policies.';
+
+  @override
+  String get accountDeletedTitle => 'Account Deleted';
+
+  @override
+  String get accountDeletedDesc =>
+      'This account has been deleted. If you believe this is a mistake, please contact support.';
+
+  @override
+  String get signOut => 'Sign Out';
+
+  @override
+  String get appeal => 'Appeal';
 }

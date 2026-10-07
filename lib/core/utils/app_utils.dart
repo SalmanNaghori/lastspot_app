@@ -71,10 +71,7 @@ class AppUtils {
     return DateFormat.yMMMd().format(dateTime);
   }
 
-  /// Formats DateTime to short date (e.g., "Sep 4")
-  static String formatDateShort(DateTime dateTime) {
-    return DateFormat('MMM d').format(dateTime);
-  }
+
 
   /// Extracts display location (resolving URLs to "Map Location")
   static String getDisplayLocation(BuildContext context, String location) {

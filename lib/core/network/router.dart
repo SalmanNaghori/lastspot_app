@@ -44,9 +44,12 @@ import '../../features/profile/presentation/pages/profile_screen.dart';
 import '../../features/profile/presentation/pages/edit_profile_screen.dart';
 import '../../features/reports/presentation/pages/report_screen.dart';
 import '../../features/settings/presentation/pages/settings_screen.dart';
+import '../../features/help_support/presentation/pages/help_support_screen.dart';
+import '../../features/legal/presentation/pages/privacy_policy_screen.dart';
+import '../../features/legal/presentation/pages/terms_conditions_screen.dart';
 import '../di/service_locator.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter/material.dart';
+
 import 'app_routes.dart';
 
 export 'app_routes.dart';
@@ -148,25 +151,7 @@ final GoRouter appRouter = GoRouter(
             ),
           ],
         ),
-        // Branch 2: Create
-        StatefulShellBranch(
-          routes: [
-            GoRoute(
-              path: AppRoutes.create,
-              builder: (context, state) {
-                final spotToEdit = state.extra as RequestEntity?;
-                return BlocProvider(
-                  create: (context) => CreateSpotBloc(
-                    createSpotUseCase: sl<CreateSpotUseCase>(),
-                    updateSpotUseCase: sl<UpdateSpotUseCase>(),
-                    getCategoriesUseCase: sl<GetCategoriesUseCase>(),
-                  )..add(LoadCategoriesEvent()),
-                  child: CreateSpotScreen(spotToEdit: spotToEdit),
-                );
-              },
-            ),
-          ],
-        ),
+
         // Branch 3: Activities
         StatefulShellBranch(
           routes: [
@@ -210,6 +195,20 @@ final GoRouter appRouter = GoRouter(
             heroTag: heroTag,
             initialSpot: initialSpot,
           ),
+        );
+      },
+    ),
+    GoRoute(
+      path: AppRoutes.create,
+      builder: (context, state) {
+        final spotToEdit = state.extra as RequestEntity?;
+        return BlocProvider(
+          create: (context) => CreateSpotBloc(
+            createSpotUseCase: sl<CreateSpotUseCase>(),
+            updateSpotUseCase: sl<UpdateSpotUseCase>(),
+            getCategoriesUseCase: sl<GetCategoriesUseCase>(),
+          )..add(LoadCategoriesEvent()),
+          child: CreateSpotScreen(spotToEdit: spotToEdit),
         );
       },
     ),
@@ -272,6 +271,18 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: AppRoutes.settings,
       builder: (context, state) => const SettingsScreen(),
+    ),
+    GoRoute(
+      path: AppRoutes.helpSupport,
+      builder: (context, state) => const HelpSupportScreen(),
+    ),
+    GoRoute(
+      path: AppRoutes.privacyPolicy,
+      builder: (context, state) => const PrivacyPolicyScreen(),
+    ),
+    GoRoute(
+      path: AppRoutes.termsConditions,
+      builder: (context, state) => const TermsConditionsScreen(),
     ),
     // Future placeholders
     GoRoute(

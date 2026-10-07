@@ -10,6 +10,7 @@ MUST      PERF-7  Give stable ValueKey(id) to list items with per-item state or 
 MUST      PERF-5  Set memCacheWidth/cacheWidth for large network images via the wrapper; parse large JSON via compute.
 MUST      PERF-6  Bound every global in-memory cache (size limit or eviction).
 MUST      ASYNC-2 Dispose Timer/AnimationController/TextEditingController/ScrollController/FocusNode/StreamController in the owner's dispose()/close().
+MUST-NOT  PERF-13 Nest `shrinkWrap: true` lists inside CustomScrollViews or use `IntrinsicHeight` with scrollable lists for eager rendering.
 
 ## Recommended
 SHOULD    PERF-3  Scope rebuilds with BlocSelector or buildWhen on hot screens (lists, chat); avoid whole-screen BlocBuilder for field-level changes.

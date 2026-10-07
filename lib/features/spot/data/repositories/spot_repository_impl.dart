@@ -199,6 +199,7 @@ class SpotRepositoryImpl extends BaseRepository implements SpotRepository {
     );
   }
 
+  @override
   Future<JoinRequestEntity?> getUserJoinRequest(String spotId) {
     return executeApiRaw(
       operationName: 'spotGetUserJoinRequest',

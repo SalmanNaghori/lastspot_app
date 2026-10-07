@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import '../base_import.dart';
 import '../services/push_notification_service.dart';
 import '../di/service_locator.dart';

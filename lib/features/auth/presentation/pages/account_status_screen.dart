@@ -30,23 +30,20 @@ class AccountStatusScreen extends StatelessWidget {
     Color iconColor = AppColor.primaryColor;
 
     if (state is AuthSuspended) {
-      title = 'Account Suspended';
-      message =
-          'Your account has been temporarily suspended due to a violation of our terms of service.';
+      title = context.loc.accountSuspendedTitle;
+      message = context.loc.accountSuspendedDesc;
       iconData = Icons.warning_amber_rounded;
-      iconColor = Colors.orange;
+      iconColor = context.warningColor;
     } else if (state is AuthBanned) {
-      title = 'Account Banned';
-      message =
-          'Your account has been permanently banned due to severe violations of our policies.';
+      title = context.loc.accountBannedTitle;
+      message = context.loc.accountBannedDesc;
       iconData = Icons.block;
-      iconColor = Colors.red;
+      iconColor = context.errorColor;
     } else if (state is AuthDeleted) {
-      title = 'Account Deleted';
-      message =
-          'This account has been deleted. If you believe this is a mistake, please contact support.';
+      title = context.loc.accountDeletedTitle;
+      message = context.loc.accountDeletedDesc;
       iconData = Icons.delete_outline;
-      iconColor = Colors.red;
+      iconColor = context.errorColor;
     }
 
     return Scaffold(

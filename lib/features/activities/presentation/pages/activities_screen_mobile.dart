@@ -3,12 +3,11 @@ import 'package:lastspot_app/core/base_import.dart';
 import '../bloc/activities_bloc.dart';
 import '../bloc/activities_state.dart';
 import '../bloc/activities_event.dart';
-import '../widgets/activities_tab_bar.dart';
+import 'package:lastspot_app/core/widgets/custom_segmented_control.dart';
 import '../widgets/activities_list_section.dart';
 import '../widgets/activity_empty_state.dart';
 import '../widgets/requests_tab_section.dart';
 import 'package:lastspot_app/core/widgets/custom_app_bar.dart';
-
 class ActivitiesScreenMobile extends StatefulWidget {
   const ActivitiesScreenMobile({super.key});
 
@@ -24,6 +23,8 @@ class _ActivitiesScreenMobileState extends State<ActivitiesScreenMobile> {
     _selectedTab.dispose();
     super.dispose();
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -56,9 +57,7 @@ class _ActivitiesScreenMobileState extends State<ActivitiesScreenMobile> {
               }
             },
             builder: (context, state) {
-              if (state is ActivitiesInitial || state is ActivitiesLoading) {
-                return const Center(child: CircularProgressIndicator());
-              } else if (state is ActivitiesError) {
+              if (state is ActivitiesError) {
                 return Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -98,7 +97,7 @@ class _ActivitiesScreenMobileState extends State<ActivitiesScreenMobile> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                ActivitiesTabBar(
+                                CustomSegmentedControl(
                                   selectedIndex: tabIndex,
                                   onTabChanged: (index) {
                                     _selectedTab.value = index;
@@ -108,15 +107,11 @@ class _ActivitiesScreenMobileState extends State<ActivitiesScreenMobile> {
                                       );
                                     }
                                   },
-                                  tab1Label: loc.tabMyActivitiesCount(
-                                    state.hosted.length.toString(),
-                                  ),
-                                  tab2Label: loc.tabJoinedCount(
-                                    state.joined.length.toString(),
-                                  ),
-                                  tab3Label: loc.tabRequestsCount(
-                                    state.receivedRequests.length.toString(),
-                                  ),
+                                  tabs: [
+                                    loc.tabMyActivitiesCount(state.hosted.length.toString()),
+                                    loc.tabJoinedCount(state.joined.length.toString()),
+                                    loc.tabRequestsCount(state.receivedRequests.length.toString()),
+                                  ],
                                 ),
                                 SizedBox(height: Dimensions.r16.dynamicH),
                                 Text(
@@ -130,7 +125,7 @@ class _ActivitiesScreenMobileState extends State<ActivitiesScreenMobile> {
                           ),
                         ),
                         if (tabIndex == 0) ...[
-                          if (state.hosted.isEmpty)
+                          if (state.hosted.isEmpty && !state.isRefreshing)
                             ActivityEmptyState(
                               title: loc.emptyHostedTitle,
                               message: loc.emptyHostedDesc,
@@ -141,9 +136,10 @@ class _ActivitiesScreenMobileState extends State<ActivitiesScreenMobile> {
                             ActivitiesListSection(
                               activities: state.hosted,
                               horizontalPadding: Dimensions.r16.dynamicW,
-                            ),
+                              isLoading: state.hosted.isEmpty && state.isRefreshing,
+                            )
                         ] else if (tabIndex == 1) ...[
-                          if (state.joined.isEmpty)
+                          if (state.joined.isEmpty && !state.isRefreshing)
                             ActivityEmptyState(
                               title: loc.emptyJoinedTitle,
                               message: loc.emptyJoinedDesc,
@@ -154,14 +150,14 @@ class _ActivitiesScreenMobileState extends State<ActivitiesScreenMobile> {
                             ActivitiesListSection(
                               activities: state.joined,
                               horizontalPadding: Dimensions.r16.dynamicW,
-                            ),
+                              isLoading: state.joined.isEmpty && state.isRefreshing,
+                            )
                         ] else ...[
-                          SliverToBoxAdapter(
-                            child: RequestsTabSection(
-                              receivedRequests: state.receivedRequests,
-                              sentRequests: state.sentRequests,
-                              horizontalPadding: Dimensions.r16.dynamicW,
-                            ),
+                          RequestsTabSection(
+                            receivedRequests: state.receivedRequests,
+                            sentRequests: state.sentRequests,
+                            horizontalPadding: Dimensions.r16.dynamicW,
+                            isLoading: state.receivedRequests.isEmpty && state.sentRequests.isEmpty && state.isRefreshing,
                           ),
                         ],
                         SliverToBoxAdapter(

@@ -13,4 +13,5 @@ abstract class ProfileRepository {
     required String userId,
     required File imageFile,
   });
+  Future<Map<String, int>> getProfileStats(String userId);
 }

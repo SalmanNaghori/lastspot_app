@@ -42,4 +42,13 @@ class ProfileRepositoryImpl extends BaseRepository
           _remoteDataSource.uploadAvatar(userId: userId, imageFile: imageFile),
     );
   }
+
+  @override
+  Future<Map<String, int>> getProfileStats(String userId) {
+    return executeApiRaw(
+      operationName: 'Profile.getProfileStats',
+      requestData: {'userId': userId},
+      operation: () => _remoteDataSource.getProfileStats(userId),
+    );
+  }
 }

@@ -110,7 +110,7 @@ class _CompactSpotCardState extends State<CompactSpotCard> {
                           ),
                           SizedBox(width: Dimensions.r4.dynamicW),
                           Text(
-                            '${AppUtils.formatDateShort(widget.spot.eventDateTime)}, ${AppUtils.formatTime(widget.spot.eventDateTime)}',
+                            '${AppConstants.formatActivityDate(widget.spot.eventDateTime)}, ${AppUtils.formatTime(widget.spot.eventDateTime)}',
                             style: TextStyle(
                               fontSize: Dimensions.r12.dynamicSP,
                               color: context.textSecondary,

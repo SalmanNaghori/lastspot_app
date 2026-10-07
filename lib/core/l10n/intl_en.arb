@@ -371,5 +371,17 @@
   "whyReporting": "Why are you reporting this?",
   "additionalDetailsOptional": "Additional Details (Optional)",
   "reportDescHint": "Please provide more details to help us understand...",
-  "submitReport": "Submit Report"
+  "submitReport": "Submit Report",
+  "tabReceived": "Received",
+  "tabSent": "Sent",
+  "noReceivedRequests": "No received requests.",
+  "noSentRequests": "No sent requests.",
+  "accountSuspendedTitle": "Account Suspended",
+  "accountSuspendedDesc": "Your account has been temporarily suspended due to a violation of our terms of service.",
+  "accountBannedTitle": "Account Banned",
+  "accountBannedDesc": "Your account has been permanently banned due to severe violations of our policies.",
+  "accountDeletedTitle": "Account Deleted",
+  "accountDeletedDesc": "This account has been deleted. If you believe this is a mistake, please contact support.",
+  "signOut": "Sign Out",
+  "appeal": "Appeal"
 }

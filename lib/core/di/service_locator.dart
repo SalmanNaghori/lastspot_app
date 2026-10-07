@@ -46,6 +46,7 @@ import '../../features/auth/domain/usecases/verify_otp_usecase.dart';
 import '../../features/auth/domain/usecases/resend_otp_usecase.dart';
 import '../../features/auth/domain/usecases/check_auth_status_usecase.dart';
 import '../../features/auth/domain/usecases/get_profile_usecase.dart';
+import '../../features/auth/domain/usecases/get_profile_stats_usecase.dart';
 import '../../features/auth/domain/usecases/update_profile_usecase.dart';
 import '../../features/auth/domain/usecases/upload_avatar_usecase.dart';
 import '../../features/auth/domain/usecases/register_device_usecase.dart';
@@ -201,6 +202,9 @@ Future<void> setupServiceLocator() async {
   sl.registerSingleton<GetProfileUseCase>(
     GetProfileUseCase(sl<ProfileRepository>()),
   );
+  sl.registerSingleton<GetProfileStatsUseCase>(
+    GetProfileStatsUseCase(sl<ProfileRepository>()),
+  );
   sl.registerSingleton<UpdateProfileUseCase>(
     UpdateProfileUseCase(sl<ProfileRepository>()),
   );
@@ -228,6 +232,7 @@ Future<void> setupServiceLocator() async {
   sl.registerFactory<ProfileCubit>(
     () => ProfileCubit(
       getProfile: sl<GetProfileUseCase>(),
+      getProfileStats: sl<GetProfileStatsUseCase>(),
       updateProfile: sl<UpdateProfileUseCase>(),
       uploadAvatar: sl<UploadAvatarUseCase>(),
     ),

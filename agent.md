@@ -169,6 +169,7 @@ OPEN QUESTIONS / ASSUMPTIONS: <...>
 18. Declare done without compliance matrix + report (AI-19, AI-20).
 19. Copy `profiles/reference/` types into a greenfield app, or follow example ADRs that contradict filled `project/` rules (AI-26).
 20. Scaffold `lib/` on greenfield before orientation is answered; bulk-migrate an existing tree; split one feature across two trees (ARCH-7, AI-11).
+21. Nest `shrinkWrap: true` lists inside scrollable areas or use `IntrinsicHeight` + `SingleChildScrollView` for eager rendering. Always use slivers (`SliverList`, `SliverMainAxisGroup`) or properly bounded lazy list structures instead (PERF-1, PERF-2).
 
 ## 6. Quick reference — fill from *this* project
 

@@ -8,7 +8,7 @@ import '../../../auth/presentation/bloc/profile_cubit.dart';
 import '../../../categories/presentation/bloc/category_bloc.dart';
 import '../../../categories/presentation/bloc/category_state.dart';
 
-import '../../../spot/presentation/widgets/home_spot_card.dart';
+import '../../../spot/presentation/widgets/activity_card.dart';
 import '../bloc/explore_bloc.dart';
 import '../bloc/explore_event.dart';
 import '../bloc/explore_state.dart';
@@ -584,8 +584,11 @@ class _ExploreScreenMobileState extends State<ExploreScreenMobile> {
                                 child: Skeleton.ignorePointer(
                                   child: IgnorePointer(
                                     ignoring: true,
-                                    child: HomeSpotCard(
+                                    child: ActivityCard(
                                       spot: dummySpot,
+                                      categoryName: 'Category',
+                                      categoryIcon: '🎯',
+                                      heroTagPrefix: 'explore_shimmer',
                                       onTap: () {},
                                     ),
                                   ),
@@ -704,15 +707,33 @@ class _ExploreScreenMobileState extends State<ExploreScreenMobile> {
                                   );
                                 }
                                 final spot = displayedPosts[index];
+                                final category = context
+                                    .read<CategoryBloc>()
+                                    .state is CategoryLoaded
+                                    ? (context.read<CategoryBloc>().state
+                                            as CategoryLoaded)
+                                        .categories
+                                        .where((c) => c.id == spot.categoryId)
+                                        .firstOrNull
+                                    : null;
                                 return AnimationConfiguration.staggeredList(
                                   position: index,
                                   duration: const Duration(milliseconds: 300),
                                   child: SlideAnimation(
                                     verticalOffset: 30.0,
                                     child: FadeInAnimation(
-                                      child: HomeSpotCard(
+                                      child: ActivityCard(
                                         spot: spot,
-                                        onTap: () => _onSpotTap(spot.id),
+                                        categoryName: category?.name ?? 'Sport',
+                                        categoryIcon: category?.icon ?? '🎯',
+                                        heroTagPrefix: 'explore',
+                                        onTap: () {
+                                          final extra = {
+                                            'heroTag': 'explore_activity_image_${spot.id}',
+                                            'spot': spot,
+                                          };
+                                          context.push(AppRoutes.spotDetailsPath(spot.id), extra: extra);
+                                        },
                                       ),
                                     ),
                                   ),

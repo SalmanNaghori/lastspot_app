@@ -76,32 +76,14 @@ class ProfileScreenMobile extends StatelessWidget {
                 const SizedBox(height: Dimensions.r32),
 
                 // Statistics
-                const ProfileStatistics(
-                  createdCount: 0,
-                  joinedCount: 0,
-                  completedCount: 0,
+                ProfileStatistics(
+                  createdCount: (state as ProfileLoaded).stats.createdCount,
+                  joinedCount: (state as ProfileLoaded).stats.joinedCount,
+                  completedCount: (state as ProfileLoaded).stats.completedCount,
                 ),
                 const SizedBox(height: Dimensions.r32),
 
                 // Sections
-                _buildSection(
-                  context,
-                  title: loc.profileSectionActivity,
-                  items: [
-                    ProfileListTile(
-                      icon: Icons.assignment_outlined,
-                      title: loc.myRequests,
-                      onTap: () {},
-                    ),
-                    ProfileListTile(
-                      icon: Icons.event_available_outlined,
-                      title: loc.myActivities,
-                      onTap: () {
-                        context.go(AppRoutes.activities);
-                      },
-                    ),
-                  ],
-                ),
                 _buildSection(
                   context,
                   title: loc.profileSectionAccount,
@@ -109,7 +91,9 @@ class ProfileScreenMobile extends StatelessWidget {
                     ProfileListTile(
                       icon: Icons.notifications_outlined,
                       title: loc.notifications,
-                      onTap: () {},
+                      onTap: () {
+                        context.push(AppRoutes.notifications);
+                      },
                     ),
                     ProfileListTile(
                       icon: Icons.settings_outlined,
@@ -121,7 +105,9 @@ class ProfileScreenMobile extends StatelessWidget {
                     ProfileListTile(
                       icon: Icons.help_outline,
                       title: loc.helpSupport,
-                      onTap: () {},
+                      onTap: () {
+                        context.push(AppRoutes.helpSupport);
+                      },
                     ),
                   ],
                 ),
@@ -132,12 +118,16 @@ class ProfileScreenMobile extends StatelessWidget {
                     ProfileListTile(
                       icon: Icons.privacy_tip_outlined,
                       title: loc.privacyPolicy,
-                      onTap: () {},
+                      onTap: () {
+                        context.push(AppRoutes.privacyPolicy);
+                      },
                     ),
                     ProfileListTile(
                       icon: Icons.article_outlined,
                       title: loc.termsConditions,
-                      onTap: () {},
+                      onTap: () {
+                        context.push(AppRoutes.termsConditions);
+                      },
                     ),
                   ],
                 ),
