@@ -51,12 +51,7 @@ class SpotDetailsScreenMobile extends StatelessWidget {
             AppUtils.showSnackBar(context, loc.detailsCopied);
           }
         } on PlatformException {
-          if (context.mounted)
-            AppUtils.showSnackBar(
-              context,
-              loc.detailsCopyFailed,
-              isError: true,
-            );
+          if (context.mounted) AppUtils.showSnackBar(context, loc.detailsCopyFailed, isError: true);
         }
     }
   }
@@ -64,9 +59,7 @@ class SpotDetailsScreenMobile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final loc = context.loc;
-    final loaded = state is SpotDetailsLoaded
-        ? state as SpotDetailsLoaded
-        : null;
+    final loaded = state is SpotDetailsLoaded ? state as SpotDetailsLoaded : null;
     return LayoutBuilder(
       builder: (context, constraints) {
         final wide = constraints.maxWidth >= Dimensions.detailsWideBreakpoint;
@@ -94,14 +87,8 @@ class SpotDetailsScreenMobile extends StatelessWidget {
             child: loaded == null
                 ? state is SpotDetailsError
                       ? SingleChildScrollView(
-                          padding: const EdgeInsets.symmetric(
-                            vertical: AppSpacing.xxl,
-                          ),
-                          child: ErrorState(
-                            message: loc.detailsLoadError,
-                            actionLabel: loc.retry,
-                            onRetry: onRetry,
-                          ),
+                          padding: const EdgeInsets.symmetric(vertical: AppSpacing.xxl),
+                          child: ErrorState(message: loc.detailsLoadError, actionLabel: loc.retry, onRetry: onRetry),
                         )
                       : LoadingState.shimmerCard()
                 : Row(
@@ -111,23 +98,15 @@ class SpotDetailsScreenMobile extends StatelessWidget {
                         child: SpotDetailsContent(
                           state: loaded,
                           heroTag: heroTag,
-                          onMap: () =>
-                              AppUtils.launchMap(loaded.post.locationName),
-                          onReport: () => context.push(
-                            AppRoutes.reportActivityPath(loaded.post.id),
-                          ),
+                          onMap: () => AppUtils.launchMap(loaded.post.locationName),
+                          onReport: () => context.push(AppRoutes.reportActivityPath(loaded.post.id)),
                         ),
                       ),
                       if (wide)
                         SizedBox(
                           width: Dimensions.detailsSidebarWidth,
                           child: SingleChildScrollView(
-                            padding: const EdgeInsets.fromLTRB(
-                              0,
-                              AppSpacing.md,
-                              AppSpacing.md,
-                              AppSpacing.lg,
-                            ),
+                            padding: const EdgeInsets.fromLTRB(0, AppSpacing.md, AppSpacing.md, AppSpacing.lg),
                             child: SpotDetailsBookingPanel(state: loaded),
                           ),
                         ),
@@ -138,20 +117,10 @@ class SpotDetailsScreenMobile extends StatelessWidget {
               ? SafeArea(
                   top: false,
                   child: ConstrainedBox(
-                    constraints: BoxConstraints(
-                      maxHeight: constraints.maxHeight * 0.45,
-                    ),
+                    constraints: BoxConstraints(maxHeight: constraints.maxHeight * 0.45),
                     child: SingleChildScrollView(
-                      padding: const EdgeInsets.fromLTRB(
-                        AppSpacing.md,
-                        AppSpacing.sm,
-                        AppSpacing.md,
-                        AppSpacing.sm,
-                      ),
-                      child: SpotDetailsBookingPanel(
-                        state: loaded,
-                        compact: true,
-                      ),
+                      padding: const EdgeInsets.fromLTRB(AppSpacing.md, AppSpacing.sm, AppSpacing.md, AppSpacing.sm),
+                      child: SpotDetailsBookingPanel(state: loaded, compact: true),
                     ),
                   ),
                 )

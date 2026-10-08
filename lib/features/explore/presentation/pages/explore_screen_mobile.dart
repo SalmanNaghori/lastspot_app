@@ -53,8 +53,7 @@ class _ExploreScreenMobileState extends State<ExploreScreenMobile> {
   }
 
   void _onScroll() {
-    if (_scrollController.position.pixels >=
-        _scrollController.position.maxScrollExtent - 200) {
+    if (_scrollController.position.pixels >= _scrollController.position.maxScrollExtent - 200) {
       context.read<ExploreBloc>().add(const LoadExplorePosts());
     }
   }
@@ -80,11 +79,7 @@ class _ExploreScreenMobileState extends State<ExploreScreenMobile> {
     _searchFocusNode.unfocus();
   }
 
-  void _onFilterTap(
-    ExploreDateFilter dateF,
-    ExplorePriceFilter priceF,
-    ExploreParticipantsFilter partF,
-  ) {
+  void _onFilterTap(ExploreDateFilter dateF, ExplorePriceFilter priceF, ExploreParticipantsFilter partF) {
     AppBottomSheet.show(
       context: context,
       builder: (_) => ExploreFilterBottomSheet(
@@ -93,11 +88,7 @@ class _ExploreScreenMobileState extends State<ExploreScreenMobile> {
         initialParticipantsFilter: partF,
         onApply: (date, price, participants) {
           context.read<ExploreBloc>().add(
-            ApplyFilters(
-              dateFilter: date,
-              priceFilter: price,
-              participantsFilter: participants,
-            ),
+            ApplyFilters(dateFilter: date, priceFilter: price, participantsFilter: participants),
           );
         },
       ),
@@ -136,8 +127,7 @@ class _ExploreScreenMobileState extends State<ExploreScreenMobile> {
 
       filtered = filtered.where((post) {
         final titleMatch = post.title.toLowerCase().contains(query);
-        final descMatch =
-            post.description?.toLowerCase().contains(query) ?? false;
+        final descMatch = post.description?.toLowerCase().contains(query) ?? false;
         final locMatch = post.locationName.toLowerCase().contains(query);
 
         bool catMatch = false;
@@ -158,18 +148,12 @@ class _ExploreScreenMobileState extends State<ExploreScreenMobile> {
       filtered = filtered.where((post) {
         final start = post.eventDateTime;
         if (state.dateFilter == ExploreDateFilter.today) {
-          return start.year == now.year &&
-              start.month == now.month &&
-              start.day == now.day;
+          return start.year == now.year && start.month == now.month && start.day == now.day;
         } else if (state.dateFilter == ExploreDateFilter.tomorrow) {
           final tmrw = now.add(const Duration(days: 1));
-          return start.year == tmrw.year &&
-              start.month == tmrw.month &&
-              start.day == tmrw.day;
+          return start.year == tmrw.year && start.month == tmrw.month && start.day == tmrw.day;
         } else if (state.dateFilter == ExploreDateFilter.thisWeekend) {
-          final isWeekend =
-              start.weekday >= DateTime.friday &&
-              start.weekday <= DateTime.sunday;
+          final isWeekend = start.weekday >= DateTime.friday && start.weekday <= DateTime.sunday;
           final diff = start.difference(now).inDays;
           return isWeekend && diff >= 0 && diff <= 7;
         }
@@ -195,11 +179,9 @@ class _ExploreScreenMobileState extends State<ExploreScreenMobile> {
         final total = post.maxParticipants;
         if (state.participantsFilter == ExploreParticipantsFilter.spots1to2) {
           return total >= 1 && total <= 2;
-        } else if (state.participantsFilter ==
-            ExploreParticipantsFilter.spots3to5) {
+        } else if (state.participantsFilter == ExploreParticipantsFilter.spots3to5) {
           return total >= 3 && total <= 5;
-        } else if (state.participantsFilter ==
-            ExploreParticipantsFilter.spots5plus) {
+        } else if (state.participantsFilter == ExploreParticipantsFilter.spots5plus) {
           return total > 5;
         }
         return true;
@@ -238,10 +220,7 @@ class _ExploreScreenMobileState extends State<ExploreScreenMobile> {
             builder: (context, value, child) {
               return Opacity(
                 opacity: value,
-                child: Transform.translate(
-                  offset: Offset(0, 20 * (1 - value)),
-                  child: child,
-                ),
+                child: Transform.translate(offset: Offset(0, 20 * (1 - value)), child: child),
               );
             },
             child: AnimationLimiter(
@@ -280,18 +259,13 @@ class _ExploreScreenMobileState extends State<ExploreScreenMobile> {
                       ],
                     ),
                     actions: [
-                      IconButton(
-                        onPressed: _onNotificationsTap,
-                        icon: const Icon(Icons.notifications_outlined),
-                      ),
+                      IconButton(onPressed: _onNotificationsTap, icon: const Icon(Icons.notifications_outlined)),
                       SizedBox(width: Dimensions.r8.dynamicW),
                     ],
                     bottom: PreferredSize(
                       preferredSize: Size.fromHeight(120.0),
                       child: Padding(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: Dimensions.r16.dynamicW,
-                        ),
+                        padding: EdgeInsets.symmetric(horizontal: Dimensions.r16.dynamicW),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -309,54 +283,31 @@ class _ExploreScreenMobileState extends State<ExploreScreenMobile> {
                                       decoration: InputDecoration(
                                         hintText: loc.searchActivitiesHint,
                                         prefixIcon: const Icon(Icons.search),
-                                        suffixIcon:
-                                            ValueListenableBuilder<
-                                              TextEditingValue
-                                            >(
-                                              valueListenable:
-                                                  _searchController,
-                                              builder: (context, value, child) {
-                                                return value.text.isNotEmpty
-                                                    ? IconButton(
-                                                        icon: const Icon(
-                                                          Icons.close,
-                                                        ),
-                                                        onPressed:
-                                                            _onClearSearchTap,
-                                                      )
-                                                    : const SizedBox.shrink();
-                                              },
-                                            ),
+                                        suffixIcon: ValueListenableBuilder<TextEditingValue>(
+                                          valueListenable: _searchController,
+                                          builder: (context, value, child) {
+                                            return value.text.isNotEmpty
+                                                ? IconButton(
+                                                    icon: const Icon(Icons.close),
+                                                    onPressed: _onClearSearchTap,
+                                                  )
+                                                : const SizedBox.shrink();
+                                          },
+                                        ),
                                         filled: true,
                                         fillColor: context.surfaceColor,
-                                        contentPadding:
-                                            const EdgeInsets.symmetric(
-                                              vertical: 0,
-                                              horizontal: 16,
-                                            ),
+                                        contentPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 16),
                                         border: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(
-                                            Dimensions.r12.dynamicR,
-                                          ),
-                                          borderSide: BorderSide(
-                                            color: context.borderColor,
-                                          ),
+                                          borderRadius: BorderRadius.circular(Dimensions.r12.dynamicR),
+                                          borderSide: BorderSide(color: context.borderColor),
                                         ),
                                         enabledBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(
-                                            Dimensions.r12.dynamicR,
-                                          ),
-                                          borderSide: BorderSide(
-                                            color: context.borderColor,
-                                          ),
+                                          borderRadius: BorderRadius.circular(Dimensions.r12.dynamicR),
+                                          borderSide: BorderSide(color: context.borderColor),
                                         ),
                                         focusedBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(
-                                            Dimensions.r12.dynamicR,
-                                          ),
-                                          borderSide: BorderSide(
-                                            color: AppColor.primaryColor,
-                                          ),
+                                          borderRadius: BorderRadius.circular(Dimensions.r12.dynamicR),
+                                          borderSide: BorderSide(color: AppColor.primaryColor),
                                         ),
                                       ),
                                     ),
@@ -368,26 +319,18 @@ class _ExploreScreenMobileState extends State<ExploreScreenMobile> {
                                   width: 48,
                                   decoration: BoxDecoration(
                                     color: context.surfaceColor,
-                                    borderRadius: BorderRadius.circular(
-                                      Dimensions.r12.dynamicR,
-                                    ),
-                                    border: Border.all(
-                                      color: context.borderColor,
-                                    ),
+                                    borderRadius: BorderRadius.circular(Dimensions.r12.dynamicR),
+                                    border: Border.all(color: context.borderColor),
                                   ),
                                   child: BlocBuilder<ExploreBloc, ExploreState>(
                                     builder: (context, state) {
                                       bool hasActiveFilters = false;
-                                      ExploreDateFilter dateF =
-                                          ExploreDateFilter.any;
-                                      ExplorePriceFilter priceF =
-                                          ExplorePriceFilter.any;
-                                      ExploreParticipantsFilter partF =
-                                          ExploreParticipantsFilter.any;
+                                      ExploreDateFilter dateF = ExploreDateFilter.any;
+                                      ExplorePriceFilter priceF = ExplorePriceFilter.any;
+                                      ExploreParticipantsFilter partF = ExploreParticipantsFilter.any;
 
                                       if (state is ExploreLoaded) {
-                                        hasActiveFilters =
-                                            state.hasActiveFilters;
+                                        hasActiveFilters = state.hasActiveFilters;
                                         dateF = state.dateFilter;
                                         priceF = state.priceFilter;
                                         partF = state.participantsFilter;
@@ -397,16 +340,10 @@ class _ExploreScreenMobileState extends State<ExploreScreenMobile> {
                                         alignment: Alignment.center,
                                         children: [
                                           IconButton(
-                                            onPressed: () => _onFilterTap(
-                                              dateF,
-                                              priceF,
-                                              partF,
-                                            ),
+                                            onPressed: () => _onFilterTap(dateF, priceF, partF),
                                             icon: Icon(
                                               Icons.tune,
-                                              color: hasActiveFilters
-                                                  ? AppColor.primaryColor
-                                                  : context.textSecondary,
+                                              color: hasActiveFilters ? AppColor.primaryColor : context.textSecondary,
                                             ),
                                           ),
                                           if (hasActiveFilters)
@@ -435,8 +372,7 @@ class _ExploreScreenMobileState extends State<ExploreScreenMobile> {
                               builder: (context, state) {
                                 String cityName = loc.selectYourCity;
                                 if (state is ProfileLoaded) {
-                                  cityName =
-                                      state.profile.city ?? loc.selectYourCity;
+                                  cityName = state.profile.city ?? loc.selectYourCity;
                                 }
                                 return Row(
                                   children: [
@@ -470,29 +406,21 @@ class _ExploreScreenMobileState extends State<ExploreScreenMobile> {
                     delegate: _SliverCategoryDelegate(
                       child: Container(
                         color: context.backgroundColor,
-                        padding: EdgeInsets.symmetric(
-                          vertical: Dimensions.r8.dynamicH,
-                        ),
+                        padding: EdgeInsets.symmetric(vertical: Dimensions.r8.dynamicH),
                         child: BlocBuilder<CategoryBloc, CategoryState>(
                           builder: (context, categoryState) {
                             if (categoryState is CategoryLoaded) {
-                              final activeCategories =
-                                  categoryState.categories
-                                      .where((c) => c.isActive)
-                                      .toList()
-                                    ..sort((a, b) {
-                                      int cmp = a.sortOrder.compareTo(
-                                        b.sortOrder,
-                                      );
-                                      if (cmp != 0) return cmp;
-                                      return a.name.compareTo(b.name);
-                                    });
+                              final activeCategories = categoryState.categories.where((c) => c.isActive).toList()
+                                ..sort((a, b) {
+                                  int cmp = a.sortOrder.compareTo(b.sortOrder);
+                                  if (cmp != 0) return cmp;
+                                  return a.name.compareTo(b.name);
+                                });
                               return BlocBuilder<ExploreBloc, ExploreState>(
                                 builder: (context, exploreState) {
                                   String? selectedCategoryId;
                                   if (exploreState is ExploreLoaded) {
-                                    selectedCategoryId =
-                                        exploreState.categoryId;
+                                    selectedCategoryId = exploreState.categoryId;
                                   }
                                   return ExploreFilterBar(
                                     categories: activeCategories,
@@ -535,10 +463,7 @@ class _ExploreScreenMobileState extends State<ExploreScreenMobile> {
                                 ),
                                 Text(
                                   loc.activitiesCount(displayedPosts.length),
-                                  style: TextStyle(
-                                    fontSize: Dimensions.r13.dynamicSP,
-                                    color: context.textSecondary,
-                                  ),
+                                  style: TextStyle(fontSize: Dimensions.r13.dynamicSP, color: context.textSecondary),
                                 ),
                               ],
                             );
@@ -563,9 +488,7 @@ class _ExploreScreenMobileState extends State<ExploreScreenMobile> {
                           locationName: 'Loading Location',
                           latitude: 0,
                           longitude: 0,
-                          eventDateTime: DateTime.now().add(
-                            const Duration(days: 1),
-                          ),
+                          eventDateTime: DateTime.now().add(const Duration(days: 1)),
                           maxParticipants: 10,
                           currentParticipants: 5,
                           pricePerPerson: 100,
@@ -574,9 +497,7 @@ class _ExploreScreenMobileState extends State<ExploreScreenMobile> {
                         );
 
                         return SliverPadding(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: Dimensions.r16.dynamicW,
-                          ),
+                          padding: EdgeInsets.symmetric(horizontal: Dimensions.r16.dynamicW),
                           sliver: SliverList(
                             delegate: SliverChildBuilderDelegate(
                               (context, index) => Skeletonizer(
@@ -607,32 +528,19 @@ class _ExploreScreenMobileState extends State<ExploreScreenMobile> {
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Icon(
-                                  Icons.error_outline,
-                                  size: Dimensions.r48.dynamicH,
-                                  color: context.textSecondary,
-                                ),
+                                Icon(Icons.error_outline, size: Dimensions.r48.dynamicH, color: context.textSecondary),
                                 SizedBox(height: Dimensions.r16.dynamicH),
                                 Text(
                                   loc.couldNotLoadActivities,
-                                  style: TextStyle(
-                                    fontSize: Dimensions.r16.dynamicSP,
-                                    fontWeight: FontWeight.w600,
-                                  ),
+                                  style: TextStyle(fontSize: Dimensions.r16.dynamicSP, fontWeight: FontWeight.w600),
                                 ),
                                 SizedBox(height: Dimensions.r8.dynamicH),
                                 Text(
                                   loc.checkConnectionRetry,
-                                  style: TextStyle(
-                                    fontSize: Dimensions.r14.dynamicSP,
-                                    color: context.textSecondary,
-                                  ),
+                                  style: TextStyle(fontSize: Dimensions.r14.dynamicSP, color: context.textSecondary),
                                 ),
                                 SizedBox(height: Dimensions.r16.dynamicH),
-                                ElevatedButton(
-                                  onPressed: _onRetryTap,
-                                  child: Text(loc.retry),
-                                ),
+                                ElevatedButton(onPressed: _onRetryTap, child: Text(loc.retry)),
                               ],
                             ),
                           ),
@@ -646,8 +554,7 @@ class _ExploreScreenMobileState extends State<ExploreScreenMobile> {
                           String emptyMessage = loc.noActivitiesFound;
                           String emptySubMessage = loc.noActivitiesInArea;
 
-                          if (state.searchQuery != null &&
-                              state.searchQuery!.isNotEmpty) {
+                          if (state.searchQuery != null && state.searchQuery!.isNotEmpty) {
                             emptyMessage = "No activities match your search";
                             emptySubMessage = loc.tryDifferentKeyword;
                           } else if (state.categoryId != null) {
@@ -661,26 +568,16 @@ class _ExploreScreenMobileState extends State<ExploreScreenMobile> {
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Icon(
-                                    Icons.search_off,
-                                    size: Dimensions.r48.dynamicH,
-                                    color: context.textSecondary,
-                                  ),
+                                  Icon(Icons.search_off, size: Dimensions.r48.dynamicH, color: context.textSecondary),
                                   SizedBox(height: Dimensions.r16.dynamicH),
                                   Text(
                                     emptyMessage,
-                                    style: TextStyle(
-                                      fontSize: Dimensions.r16.dynamicSP,
-                                      fontWeight: FontWeight.w600,
-                                    ),
+                                    style: TextStyle(fontSize: Dimensions.r16.dynamicSP, fontWeight: FontWeight.w600),
                                   ),
                                   SizedBox(height: Dimensions.r8.dynamicH),
                                   Text(
                                     emptySubMessage,
-                                    style: TextStyle(
-                                      fontSize: Dimensions.r14.dynamicSP,
-                                      color: context.textSecondary,
-                                    ),
+                                    style: TextStyle(fontSize: Dimensions.r14.dynamicSP, color: context.textSecondary),
                                     textAlign: TextAlign.center,
                                   ),
                                 ],
@@ -690,31 +587,23 @@ class _ExploreScreenMobileState extends State<ExploreScreenMobile> {
                         }
 
                         return SliverPadding(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: Dimensions.r16.dynamicW,
-                          ),
+                          padding: EdgeInsets.symmetric(horizontal: Dimensions.r16.dynamicW),
                           sliver: SliverList(
                             delegate: SliverChildBuilderDelegate(
                               (context, index) {
                                 if (index >= displayedPosts.length) {
                                   return Center(
                                     child: Padding(
-                                      padding: EdgeInsets.symmetric(
-                                        vertical: Dimensions.r16.dynamicH,
-                                      ),
+                                      padding: EdgeInsets.symmetric(vertical: Dimensions.r16.dynamicH),
                                       child: const CircularProgressIndicator(),
                                     ),
                                   );
                                 }
                                 final spot = displayedPosts[index];
-                                final category = context
-                                    .read<CategoryBloc>()
-                                    .state is CategoryLoaded
-                                    ? (context.read<CategoryBloc>().state
-                                            as CategoryLoaded)
-                                        .categories
-                                        .where((c) => c.id == spot.categoryId)
-                                        .firstOrNull
+                                final category = context.read<CategoryBloc>().state is CategoryLoaded
+                                    ? (context.read<CategoryBloc>().state as CategoryLoaded).categories
+                                          .where((c) => c.id == spot.categoryId)
+                                          .firstOrNull
                                     : null;
                                 return AnimationConfiguration.staggeredList(
                                   position: index,
@@ -728,10 +617,7 @@ class _ExploreScreenMobileState extends State<ExploreScreenMobile> {
                                         categoryIcon: category?.icon ?? '🎯',
                                         heroTagPrefix: 'explore',
                                         onTap: () {
-                                          final extra = {
-                                            'heroTag': 'explore_activity_image_${spot.id}',
-                                            'spot': spot,
-                                          };
+                                          final extra = {'heroTag': 'explore_activity_image_${spot.id}', 'spot': spot};
                                           context.push(AppRoutes.spotDetailsPath(spot.id), extra: extra);
                                         },
                                       ),
@@ -740,9 +626,7 @@ class _ExploreScreenMobileState extends State<ExploreScreenMobile> {
                                 );
                               },
                               childCount:
-                                  (state.hasReachedMax ||
-                                      (state.searchQuery != null &&
-                                          state.searchQuery!.isNotEmpty))
+                                  (state.hasReachedMax || (state.searchQuery != null && state.searchQuery!.isNotEmpty))
                                   ? displayedPosts.length
                                   : displayedPosts.length + 1,
                             ),
@@ -754,9 +638,7 @@ class _ExploreScreenMobileState extends State<ExploreScreenMobile> {
                     },
                   ),
 
-                  SliverToBoxAdapter(
-                    child: SizedBox(height: Dimensions.r32.dynamicH),
-                  ),
+                  SliverToBoxAdapter(child: SizedBox(height: Dimensions.r32.dynamicH)),
                 ],
               ),
             ),
@@ -778,11 +660,7 @@ class _SliverCategoryDelegate extends SliverPersistentHeaderDelegate {
   double get maxExtent => 60.0;
 
   @override
-  Widget build(
-    BuildContext context,
-    double shrinkOffset,
-    bool overlapsContent,
-  ) {
+  Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
     return SizedBox.expand(child: child);
   }
 

@@ -4,6 +4,7 @@ import '../bloc/spot_details_bloc.dart';
 import 'spot_details_gallery.dart';
 import 'spot_details_overview.dart';
 import 'spot_details_info_card.dart';
+import 'spot_details_map_placeholder.dart';
 import 'spot_details_player_tile.dart';
 
 class SpotDetailsContent extends StatelessWidget {
@@ -51,8 +52,11 @@ class SpotDetailsContent extends StatelessWidget {
                   post.locationName,
                   cityId: post.cityId,
                 ),
-                actionLabel: loc.viewOnMap,
-                onAction: onMap,
+              ),
+              const SizedBox(height: AppSpacing.smLg),
+              SpotDetailsMapPlaceholder(
+                onMap: onMap,
+                locationName: post.locationName,
               ),
               if (post.description?.trim().isNotEmpty ?? false) ...[
                 const SizedBox(height: AppSpacing.lg),

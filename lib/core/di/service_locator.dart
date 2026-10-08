@@ -80,6 +80,7 @@ import '../../features/settings/presentation/bloc/settings_cubit.dart';
 import '../../features/reports/data/datasources/report_remote_datasource.dart';
 import '../../features/reports/data/repositories/report_repository_impl.dart';
 import 'package:lastspot_app/core/services/push_notification_service.dart';
+import 'package:lastspot_app/core/services/local_notification_service.dart';
 import '../../features/reports/domain/repositories/report_repository.dart';
 import '../../features/reports/domain/usecases/submit_report_usecase.dart';
 import '../../features/reports/presentation/bloc/report_cubit.dart';
@@ -118,6 +119,7 @@ Future<void> setupServiceLocator() async {
   );
 
   sl.registerSingleton<PushNotificationService>(PushNotificationService());
+  sl.registerSingleton<LocalNotificationService>(LocalNotificationService());
 
   // ── Data Sources ──────────────────────────────────────
   sl.registerSingleton<AuthRemoteDataSource>(
