@@ -22,6 +22,7 @@ class ProfileScreenMobile extends StatelessWidget {
   void _onLogout(BuildContext context, AppLocalizations loc) {
     AppUtils.showConfirmationDialog(
       context,
+      isDestructive: true,
       title: loc.logoutDialogTitle,
       message: loc.logoutDialogMessage,
       confirmText: loc.logout,

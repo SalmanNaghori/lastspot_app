@@ -10,7 +10,7 @@ class PopularSportsGrid extends StatelessWidget {
       name: 'Cricket',
       icon: Icons.sports_cricket,
       bgColor: Color(0xFFD1FAE5),
-      iconColor: Color(0xFF059669),
+      iconColor: AppColor.primaryColor,
     ),
     _PopularSport(
       name: 'Football',

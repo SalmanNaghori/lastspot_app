@@ -12,11 +12,16 @@ class ProfileScreenTablet extends StatelessWidget {
   final ProfileState state;
   final Future<void> Function() onRefresh;
 
-  const ProfileScreenTablet({super.key, required this.state, required this.onRefresh});
+  const ProfileScreenTablet({
+    super.key,
+    required this.state,
+    required this.onRefresh,
+  });
 
   void _onLogout(BuildContext context, AppLocalizations loc) {
     AppUtils.showConfirmationDialog(
       context,
+      isDestructive: true,
       title: loc.logoutDialogTitle,
       message: loc.logoutDialogMessage,
       confirmText: loc.logout,
@@ -51,7 +56,10 @@ class ProfileScreenTablet extends StatelessWidget {
               decoration: BoxDecoration(
                 color: context.colorScheme.surface,
                 borderRadius: BorderRadius.circular(Dimensions.r20),
-                border: Border.all(color: AppColor.helpCardBorderColor, width: 0.5),
+                border: Border.all(
+                  color: AppColor.helpCardBorderColor,
+                  width: 0.5,
+                ),
                 boxShadow: [
                   BoxShadow(
                     color: AppColor.blackColor.withValues(alpha: 0.04),
@@ -66,8 +74,13 @@ class ProfileScreenTablet extends StatelessWidget {
                     return const ProfileSkeleton();
                   } else if (state is ProfileError) {
                     return Padding(
-                      padding: const EdgeInsets.symmetric(vertical: Dimensions.r48),
-                      child: ErrorState(message: (state as ProfileError).message, onRetry: onRefresh),
+                      padding: const EdgeInsets.symmetric(
+                        vertical: Dimensions.r48,
+                      ),
+                      child: ErrorState(
+                        message: (state as ProfileError).message,
+                        onRetry: onRefresh,
+                      ),
                     );
                   } else if (state is ProfileLoaded) {
                     final profile = (state as ProfileLoaded).profile;
@@ -81,7 +94,11 @@ class ProfileScreenTablet extends StatelessWidget {
                             children: [
                               ProfileHeader(profile: profile),
                               const SizedBox(height: Dimensions.r32),
-                              const ProfileStatistics(createdCount: 0, joinedCount: 0, completedCount: 0),
+                              const ProfileStatistics(
+                                createdCount: 0,
+                                joinedCount: 0,
+                                completedCount: 0,
+                              ),
                             ],
                           ),
                         ),
@@ -96,7 +113,11 @@ class ProfileScreenTablet extends StatelessWidget {
                               ProfileSection(
                                 title: loc.profileSectionActivity,
                                 items: [
-                                  ProfileListTile(icon: Icons.assignment_outlined, title: loc.myRequests, onTap: () {}),
+                                  ProfileListTile(
+                                    icon: Icons.assignment_outlined,
+                                    title: loc.myRequests,
+                                    onTap: () {},
+                                  ),
                                   ProfileListTile(
                                     icon: Icons.event_available_outlined,
                                     title: loc.myActivities,
@@ -121,7 +142,11 @@ class ProfileScreenTablet extends StatelessWidget {
                                       context.safePush(AppRoutes.settings);
                                     },
                                   ),
-                                  ProfileListTile(icon: Icons.help_outline, title: loc.helpSupport, onTap: () {}),
+                                  ProfileListTile(
+                                    icon: Icons.help_outline,
+                                    title: loc.helpSupport,
+                                    onTap: () {},
+                                  ),
                                 ],
                               ),
                               ProfileSection(

@@ -1,5 +1,8 @@
 import 'package:lastspot_app/core/base_import.dart';
+import '../../domain/policies/spot_participation_policy.dart';
 import '../bloc/spot_details_bloc.dart';
+
+enum SpotDetailsMenuAction { copy, edit, report }
 
 class SpotDetailsMenuSheet extends StatelessWidget {
   final SpotDetailsLoaded loadedState;
@@ -8,60 +11,47 @@ class SpotDetailsMenuSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
+    final loc = context.loc;
+    return SingleChildScrollView(
+      padding: const EdgeInsets.fromLTRB(
+        AppSpacing.sm,
+        0,
+        AppSpacing.sm,
+        AppSpacing.md,
+      ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          ListTile(
-            leading: Icon(Icons.share, color: context.textPrimary),
-            title: Text(context.loc.share, style: context.bodyMedium),
-            onTap: () {
-              context.pop();
-              // Implement share
-            },
+          Padding(
+            padding: const EdgeInsets.all(AppSpacing.md),
+            child: Text(loc.detailsMenu, style: context.titleLarge),
           ),
-          if (loadedState.isHost) ...[
+          ListTile(
+            leading: const Icon(Icons.copy_all_outlined),
+            title: Text(loc.detailsCopy),
+            onTap: () => Navigator.of(context).pop(SpotDetailsMenuAction.copy),
+          ),
+          if (SpotParticipationPolicy.canEdit(
+            loadedState.post,
+            isHost: loadedState.isHost,
+          ))
             ListTile(
-              leading: Icon(Icons.edit, color: context.textPrimary),
-              title: Text(context.loc.edit, style: context.bodyMedium),
-              onTap: () {
-                context.pop();
-                context.safePush(AppRoutes.editSpot, extra: loadedState.post);
-              },
+              leading: const Icon(Icons.edit_outlined),
+              title: Text(loc.edit),
+              onTap: () =>
+                  Navigator.of(context).pop(SpotDetailsMenuAction.edit),
             ),
+          if (!loadedState.isHost)
             ListTile(
-              leading: Icon(Icons.cancel, color: AppColor.errorColor),
-              title: Text(
-                context.loc.cancelActivity,
-                style: context.bodyMedium?.copyWith(color: AppColor.errorColor),
+              leading: Icon(
+                Icons.flag_outlined,
+                color: context.colorScheme.error,
               ),
-              onTap: () {
-                context.pop();
-                // Implement cancel activity logic
-              },
+              title: Text(loc.reportActivityAction),
+              onTap: () =>
+                  Navigator.of(context).pop(SpotDetailsMenuAction.report),
             ),
-            ListTile(
-              leading: Icon(Icons.close, color: context.textPrimary),
-              title: Text(context.loc.closeActivity, style: context.bodyMedium),
-              onTap: () {
-                context.pop();
-                // Implement close logic
-              },
-            ),
-          ],
-          if (!loadedState.isHost) ...[
-            ListTile(
-              leading: Icon(Icons.report, color: AppColor.errorColor),
-              title: Text(
-                context.loc.reportActivityAction,
-                style: context.bodyMedium?.copyWith(color: AppColor.errorColor),
-              ),
-              onTap: () {
-                context.pop();
-                // Implement report logic
-              },
-            ),
-          ],
         ],
       ),
     );

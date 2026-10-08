@@ -3,6 +3,14 @@ import 'package:flutter/material.dart';
 class Dimensions {
   Dimensions._();
 
+  // Activity details layout tokens (logical pixels, independent of screen scale).
+  static const double detailsMaxWidth = 1120;
+  static const double detailsWideBreakpoint = 900;
+  static const double detailsTabletBreakpoint = 650;
+  static const double detailsSidebarWidth = 320;
+  static const double detailsGalleryRatio = 1.65;
+  static const int detailsImageCacheWidth = 1200;
+
   static late double screenWidth;
   static late double screenHeight;
 

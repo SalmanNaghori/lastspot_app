@@ -25,6 +25,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
       final profileState = context.read<ProfileCubit>().state;
       String? cityId;
       if (profileState is ProfileLoaded) {
@@ -48,13 +49,13 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void _onCreateActivityTap() => context.push(AppRoutes.create);
 
-  void _onRefresh() {
+  Future<void> _onRefresh() async {
     final state = context.read<HomeCubit>().state;
     String? cityId;
     if (state is HomeSuccess) {
       cityId = state.selectedCityId;
     }
-    context.read<HomeCubit>().loadHomeData(cityId: cityId);
+    await context.read<HomeCubit>().loadHomeData(cityId: cityId);
   }
 
   void _onCitySelected(String cityId, String cityName) {
@@ -282,21 +283,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           .firstOrNull ??
                       loc.selectCity;
 
-            // Debug logs
-            if (isLoading) {
-              debugPrint("FeedState: Loading");
-            } else if (isNetworkError ||
-                isServerError ||
-                (successState != null && hasFeedError)) {
-              debugPrint("FeedState: Error");
-            } else if (successState != null && successState.isEmpty) {
-              debugPrint("FeedState: Success Empty");
-            } else if (successState != null) {
-              debugPrint("FeedState: Success");
-            }
-
             return RefreshIndicator(
-              onRefresh: () async => _onRefresh(),
+              onRefresh: _onRefresh,
               color: AppColor.primaryColor,
               child: CustomScrollView(
                 physics: const AlwaysScrollableScrollPhysics(),
@@ -309,6 +297,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         SizedBox(height: Dimensions.r8.dynamicH),
                         HomeGreetingBanner(
                           userName: userName,
+                          onExploreTap: _onViewAllTap,
                           city: userCityName,
                           onCityTap: (isLoading || hasCitiesError)
                               ? () => _onRefresh()
@@ -400,6 +389,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 .where((c) => c.id == spot.categoryId)
                                 .firstOrNull;
                             return ActivityCard(
+                              key: ValueKey(spot.id),
                               spot: spot,
                               categoryName: category?.name ?? 'Sport',
                               categoryIcon: category?.icon ?? '🎯',
@@ -423,34 +413,29 @@ class _HomeScreenState extends State<HomeScreen> {
                               onViewAll: _onViewAllTap,
                             ),
                             SizedBox(height: Dimensions.r16.dynamicH),
-                            SizedBox(
-                              height: 450.0.dynamicH,
-                              child: ListView.separated(
-                                scrollDirection: Axis.horizontal,
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: Dimensions.r16.dynamicW,
-                                ),
-                                itemCount: successState.nearbyActivities.length,
-                                separatorBuilder: (context, index) => SizedBox(
-                                  width: Dimensions.r12.dynamicW,
-                                ),
-                                itemBuilder: (context, index) {
-                                  final spot = successState.nearbyActivities[index];
-                                  final category = categories
-                                      .where((c) => c.id == spot.categoryId)
-                                      .firstOrNull;
-                                  return ActivityCard(
-                                    width: MediaQuery.of(context).size.width * 0.88,
-                                    spot: spot,
-                                    categoryName: category?.name ?? 'Sport',
-                                    categoryIcon: category?.icon ?? '🎯',
-                                    heroTagPrefix: 'nearby',
-                                    onTap: () => _onSpotTap(spot, 'nearby'),
-                                  );
-                                },
-                              ),
-                            ),
                           ],
+                        ),
+                      ),
+                      SliverPadding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: AppSpacing.md,
+                        ),
+                        sliver: SliverList.builder(
+                          itemCount: successState.nearbyActivities.length,
+                          itemBuilder: (context, index) {
+                            final spot = successState.nearbyActivities[index];
+                            final category = categories
+                                .where((c) => c.id == spot.categoryId)
+                                .firstOrNull;
+                            return ActivityCard(
+                              key: ValueKey('nearby_${spot.id}'),
+                              spot: spot,
+                              categoryName: category?.name ?? loc.navActivities,
+                              categoryIcon: category?.icon ?? '🎯',
+                              heroTagPrefix: 'nearby',
+                              onTap: () => _onSpotTap(spot, 'nearby'),
+                            );
+                          },
                         ),
                       ),
                     ],
@@ -484,6 +469,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 .where((c) => c.id == spot.categoryId)
                                 .firstOrNull;
                             return ActivityCard(
+                              key: ValueKey(spot.id),
                               spot: spot,
                               categoryName: category?.name ?? 'Sport',
                               categoryIcon: category?.icon ?? '🎯',

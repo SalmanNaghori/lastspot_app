@@ -1,6 +1,7 @@
 import 'package:lastspot_app/core/base_import.dart';
 import 'package:lastspot_app/features/spot/domain/entities/request_entity.dart';
 import 'package:skeletonizer/skeletonizer.dart';
+
 import 'sport_gradient_background.dart';
 
 class SpotHeroImage extends StatelessWidget {
@@ -21,25 +22,25 @@ class SpotHeroImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colorScheme;
+    final type = Theme.of(context).textTheme;
     return Hero(
       tag: heroTagPrefix != null
           ? '${heroTagPrefix}_activity_image_${spot.id}'
           : 'activity_image_${spot.id}',
       child: Skeleton.replace(
         width: double.infinity,
-        height: Dimensions.r64.dynamicH * 2.8,
+        height: Dimensions.r64 * 3,
         child: ClipRRect(
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(Dimensions.r16.dynamicR),
-            topRight: Radius.circular(Dimensions.r16.dynamicR),
+          borderRadius: BorderRadius.vertical(
+            top: Radius.circular(AppRadius.xxl),
           ),
           child: SizedBox(
-            height: Dimensions.r64.dynamicH * 2.8,
+            height: Dimensions.r64 * 3,
             width: double.infinity,
             child: Stack(
               fit: StackFit.expand,
               children: [
-                // Hero image or gradient background
                 if (spot.images.isNotEmpty)
                   AppCachedNetworkImage(
                     imageUrl: spot.images.first.storagePath,
@@ -54,93 +55,64 @@ class SpotHeroImage extends StatelessWidget {
                   )
                 else
                   SportGradientBackground(categoryId: spot.categoryId),
-
-                // Gradient scrim
-                Container(
+                DecoratedBox(
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter,
                       colors: [
-                        AppColor.blackColor.withValues(alpha: 0.15),
-                        AppColor.blackColor.withValues(alpha: 0.45),
+                        AppColor.blackColor.withValues(alpha: 0.08),
+                        AppColor.blackColor.withValues(alpha: 0.35),
                       ],
                     ),
                   ),
                 ),
-
-                // Top badges
                 Positioned(
-                  top: Dimensions.r12.dynamicH,
-                  left: Dimensions.r12.dynamicW,
-                  right: Dimensions.r12.dynamicW,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  top: AppSpacing.smLg,
+                  left: AppSpacing.smLg,
+                  right: AppSpacing.smLg,
+                  child: Wrap(
+                    alignment: WrapAlignment.spaceBetween,
+                    spacing: AppSpacing.sm,
+                    runSpacing: AppSpacing.sm,
                     children: [
-                      // Spots Left badge
                       if (spotsLeftText.isNotEmpty)
                         Container(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: Dimensions.r10.dynamicW,
-                            vertical: Dimensions.r5.dynamicH,
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: AppSpacing.smLg,
+                            vertical: AppSpacing.sm,
                           ),
                           decoration: BoxDecoration(
-                            color: context.primaryColor,
-                            borderRadius: BorderRadius.circular(
-                              Dimensions.r8.dynamicR,
-                            ),
+                            color: colors.primary,
+                            borderRadius: AppRadius.pillBorderRadius,
                           ),
                           child: Text(
                             spotsLeftText,
-                            style: TextStyle(
-                              color: AppColor.whiteColor,
-                              fontSize: Dimensions.r11.dynamicSP,
-                              fontWeight: FontWeight.w800,
-                              letterSpacing: 0.3,
+                            style: type.labelMedium?.copyWith(
+                              color: colors.onPrimary,
                             ),
                           ),
-                        )
-                      else
-                        const SizedBox.shrink(),
-                      // Price badge
+                        ),
                       if (perPersonLabel.isNotEmpty || spot.pricePerPerson > 0)
                         Container(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: Dimensions.r10.dynamicW,
-                            vertical: Dimensions.r5.dynamicH,
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: AppSpacing.smLg,
+                            vertical: AppSpacing.sm,
                           ),
                           decoration: BoxDecoration(
-                            color: context.surfaceColor.withValues(alpha: 0.92),
-                            borderRadius: BorderRadius.circular(
-                              Dimensions.r8.dynamicR,
+                            color: colors.surface,
+                            borderRadius: AppRadius.pillBorderRadius,
+                          ),
+                          child: Text(
+                            spot.pricePerPerson > 0
+                                ? '${AppUtils.formatCurrency(spot.pricePerPerson)} $perPersonLabel'
+                                      .trim()
+                                : context.loc.free,
+                            style: type.labelMedium?.copyWith(
+                              color: colors.onSurface,
                             ),
                           ),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Text(
-                                spot.pricePerPerson > 0
-                                    ? '₹${spot.pricePerPerson.toStringAsFixed(spot.pricePerPerson.truncateToDouble() == spot.pricePerPerson ? 0 : 2)}'
-                                    : 'FREE',
-                                style: TextStyle(
-                                  color: context.primaryColor,
-                                  fontSize: Dimensions.r12.dynamicSP,
-                                  fontWeight: FontWeight.w800,
-                                ),
-                              ),
-                              if (perPersonLabel.isNotEmpty)
-                                Text(
-                                  perPersonLabel,
-                                  style: TextStyle(
-                                    color: context.textSecondary,
-                                    fontSize: Dimensions.r9.dynamicSP,
-                                  ),
-                                ),
-                            ],
-                          ),
-                        )
-                      else
-                        const SizedBox.shrink(),
+                        ),
                     ],
                   ),
                 ),

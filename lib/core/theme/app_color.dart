@@ -10,16 +10,16 @@ class AppColor {
   /// Main LastSpot brand color.
   /// Used for primary actions, selected navigation,
   /// links and important highlights.
-  static const Color primaryColor = Color(0xFF0FA958);
+  static const Color primaryColor = Color(0xFF5B46E8);
 
-  /// Darker version of primary.
-  static const Color primaryDarkColor = Color(0xFF087A40);
+  /// Darker indigo for strong contrast.
+  static const Color primaryDarkColor = Color(0xFF3C28A4);
 
-  /// Very light green used for containers/background highlights.
-  static const Color primaryContainerLight = Color(0xFFD1FAE5);
+  /// Soft lavender used for containers/background highlights.
+  static const Color primaryContainerLight = Color(0xFFEAE5FF);
 
-  /// Dark green used for primary containers in dark mode.
-  static const Color primaryContainerDark = Color(0xFF064E3B);
+  /// Deep indigo used for primary containers in dark mode.
+  static const Color primaryContainerDark = Color(0xFF2A205B);
 
   /// Secondary brand accent.
   /// Used sparingly for important attention areas.
@@ -32,67 +32,69 @@ class AppColor {
   // ACCENT COLORS
   // ============================================================
 
-  /// Coral/orange accent.
+  /// Warm coral accent.
   /// Good for Create, highlights and important secondary actions.
-  static const Color accentColor = Color(0xFFFF7A00);
+  static const Color accentColor = Color(0xFFBF4939);
 
-  static const Color accentLight = Color(0xFFFFEDD5);
+  static const Color accentHighlight = Color(0xFFFF9B87);
 
-  static const Color accentDark = Color(0xFF9A3412);
+  static const Color accentLight = Color(0xFFFFE5DF);
+
+  static const Color accentDark = Color(0xFF752A21);
 
   // ============================================================
   // LIGHT THEME
   // ============================================================
 
-  static const Color backgroundLight = Color(0xFFF7FAF8);
+  static const Color backgroundLight = Color(0xFFF7F6FC);
 
   static const Color surfaceLight = Color(0xFFFFFFFF);
 
-  static const Color surfaceContainerLight = Color(0xFFF1F5F9);
+  static const Color surfaceContainerLight = Color(0xFFF0EDF8);
 
-  static const Color surfaceContainerLowLight = Color(0xFFF8FAFC);
+  static const Color surfaceContainerLowLight = Color(0xFFFAF9FE);
 
-  static const Color surfaceContainerHighLight = Color(0xFFEFF3F7);
+  static const Color surfaceContainerHighLight = Color(0xFFE9E4F4);
 
-  static const Color cardBorderLight = Color(0xFFDCE7E1);
+  static const Color cardBorderLight = Color(0xFFDDD8EB);
 
   /// Border light color alias (used in cached network image & cards)
-  static const Color borderLight = Color(0xFFDCE7E1);
+  static const Color borderLight = Color(0xFFDDD8EB);
 
-  static const Color dividerLight = Color(0xFFE2E8F0);
+  static const Color dividerLight = Color(0xFFE5E0F0);
 
   // ============================================================
   // DARK THEME
   // ============================================================
 
-  static const Color backgroundDark = Color(0xFF0B1220);
+  static const Color backgroundDark = Color(0xFF10101C);
 
-  static const Color surfaceDark = Color(0xFF111827);
+  static const Color surfaceDark = Color(0xFF191827);
 
-  static const Color surfaceContainerDark = Color(0xFF1E293B);
+  static const Color surfaceContainerDark = Color(0xFF252336);
 
-  static const Color surfaceContainerLowDark = Color(0xFF151F2E);
+  static const Color surfaceContainerLowDark = Color(0xFF201E30);
 
-  static const Color surfaceContainerHighDark = Color(0xFF273449);
+  static const Color surfaceContainerHighDark = Color(0xFF302C43);
 
-  static const Color cardBorderDark = Color(0xFF334155);
+  static const Color cardBorderDark = Color(0xFF454057);
 
   /// Border dark color alias
-  static const Color borderDark = Color(0xFF334155);
+  static const Color borderDark = Color(0xFF454057);
 
-  static const Color dividerDark = Color(0xFF334155);
+  static const Color dividerDark = Color(0xFF454057);
 
   // ============================================================
   // TEXT COLORS
   // ============================================================
 
-  static const Color textPrimaryLight = Color(0xFF10231A);
+  static const Color textPrimaryLight = Color(0xFF211C38);
 
-  static const Color textSecondaryLight = Color(0xFF60736A);
+  static const Color textSecondaryLight = Color(0xFF6D657F);
 
   static const Color textTertiaryLight = Color(0xFF94A3B8);
 
-  static const Color textPrimaryDark = Color(0xFFF8FAFC);
+  static const Color textPrimaryDark = Color(0xFFFAF9FE);
 
   static const Color textSecondaryDark = Color(0xFFCBD5E1);
 
@@ -110,11 +112,11 @@ class AppColor {
   static const Color errorContainerDark = Color(0xFF7F1D1D);
 
   /// Success / joined / available
-  static const Color successColor = Color(0xFF22C55E);
+  static const Color successColor = Color(0xFF3469D6);
 
-  static const Color successContainerLight = Color(0xFFDCFCE7);
+  static const Color successContainerLight = Color(0xFFE0EAFF);
 
-  static const Color successContainerDark = Color(0xFF14532D);
+  static const Color successContainerDark = Color(0xFF213C70);
 
   /// Warning / almost full / pending
   static const Color warningColor = Color(0xFFF59E0B);
@@ -196,7 +198,11 @@ class AppColor {
     onErrorContainer: errorContainerDark,
     surface: surfaceLight,
     onSurface: textPrimaryLight,
-    surfaceContainerHighest: surfaceContainerLight,
+    surfaceContainerLowest: surfaceLight,
+    surfaceContainerLow: surfaceContainerLowLight,
+    surfaceContainer: surfaceContainerLight,
+    surfaceContainerHigh: surfaceContainerHighLight,
+    surfaceContainerHighest: surfaceContainerHighLight,
     onSurfaceVariant: textSecondaryLight,
     outline: cardBorderLight,
     outlineVariant: dividerLight,
@@ -204,9 +210,9 @@ class AppColor {
 
   static const ColorScheme darkColorScheme = ColorScheme(
     brightness: Brightness.dark,
-    primary: primaryColor,
-    onPrimary: Colors.white,
-    primaryContainer: primaryDarkColor,
+    primary: primaryContainerLight,
+    onPrimary: primaryContainerDark,
+    primaryContainer: primaryContainerDark,
     onPrimaryContainer: primaryContainerLight,
     secondary: accentColor,
     onSecondary: Colors.white,
@@ -218,7 +224,11 @@ class AppColor {
     onErrorContainer: errorContainerLight,
     surface: surfaceDark,
     onSurface: textPrimaryDark,
-    surfaceContainerHighest: surfaceContainerDark,
+    surfaceContainerLowest: backgroundDark,
+    surfaceContainerLow: surfaceContainerLowDark,
+    surfaceContainer: surfaceContainerDark,
+    surfaceContainerHigh: surfaceContainerHighDark,
+    surfaceContainerHighest: surfaceContainerHighDark,
     onSurfaceVariant: textSecondaryDark,
     outline: cardBorderDark,
     outlineVariant: dividerDark,
@@ -309,7 +319,8 @@ extension ThemeColors on BuildContext {
   // Background
   // ------------------------------------------------------------
 
-  Color get backgroundColor => colorScheme.surface;
+  Color get backgroundColor =>
+      isDarkMode ? AppColor.backgroundDark : AppColor.backgroundLight;
 
   // ------------------------------------------------------------
   // Surface
@@ -319,11 +330,9 @@ extension ThemeColors on BuildContext {
 
   Color get surfaceContainer => colorScheme.surfaceContainerHighest;
 
-  Color get surfaceContainerLow =>
-      colorScheme.surfaceContainerHighest; // Adjust if needed based on scheme
+  Color get surfaceContainerLow => colorScheme.surfaceContainerLow;
 
-  Color get surfaceContainerHigh =>
-      colorScheme.surfaceContainerHighest; // Adjust if needed based on scheme
+  Color get surfaceContainerHigh => colorScheme.surfaceContainerHigh;
 
   // ------------------------------------------------------------
   // Text

@@ -3,7 +3,6 @@ import 'package:url_launcher/url_launcher.dart';
 import '../base_import.dart';
 import 'package:lastspot_app/features/cities/presentation/bloc/city_cubit.dart';
 import 'package:lastspot_app/features/cities/presentation/bloc/city_state.dart';
-import 'context_extensions.dart';
 
 /// App-wide utility methods as specified in project Rule 13.
 class AppUtils {
@@ -27,11 +26,16 @@ class AppUtils {
     ScaffoldMessenger.of(context).hideCurrentSnackBar();
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(message, style: const TextStyle(color: AppColor.whiteColor)),
+        content: Text(
+          message,
+          style: const TextStyle(color: AppColor.whiteColor),
+        ),
         backgroundColor: isError ? AppColor.errorColor : AppColor.primaryColor,
         duration: duration,
         behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(Dimensions.r12)),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(Dimensions.r12),
+        ),
       ),
     );
   }
@@ -49,12 +53,14 @@ class AppUtils {
 
   static Future<void> launchMap(String query) async {
     try {
-      if (query.trim().startsWith('http://') || query.trim().startsWith('https://')) {
+      if (query.trim().startsWith('http://') ||
+          query.trim().startsWith('https://')) {
         await launchWebUrl(query.trim());
         return;
       }
       final encodedQuery = Uri.encodeComponent(query);
-      final url = 'https://www.google.com/maps/search/?api=1&query=$encodedQuery';
+      final url =
+          'https://www.google.com/maps/search/?api=1&query=$encodedQuery';
       await launchWebUrl(url);
     } catch (e) {
       debugPrint('Error launching map: $e');
@@ -67,7 +73,11 @@ class AppUtils {
   }
 
   /// Extracts display location (resolving URLs to "Map Location")
-  static String getDisplayLocation(BuildContext context, String location, {String? cityId}) {
+  static String getDisplayLocation(
+    BuildContext context,
+    String location, {
+    String? cityId,
+  }) {
     String finalLocation = location;
     final lower = location.toLowerCase();
     if (lower.startsWith('http://') || lower.startsWith('https://')) {
@@ -126,7 +136,7 @@ class AppUtils {
   }
 
   /// Shows a standard confirmation dialog
-  static void showConfirmationDialog(
+  static Future<void> showConfirmationDialog(
     BuildContext context, {
     required String title,
     required String message,
@@ -134,30 +144,22 @@ class AppUtils {
     required String cancelText,
     required VoidCallback onConfirm,
     VoidCallback? onCancel,
-  }) {
-    showDialog(
+    bool isDestructive = false,
+  }) async {
+    final confirmed = await AppDialog.showConfirmation(
       context: context,
-      builder: (ctx) => AlertDialog(
-        title: Text(title),
-        content: Text(message),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.of(ctx).pop();
-              if (onCancel != null) onCancel();
-            },
-            child: Text(cancelText),
-          ),
-          FilledButton(
-            onPressed: () {
-              Navigator.of(ctx).pop();
-              onConfirm();
-            },
-            child: Text(confirmText),
-          ),
-        ],
-      ),
+      title: title,
+      message: message,
+      confirmLabel: confirmText,
+      cancelLabel: cancelText,
+      isDestructive: isDestructive,
     );
+    if (!context.mounted) return;
+    if (confirmed == true) {
+      onConfirm();
+    } else if (confirmed == false) {
+      onCancel?.call();
+    }
   }
 }
 

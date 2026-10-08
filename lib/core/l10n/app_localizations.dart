@@ -1881,6 +1881,210 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Cycling'**
   String get sportCycling;
+
+  /// No description provided for @confirmAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm'**
+  String get confirmAction;
+
+  /// No description provided for @discoveryHeadline.
+  ///
+  /// In en, this message translates to:
+  /// **'Less scrolling.\nMore playing.'**
+  String get discoveryHeadline;
+
+  /// No description provided for @discoverySubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Find your people. Make your next game happen.'**
+  String get discoverySubtitle;
+
+  /// No description provided for @browseActivities.
+  ///
+  /// In en, this message translates to:
+  /// **'Find a game'**
+  String get browseActivities;
+
+  /// No description provided for @activityHost.
+  ///
+  /// In en, this message translates to:
+  /// **'Host'**
+  String get activityHost;
+
+  /// No description provided for @activityFull.
+  ///
+  /// In en, this message translates to:
+  /// **'Full'**
+  String get activityFull;
+
+  /// No description provided for @activityCapacity.
+  ///
+  /// In en, this message translates to:
+  /// **'{current} of {total} joined'**
+  String activityCapacity(int current, int total);
+
+  /// No description provided for @detailsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Activity details'**
+  String get detailsTitle;
+
+  /// No description provided for @detailsAbout.
+  ///
+  /// In en, this message translates to:
+  /// **'About this activity'**
+  String get detailsAbout;
+
+  /// No description provided for @detailsWhen.
+  ///
+  /// In en, this message translates to:
+  /// **'When we play'**
+  String get detailsWhen;
+
+  /// No description provided for @detailsWhere.
+  ///
+  /// In en, this message translates to:
+  /// **'Meet here'**
+  String get detailsWhere;
+
+  /// No description provided for @detailsPlayers.
+  ///
+  /// In en, this message translates to:
+  /// **'Who’s playing'**
+  String get detailsPlayers;
+
+  /// No description provided for @detailsNoPlayers.
+  ///
+  /// In en, this message translates to:
+  /// **'The lineup is just getting started.'**
+  String get detailsNoPlayers;
+
+  /// No description provided for @detailsNoPlayersHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirmed players will appear here once the host accepts their requests.'**
+  String get detailsNoPlayersHint;
+
+  /// No description provided for @detailsHostedBy.
+  ///
+  /// In en, this message translates to:
+  /// **'Your host'**
+  String get detailsHostedBy;
+
+  /// No description provided for @detailsJoinHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Send a request. The host will confirm your spot.'**
+  String get detailsJoinHint;
+
+  /// No description provided for @detailsPendingHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Your request is with the host. We’ll notify you when they respond.'**
+  String get detailsPendingHint;
+
+  /// No description provided for @detailsJoinedHint.
+  ///
+  /// In en, this message translates to:
+  /// **'You’re on the lineup. Check the time and venue before you head out.'**
+  String get detailsJoinedHint;
+
+  /// No description provided for @detailsHostHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Review join requests and build your lineup.'**
+  String get detailsHostHint;
+
+  /// No description provided for @detailsClosed.
+  ///
+  /// In en, this message translates to:
+  /// **'Joining closed'**
+  String get detailsClosed;
+
+  /// No description provided for @detailsDraft.
+  ///
+  /// In en, this message translates to:
+  /// **'Draft'**
+  String get detailsDraft;
+
+  /// No description provided for @detailsOpen.
+  ///
+  /// In en, this message translates to:
+  /// **'Open for players'**
+  String get detailsOpen;
+
+  /// No description provided for @detailsCopy.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy activity details'**
+  String get detailsCopy;
+
+  /// No description provided for @detailsCopied.
+  ///
+  /// In en, this message translates to:
+  /// **'Activity details copied'**
+  String get detailsCopied;
+
+  /// No description provided for @detailsCopyFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not copy the details. Please try again.'**
+  String get detailsCopyFailed;
+
+  /// No description provided for @detailsMenu.
+  ///
+  /// In en, this message translates to:
+  /// **'Activity options'**
+  String get detailsMenu;
+
+  /// No description provided for @detailsSafety.
+  ///
+  /// In en, this message translates to:
+  /// **'Play well, together'**
+  String get detailsSafety;
+
+  /// No description provided for @detailsSafetyNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm the meeting point with your host, respect other players, and report any concerns.'**
+  String get detailsSafetyNote;
+
+  /// No description provided for @detailsLoadError.
+  ///
+  /// In en, this message translates to:
+  /// **'We couldn’t load this activity.'**
+  String get detailsLoadError;
+
+  /// No description provided for @detailsPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Per person'**
+  String get detailsPrice;
+
+  /// No description provided for @detailsJoin.
+  ///
+  /// In en, this message translates to:
+  /// **'Request to join'**
+  String get detailsJoin;
+
+  /// No description provided for @detailsPhotoCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{current} / {total}'**
+  String detailsPhotoCount(int current, int total);
+
+  /// No description provided for @detailsAvailability.
+  ///
+  /// In en, this message translates to:
+  /// **'{available} of {total} spots available'**
+  String detailsAvailability(int available, int total);
+
+  /// No description provided for @detailsPhotoLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Activity photo {current} of {total}'**
+  String detailsPhotoLabel(int current, int total);
 }
 
 class _AppLocalizationsDelegate

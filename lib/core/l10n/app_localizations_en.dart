@@ -958,4 +958,121 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get sportCycling => 'Cycling';
+
+  @override
+  String get confirmAction => 'Confirm';
+
+  @override
+  String get discoveryHeadline => 'Less scrolling.\nMore playing.';
+
+  @override
+  String get discoverySubtitle =>
+      'Find your people. Make your next game happen.';
+
+  @override
+  String get browseActivities => 'Find a game';
+
+  @override
+  String get activityHost => 'Host';
+
+  @override
+  String get activityFull => 'Full';
+
+  @override
+  String activityCapacity(int current, int total) {
+    return '$current of $total joined';
+  }
+
+  @override
+  String get detailsTitle => 'Activity details';
+
+  @override
+  String get detailsAbout => 'About this activity';
+
+  @override
+  String get detailsWhen => 'When we play';
+
+  @override
+  String get detailsWhere => 'Meet here';
+
+  @override
+  String get detailsPlayers => 'Who’s playing';
+
+  @override
+  String get detailsNoPlayers => 'The lineup is just getting started.';
+
+  @override
+  String get detailsNoPlayersHint =>
+      'Confirmed players will appear here once the host accepts their requests.';
+
+  @override
+  String get detailsHostedBy => 'Your host';
+
+  @override
+  String get detailsJoinHint =>
+      'Send a request. The host will confirm your spot.';
+
+  @override
+  String get detailsPendingHint =>
+      'Your request is with the host. We’ll notify you when they respond.';
+
+  @override
+  String get detailsJoinedHint =>
+      'You’re on the lineup. Check the time and venue before you head out.';
+
+  @override
+  String get detailsHostHint => 'Review join requests and build your lineup.';
+
+  @override
+  String get detailsClosed => 'Joining closed';
+
+  @override
+  String get detailsDraft => 'Draft';
+
+  @override
+  String get detailsOpen => 'Open for players';
+
+  @override
+  String get detailsCopy => 'Copy activity details';
+
+  @override
+  String get detailsCopied => 'Activity details copied';
+
+  @override
+  String get detailsCopyFailed =>
+      'Could not copy the details. Please try again.';
+
+  @override
+  String get detailsMenu => 'Activity options';
+
+  @override
+  String get detailsSafety => 'Play well, together';
+
+  @override
+  String get detailsSafetyNote =>
+      'Confirm the meeting point with your host, respect other players, and report any concerns.';
+
+  @override
+  String get detailsLoadError => 'We couldn’t load this activity.';
+
+  @override
+  String get detailsPrice => 'Per person';
+
+  @override
+  String get detailsJoin => 'Request to join';
+
+  @override
+  String detailsPhotoCount(int current, int total) {
+    return '$current / $total';
+  }
+
+  @override
+  String detailsAvailability(int available, int total) {
+    return '$available of $total spots available';
+  }
+
+  @override
+  String detailsPhotoLabel(int current, int total) {
+    return 'Activity photo $current of $total';
+  }
 }

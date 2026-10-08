@@ -393,5 +393,79 @@
   "sportCricket": "Cricket",
   "sportSwimming": "Swimming",
   "sportRunning": "Running",
-  "sportCycling": "Cycling"
+  "sportCycling": "Cycling",
+  "confirmAction": "Confirm",
+  "discoveryHeadline": "Less scrolling.\nMore playing.",
+  "discoverySubtitle": "Find your people. Make your next game happen.",
+  "browseActivities": "Find a game",
+  "activityHost": "Host",
+  "activityFull": "Full",
+  "activityCapacity": "{current} of {total} joined",
+  "@activityCapacity": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "detailsTitle": "Activity details",
+  "detailsAbout": "About this activity",
+  "detailsWhen": "When we play",
+  "detailsWhere": "Meet here",
+  "detailsPlayers": "Who’s playing",
+  "detailsNoPlayers": "The lineup is just getting started.",
+  "detailsNoPlayersHint": "Confirmed players will appear here once the host accepts their requests.",
+  "detailsHostedBy": "Your host",
+  "detailsJoinHint": "Send a request. The host will confirm your spot.",
+  "detailsPendingHint": "Your request is with the host. We’ll notify you when they respond.",
+  "detailsJoinedHint": "You’re on the lineup. Check the time and venue before you head out.",
+  "detailsHostHint": "Review join requests and build your lineup.",
+  "detailsClosed": "Joining closed",
+  "detailsDraft": "Draft",
+  "detailsOpen": "Open for players",
+  "detailsCopy": "Copy activity details",
+  "detailsCopied": "Activity details copied",
+  "detailsCopyFailed": "Could not copy the details. Please try again.",
+  "detailsMenu": "Activity options",
+  "detailsSafety": "Play well, together",
+  "detailsSafetyNote": "Confirm the meeting point with your host, respect other players, and report any concerns.",
+  "detailsLoadError": "We couldn’t load this activity.",
+  "detailsPrice": "Per person",
+  "detailsJoin": "Request to join",
+  "detailsPhotoCount": "{current} / {total}",
+  "@detailsPhotoCount": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "detailsAvailability": "{available} of {total} spots available",
+  "@detailsAvailability": {
+    "placeholders": {
+      "available": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "detailsPhotoLabel": "Activity photo {current} of {total}",
+  "@detailsPhotoLabel": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  }
 }

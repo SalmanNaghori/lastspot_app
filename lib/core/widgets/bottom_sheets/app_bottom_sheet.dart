@@ -1,4 +1,5 @@
 import '../../base_import.dart';
+import '../../theme/app_motion.dart';
 
 class AppBottomSheet {
   AppBottomSheet._();
@@ -17,29 +18,18 @@ class AppBottomSheet {
       return await showModalBottomSheet<T>(
         context: context,
         isScrollControlled: isScrollControlled,
+        useSafeArea: true,
+        showDragHandle: true,
+        sheetAnimationStyle: AnimationStyle(
+          duration: AppMotion.duration(context, AppMotion.standard),
+          reverseDuration: AppMotion.duration(context, AppMotion.quick),
+        ),
         builder: (context) {
           return Padding(
             padding: EdgeInsets.only(
               bottom: MediaQuery.viewInsetsOf(context).bottom,
             ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const SizedBox(height: 12),
-                Container(
-                  width: 40,
-                  height: 4,
-                  decoration: BoxDecoration(
-                    color: Theme.of(
-                      context,
-                    ).colorScheme.onSurfaceVariant.withValues(alpha: 0.4),
-                    borderRadius: BorderRadius.circular(2),
-                  ),
-                ),
-                const SizedBox(height: 12),
-                Flexible(child: builder(context)),
-              ],
-            ),
+            child: SafeArea(top: false, child: builder(context)),
           );
         },
       );

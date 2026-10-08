@@ -1,141 +1,79 @@
 import 'package:lastspot_app/core/base_import.dart';
-import '../../domain/entities/request_entity.dart';
-import '../../domain/entities/join_request_entity.dart';
+import '../../domain/policies/spot_participation_policy.dart';
 import '../bloc/spot_details_bloc.dart';
 
-class SpotDetailsCtaButton extends StatelessWidget {
+class SpotDetailsCtaButton extends StatefulWidget {
   final SpotDetailsLoaded loadedState;
 
   const SpotDetailsCtaButton({super.key, required this.loadedState});
 
   @override
+  State<SpotDetailsCtaButton> createState() => _SpotDetailsCtaButtonState();
+}
+
+class _SpotDetailsCtaButtonState extends State<SpotDetailsCtaButton> {
+  bool _submitting = false;
+
+  void _requestToJoin() {
+    if (_submitting) return;
+    // Recheck the time at the action edge in case the screen was left open.
+    final availability = SpotParticipationPolicy.availability(
+      post: widget.loadedState.post,
+      request: widget.loadedState.userJoinRequest,
+      now: DateTime.now(),
+    );
+    if (availability != SpotJoinAvailability.available) {
+      setState(() {});
+      return;
+    }
+    setState(() => _submitting = true);
+    context.read<SpotDetailsBloc>().add(
+      RequestToJoinEvent(spotId: widget.loadedState.post.id),
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final l10n = context.loc;
-    final post = loadedState.post;
-    final isHost = loadedState.isHost;
-    final userRequest = loadedState.userJoinRequest;
-
-    if (isHost) {
-      return ElevatedButton(
-        onPressed: () =>
-            context.safePush(AppRoutes.manageRequestsPath(post.id)),
-        style: ElevatedButton.styleFrom(
-          backgroundColor: AppColor.secondaryColor,
-          foregroundColor: AppColor.whiteColor,
-          minimumSize: Size(double.infinity, Dimensions.r50.dynamicH),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(Dimensions.r12.dynamicR),
-          ),
-        ),
-        child: Text(
-          l10n.manageMatchRequests,
-          style: const TextStyle(fontWeight: FontWeight.bold),
-        ),
-      );
-    }
-
-    if (userRequest != null) {
-      String text;
-      Color bgColor;
-      switch (userRequest.status) {
-        case JoinRequestStatus.pending:
-          text = l10n.pendingRequest;
-          bgColor = AppColor.secondaryColor;
-          break;
-        case JoinRequestStatus.accepted:
-          text = l10n.joined;
-          bgColor = AppColor.successColor;
-          break;
-        case JoinRequestStatus.rejected:
-          text = l10n.requestRejected;
-          bgColor = AppColor.errorColor;
-          break;
-        case JoinRequestStatus.cancelled:
-          text = l10n.requestCancelled;
-          bgColor = context.textSecondary;
-          break;
-      }
-      return ElevatedButton(
-        onPressed: null,
-        style: ElevatedButton.styleFrom(
-          disabledBackgroundColor: bgColor.withValues(alpha: 0.5),
-          disabledForegroundColor: AppColor.whiteColor,
-          minimumSize: Size(double.infinity, Dimensions.r50.dynamicH),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(Dimensions.r12.dynamicR),
-          ),
-        ),
-        child: Text(text, style: const TextStyle(fontWeight: FontWeight.bold)),
-      );
-    }
-
-    if (post.status != RequestStatus.open) {
-      String text = post.status.name.capitalizeFirst();
-      return ElevatedButton(
-        onPressed: null,
-        style: ElevatedButton.styleFrom(
-          disabledBackgroundColor: context.textSecondary,
-          disabledForegroundColor: AppColor.whiteColor,
-          minimumSize: Size(double.infinity, Dimensions.r50.dynamicH),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(Dimensions.r12.dynamicR),
-          ),
-        ),
-        child: Text(text, style: const TextStyle(fontWeight: FontWeight.bold)),
-      );
-    }
-
-    if (post.currentParticipants >= post.maxParticipants) {
-      return ElevatedButton(
-        onPressed: null,
-        style: ElevatedButton.styleFrom(
-          disabledBackgroundColor: AppColor.errorColor.withValues(alpha: 0.5),
-          disabledForegroundColor: AppColor.whiteColor,
-          minimumSize: Size(double.infinity, Dimensions.r50.dynamicH),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(Dimensions.r12.dynamicR),
-          ),
-        ),
-        child: Text(
-          l10n.statusFull.capitalizeFirst(),
-          style: const TextStyle(fontWeight: FontWeight.bold),
-        ),
-      );
-    }
-
-    if (post.eventDateTime.difference(DateTime.now()).inMinutes < 15) {
-      return ElevatedButton(
-        onPressed: null,
-        style: ElevatedButton.styleFrom(
-          disabledBackgroundColor: context.textSecondary,
-          disabledForegroundColor: AppColor.whiteColor,
-          minimumSize: Size(double.infinity, Dimensions.r50.dynamicH),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(Dimensions.r12.dynamicR),
-          ),
-        ),
-        child: Text(
-          'JOINING CLOSED',
-          style: const TextStyle(fontWeight: FontWeight.bold),
-        ),
-      );
-    }
-
-    return ElevatedButton(
-      onPressed: () => context.read<SpotDetailsBloc>().add(
-        RequestToJoinEvent(spotId: post.id),
-      ),
-      style: ElevatedButton.styleFrom(
-        backgroundColor: AppColor.primaryColor,
-        foregroundColor: AppColor.whiteColor,
-        minimumSize: Size(double.infinity, Dimensions.r50.dynamicH),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(Dimensions.r12.dynamicR),
-        ),
-      ),
-      child: Text(
-        l10n.requestToJoin,
-        style: const TextStyle(fontWeight: FontWeight.bold),
+    final loc = context.loc;
+    final state = widget.loadedState;
+    final availability = SpotParticipationPolicy.availability(
+      post: state.post,
+      request: state.userJoinRequest,
+      now: DateTime.now(),
+    );
+    final label = state.isHost
+        ? loc.manageMatchRequests
+        : switch (availability) {
+            SpotJoinAvailability.available => loc.detailsJoin,
+            SpotJoinAvailability.full => loc.statusFull,
+            SpotJoinAvailability.closed => loc.detailsClosed,
+            SpotJoinAvailability.pending => loc.pendingRequest,
+            SpotJoinAvailability.accepted => loc.joined,
+            SpotJoinAvailability.rejected => loc.requestRejected,
+            SpotJoinAvailability.requestCancelled => loc.requestCancelled,
+            SpotJoinAvailability.activityCancelled => loc.statusCancelled,
+            SpotJoinAvailability.completed => loc.statusCompleted,
+            SpotJoinAvailability.expired => loc.statusExpired,
+            SpotJoinAvailability.draft => loc.detailsDraft,
+          };
+    final enabled =
+        state.isHost || availability == SpotJoinAvailability.available;
+    return BlocListener<SpotDetailsBloc, SpotDetailsState>(
+      listener: (context, state) {
+        if (_submitting && state is! SpotDetailsLoading) {
+          setState(() => _submitting = false);
+        }
+      },
+      child: AppButton(
+        label: label,
+        isLoading: _submitting,
+        icon: state.isHost ? Icons.group_outlined : Icons.arrow_forward_rounded,
+        onPressed: !enabled
+            ? null
+            : state.isHost
+            ? () =>
+                  context.safePush(AppRoutes.manageRequestsPath(state.post.id))
+            : _requestToJoin,
       ),
     );
   }

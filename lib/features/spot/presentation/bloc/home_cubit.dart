@@ -27,6 +27,8 @@ class HomeCubit extends Cubit<HomeState> {
        _getActiveCitiesUseCase = getActiveCitiesUseCase,
        super(HomeInitial());
 
+  int _loadGeneration = 0;
+
   bool _isNetworkException(Exception e) {
     return e is SocketException ||
         e.toString().contains('SocketException') ||
@@ -34,6 +36,8 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   Future<void> loadHomeData({String? cityId}) async {
+    if (isClosed) return;
+    final generation = ++_loadGeneration;
     emit(HomeLoading());
     try {
       final categoriesFuture = _getCategoriesUseCase()
@@ -59,6 +63,8 @@ class HomeCubit extends Cubit<HomeState> {
         citiesFuture,
         activitiesFuture,
       ]);
+
+      if (isClosed || generation != _loadGeneration) return;
 
       final categoriesResult =
           results[0] as Result<List<CategoryEntity>, Exception>;
@@ -102,9 +108,16 @@ class HomeCubit extends Cubit<HomeState> {
       final in24Hours = now.add(const Duration(hours: 24));
 
       // 1. Only include future activities
-      final futureActivities = allActivities
-          .where((a) => a.eventDateTime.isAfter(now))
-          .toList();
+      final futureActivities =
+          allActivities
+              .where(
+                (a) =>
+                    a.eventDateTime.isAfter(now) &&
+                    (a.status == RequestStatus.open ||
+                        a.status == RequestStatus.full),
+              )
+              .toList()
+            ..sort((a, b) => a.eventDateTime.compareTo(b.eventDateTime));
 
       // 2. Urgent matches
       final urgent = futureActivities.where((a) {
@@ -117,12 +130,11 @@ class HomeCubit extends Cubit<HomeState> {
       final nearby = futureActivities
           .where((a) => !urgentIds.contains(a.id))
           .toList();
-      final nearbyIds = nearby.map((e) => e.id).toSet();
-
-      // 4. Coming up activities (future activities not in urgent and not in nearby)
-      final comingUp = futureActivities.where((a) {
-        return !urgentIds.contains(a.id) && !nearbyIds.contains(a.id);
-      }).toList()..sort((a, b) => a.eventDateTime.compareTo(b.eventDateTime));
+      // Upcoming is a chronological view of the same city feed. It may
+      // overlap nearby; removing both prior sections made it always empty.
+      final comingUp = futureActivities
+          .where((a) => !a.eventDateTime.isBefore(in24Hours))
+          .toList();
 
       emit(
         HomeSuccess(
@@ -142,6 +154,7 @@ class HomeCubit extends Cubit<HomeState> {
         ),
       );
     } catch (e) {
+      if (isClosed || generation != _loadGeneration) return;
       if (_isNetworkException(e is Exception ? e : Exception(e.toString()))) {
         emit(
           HomeNetworkError(
@@ -161,6 +174,7 @@ class HomeCubit extends Cubit<HomeState> {
     String cityId,
     String cityName,
   ) async {
+    if (isClosed) return;
     final currentState = state;
     if (currentState is HomeSuccess) {
       try {
@@ -169,6 +183,7 @@ class HomeCubit extends Cubit<HomeState> {
           cityId: cityId,
           cityName: cityName,
         );
+        if (isClosed) return;
         await loadHomeData(cityId: cityId);
       } catch (e) {
         // Fallback or log if user update fails, but home load will retry anyway if we called it

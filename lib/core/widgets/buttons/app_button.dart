@@ -1,4 +1,5 @@
 import '../../base_import.dart';
+import '../../theme/app_motion.dart';
 
 enum AppButtonType { primary, secondary, outline, text, danger }
 
@@ -67,14 +68,18 @@ class AppButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final semantics = context.semantics;
+    final colors = Theme.of(context).colorScheme;
 
     final isFilledPrimary =
         type == AppButtonType.primary || type == AppButtonType.danger;
-    final spinnerColor = isFilledPrimary ? Colors.white : AppColor.primaryColor;
+    final spinnerColor = type == AppButtonType.danger
+        ? colors.onError
+        : isFilledPrimary
+        ? colors.onPrimary
+        : colors.primary;
 
     final Widget child = AnimatedSwitcher(
-      duration: const Duration(milliseconds: 250),
+      duration: AppMotion.duration(context, AppMotion.quick),
       switchInCurve: Curves.easeInOut,
       switchOutCurve: Curves.easeInOut,
       child: isLoading
@@ -96,7 +101,7 @@ class AppButton extends StatelessWidget {
                   Icon(icon, size: Dimensions.r20.dynamicH),
                   SizedBox(width: Dimensions.r8.dynamicW),
                 ],
-                Text(label),
+                Flexible(child: Text(label, textAlign: TextAlign.center)),
               ],
             ),
     );
@@ -131,9 +136,8 @@ class AppButton extends StatelessWidget {
       case AppButtonType.danger:
         button = FilledButton(
           style: FilledButton.styleFrom(
-            backgroundColor:
-                semantics.warning, // Or use error color if preferred
-            foregroundColor: Colors.white,
+            backgroundColor: colors.error,
+            foregroundColor: colors.onError,
           ),
           onPressed: isLoading ? null : onPressed,
           child: child,

@@ -1,4 +1,3 @@
-import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:lastspot_app/core/base_import.dart';
 import '../bloc/spot_details_bloc.dart';
 import 'spot_details_screen_mobile.dart';
@@ -35,9 +34,15 @@ class _SpotDetailsScreenState extends State<SpotDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final currentUserId = Supabase.instance.client.auth.currentUser?.id;
-
     return BlocConsumer<SpotDetailsBloc, SpotDetailsState>(
+      buildWhen: (previous, current) {
+        // Keep the loaded details visible during a successful join refresh.
+        if (current is RequestJoinSuccess) return false;
+        if (previous is RequestJoinSuccess && current is SpotDetailsLoading) {
+          return false;
+        }
+        return true;
+      },
       listener: (context, state) {
         if (state is RequestJoinSuccess) {
           AppUtils.showSnackBar(context, state.message);
@@ -46,19 +51,24 @@ class _SpotDetailsScreenState extends State<SpotDetailsScreen> {
         }
       },
       builder: (context, state) {
-        return ResponsiveLayout(
-          mobile: SpotDetailsScreenMobile(
-            state: state,
-            currentUserId: currentUserId,
-            heroTag: widget.heroTag,
-            onBack: () => context.pop(),
-          ),
-          tablet: SpotDetailsScreenTablet(
-            state: state,
-            currentUserId: currentUserId,
-            heroTag: widget.heroTag,
-            onBack: () => context.pop(),
-          ),
+        void reload() => context.read<SpotDetailsBloc>().add(
+          LoadSpotDetailsEvent(spotId: widget.spotId),
+        );
+        return LayoutBuilder(
+          builder: (context, constraints) =>
+              constraints.maxWidth >= Dimensions.detailsTabletBreakpoint
+              ? SpotDetailsScreenTablet(
+                  state: state,
+                  heroTag: widget.heroTag,
+                  onBack: () => context.pop(),
+                  onRetry: reload,
+                )
+              : SpotDetailsScreenMobile(
+                  state: state,
+                  heroTag: widget.heroTag,
+                  onBack: () => context.pop(),
+                  onRetry: reload,
+                ),
         );
       },
     );
