@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import '../base_import.dart';
+import '../theme/app_motion.dart';
 
 /// App-wide cached network image widget with smooth loading shimmer/pulse
 /// animations and graceful error fallbacks.
@@ -58,8 +59,8 @@ class AppCachedNetworkImage extends StatelessWidget {
         memCacheHeight: memCacheHeight,
         maxWidthDiskCache: maxWidthDiskCache ?? memCacheWidth,
         maxHeightDiskCache: maxHeightDiskCache ?? memCacheHeight,
-        fadeInDuration: const Duration(milliseconds: 300),
-        fadeOutDuration: const Duration(milliseconds: 200),
+        fadeInDuration: AppMotion.duration(context, AppMotion.standard),
+        fadeOutDuration: AppMotion.duration(context, AppMotion.quick),
         placeholder: (context, url) =>
             placeholder ??
             _AnimatedImagePlaceholder(
@@ -151,7 +152,7 @@ class _AnimatedImageError extends StatelessWidget {
   Widget build(BuildContext context) {
     return TweenAnimationBuilder<double>(
       tween: Tween<double>(begin: 0.0, end: 1.0),
-      duration: const Duration(milliseconds: 300),
+      duration: AppMotion.duration(context, AppMotion.standard),
       curve: Curves.easeIn,
       builder: (context, opacity, child) {
         return Opacity(

@@ -106,6 +106,7 @@ class HomeCubit extends Cubit<HomeState> {
 
       final now = DateTime.now().toUtc();
       final in24Hours = now.add(const Duration(hours: 24));
+      final inSevenDays = now.add(const Duration(days: 7));
 
       // 1. Only include future activities
       final futureActivities =
@@ -126,24 +127,26 @@ class HomeCubit extends Cubit<HomeState> {
       }).toList();
       final urgentIds = urgent.map((e) => e.id).toSet();
 
-      // 3. Nearby activities (future activities not in urgent)
-      final nearby = futureActivities
-          .where((a) => !urgentIds.contains(a.id))
-          .toList();
-      // Upcoming is a chronological view of the same city feed. It may
-      // overlap nearby; removing both prior sections made it always empty.
-      final comingUp = futureActivities
-          .where((a) => !a.eventDateTime.isBefore(in24Hours))
-          .toList();
+      // Keep time-based home sections mutually exclusive. The feed can include
+      // other cities when no city is selected, so it cannot promise proximity.
+      final comingUp = futureActivities.where((activity) {
+        return !urgentIds.contains(activity.id) &&
+            activity.eventDateTime.isBefore(inSevenDays);
+      }).toList();
+      final comingUpIds = comingUp.map((activity) => activity.id).toSet();
+      final later = futureActivities.where((activity) {
+        return !urgentIds.contains(activity.id) &&
+            !comingUpIds.contains(activity.id);
+      }).toList();
 
       emit(
         HomeSuccess(
           urgentMatches: urgent,
-          nearbyActivities: nearby,
+          laterActivities: later,
           comingUp: comingUp,
-          categories: categories
+          categories: [...categories]
             ..sort((a, b) => a.sortOrder.compareTo(b.sortOrder)),
-          cities: cities
+          cities: [...cities]
             ..sort((a, b) => a.displayOrder.compareTo(b.displayOrder)),
           selectedCityId: cityId,
           unreadNotifications: 0,

@@ -66,13 +66,13 @@ class _LoginScreenState extends State<LoginScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  const Text(
+                  Text(
                     AppString.appName,
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: Dimensions.r32,
                       fontWeight: FontWeight.bold,
-                      color: AppColor.primaryColor,
+                      color: context.primaryColor,
                     ),
                   ),
                   const SizedBox(height: Dimensions.r8),
@@ -139,7 +139,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     builder: (context, state) {
                       return ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColor.primaryColor,
+                          backgroundColor: context.primaryColor,
                           foregroundColor: AppColor.whiteColor,
                           padding: const EdgeInsets.symmetric(
                             vertical: Dimensions.r16,
@@ -169,7 +169,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     },
                     child: Text(
                       context.loc.dontHaveAccount,
-                      style: const TextStyle(color: AppColor.primaryColor),
+                      style: TextStyle(color: context.primaryColor),
                     ),
                   ),
                 ],

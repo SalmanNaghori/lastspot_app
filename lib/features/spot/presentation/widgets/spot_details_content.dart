@@ -4,21 +4,18 @@ import '../bloc/spot_details_bloc.dart';
 import 'spot_details_gallery.dart';
 import 'spot_details_overview.dart';
 import 'spot_details_info_card.dart';
-import 'spot_details_map_placeholder.dart';
 import 'spot_details_player_tile.dart';
 
 class SpotDetailsContent extends StatelessWidget {
   final SpotDetailsLoaded state;
   final String? heroTag;
   final VoidCallback onMap;
-  final VoidCallback onReport;
 
   const SpotDetailsContent({
     super.key,
     required this.state,
     this.heroTag,
     required this.onMap,
-    required this.onReport,
   });
 
   @override
@@ -26,6 +23,9 @@ class SpotDetailsContent extends StatelessWidget {
     final loc = context.loc;
     final post = state.post;
     final colors = context.colorScheme;
+    final location = post.locationName.trim();
+    final isSharedMapLink =
+        location.startsWith('https://') || location.startsWith('http://');
     return CustomScrollView(
       key: PageStorageKey('details_${post.id}'),
       slivers: [
@@ -47,16 +47,20 @@ class SpotDetailsContent extends StatelessWidget {
               SpotDetailsInfoCard(
                 icon: Icons.location_on_outlined,
                 title: loc.detailsWhere,
-                value: AppUtils.getDisplayLocation(
-                  context,
-                  post.locationName,
-                  cityId: post.cityId,
-                ),
-              ),
-              const SizedBox(height: AppSpacing.smLg),
-              SpotDetailsMapPlaceholder(
-                onMap: onMap,
-                locationName: post.locationName,
+                value: isSharedMapLink
+                    ? loc.detailsSharedMapLink
+                    : AppUtils.getDisplayLocation(
+                        context,
+                        post.locationName,
+                        cityId: post.cityId,
+                      ),
+                subtitle: isSharedMapLink
+                    ? loc.detailsMapLinkHint
+                    : loc.detailsMapSearchHint,
+                actionLabel: isSharedMapLink
+                    ? loc.detailsOpenMapLink
+                    : loc.detailsSearchMaps,
+                onAction: location.isEmpty ? null : onMap,
               ),
               if (post.description?.trim().isNotEmpty ?? false) ...[
                 const SizedBox(height: AppSpacing.lg),
@@ -134,14 +138,6 @@ class SpotDetailsContent extends StatelessWidget {
                       color: colors.onSurfaceVariant,
                     ),
                   ),
-                  if (!state.isHost) ...[
-                    const SizedBox(height: AppSpacing.sm),
-                    AppButton.text(
-                      label: loc.reportActivityAction,
-                      icon: Icons.flag_outlined,
-                      onPressed: onReport,
-                    ),
-                  ],
                 ],
               ),
             ),

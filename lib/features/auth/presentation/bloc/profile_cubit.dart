@@ -35,6 +35,7 @@ class ProfileCubit extends Cubit<ProfileState> {
   final GetProfileStatsUseCase getProfileStats;
   final UpdateProfileUseCase updateProfile;
   final UploadAvatarUseCase uploadAvatar;
+  bool _isSavingProfile = false;
 
   ProfileCubit({
     required this.getProfile,
@@ -77,6 +78,8 @@ class ProfileCubit extends Cubit<ProfileState> {
     required UserProfile profile,
     File? avatarFile,
   }) async {
+    if (_isSavingProfile) return;
+    _isSavingProfile = true;
     emit(ProfileLoading());
     try {
       String? newAvatarUrl = profile.avatarUrl;
@@ -105,15 +108,17 @@ class ProfileCubit extends Cubit<ProfileState> {
       );
 
       await updateProfile(updatedProfile);
-      
+
       ProfileStats currentStats = const ProfileStats();
       if (state is ProfileLoaded) {
         currentStats = (state as ProfileLoaded).stats;
       }
-      
+
       emit(ProfileSaved(updatedProfile, currentStats));
     } catch (e) {
       emit(ProfileError(e.toString()));
+    } finally {
+      _isSavingProfile = false;
     }
   }
 }

@@ -25,7 +25,7 @@ class ImageCropperHelper {
         uiSettings: [
           AndroidUiSettings(
             toolbarTitle: 'Crop Photo',
-            toolbarColor: AppColor.primaryColor,
+            toolbarColor: context.primaryColor,
             toolbarWidgetColor: Colors.white,
             initAspectRatio: CropAspectRatioPreset.square,
             lockAspectRatio: true,

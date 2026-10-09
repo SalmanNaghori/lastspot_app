@@ -6,10 +6,7 @@ import 'interactive_settings_tile.dart';
 class ThemeSelectorCard extends StatelessWidget {
   final SettingsState state;
 
-  const ThemeSelectorCard({
-    super.key,
-    required this.state,
-  });
+  const ThemeSelectorCard({super.key, required this.state});
 
   @override
   Widget build(BuildContext context) {

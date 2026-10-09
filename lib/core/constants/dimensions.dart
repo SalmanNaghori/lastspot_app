@@ -10,6 +10,9 @@ class Dimensions {
   static const double detailsSidebarWidth = 320;
   static const double detailsGalleryRatio = 1.65;
   static const int detailsImageCacheWidth = 1200;
+  static const int galleryImageCacheWidth = 2400;
+  static const double galleryMaxScale = 4;
+  static const double dialogMaxWidth = 440;
 
   static late double screenWidth;
   static late double screenHeight;

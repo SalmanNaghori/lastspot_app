@@ -14,8 +14,12 @@ class AppTheme {
   // ============================================================
 
   static ThemeData get lightTheme {
+    return lightThemeFor(AppThemeColor.violet);
+  }
+
+  static ThemeData lightThemeFor(AppThemeColor themeColor) {
     return _buildTheme(
-      colorScheme: AppColors.lightColorScheme,
+      colorScheme: AppColors.colorSchemeFor(Brightness.light, themeColor),
       brightness: Brightness.light,
       semanticColors: const SemanticColors(
         success: AppColors.success,
@@ -32,8 +36,12 @@ class AppTheme {
   // ============================================================
 
   static ThemeData get darkTheme {
+    return darkThemeFor(AppThemeColor.violet);
+  }
+
+  static ThemeData darkThemeFor(AppThemeColor themeColor) {
     return _buildTheme(
-      colorScheme: AppColors.darkColorScheme,
+      colorScheme: AppColors.colorSchemeFor(Brightness.dark, themeColor),
       brightness: Brightness.dark,
       semanticColors: const SemanticColors(
         success: AppColors.success, // Adjust if different in dark mode

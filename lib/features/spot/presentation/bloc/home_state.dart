@@ -14,7 +14,7 @@ class HomeLoading extends HomeState {}
 
 class HomeSuccess extends HomeState {
   final List<RequestEntity> urgentMatches;
-  final List<RequestEntity> nearbyActivities;
+  final List<RequestEntity> laterActivities;
   final List<RequestEntity> comingUp;
   final List<CategoryEntity> categories;
   final List<CityEntity> cities;
@@ -29,7 +29,7 @@ class HomeSuccess extends HomeState {
 
   HomeSuccess({
     required this.urgentMatches,
-    required this.nearbyActivities,
+    required this.laterActivities,
     required this.comingUp,
     required this.categories,
     required this.cities,
@@ -42,14 +42,14 @@ class HomeSuccess extends HomeState {
   });
 
   bool get isEmpty =>
-      urgentMatches.isEmpty && nearbyActivities.isEmpty && comingUp.isEmpty;
+      urgentMatches.isEmpty && laterActivities.isEmpty && comingUp.isEmpty;
   bool get isPartialSuccess =>
       hasFeedError || hasCitiesError || hasCategoriesError;
 
   @override
   List<Object?> get props => [
     urgentMatches,
-    nearbyActivities,
+    laterActivities,
     comingUp,
     categories,
     cities,
@@ -63,7 +63,7 @@ class HomeSuccess extends HomeState {
 
   HomeSuccess copyWith({
     List<RequestEntity>? urgentMatches,
-    List<RequestEntity>? nearbyActivities,
+    List<RequestEntity>? laterActivities,
     List<RequestEntity>? comingUp,
     List<CategoryEntity>? categories,
     List<CityEntity>? cities,
@@ -76,7 +76,7 @@ class HomeSuccess extends HomeState {
   }) {
     return HomeSuccess(
       urgentMatches: urgentMatches ?? this.urgentMatches,
-      nearbyActivities: nearbyActivities ?? this.nearbyActivities,
+      laterActivities: laterActivities ?? this.laterActivities,
       comingUp: comingUp ?? this.comingUp,
       categories: categories ?? this.categories,
       cities: cities ?? this.cities,

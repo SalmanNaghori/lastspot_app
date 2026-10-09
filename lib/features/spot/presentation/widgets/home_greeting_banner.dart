@@ -6,6 +6,7 @@ class HomeGreetingBanner extends StatelessWidget {
   final String? city;
   final VoidCallback? onCityTap;
   final VoidCallback? onExploreTap;
+  final VoidCallback? onCreateTap;
 
   const HomeGreetingBanner({
     super.key,
@@ -13,6 +14,7 @@ class HomeGreetingBanner extends StatelessWidget {
     this.city,
     this.onCityTap,
     this.onExploreTap,
+    this.onCreateTap,
   });
 
   @override
@@ -29,79 +31,118 @@ class HomeGreetingBanner extends StatelessWidget {
         : loc.goodEvening;
 
     return AnimationWrapper(
-      child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
-        decoration: BoxDecoration(
-          color: AppColor.primaryDarkColor,
-          borderRadius: AppRadius.xxlBorderRadius,
-        ),
-        clipBehavior: Clip.antiAlias,
-        child: Stack(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            PositionedDirectional(
-              end: -AppSpacing.xl,
-              bottom: -AppSpacing.xl,
-              child: ExcludeSemantics(
-                child: Icon(
-                  Icons.sports_basketball_outlined,
-                  size: Dimensions.r64 * 3,
-                  color: AppColor.primaryContainerLight.withValues(alpha: 0.08),
+            Wrap(
+              alignment: WrapAlignment.spaceBetween,
+              crossAxisAlignment: WrapCrossAlignment.center,
+              spacing: AppSpacing.sm,
+              children: [
+                Text('$greeting $firstName', style: type.titleMedium),
+                TextButton.icon(
+                  onPressed: onCityTap,
+                  icon: const Icon(Icons.location_on_outlined),
+                  label: Text(city ?? loc.selectCity),
                 ),
-              ),
+              ],
             ),
-            Padding(
-              padding: const EdgeInsets.all(AppSpacing.lg),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+            const SizedBox(height: AppSpacing.sm),
+            Container(
+              decoration: BoxDecoration(
+                color: context.colorScheme.onPrimaryContainer,
+                borderRadius: AppRadius.xxlBorderRadius,
+              ),
+              clipBehavior: Clip.antiAlias,
+              child: Stack(
                 children: [
-                  Text(
-                    '$greeting, $firstName',
-                    style: type.labelLarge?.copyWith(
-                      color: AppColor.primaryContainerLight,
-                    ),
-                  ),
-                  const SizedBox(height: AppSpacing.lg),
-                  Text(
-                    loc.discoveryHeadline,
-                    style: type.headlineLarge?.copyWith(
-                      color: AppColor.whiteColor,
-                      fontWeight: FontWeight.w800,
-                    ),
-                  ),
-                  const SizedBox(height: AppSpacing.smLg),
-                  Text(
-                    loc.discoverySubtitle,
-                    style: type.bodyMedium?.copyWith(
-                      color: AppColor.primaryContainerLight,
-                    ),
-                  ),
-                  const SizedBox(height: AppSpacing.lg),
-                  Wrap(
-                    spacing: AppSpacing.sm,
-                    runSpacing: AppSpacing.sm,
-                    crossAxisAlignment: WrapCrossAlignment.center,
-                    children: [
-                      if (onExploreTap != null)
-                        FilledButton.icon(
-                          onPressed: onExploreTap,
-                          style: FilledButton.styleFrom(
-                            minimumSize: const Size(0, AppSpacing.xxxl),
-                            backgroundColor: AppColor.accentHighlight,
-                            foregroundColor: AppColor.secondaryColor,
+                  PositionedDirectional(
+                    end: -AppSpacing.xxl,
+                    top: AppSpacing.xl,
+                    child: ExcludeSemantics(
+                      child: Transform.rotate(
+                        angle: -0.3,
+                        child: Icon(
+                          Icons.sports_basketball_outlined,
+                          size: Dimensions.r64 * 3,
+                          color: context.primaryContainer.withValues(
+                            alpha: 0.12,
                           ),
-                          icon: const Icon(Icons.arrow_outward_rounded),
-                          label: Text(loc.browseActivities),
                         ),
-                      TextButton.icon(
-                        onPressed: onCityTap,
-                        style: TextButton.styleFrom(
-                          foregroundColor: AppColor.whiteColor,
-                          minimumSize: const Size(0, AppSpacing.xxxl),
-                        ),
-                        icon: const Icon(Icons.location_on_outlined),
-                        label: Text(city ?? loc.selectCity),
                       ),
-                    ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(AppSpacing.lg),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: AppSpacing.smLg,
+                            vertical: AppSpacing.sm,
+                          ),
+                          decoration: BoxDecoration(
+                            color: AppColor.whiteColor.withValues(alpha: 0.12),
+                            borderRadius: AppRadius.pillBorderRadius,
+                          ),
+                          child: Text(
+                            loc.discoveryEyebrow,
+                            style: type.labelSmall?.copyWith(
+                              color: context.primaryContainer,
+                              letterSpacing: 1.5,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: AppSpacing.lg),
+                        Text(
+                          loc.discoveryHeadline,
+                          style: type.displaySmall?.copyWith(
+                            color: AppColor.whiteColor,
+                            fontWeight: FontWeight.w800,
+                          ),
+                        ),
+                        const SizedBox(height: AppSpacing.smLg),
+                        Text(
+                          loc.discoverySubtitle,
+                          style: type.bodyMedium?.copyWith(
+                            color: context.primaryContainer,
+                          ),
+                        ),
+                        const SizedBox(height: AppSpacing.lg),
+                        Wrap(
+                          spacing: AppSpacing.smLg,
+                          runSpacing: AppSpacing.sm,
+                          crossAxisAlignment: WrapCrossAlignment.center,
+                          children: [
+                            if (onExploreTap != null)
+                              FilledButton.icon(
+                                onPressed: onExploreTap,
+                                style: FilledButton.styleFrom(
+                                  minimumSize: const Size(0, AppSpacing.xxxl),
+                                  backgroundColor:
+                                      context.colorScheme.secondaryContainer,
+                                  foregroundColor: AppColor.secondaryColor,
+                                ),
+                                icon: const Icon(Icons.arrow_outward_rounded),
+                                label: Text(loc.browseActivities),
+                              ),
+                            if (onCreateTap != null)
+                              TextButton.icon(
+                                onPressed: onCreateTap,
+                                style: TextButton.styleFrom(
+                                  foregroundColor: AppColor.whiteColor,
+                                  minimumSize: const Size(0, AppSpacing.xxxl),
+                                ),
+                                icon: const Icon(Icons.add_rounded),
+                                label: Text(loc.discoveryHost),
+                              ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),

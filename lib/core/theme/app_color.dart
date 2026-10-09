@@ -1,5 +1,18 @@
 import 'package:flutter/material.dart';
 
+enum AppThemeColor {
+  violet('Violet', Color(0xFF5B46E8)),
+  deepViolet('Deep violet', Color(0xFF3C28A4)),
+  terracotta('Terracotta', Color(0xFF752A21));
+
+  const AppThemeColor(this.label, this.primary);
+
+  final String label;
+  final Color primary;
+
+  Color get darkPrimary => Color.lerp(primary, Colors.white, 0.42)!;
+}
+
 class AppColor {
   AppColor._();
 
@@ -233,6 +246,31 @@ class AppColor {
     outline: cardBorderDark,
     outlineVariant: dividerDark,
   );
+
+  static ColorScheme colorSchemeFor(
+    Brightness brightness,
+    AppThemeColor themeColor,
+  ) {
+    final isDark = brightness == Brightness.dark;
+    final primary = isDark ? themeColor.darkPrimary : themeColor.primary;
+    final primaryContainer = isDark
+        ? Color.lerp(themeColor.primary, backgroundDark, 0.68)!
+        : Color.lerp(themeColor.primary, Colors.white, 0.88)!;
+    final baseScheme = isDark ? darkColorScheme : lightColorScheme;
+
+    return baseScheme.copyWith(
+      primary: primary,
+      onPrimary: isDark ? backgroundDark : Colors.white,
+      primaryContainer: primaryContainer,
+      onPrimaryContainer: isDark ? themeColor.darkPrimary : themeColor.primary,
+      secondary: primary,
+      onSecondary: isDark ? backgroundDark : Colors.white,
+      secondaryContainer: primaryContainer,
+      onSecondaryContainer: isDark
+          ? themeColor.darkPrimary
+          : themeColor.primary,
+    );
+  }
 }
 
 /// Type alias so references to `AppColors` continue to work seamlessly

@@ -49,10 +49,18 @@ class SportGradientBackground extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final (darkColor, lightColor, icon) = _style;
+    final isCricket = categoryId.toLowerCase() == 'cricket';
+    final gradientColors = isCricket
+        ? [
+            Color.lerp(context.primaryColor, Colors.black, 0.28)!,
+            context.primaryColor,
+          ]
+        : [darkColor, lightColor];
+
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          colors: [darkColor, lightColor],
+          colors: gradientColors,
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),

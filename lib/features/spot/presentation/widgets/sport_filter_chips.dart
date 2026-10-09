@@ -112,16 +112,16 @@ class _SportChip extends StatelessWidget {
           vertical: Dimensions.r8.dynamicH,
         ),
         decoration: BoxDecoration(
-          color: isSelected ? AppColor.primaryColor : context.surfaceColor,
+          color: isSelected ? context.primaryColor : context.surfaceColor,
           borderRadius: BorderRadius.circular(9999),
           border: Border.all(
-            color: isSelected ? AppColor.primaryColor : context.borderColor,
+            color: isSelected ? context.primaryColor : context.borderColor,
             width: 1.5,
           ),
           boxShadow: isSelected
               ? [
                   BoxShadow(
-                    color: AppColor.primaryColor.withValues(alpha: 0.3),
+                    color: context.primaryColor.withValues(alpha: 0.3),
                     blurRadius: 8,
                     offset: const Offset(0, 2),
                   ),

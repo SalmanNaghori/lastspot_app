@@ -19,13 +19,19 @@ class AppBottomSheet {
         context: context,
         isScrollControlled: isScrollControlled,
         useSafeArea: true,
+        barrierColor: context.colorScheme.scrim.withValues(alpha: 0.6),
+        constraints: const BoxConstraints(
+          maxWidth: Dimensions.detailsTabletBreakpoint,
+        ),
         showDragHandle: true,
         sheetAnimationStyle: AnimationStyle(
           duration: AppMotion.duration(context, AppMotion.standard),
           reverseDuration: AppMotion.duration(context, AppMotion.quick),
         ),
         builder: (context) {
-          return Padding(
+          return AnimatedPadding(
+            duration: AppMotion.duration(context, AppMotion.quick),
+            curve: AppMotion.curve,
             padding: EdgeInsets.only(
               bottom: MediaQuery.viewInsetsOf(context).bottom,
             ),

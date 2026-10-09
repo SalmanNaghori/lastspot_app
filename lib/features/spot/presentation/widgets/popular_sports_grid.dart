@@ -10,7 +10,7 @@ class PopularSportsGrid extends StatelessWidget {
       name: 'Cricket',
       icon: Icons.sports_cricket,
       bgColor: Color(0xFFD1FAE5),
-      iconColor: AppColor.primaryColor,
+      iconColor: null,
     ),
     _PopularSport(
       name: 'Football',
@@ -61,6 +61,7 @@ class _PopularSportCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final iconColor = sport.iconColor ?? context.primaryColor;
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -69,7 +70,7 @@ class _PopularSportCard extends StatelessWidget {
           color: sport.bgColor,
           borderRadius: BorderRadius.circular(Dimensions.r16.dynamicR),
           border: Border.all(
-            color: sport.iconColor.withValues(alpha: 0.2),
+            color: iconColor.withValues(alpha: 0.2),
             width: 1,
           ),
         ),
@@ -79,13 +80,13 @@ class _PopularSportCard extends StatelessWidget {
             Container(
               padding: EdgeInsets.all(Dimensions.r10.dynamicW),
               decoration: BoxDecoration(
-                color: sport.iconColor.withValues(alpha: 0.15),
+                color: iconColor.withValues(alpha: 0.15),
                 shape: BoxShape.circle,
               ),
               child: Icon(
                 sport.icon,
                 size: Dimensions.r24.dynamicH,
-                color: sport.iconColor,
+                color: iconColor,
               ),
             ),
             SizedBox(height: Dimensions.r6.dynamicH),
@@ -108,12 +109,12 @@ class _PopularSport {
   final String name;
   final IconData icon;
   final Color bgColor;
-  final Color iconColor;
+  final Color? iconColor;
 
   const _PopularSport({
     required this.name,
     required this.icon,
     required this.bgColor,
-    required this.iconColor,
+    this.iconColor,
   });
 }

@@ -8,6 +8,7 @@ import '../widgets/home_app_bar.dart';
 import '../widgets/home_greeting_banner.dart';
 import '../widgets/home_section_header.dart';
 import '../widgets/activity_card.dart';
+import '../widgets/compact_spot_card.dart';
 import '../widgets/sport_filter_chips.dart';
 import '../../../cities/domain/entities/city_entity.dart';
 import '../../../categories/domain/entities/category.dart';
@@ -198,7 +199,7 @@ class _HomeScreenState extends State<HomeScreen> {
               child: FilledButton(
                 onPressed: _onCreateActivityTap,
                 style: FilledButton.styleFrom(
-                  backgroundColor: AppColor.primaryColor,
+                  backgroundColor: context.primaryColor,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(
                       Dimensions.r12.dynamicR,
@@ -285,7 +286,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
             return RefreshIndicator(
               onRefresh: _onRefresh,
-              color: AppColor.primaryColor,
+              color: context.primaryColor,
               child: CustomScrollView(
                 physics: const AlwaysScrollableScrollPhysics(),
                 slivers: [
@@ -298,6 +299,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         HomeGreetingBanner(
                           userName: userName,
                           onExploreTap: _onViewAllTap,
+                          onCreateTap: _onCreateActivityTap,
                           city: userCityName,
                           onCityTap: (isLoading || hasCitiesError)
                               ? () => _onRefresh()
@@ -400,20 +402,18 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ),
                     ],
-                    // Nearby Activities
-                    if (successState.nearbyActivities.isNotEmpty) ...[
+                    // The next seven days get a compact schedule list.
+                    if (successState.comingUp.isNotEmpty) ...[
                       SliverToBoxAdapter(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SizedBox(height: Dimensions.r24.dynamicH),
-                            HomeSectionHeader(
-                              title: loc.nearbyActivities,
-                              viewAllLabel: loc.viewAll,
-                              onViewAll: _onViewAllTap,
-                            ),
-                            SizedBox(height: Dimensions.r16.dynamicH),
-                          ],
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                            top: AppSpacing.lg,
+                            bottom: AppSpacing.md,
+                          ),
+                          child: HomeSectionHeader(
+                            title: loc.comingUp,
+                            subtitle: loc.homeComingUpSubtitle,
+                          ),
                         ),
                       ),
                       SliverPadding(
@@ -421,62 +421,58 @@ class _HomeScreenState extends State<HomeScreen> {
                           horizontal: AppSpacing.md,
                         ),
                         sliver: SliverList.builder(
-                          itemCount: successState.nearbyActivities.length,
+                          itemCount: successState.comingUp.length,
                           itemBuilder: (context, index) {
-                            final spot = successState.nearbyActivities[index];
+                            final spot = successState.comingUp[index];
                             final category = categories
-                                .where((c) => c.id == spot.categoryId)
+                                .where((item) => item.id == spot.categoryId)
                                 .firstOrNull;
-                            return ActivityCard(
-                              key: ValueKey('nearby_${spot.id}'),
+                            return CompactSpotCard(
+                              key: ValueKey('coming_${spot.id}'),
                               spot: spot,
                               categoryName: category?.name ?? loc.navActivities,
                               categoryIcon: category?.icon ?? '🎯',
-                              heroTagPrefix: 'nearby',
-                              onTap: () => _onSpotTap(spot, 'nearby'),
+                              heroTagPrefix: 'coming',
+                              onTap: () => _onSpotTap(spot, 'coming'),
                             );
                           },
                         ),
                       ),
                     ],
-                    // Coming Up
-                    if (successState.comingUp.isNotEmpty) ...[
+                    // Later city activities keep the image-rich discovery card.
+                    if (successState.laterActivities.isNotEmpty) ...[
                       SliverToBoxAdapter(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SizedBox(height: Dimensions.r24.dynamicH),
-                            HomeSectionHeader(
-                              title: loc.comingUp,
-                              viewAllLabel: loc.viewAll,
-                              onViewAll: _onViewAllTap,
-                            ),
-                            SizedBox(height: Dimensions.r16.dynamicH),
-                          ],
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                            top: AppSpacing.lg,
+                            bottom: AppSpacing.md,
+                          ),
+                          child: HomeSectionHeader(
+                            title: loc.homeLaterOn,
+                            subtitle: loc.homeLaterSubtitle,
+                          ),
                         ),
                       ),
                       SliverPadding(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: Dimensions.r16.dynamicW,
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: AppSpacing.md,
                         ),
-                        sliver: SliverList(
-                          delegate: SliverChildBuilderDelegate((
-                            context,
-                            index,
-                          ) {
-                            final spot = successState.comingUp[index];
+                        sliver: SliverList.builder(
+                          itemCount: successState.laterActivities.length,
+                          itemBuilder: (context, index) {
+                            final spot = successState.laterActivities[index];
                             final category = categories
-                                .where((c) => c.id == spot.categoryId)
+                                .where((item) => item.id == spot.categoryId)
                                 .firstOrNull;
                             return ActivityCard(
-                              key: ValueKey(spot.id),
+                              key: ValueKey('later_${spot.id}'),
                               spot: spot,
-                              categoryName: category?.name ?? 'Sport',
+                              categoryName: category?.name ?? loc.navActivities,
                               categoryIcon: category?.icon ?? '🎯',
-                              heroTagPrefix: 'coming',
-                              onTap: () => _onSpotTap(spot, 'coming'),
+                              heroTagPrefix: 'later',
+                              onTap: () => _onSpotTap(spot, 'later'),
                             );
-                          }, childCount: successState.comingUp.length),
+                          },
                         ),
                       ),
                     ],

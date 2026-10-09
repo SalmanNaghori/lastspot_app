@@ -1,17 +1,23 @@
 import 'package:lastspot_app/core/base_import.dart';
+import 'package:lastspot_app/core/theme/app_motion.dart';
 import 'package:lastspot_app/features/spot/domain/entities/request_entity.dart';
 
-import 'spot_hero_image.dart';
+import 'sport_gradient_background.dart';
 
+/// A schedule-first card for activities happening in the coming week.
 class CompactSpotCard extends StatefulWidget {
   final RequestEntity spot;
-  final String? heroTagPrefix;
+  final String categoryName;
+  final String categoryIcon;
+  final String heroTagPrefix;
   final VoidCallback onTap;
 
   const CompactSpotCard({
     super.key,
     required this.spot,
-    this.heroTagPrefix,
+    required this.categoryName,
+    required this.categoryIcon,
+    required this.heroTagPrefix,
     required this.onTap,
   });
 
@@ -20,151 +26,145 @@ class CompactSpotCard extends StatefulWidget {
 }
 
 class _CompactSpotCardState extends State<CompactSpotCard> {
-  final ValueNotifier<bool> _isPressed = ValueNotifier(false);
+  final Stopwatch _tapClock = Stopwatch();
 
-  @override
-  void dispose() {
-    _isPressed.dispose();
-    super.dispose();
+  void _handleTap() {
+    if (_tapClock.isRunning && _tapClock.elapsed < AppMotion.tapGuard) return;
+    _tapClock
+      ..reset()
+      ..start();
+    widget.onTap();
   }
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTapDown: (_) => _isPressed.value = true,
-      onTapUp: (_) => _isPressed.value = false,
-      onTapCancel: () => _isPressed.value = false,
-      onTap: widget.onTap,
-      child: ValueListenableBuilder<bool>(
-        valueListenable: _isPressed,
-        builder: (context, isPressed, child) => AnimatedScale(
-          scale: isPressed ? 0.98 : 1.0,
-          duration: const Duration(milliseconds: 150),
-          curve: Curves.easeInOut,
-          child: child,
+    final colors = context.colorScheme;
+    final type = Theme.of(context).textTheme;
+    final loc = context.loc;
+    final spot = widget.spot;
+    final available = spot.maxParticipants - spot.currentParticipants;
+    final availability = available <= 0
+        ? loc.activityFull
+        : available == 1
+        ? loc.oneSpotLeft
+        : loc.spotsLeft(available);
+    return Padding(
+      padding: const EdgeInsets.only(bottom: AppSpacing.smLg),
+      child: Material(
+        color: colors.surface,
+        shape: RoundedRectangleBorder(
+          borderRadius: AppRadius.xlBorderRadius,
+          side: BorderSide(color: colors.outlineVariant),
         ),
-        child: Container(
-          margin: EdgeInsets.only(bottom: Dimensions.r16.dynamicH),
-          decoration: BoxDecoration(
-            color: context.surfaceColor,
-            borderRadius: BorderRadius.circular(Dimensions.r12.dynamicR),
-            border: Border.all(color: context.borderColor, width: 1),
-            boxShadow: [
-              BoxShadow(
-                color: AppColor.blackColor.withValues(alpha: 0.03),
-                blurRadius: 8,
-                offset: const Offset(0, 2),
-              ),
-            ],
-          ),
-          child: Row(
-            children: [
-              // Left Image
-              SizedBox(
-                width: Dimensions.r24.dynamicW * 4.5,
-                height: Dimensions.r24.dynamicH * 4.5,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.horizontal(
-                    left: Radius.circular(Dimensions.r12.dynamicR - 1),
-                  ),
-                  child: SpotHeroImage(
-                    spot: widget.spot,
-                    isUrgent: false,
-                    spotsLeftText: '',
-                    perPersonLabel: '/ person',
-                    heroTagPrefix: widget.heroTagPrefix,
-                  ),
-                ),
-              ),
-              // Right Content
-              Expanded(
-                child: Padding(
-                  padding: EdgeInsets.all(Dimensions.r12.dynamicW),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        widget.spot.title.trim().isNotEmpty
-                            ? widget.spot.title.trim()
-                            : AppUtils.getDisplayLocation(
-                                context,
-                                widget.spot.locationName,
-                              ),
-                        style: TextStyle(
-                          fontSize: Dimensions.r15.dynamicSP,
-                          fontWeight: FontWeight.w700,
-                          color: context.textPrimary,
-                          letterSpacing: -0.3,
-                        ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      SizedBox(height: Dimensions.r6.dynamicH),
-                      Row(
-                        children: [
-                          Icon(
-                            Icons.calendar_today_outlined,
-                            size: Dimensions.r14.dynamicH,
-                            color: context.textSecondary,
-                          ),
-                          SizedBox(width: Dimensions.r4.dynamicW),
-                          Text(
-                            '${AppConstants.formatActivityDate(widget.spot.eventDateTime)}, ${AppUtils.formatTime(widget.spot.eventDateTime)}',
-                            style: TextStyle(
-                              fontSize: Dimensions.r12.dynamicSP,
-                              color: context.textSecondary,
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: Dimensions.r8.dynamicH),
-                      Row(
-                        children: [
-                          Container(
-                            width: Dimensions.r20.dynamicW,
-                            height: Dimensions.r20.dynamicH,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: AppColor.primaryColor.withValues(
-                                alpha: 0.1,
-                              ),
-                            ),
-                            clipBehavior: Clip.antiAlias,
-                            child: widget.spot.hostProfile?.avatarUrl != null
-                                ? AppCachedNetworkImage(
-                                    imageUrl:
-                                        widget.spot.hostProfile!.avatarUrl,
-                                    fit: BoxFit.cover,
-                                    memCacheWidth: 100,
-                                    memCacheHeight: 100,
-                                  )
-                                : Icon(
-                                    Icons.person,
-                                    size: Dimensions.r14.dynamicH,
-                                    color: AppColor.primaryColor,
+        clipBehavior: Clip.antiAlias,
+        child: InkWell(
+          onTap: _handleTap,
+          child: Padding(
+            padding: const EdgeInsets.all(AppSpacing.smLg),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Hero(
+                      tag: '${widget.heroTagPrefix}_activity_image_${spot.id}',
+                      child: ClipRRect(
+                        borderRadius: AppRadius.lgBorderRadius,
+                        child: SizedBox.square(
+                          dimension: AppSpacing.xxxl * 2,
+                          child: spot.images.isEmpty
+                              ? SportGradientBackground(
+                                  categoryId: spot.categoryId,
+                                )
+                              : AppCachedNetworkImage(
+                                  imageUrl: spot.images.first.storagePath,
+                                  fit: BoxFit.cover,
+                                  memCacheWidth: 320,
+                                  errorWidget: SportGradientBackground(
+                                    categoryId: spot.categoryId,
                                   ),
+                                ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: AppSpacing.smLg),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            '${widget.categoryIcon} ${widget.categoryName}',
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: type.labelSmall?.copyWith(
+                              color: colors.primary,
+                              fontWeight: FontWeight.w700,
+                            ),
                           ),
-                          SizedBox(width: Dimensions.r6.dynamicW),
-                          Expanded(
-                            child: Text(
-                              widget.spot.hostProfile?.fullName ??
-                                  context.loc.verifiedHost,
-                              style: TextStyle(
-                                fontSize: Dimensions.r12.dynamicSP,
-                                color: context.textSecondary,
-                              ),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
+                          const SizedBox(height: AppSpacing.xs),
+                          Text(
+                            spot.title.trim().isNotEmpty
+                                ? spot.title.trim()
+                                : AppUtils.getDisplayLocation(
+                                    context,
+                                    spot.locationName,
+                                    cityId: spot.cityId,
+                                  ),
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: type.titleMedium?.copyWith(
+                              fontWeight: FontWeight.w800,
+                            ),
+                          ),
+                          const SizedBox(height: AppSpacing.sm),
+                          Text(
+                            '${AppConstants.formatActivityDate(spot.eventDateTime)} · ${AppUtils.formatTime(spot.eventDateTime)}',
+                            maxLines: 2,
+                            style: type.bodySmall?.copyWith(
+                              color: colors.onSurfaceVariant,
+                            ),
+                          ),
+                          const SizedBox(height: AppSpacing.xs),
+                          Text(
+                            AppUtils.getDisplayLocation(
+                              context,
+                              spot.locationName,
+                              cityId: spot.cityId,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: type.bodySmall?.copyWith(
+                              color: colors.onSurfaceVariant,
                             ),
                           ),
                         ],
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-              ),
-            ],
+                const SizedBox(height: AppSpacing.smLg),
+                Wrap(
+                  spacing: AppSpacing.smLg,
+                  runSpacing: AppSpacing.xs,
+                  alignment: WrapAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      availability,
+                      style: type.labelSmall?.copyWith(color: colors.primary),
+                    ),
+                    Text(
+                      spot.pricePerPerson > 0
+                          ? '${AppUtils.formatCurrency(spot.pricePerPerson)} ${loc.perPerson}'
+                          : loc.free,
+                      style: type.labelSmall?.copyWith(
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),

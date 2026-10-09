@@ -6,6 +6,7 @@ import 'package:lastspot_app/core/widgets/custom_segmented_control.dart';
 import 'request_shimmer_card.dart';
 import 'received_request_card.dart';
 import 'sent_request_card.dart';
+import 'activity_empty_state.dart';
 
 class RequestsTabSection extends StatefulWidget {
   final List<JoinRequestEntity> receivedRequests;
@@ -73,20 +74,13 @@ class _RequestsTabSectionState extends State<RequestsTabSection> {
             ),
           )
         else if (items.isEmpty)
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: EdgeInsets.only(top: Dimensions.r32.dynamicH),
-              child: Center(
-                child: Text(
-                  isReceived
-                      ? context.loc.noReceivedRequests
-                      : context.loc.noSentRequests,
-                  style: context.bodyMedium?.copyWith(
-                    color: context.textSecondary,
-                  ),
-                ),
-              ),
-            ),
+          ActivityEmptyState(
+            title: isReceived
+                ? context.loc.noReceivedRequests
+                : context.loc.noSentRequests,
+            message: isReceived
+                ? context.loc.emptyReceivedRequestsDesc
+                : context.loc.emptySentRequestsDesc,
           )
         else
           SliverPadding(

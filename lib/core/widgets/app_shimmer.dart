@@ -27,7 +27,9 @@ class AppShimmer extends StatelessWidget {
         ? AppColor.surfaceContainerDark
         : AppColor.dividerLight;
 
-    final defaultHighlight = AppColor.primaryColor.withValues(alpha: 0.5);
+    final defaultHighlight = context.primaryColor.withValues(alpha: 0.5);
+
+    if (MediaQuery.disableAnimationsOf(context)) return child;
 
     return Shimmer.fromColors(
       baseColor: baseColor ?? defaultBase,
@@ -59,7 +61,9 @@ class AppShimmerBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = context.isDarkMode;
-    final boxColor = isDark ? AppColor.surfaceContainerDark : AppColor.dividerLight;
+    final boxColor = isDark
+        ? AppColor.surfaceContainerDark
+        : AppColor.dividerLight;
 
     return AppShimmer(
       child: Container(

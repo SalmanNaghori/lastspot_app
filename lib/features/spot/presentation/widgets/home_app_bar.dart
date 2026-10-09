@@ -29,7 +29,7 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
             width: Dimensions.r28.dynamicW,
             height: Dimensions.r28.dynamicH,
             decoration: BoxDecoration(
-              color: AppColor.primaryColor,
+              color: context.primaryColor,
               borderRadius: BorderRadius.circular(Dimensions.r8.dynamicR),
             ),
             child: Icon(
@@ -51,9 +51,9 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
                   text: AppString.appNamePrefix,
                   style: TextStyle(color: context.textPrimary),
                 ),
-                const TextSpan(
+                TextSpan(
                   text: AppString.appNameSuffix,
-                  style: TextStyle(color: AppColor.primaryColor),
+                  style: TextStyle(color: context.primaryColor),
                 ),
               ],
             ),

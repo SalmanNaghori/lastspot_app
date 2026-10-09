@@ -175,7 +175,7 @@ abstract class AppLocalizations {
   /// No description provided for @mapLocation.
   ///
   /// In en, this message translates to:
-  /// **'Map Location'**
+  /// **'Shared map link'**
   String get mapLocation;
 
   /// No description provided for @viewSpot.
@@ -1765,14 +1765,26 @@ abstract class AppLocalizations {
   /// No description provided for @noReceivedRequests.
   ///
   /// In en, this message translates to:
-  /// **'No received requests.'**
+  /// **'No received requests yet'**
   String get noReceivedRequests;
 
   /// No description provided for @noSentRequests.
   ///
   /// In en, this message translates to:
-  /// **'No sent requests.'**
+  /// **'No sent requests yet'**
   String get noSentRequests;
+
+  /// No description provided for @emptyReceivedRequestsDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'When someone asks to join one of your activities, their request will appear here.'**
+  String get emptyReceivedRequestsDesc;
+
+  /// No description provided for @emptySentRequestsDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Activities you ask to join will appear here while you wait for a response.'**
+  String get emptySentRequestsDesc;
 
   /// No description provided for @accountSuspendedTitle.
   ///
@@ -2085,6 +2097,108 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Activity photo {current} of {total}'**
   String detailsPhotoLabel(int current, int total);
+
+  /// No description provided for @galleryOpen.
+  ///
+  /// In en, this message translates to:
+  /// **'View photos'**
+  String get galleryOpen;
+
+  /// No description provided for @galleryZoomHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Pinch to zoom · Swipe to explore'**
+  String get galleryZoomHint;
+
+  /// No description provided for @galleryPrevious.
+  ///
+  /// In en, this message translates to:
+  /// **'Previous photo'**
+  String get galleryPrevious;
+
+  /// No description provided for @galleryNext.
+  ///
+  /// In en, this message translates to:
+  /// **'Next photo'**
+  String get galleryNext;
+
+  /// No description provided for @galleryZoomIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Zoom in'**
+  String get galleryZoomIn;
+
+  /// No description provided for @galleryZoomOut.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset zoom'**
+  String get galleryZoomOut;
+
+  /// No description provided for @discoveryEyebrow.
+  ///
+  /// In en, this message translates to:
+  /// **'YOUR NEXT GOOD TIME'**
+  String get discoveryEyebrow;
+
+  /// No description provided for @discoveryHost.
+  ///
+  /// In en, this message translates to:
+  /// **'Host an activity'**
+  String get discoveryHost;
+
+  /// No description provided for @detailsSharedMapLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Shared map link'**
+  String get detailsSharedMapLink;
+
+  /// No description provided for @detailsMapLinkHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Open the location shared by the host.'**
+  String get detailsMapLinkHint;
+
+  /// No description provided for @detailsMapSearchHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search this venue in Maps; confirm the meeting point with your host.'**
+  String get detailsMapSearchHint;
+
+  /// No description provided for @detailsOpenMapLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Open map link'**
+  String get detailsOpenMapLink;
+
+  /// No description provided for @detailsSearchMaps.
+  ///
+  /// In en, this message translates to:
+  /// **'Search in Maps'**
+  String get detailsSearchMaps;
+
+  /// No description provided for @homeComingUpSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Games over the next 7 days'**
+  String get homeComingUpSubtitle;
+
+  /// No description provided for @homeLaterOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Later on'**
+  String get homeLaterOn;
+
+  /// No description provided for @homeLaterSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Activities after next week'**
+  String get homeLaterSubtitle;
+
+  /// No description provided for @detailsMapOpenFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not open Maps. Please try again.'**
+  String get detailsMapOpenFailed;
 }
 
 class _AppLocalizationsDelegate

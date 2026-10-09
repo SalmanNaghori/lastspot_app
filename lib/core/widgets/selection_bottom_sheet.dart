@@ -167,7 +167,7 @@ class _SelectionBottomSheetState<T> extends State<SelectionBottomSheet<T>> {
   Widget _buildContent(BuildContext context) {
     if (widget.isLoading) {
       return Center(
-        child: CircularProgressIndicator(color: AppColor.primaryColor),
+        child: CircularProgressIndicator(color: context.primaryColor),
       );
     }
 

@@ -108,8 +108,8 @@ class _CreateSpotScreenState extends State<CreateSpotScreen> {
   }
 
   void _onPreview() {
-    if (_formState.titleController.text.isEmpty ||
-        _formState.locationController.text.isEmpty ||
+    if (_formState.titleController.text.trim().isEmpty ||
+        _formState.locationController.text.trim().isEmpty ||
         _formState.selectedCategoryId.value == null ||
         _formState.selectedCity.value == null) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -118,7 +118,25 @@ class _CreateSpotScreenState extends State<CreateSpotScreen> {
       return;
     }
 
-    if (!_formState.isFree.value && _formState.priceController.text.isEmpty) {
+    final eventDateTime = DateTime(
+      _formState.eventDate.value.year,
+      _formState.eventDate.value.month,
+      _formState.eventDate.value.day,
+      _formState.eventTime.value.hour,
+      _formState.eventTime.value.minute,
+    );
+    if (!eventDateTime.isAfter(DateTime.now())) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Choose a future date and time.')),
+      );
+      return;
+    }
+
+    final enteredPrice = double.tryParse(
+      _formState.priceController.text.replaceAll(RegExp(r'[^\d]'), ''),
+    );
+    if (!_formState.isFree.value &&
+        (enteredPrice == null || enteredPrice <= 0)) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(context.loc.pleaseEnterValidPrice)),
       );
@@ -142,14 +160,15 @@ class _CreateSpotScreenState extends State<CreateSpotScreen> {
     return BlocConsumer<CreateSpotBloc, CreateSpotState>(
       listener: (context, state) {
         if (state is CreateSpotSuccess) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(context.loc.activityGeneratedSuccess)),
-          );
-          if (context.canPop()) {
-            context.pop();
-          } else {
-            context.go(AppRoutes.home); // Go to home tab on success
+          if (widget.spotToEdit != null) {
+            if (context.canPop()) {
+              context.pop();
+            } else {
+              context.go(AppRoutes.home);
+            }
+            return;
           }
+          context.go(AppRoutes.createSuccess);
         } else if (state is CreateSpotError) {
           ScaffoldMessenger.of(
             context,

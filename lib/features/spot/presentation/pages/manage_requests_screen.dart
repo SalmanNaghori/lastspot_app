@@ -77,7 +77,7 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen> {
                         style: context.bodyLarge?.copyWith(
                           color: post.currentParticipants == 0
                               ? AppColor.errorColor
-                              : AppColor.primaryColor,
+                              : context.primaryColor,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -234,9 +234,9 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen> {
             ),
             style: ElevatedButton.styleFrom(
               backgroundColor: context.surfaceColor,
-              foregroundColor: AppColor.primaryColor,
+              foregroundColor: context.primaryColor,
               minimumSize: Size(double.infinity, Dimensions.r48.dynamicH),
-              side: const BorderSide(color: AppColor.primaryColor),
+              side: BorderSide(color: context.primaryColor),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(Dimensions.r12.dynamicR),
               ),

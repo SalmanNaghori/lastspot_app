@@ -53,50 +53,58 @@ class LastSpotApp extends StatelessWidget {
       ],
       child: BlocBuilder<SettingsCubit, SettingsState>(
         builder: (context, settingsState) {
-          final isDark = settingsState.themeMode == ThemeMode.dark ||
+          final isDark =
+              settingsState.themeMode == ThemeMode.dark ||
               (settingsState.themeMode == ThemeMode.system &&
                   MediaQuery.platformBrightnessOf(context) == Brightness.dark);
-          
+
           return SkeletonizerConfig(
             data: SkeletonizerConfigData(
               effect: ShimmerEffect(
-                baseColor: isDark ? AppColor.surfaceContainerDark : AppColor.dividerLight,
-                highlightColor: AppColor.primaryColor.withValues(alpha: 0.5),
+                baseColor: isDark
+                    ? AppColor.surfaceContainerDark
+                    : AppColor.dividerLight,
+                highlightColor:
+                    (isDark
+                            ? settingsState.appThemeColor.darkPrimary
+                            : settingsState.appThemeColor.primary)
+                        .withValues(alpha: 0.5),
               ),
             ),
             child: MaterialApp.router(
-            title: AppString.appName,
-            onGenerateTitle: (context) =>
-                AppLocalizations.of(context)?.appName ?? AppString.appName,
-            debugShowCheckedModeBanner: false,
-            localizationsDelegates: AppLocalizations.localizationsDelegates,
-            supportedLocales: AppLocalizations.supportedLocales,
-            locale: Locale(settingsState.locale, ''),
-            themeMode: settingsState.themeMode,
-            theme: AppTheme.lightTheme,
-            darkTheme: AppTheme.darkTheme,
-            routerConfig: appRouter,
-            builder: (context, child) {
-              Dimensions.init(context);
-              return GestureDetector(
-                onTap: () {
-                  FocusManager.instance.primaryFocus?.unfocus();
-                },
-                child: BlocListener<AuthBloc, AuthState>(
-                  listener: (context, state) {
-                    if (state is Unauthenticated) {
-                      appRouter.go(AppRoutes.login);
-                    } else if (state is AuthSuspended ||
-                        state is AuthBanned ||
-                        state is AuthDeleted) {
-                      appRouter.go(AppRoutes.accountStatus);
-                    }
+              title: AppString.appName,
+              onGenerateTitle: (context) =>
+                  AppLocalizations.of(context)?.appName ?? AppString.appName,
+              debugShowCheckedModeBanner: false,
+              localizationsDelegates: AppLocalizations.localizationsDelegates,
+              supportedLocales: AppLocalizations.supportedLocales,
+              locale: Locale(settingsState.locale, ''),
+              themeMode: settingsState.themeMode,
+              theme: AppTheme.lightThemeFor(settingsState.appThemeColor),
+              darkTheme: AppTheme.darkThemeFor(settingsState.appThemeColor),
+              routerConfig: appRouter,
+              builder: (context, child) {
+                Dimensions.init(context);
+                return GestureDetector(
+                  onTap: () {
+                    FocusManager.instance.primaryFocus?.unfocus();
                   },
-                  child: child ?? const SizedBox(),
-                ),
-              );
-            },
-          ));
+                  child: BlocListener<AuthBloc, AuthState>(
+                    listener: (context, state) {
+                      if (state is Unauthenticated) {
+                        appRouter.go(AppRoutes.login);
+                      } else if (state is AuthSuspended ||
+                          state is AuthBanned ||
+                          state is AuthDeleted) {
+                        appRouter.go(AppRoutes.accountStatus);
+                      }
+                    },
+                    child: child ?? const SizedBox(),
+                  ),
+                );
+              },
+            ),
+          );
         },
       ),
     );

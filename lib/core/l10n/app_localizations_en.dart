@@ -52,7 +52,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get openGroundMap => 'Open Ground Map ↗';
 
   @override
-  String get mapLocation => 'Map Location';
+  String get mapLocation => 'Shared map link';
 
   @override
   String get viewSpot => 'View Spot';
@@ -897,10 +897,18 @@ class AppLocalizationsEn extends AppLocalizations {
   String get tabSent => 'Sent';
 
   @override
-  String get noReceivedRequests => 'No received requests.';
+  String get noReceivedRequests => 'No received requests yet';
 
   @override
-  String get noSentRequests => 'No sent requests.';
+  String get noSentRequests => 'No sent requests yet';
+
+  @override
+  String get emptyReceivedRequestsDesc =>
+      'When someone asks to join one of your activities, their request will appear here.';
+
+  @override
+  String get emptySentRequestsDesc =>
+      'Activities you ask to join will appear here while you wait for a response.';
 
   @override
   String get accountSuspendedTitle => 'Account Suspended';
@@ -1075,4 +1083,56 @@ class AppLocalizationsEn extends AppLocalizations {
   String detailsPhotoLabel(int current, int total) {
     return 'Activity photo $current of $total';
   }
+
+  @override
+  String get galleryOpen => 'View photos';
+
+  @override
+  String get galleryZoomHint => 'Pinch to zoom · Swipe to explore';
+
+  @override
+  String get galleryPrevious => 'Previous photo';
+
+  @override
+  String get galleryNext => 'Next photo';
+
+  @override
+  String get galleryZoomIn => 'Zoom in';
+
+  @override
+  String get galleryZoomOut => 'Reset zoom';
+
+  @override
+  String get discoveryEyebrow => 'YOUR NEXT GOOD TIME';
+
+  @override
+  String get discoveryHost => 'Host an activity';
+
+  @override
+  String get detailsSharedMapLink => 'Shared map link';
+
+  @override
+  String get detailsMapLinkHint => 'Open the location shared by the host.';
+
+  @override
+  String get detailsMapSearchHint =>
+      'Search this venue in Maps; confirm the meeting point with your host.';
+
+  @override
+  String get detailsOpenMapLink => 'Open map link';
+
+  @override
+  String get detailsSearchMaps => 'Search in Maps';
+
+  @override
+  String get homeComingUpSubtitle => 'Games over the next 7 days';
+
+  @override
+  String get homeLaterOn => 'Later on';
+
+  @override
+  String get homeLaterSubtitle => 'Activities after next week';
+
+  @override
+  String get detailsMapOpenFailed => 'Could not open Maps. Please try again.';
 }

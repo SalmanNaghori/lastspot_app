@@ -107,7 +107,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                     builder: (context, state) {
                       return ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColor.primaryColor,
+                          backgroundColor: context.primaryColor,
                           foregroundColor: AppColor.whiteColor,
                           padding: const EdgeInsets.symmetric(
                             vertical: Dimensions.r16,

@@ -2,7 +2,7 @@ import 'package:lastspot_app/core/base_import.dart';
 import '../../domain/policies/spot_participation_policy.dart';
 import '../bloc/spot_details_bloc.dart';
 
-enum SpotDetailsMenuAction { copy, edit, report }
+enum SpotDetailsMenuAction { copy, edit }
 
 class SpotDetailsMenuSheet extends StatelessWidget {
   final SpotDetailsLoaded loadedState;
@@ -41,16 +41,6 @@ class SpotDetailsMenuSheet extends StatelessWidget {
               title: Text(loc.edit),
               onTap: () =>
                   Navigator.of(context).pop(SpotDetailsMenuAction.edit),
-            ),
-          if (!loadedState.isHost)
-            ListTile(
-              leading: Icon(
-                Icons.flag_outlined,
-                color: context.colorScheme.error,
-              ),
-              title: Text(loc.reportActivityAction),
-              onTap: () =>
-                  Navigator.of(context).pop(SpotDetailsMenuAction.report),
             ),
         ],
       ),

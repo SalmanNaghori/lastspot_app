@@ -192,7 +192,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     builder: (context, state) {
                       return ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColor.primaryColor,
+                          backgroundColor: context.primaryColor,
                           foregroundColor: AppColor.whiteColor,
                           padding: const EdgeInsets.symmetric(
                             vertical: Dimensions.r16,
@@ -235,7 +235,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         child: Text(
                           context.loc.login,
                           style: TextStyle(
-                            color: AppColor.primaryColor,
+                            color: context.primaryColor,
                             fontWeight: FontWeight.bold,
                           ),
                         ),

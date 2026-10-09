@@ -78,7 +78,7 @@ class ChatScreenTablet extends StatelessWidget {
                   ),
                   SizedBox(width: Dimensions.r8.dynamicW),
                   CircleAvatar(
-                    backgroundColor: AppColor.primaryColor,
+                    backgroundColor: context.primaryColor,
                     child: IconButton(
                       icon: const Icon(Icons.send, color: AppColor.whiteColor),
                       onPressed: null,

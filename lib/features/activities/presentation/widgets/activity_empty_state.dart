@@ -1,4 +1,6 @@
 import 'package:lastspot_app/core/base_import.dart';
+import 'package:lastspot_app/gen/assets.gen.dart';
+import 'package:lottie/lottie.dart';
 
 class ActivityEmptyState extends StatelessWidget {
   final String title;
@@ -23,16 +25,12 @@ class ActivityEmptyState extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SizedBox(height: Dimensions.r32.dynamicH),
-            Container(
-              padding: EdgeInsets.all(Dimensions.r24.dynamicW),
-              decoration: BoxDecoration(
-                color: context.surfaceContainer,
-                shape: BoxShape.circle,
-              ),
-              child: Icon(
-                Icons.sports_baseball_outlined,
-                size: Dimensions.r48.dynamicH,
-                color: context.textTertiary,
+            SizedBox(
+              height: Dimensions.h(180),
+              child: Lottie.asset(
+                Assets.ain.anNoData.path,
+                repeat: true,
+                fit: BoxFit.contain,
               ),
             ),
             SizedBox(height: Dimensions.r24.dynamicH),

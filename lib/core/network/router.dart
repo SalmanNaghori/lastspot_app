@@ -2,6 +2,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:go_router/go_router.dart';
 import '../../features/notifications/presentation/pages/notifications_screen.dart';
 import '../../features/startup/presentation/pages/splash_screen.dart';
+import '../../features/startup/presentation/pages/onboarding_screen.dart';
 import '../../features/startup/presentation/pages/maintenance_screen.dart';
 import '../../features/startup/presentation/pages/force_update_screen.dart';
 import '../../features/startup/data/models/app_settings_model.dart';
@@ -10,10 +11,10 @@ import '../../features/auth/presentation/pages/signup_screen.dart';
 import '../../features/auth/presentation/pages/forgot_password_screen.dart';
 import '../../features/auth/presentation/pages/profile_setup_screen.dart';
 import '../../features/auth/presentation/pages/account_status_screen.dart';
-import '../../features/auth/presentation/pages/auth_check_screen.dart';
 import '../../features/spot/presentation/pages/home_screen.dart';
 import '../../features/spot/presentation/bloc/home_cubit.dart';
 import '../../features/spot/presentation/pages/create_spot_screen.dart';
+import '../../features/spot/presentation/pages/create_spot_success_screen.dart';
 import '../../features/spot/presentation/pages/preview_spot_screen.dart';
 import '../../features/auth/presentation/bloc/profile_cubit.dart';
 import '../../features/spot/presentation/bloc/create_spot_bloc.dart';
@@ -82,8 +83,8 @@ final GoRouter appRouter = GoRouter(
       },
     ),
     GoRoute(
-      path: AppRoutes.authCheck,
-      builder: (context, state) => const AuthCheckScreen(),
+      path: AppRoutes.onboarding,
+      builder: (context, state) => const OnboardingScreen(),
     ),
     GoRoute(
       path: AppRoutes.login,
@@ -211,6 +212,10 @@ final GoRouter appRouter = GoRouter(
           child: CreateSpotScreen(spotToEdit: spotToEdit),
         );
       },
+    ),
+    GoRoute(
+      path: AppRoutes.createSuccess,
+      builder: (context, state) => const CreateSpotSuccessScreen(),
     ),
     GoRoute(
       path: AppRoutes.editSpot,

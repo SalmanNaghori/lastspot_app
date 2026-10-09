@@ -33,10 +33,10 @@ class ForceUpdateScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                const Icon(
+                Icon(
                   Icons.system_update_alt,
                   size: Dimensions.r64,
-                  color: AppColor.primaryColor,
+                  color: context.primaryColor,
                 ),
                 const SizedBox(height: Dimensions.r24),
                 Text(
@@ -80,7 +80,7 @@ class ForceUpdateScreen extends StatelessWidget {
                 ],
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColor.primaryColor,
+                    backgroundColor: context.primaryColor,
                     foregroundColor: AppColor.whiteColor,
                     padding: const EdgeInsets.symmetric(
                       vertical: Dimensions.r16,

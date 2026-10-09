@@ -226,7 +226,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                               ),
                               CircleAvatar(
                                 radius: 18,
-                                backgroundColor: AppColor.primaryColor,
+                                backgroundColor: context.primaryColor,
                                 child: const Icon(
                                   Icons.camera_alt,
                                   size: 20,
@@ -299,12 +299,12 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                                 label: Text(sport),
                                 selected: isSelected,
                                 onSelected: (_) => _toggleSport(sport),
-                                selectedColor: AppColor.primaryColor.withValues(
+                                selectedColor: context.primaryColor.withValues(
                                   alpha: 0.2,
                                 ),
                                 labelStyle: TextStyle(
                                   color: isSelected
-                                      ? AppColor.primaryColor
+                                      ? context.primaryColor
                                       : context.textSecondary,
                                 ),
                               );
@@ -315,7 +315,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                       const SizedBox(height: Dimensions.r48),
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColor.primaryColor,
+                          backgroundColor: context.primaryColor,
                           foregroundColor: AppColor.whiteColor,
                           padding: const EdgeInsets.symmetric(
                             vertical: Dimensions.r16,

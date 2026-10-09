@@ -26,7 +26,7 @@
   "urgentMatches": "URGENT MATCHES (STARTING TODAY)",
   "recentPosts": "RECENT POSTS",
   "openGroundMap": "Open Ground Map \u2197",
-  "mapLocation": "Map Location",
+  "mapLocation": "Shared map link",
   "viewSpot": "View Spot",
   "spotsNeeded": "{count} SPOTS",
   "@spotsNeeded": {
@@ -374,8 +374,10 @@
   "submitReport": "Submit Report",
   "tabReceived": "Received",
   "tabSent": "Sent",
-  "noReceivedRequests": "No received requests.",
-  "noSentRequests": "No sent requests.",
+  "noReceivedRequests": "No received requests yet",
+  "noSentRequests": "No sent requests yet",
+  "emptyReceivedRequestsDesc": "When someone asks to join one of your activities, their request will appear here.",
+  "emptySentRequestsDesc": "Activities you ask to join will appear here while you wait for a response.",
   "accountSuspendedTitle": "Account Suspended",
   "accountSuspendedDesc": "Your account has been temporarily suspended due to a violation of our terms of service.",
   "accountBannedTitle": "Account Banned",
@@ -467,5 +469,22 @@
         "type": "int"
       }
     }
-  }
+  },
+  "galleryOpen": "View photos",
+  "galleryZoomHint": "Pinch to zoom \u00b7 Swipe to explore",
+  "galleryPrevious": "Previous photo",
+  "galleryNext": "Next photo",
+  "galleryZoomIn": "Zoom in",
+  "galleryZoomOut": "Reset zoom",
+  "discoveryEyebrow": "YOUR NEXT GOOD TIME",
+  "discoveryHost": "Host an activity",
+  "detailsSharedMapLink": "Shared map link",
+  "detailsMapLinkHint": "Open the location shared by the host.",
+  "detailsMapSearchHint": "Search this venue in Maps; confirm the meeting point with your host.",
+  "detailsOpenMapLink": "Open map link",
+  "detailsSearchMaps": "Search in Maps",
+  "homeComingUpSubtitle": "Games over the next 7 days",
+  "homeLaterOn": "Later on",
+  "homeLaterSubtitle": "Activities after next week",
+  "detailsMapOpenFailed": "Could not open Maps. Please try again."
 }

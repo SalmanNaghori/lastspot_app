@@ -30,7 +30,7 @@ class AppUtils {
           message,
           style: const TextStyle(color: AppColor.whiteColor),
         ),
-        backgroundColor: isError ? AppColor.errorColor : AppColor.primaryColor,
+        backgroundColor: isError ? AppColor.errorColor : context.primaryColor,
         duration: duration,
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(
@@ -51,20 +51,15 @@ class AppUtils {
     return false;
   }
 
-  static Future<void> launchMap(String query) async {
-    try {
-      if (query.trim().startsWith('http://') ||
-          query.trim().startsWith('https://')) {
-        await launchWebUrl(query.trim());
-        return;
-      }
-      final encodedQuery = Uri.encodeComponent(query);
-      final url =
-          'https://www.google.com/maps/search/?api=1&query=$encodedQuery';
-      await launchWebUrl(url);
-    } catch (e) {
-      debugPrint('Error launching map: $e');
+  static Future<bool> launchMap(String query) async {
+    final location = query.trim();
+    if (location.isEmpty) return false;
+    if (location.startsWith('http://') || location.startsWith('https://')) {
+      return launchWebUrl(location);
     }
+    final encodedQuery = Uri.encodeComponent(location);
+    final url = 'https://www.google.com/maps/search/?api=1&query=$encodedQuery';
+    return launchWebUrl(url);
   }
 
   /// Formats DateTime to readable string (e.g., "Sep 4, 2026")

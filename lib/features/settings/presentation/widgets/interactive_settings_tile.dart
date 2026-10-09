@@ -31,14 +31,14 @@ class InteractiveSettingsTile<T> extends StatelessWidget {
         ),
         decoration: BoxDecoration(
           color: isSelected
-              ? AppColor.primaryColor.withValues(alpha: 0.08)
+              ? context.primaryColor.withValues(alpha: 0.08)
               : Colors.transparent,
         ),
         child: Row(
           children: [
             Icon(
               icon,
-              color: isSelected ? AppColor.primaryColor : context.textSecondary,
+              color: isSelected ? context.primaryColor : context.textSecondary,
               size: Dimensions.r20.dynamicH,
             ),
             SizedBox(width: Dimensions.r12.dynamicW),
@@ -48,7 +48,7 @@ class InteractiveSettingsTile<T> extends StatelessWidget {
                 style: context.bodyLarge?.copyWith(
                   fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
                   color: isSelected
-                      ? AppColor.primaryColor
+                      ? context.primaryColor
                       : context.textPrimary,
                 ),
               ),
@@ -62,7 +62,7 @@ class InteractiveSettingsTile<T> extends StatelessWidget {
                 curve: Curves.easeOutBack,
                 child: Icon(
                   Icons.check_circle,
-                  color: AppColor.primaryColor,
+                  color: context.primaryColor,
                   size: Dimensions.r20.dynamicH,
                 ),
               ),

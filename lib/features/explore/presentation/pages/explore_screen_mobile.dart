@@ -211,7 +211,7 @@ class _ExploreScreenMobileState extends State<ExploreScreenMobile> {
       child: Scaffold(
         backgroundColor: context.backgroundColor,
         body: RefreshIndicator(
-          color: AppColor.primaryColor,
+          color: context.primaryColor,
           onRefresh: () async => _onRefresh(),
           child: TweenAnimationBuilder<double>(
             tween: Tween(begin: 0.0, end: 1.0),
@@ -307,7 +307,7 @@ class _ExploreScreenMobileState extends State<ExploreScreenMobile> {
                                         ),
                                         focusedBorder: OutlineInputBorder(
                                           borderRadius: BorderRadius.circular(Dimensions.r12.dynamicR),
-                                          borderSide: BorderSide(color: AppColor.primaryColor),
+                                          borderSide: BorderSide(color: context.primaryColor),
                                         ),
                                       ),
                                     ),
@@ -343,7 +343,7 @@ class _ExploreScreenMobileState extends State<ExploreScreenMobile> {
                                             onPressed: () => _onFilterTap(dateF, priceF, partF),
                                             icon: Icon(
                                               Icons.tune,
-                                              color: hasActiveFilters ? AppColor.primaryColor : context.textSecondary,
+                                              color: hasActiveFilters ? context.primaryColor : context.textSecondary,
                                             ),
                                           ),
                                           if (hasActiveFilters)
@@ -353,8 +353,8 @@ class _ExploreScreenMobileState extends State<ExploreScreenMobile> {
                                               child: Container(
                                                 width: 8,
                                                 height: 8,
-                                                decoration: const BoxDecoration(
-                                                  color: AppColor.primaryColor,
+                                                decoration: BoxDecoration(
+                                                  color: context.primaryColor,
                                                   shape: BoxShape.circle,
                                                 ),
                                               ),
@@ -378,7 +378,7 @@ class _ExploreScreenMobileState extends State<ExploreScreenMobile> {
                                   children: [
                                     Icon(
                                       Icons.location_on,
-                                      color: AppColor.primaryColor,
+                                      color: context.primaryColor,
                                       size: Dimensions.r18.dynamicH,
                                     ),
                                     SizedBox(width: Dimensions.r4.dynamicW),

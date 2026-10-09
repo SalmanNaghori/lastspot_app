@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../theme/app_color.dart';
 
 /// Centralized storage keys for SharedPreferences to avoid raw strings.
 class SharedPrefsKeys {
   SharedPrefsKeys._();
 
   static const String themeMode = 'theme_mode';
+  static const String appThemeColor = 'app_theme_color';
   static const String locale = 'locale';
   static const String skippedUpdateVersion = 'skipped_update_version';
   static const String userToken = 'user_token';
@@ -18,6 +20,8 @@ abstract class SharedPrefsUtil {
   // Theme & Locale
   ThemeMode getThemeMode();
   Future<bool> setThemeMode(ThemeMode mode);
+  AppThemeColor getAppThemeColor();
+  Future<bool> setAppThemeColor(AppThemeColor color);
 
   String getLocale();
   Future<bool> setLocale(String locale);
@@ -67,6 +71,20 @@ class SharedPrefsUtilImpl implements SharedPrefsUtil {
   @override
   Future<bool> setThemeMode(ThemeMode mode) {
     return _prefs.setInt(SharedPrefsKeys.themeMode, mode.index);
+  }
+
+  @override
+  AppThemeColor getAppThemeColor() {
+    final index = _prefs.getInt(SharedPrefsKeys.appThemeColor);
+    if (index != null && index >= 0 && index < AppThemeColor.values.length) {
+      return AppThemeColor.values[index];
+    }
+    return AppThemeColor.violet;
+  }
+
+  @override
+  Future<bool> setAppThemeColor(AppThemeColor color) {
+    return _prefs.setInt(SharedPrefsKeys.appThemeColor, color.index);
   }
 
   @override

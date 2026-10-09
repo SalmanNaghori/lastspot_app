@@ -7,7 +7,7 @@ class AppRoutes {
   static const String splash = '/';
   static const String maintenance = '/maintenance';
   static const String forceUpdate = '/force-update';
-  static const String authCheck = '/auth-check';
+  static const String onboarding = '/onboarding';
 
   // Authentication Routes
   static const String login = '/login';
@@ -20,6 +20,7 @@ class AppRoutes {
   static const String home = '/home';
   static const String explore = '/explore';
   static const String create = '/create';
+  static const String createSuccess = '/create-success';
   static const String activities = '/activities';
   static const String profile = '/profile';
 

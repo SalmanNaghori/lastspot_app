@@ -26,10 +26,10 @@ class AppFilterChip<T> extends StatelessWidget {
           vertical: Dimensions.r10.dynamicH,
         ),
         decoration: BoxDecoration(
-          color: isSelected ? AppColor.primaryColor : context.surfaceColor,
+          color: isSelected ? context.primaryColor : context.surfaceColor,
           borderRadius: BorderRadius.circular(Dimensions.r20.dynamicR),
           border: Border.all(
-            color: isSelected ? AppColor.primaryColor : context.borderColor,
+            color: isSelected ? context.primaryColor : context.borderColor,
           ),
         ),
         child: Text(

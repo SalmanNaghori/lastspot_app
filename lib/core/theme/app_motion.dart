@@ -9,6 +9,7 @@ abstract final class AppMotion {
   static const curve = Curves.easeOutCubic;
   static const pressedScale = 0.98;
   static const dialogStartScale = 0.94;
+  static const dialogSlideOffset = Offset(0, 0.04);
   static const entranceOffset = 20.0;
 
   static Duration duration(BuildContext context, Duration value) =>

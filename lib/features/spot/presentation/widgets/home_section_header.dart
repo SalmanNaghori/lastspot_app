@@ -51,14 +51,14 @@ class HomeSectionHeader extends StatelessWidget {
                         style: TextStyle(
                           fontSize: Dimensions.r13.dynamicSP,
                           fontWeight: FontWeight.w600,
-                          color: AppColor.primaryColor,
+                          color: context.primaryColor,
                         ),
                       ),
                       SizedBox(width: Dimensions.r2.dynamicW),
                       Icon(
                         Icons.chevron_right,
                         size: Dimensions.r16.dynamicH,
-                        color: AppColor.primaryColor,
+                        color: context.primaryColor,
                       ),
                     ],
                   ),

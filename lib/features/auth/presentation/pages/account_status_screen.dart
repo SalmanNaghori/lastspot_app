@@ -27,7 +27,7 @@ class AccountStatusScreen extends StatelessWidget {
     String title = 'Account Status';
     String message = 'There is an issue with your account.';
     IconData iconData = Icons.info_outline;
-    Color iconColor = AppColor.primaryColor;
+    Color iconColor = context.primaryColor;
 
     if (state is AuthSuspended) {
       title = context.loc.accountSuspendedTitle;
@@ -78,7 +78,7 @@ class AccountStatusScreen extends StatelessWidget {
               const SizedBox(height: Dimensions.r48),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColor.primaryColor,
+                  backgroundColor: context.primaryColor,
                   foregroundColor: AppColor.whiteColor,
                   padding: const EdgeInsets.symmetric(vertical: Dimensions.r16),
                   shape: RoundedRectangleBorder(

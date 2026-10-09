@@ -34,7 +34,7 @@ class LoadingState extends StatelessWidget {
         children: [
           CircularProgressIndicator(
             strokeWidth: 3,
-            color: AppColor.primaryColor,
+            color: context.primaryColor,
           ),
           if (message != null) ...[
             SizedBox(height: Dimensions.r16.dynamicH),

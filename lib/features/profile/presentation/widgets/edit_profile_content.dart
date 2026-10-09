@@ -112,7 +112,7 @@ class EditProfileContent extends StatelessWidget {
                               ),
                               CircleAvatar(
                                 radius: 18,
-                                backgroundColor: AppColor.primaryColor,
+                                backgroundColor: context.primaryColor,
                                 child: const Icon(
                                   Icons.camera_alt,
                                   size: 20,
@@ -193,12 +193,12 @@ class EditProfileContent extends StatelessWidget {
                                 label: Text(sport),
                                 selected: isSelected,
                                 onSelected: (_) => onToggleSport(sport),
-                                selectedColor: AppColor.primaryColor.withValues(
+                                selectedColor: context.primaryColor.withValues(
                                   alpha: 0.2,
                                 ),
                                 labelStyle: TextStyle(
                                   color: isSelected
-                                      ? AppColor.primaryColor
+                                      ? context.primaryColor
                                       : context.textSecondary,
                                 ),
                               );
@@ -209,7 +209,7 @@ class EditProfileContent extends StatelessWidget {
                       const SizedBox(height: Dimensions.r48),
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColor.primaryColor,
+                          backgroundColor: context.primaryColor,
                           foregroundColor: AppColor.whiteColor,
                           padding: const EdgeInsets.symmetric(
                             vertical: Dimensions.r16,

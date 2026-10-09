@@ -62,7 +62,7 @@ class PostCard extends StatelessWidget {
                   decoration: BoxDecoration(
                     color: isUrgent
                         ? AppColor.errorColor.withValues(alpha: 0.1)
-                        : AppColor.primaryColor.withValues(alpha: 0.1),
+                        : context.primaryColor.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(Dimensions.r8.dynamicR),
                   ),
                   child: Text(
@@ -73,7 +73,7 @@ class PostCard extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                       color: isUrgent
                           ? AppColor.errorColor
-                          : AppColor.primaryColor,
+                          : context.primaryColor,
                     ),
                   ),
                 ),
@@ -123,12 +123,12 @@ class PostCard extends StatelessWidget {
                   icon: Icon(
                     Icons.map,
                     size: Dimensions.r16.dynamicH,
-                    color: AppColor.primaryColor,
+                    color: context.primaryColor,
                   ),
                   label: Text(
                     l10n.openGroundMap,
                     style: TextStyle(
-                      color: AppColor.primaryColor,
+                      color: context.primaryColor,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -137,9 +137,9 @@ class PostCard extends StatelessWidget {
                   onPressed: onTap,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: context.surfaceColor,
-                    foregroundColor: AppColor.primaryColor,
+                    foregroundColor: context.primaryColor,
                     elevation: 0,
-                    side: BorderSide(color: AppColor.primaryColor),
+                    side: BorderSide(color: context.primaryColor),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(
                         Dimensions.r8.dynamicR,

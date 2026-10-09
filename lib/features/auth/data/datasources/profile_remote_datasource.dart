@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:developer' as developer;
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:lastspot_app/core/network/api_endpoints.dart';
 import '../../domain/entities/user_profile.dart';
@@ -41,7 +42,48 @@ class SupabaseProfileDataSourceImpl implements ProfileRemoteDataSource {
     required String userId,
     required File imageFile,
   }) async {
-    final fileName = '$userId/profile.jpg';
+    var session = _client.auth.currentSession;
+    if (session == null) {
+      developer.log(
+        'Avatar upload blocked: no active Supabase session.',
+        name: 'Supabase.Profile',
+      );
+      throw const AuthException(
+        'Please sign in again before uploading a profile photo.',
+      );
+    }
+
+    if (session.isExpired) {
+      developer.log(
+        'Avatar upload session is expired; refreshing it for authUid=${session.user.id}.',
+        name: 'Supabase.Profile',
+      );
+      await _client.auth.refreshSession();
+      session = _client.auth.currentSession;
+    }
+
+    final authUser = _client.auth.currentUser;
+    developer.log(
+      'Avatar upload identity: authUid=${authUser?.id}, '
+      'requestedUid=$userId, sessionPresent=${session != null}, '
+      'sessionExpired=${session?.isExpired ?? true}',
+      name: 'Supabase.Profile',
+    );
+
+    if (session == null || authUser == null || session.isExpired) {
+      throw const AuthException(
+        'Your sign-in session is unavailable or expired. Please sign in again.',
+      );
+    }
+
+    if (authUser.id != session.user.id || userId != authUser.id) {
+      throw const AuthException(
+        'The signed-in account changed. Reload your profile and try again.',
+      );
+    }
+
+    // Always scope the object to the currently authenticated account.
+    final fileName = '${authUser.id}/profile.jpg';
 
     // Upload image to the 'profiles' bucket
     await _client.storage
@@ -49,14 +91,28 @@ class SupabaseProfileDataSourceImpl implements ProfileRemoteDataSource {
         .upload(
           fileName,
           imageFile,
-          fileOptions: const FileOptions(cacheControl: '3600', upsert: true),
+          fileOptions: const FileOptions(
+            cacheControl: '3600',
+            contentType: 'image/jpeg',
+            upsert: true,
+          ),
         );
 
-    // Get the public URL
-    return _client.storage
+    final publicUrl = _client.storage
         .from(ApiEndpoints.bucketProfiles)
         .getPublicUrl(fileName);
+    final publicUri = Uri.parse(publicUrl);
+    // Give cached image widgets and the CDN a new URL after replacement.
+    return publicUri
+        .replace(
+          queryParameters: {
+            ...publicUri.queryParameters,
+            'v': DateTime.now().microsecondsSinceEpoch.toString(),
+          },
+        )
+        .toString();
   }
+
   @override
   Future<Map<String, int>> getProfileStats(String userId) async {
     final createdResponse = await _client
