@@ -3,6 +3,7 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:lastspot_app/core/utils/fcm_token_util.dart';
+import '../../../../core/services/installation_id_service.dart';
 
 abstract class DeviceRemoteDataSource {
   Future<void> registerDevice(String userId);
@@ -12,16 +13,19 @@ abstract class DeviceRemoteDataSource {
 
 class SupabaseDeviceDataSourceImpl implements DeviceRemoteDataSource {
   final SupabaseClient _client;
+  final InstallationIdService _installationIdService;
   final DeviceInfoPlugin _deviceInfoPlugin = DeviceInfoPlugin();
 
-  SupabaseDeviceDataSourceImpl({required SupabaseClient client})
-    : _client = client;
+  SupabaseDeviceDataSourceImpl({
+    required SupabaseClient client,
+    required InstallationIdService installationIdService,
+  }) : _client = client,
+       _installationIdService = installationIdService;
 
   @override
   Future<void> registerDevice(String userId) async {
     final packageInfo = await PackageInfo.fromPlatform();
 
-    String deviceId = '';
     String osVersion = '';
     String deviceName = '';
     final String platform = Platform.isIOS
@@ -30,66 +34,53 @@ class SupabaseDeviceDataSourceImpl implements DeviceRemoteDataSource {
 
     if (Platform.isAndroid) {
       final androidInfo = await _deviceInfoPlugin.androidInfo;
-      deviceId = androidInfo.id;
       osVersion =
           'Android ${androidInfo.version.release} (API ${androidInfo.version.sdkInt})';
       deviceName = androidInfo.model;
     } else if (Platform.isIOS) {
       final iosInfo = await _deviceInfoPlugin.iosInfo;
-      deviceId = iosInfo.identifierForVendor ?? 'unknown_ios_id';
       osVersion = '${iosInfo.systemName} ${iosInfo.systemVersion}';
       deviceName = iosInfo.name;
     }
 
-    // Guard: do not proceed if we could not determine a device ID.
-    if (deviceId.isEmpty) return;
+    final installationId = await _installationIdService.getId();
 
-    String fcmTokenStr = '';
+    String? fcmTokenStr;
     try {
-      final fcmToken = await FcmTokenUtil.getToken();
-      fcmTokenStr = fcmToken ?? '';
-    } catch (e) {
-      // Ignore if push notifications are not set up or fail
+      fcmTokenStr = await FcmTokenUtil.getToken();
+    } catch (_) {
+      // Push token availability is optional for authentication.
     }
 
-    final deviceData = {
-      'user_id': userId,
-      'device_identifier': deviceId,
-      'device_model': deviceName,
-      'platform': platform,
-      'os_version': osVersion,
-      'app_version': packageInfo.version,
-      'build_number': packageInfo.buildNumber,
-      'fcm_token': fcmTokenStr,
-      'last_active_at': DateTime.now().toIso8601String(),
-    };
+    // A null token must not overwrite a token already registered for this
+    // installation. The verified RPC requires text, so defer registration
+    // until a token is available.
+    if (fcmTokenStr == null || fcmTokenStr.isEmpty) return;
 
-    await _client
-        .from('user_devices')
-        .upsert(deviceData, onConflict: 'user_id, device_identifier');
+    await _client.rpc(
+      'register_my_device',
+      params: {
+        'p_device_identifier': installationId,
+        'p_platform': platform,
+        'p_fcm_token': fcmTokenStr,
+        'p_device_model': deviceName,
+        'p_os_version': osVersion,
+        'p_app_version': packageInfo.version,
+        'p_build_number': int.tryParse(packageInfo.buildNumber) ?? 0,
+      },
+    );
   }
 
   @override
   Future<void> unregisterDevice(String userId) async {
-    String deviceId = '';
-    if (Platform.isAndroid) {
-      final androidInfo = await _deviceInfoPlugin.androidInfo;
-      deviceId = androidInfo.id;
-    } else if (Platform.isIOS) {
-      final iosInfo = await _deviceInfoPlugin.iosInfo;
-      deviceId = iosInfo.identifierForVendor ?? 'unknown_ios_id';
-    }
-
-    if (deviceId.isEmpty) return;
-
     try {
-      await _client.from('user_devices').update({'fcm_token': null}).match({
-        'user_id': userId,
-        'device_identifier': deviceId,
-      });
-
+      final installationId = await _installationIdService.getId();
+      await _client.rpc(
+        'unregister_my_device',
+        params: {'p_device_identifier': installationId},
+      );
       await FcmTokenUtil.deleteToken();
-    } catch (e) {
+    } catch (_) {
       // Ignore if it fails during logout
     }
   }
@@ -108,13 +99,13 @@ class SupabaseDeviceDataSourceImpl implements DeviceRemoteDataSource {
     if (deviceId.isEmpty) return;
 
     try {
-      await _client.from('user_devices').update({
-        'fcm_token': token,
-        'updated_at': DateTime.now().toIso8601String(),
-      }).match({
-        'user_id': userId,
-        'device_identifier': deviceId,
-      });
+      await _client
+          .from('user_devices')
+          .update({
+            'fcm_token': token,
+            'updated_at': DateTime.now().toIso8601String(),
+          })
+          .match({'user_id': userId, 'device_identifier': deviceId});
     } catch (e) {
       // Ignore
     }

@@ -4,6 +4,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../network/supabase_config.dart';
 import '../utils/shared_prefs_util.dart';
 import '../services/image_service.dart';
+import '../services/installation_id_service.dart';
+import '../services/account_session_service.dart';
 
 // Auth Data
 import '../../features/auth/data/datasources/auth_remote_datasource.dart';
@@ -110,6 +112,15 @@ Future<void> setupServiceLocator() async {
   sl.registerLazySingleton<SharedPrefsUtil>(
     () => SharedPrefsUtilImpl(sl<SharedPreferences>()),
   );
+  sl.registerLazySingleton<InstallationIdService>(
+    () => InstallationIdService(sl<SharedPrefsUtil>()),
+  );
+  sl.registerLazySingleton<AccountSessionService>(
+    () => AccountSessionService(
+      client: sl<SupabaseClient>(),
+      installationIdService: sl<InstallationIdService>(),
+    ),
+  );
 
   sl.registerLazySingleton<ImageService>(() => ImageService());
 
@@ -131,7 +142,10 @@ Future<void> setupServiceLocator() async {
   );
 
   sl.registerSingleton<DeviceRemoteDataSource>(
-    SupabaseDeviceDataSourceImpl(client: sl<SupabaseClient>()),
+    SupabaseDeviceDataSourceImpl(
+      client: sl<SupabaseClient>(),
+      installationIdService: sl<InstallationIdService>(),
+    ),
   );
 
   sl.registerSingleton<CityRemoteDataSource>(

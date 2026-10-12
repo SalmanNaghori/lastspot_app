@@ -79,6 +79,12 @@ class _SplashScreenState extends State<SplashScreen> {
               context.go(AppRoutes.home);
             } else if (state is Unauthenticated || state is AuthError) {
               context.go(AppRoutes.login);
+            } else if (state is AuthSessionNeedsSignIn ||
+                state is AuthSessionCheckUnavailable) {
+              // A validation outage keeps the local Supabase session intact;
+              // login is shown as a safe recovery surface until it can be
+              // verified or the user signs in again.
+              context.go(AppRoutes.login);
             } else if (state is AuthProfileIncomplete) {
               context.go(AppRoutes.profileSetup);
             } else if (state is AuthSuspended ||

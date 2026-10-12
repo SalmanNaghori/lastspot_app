@@ -64,7 +64,6 @@ class PushNotificationService {
 
     // Refresh token
     FcmTokenUtil.onTokenRefresh.listen((newToken) async {
-      debugPrint("FCM Token Refreshed: $newToken");
       final userId = Supabase.instance.client.auth.currentUser?.id;
       if (userId != null && sl.isRegistered<DeviceRemoteDataSource>()) {
         await sl<DeviceRemoteDataSource>().updateFcmToken(userId, newToken);

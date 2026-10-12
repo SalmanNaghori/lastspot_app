@@ -1,12 +1,15 @@
 import 'dart:async';
 
-import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:supabase_flutter/supabase_flutter.dart' hide AuthState;
 
 import '../../features/notifications/presentation/bloc/notifications_cubit.dart';
 import '../base_import.dart';
 import '../di/service_locator.dart';
 import '../theme/app_motion.dart';
 import '../utils/notification_permission_dialog.dart';
+import '../../features/auth/presentation/bloc/auth_bloc.dart';
+import '../../features/auth/presentation/bloc/auth_event.dart';
+import '../../features/auth/presentation/bloc/auth_state.dart';
 
 class AuthenticatedAppShell extends StatefulWidget {
   final StatefulNavigationShell navigationShell;
@@ -17,13 +20,15 @@ class AuthenticatedAppShell extends StatefulWidget {
   State<AuthenticatedAppShell> createState() => _AuthenticatedAppShellState();
 }
 
-class _AuthenticatedAppShellState extends State<AuthenticatedAppShell> {
+class _AuthenticatedAppShellState extends State<AuthenticatedAppShell>
+    with WidgetsBindingObserver {
   late NotificationsCubit _notificationsCubit;
   StreamSubscription? _newNotifSub;
 
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     _notificationsCubit = sl<NotificationsCubit>();
     final userId = Supabase.instance.client.auth.currentUser?.id;
     if (userId != null) {
@@ -56,7 +61,15 @@ class _AuthenticatedAppShellState extends State<AuthenticatedAppShell> {
   }
 
   @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed && mounted) {
+      context.read<AuthBloc>().add(AuthSessionValidationRequested());
+    }
+  }
+
+  @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     _newNotifSub?.cancel();
     super.dispose();
   }
@@ -89,7 +102,59 @@ class _AuthenticatedAppShellState extends State<AuthenticatedAppShell> {
         value: _notificationsCubit,
         child: Scaffold(
           backgroundColor: context.backgroundColor,
-          body: widget.navigationShell,
+          body: BlocBuilder<AuthBloc, AuthState>(
+            builder: (context, state) => Stack(
+              children: [
+                widget.navigationShell,
+                if (state is AuthSessionValidationInProgress)
+                  Positioned.fill(
+                    child: ColoredBox(
+                      color: context.backgroundColor.withValues(alpha: 0.78),
+                      child: Center(
+                        child: CircularProgressIndicator(
+                          color: context.colorScheme.primary,
+                        ),
+                      ),
+                    ),
+                  ),
+                if (state is AuthSessionCheckUnavailable)
+                  Positioned.fill(
+                    child: ColoredBox(
+                      color: context.backgroundColor.withValues(alpha: 0.96),
+                      child: Center(
+                        child: Padding(
+                          padding: const EdgeInsets.all(AppSpacing.lg),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(
+                                Icons.cloud_off_outlined,
+                                size: 36,
+                                color: context.colorScheme.onSurfaceVariant,
+                              ),
+                              const SizedBox(height: AppSpacing.md),
+                              Text(
+                                'Could not verify your session. Check your connection and try again.',
+                                textAlign: TextAlign.center,
+                                style: context.bodyLarge,
+                              ),
+                              const SizedBox(height: AppSpacing.md),
+                              FilledButton.icon(
+                                onPressed: () => context.read<AuthBloc>().add(
+                                  AuthSessionValidationRequested(),
+                                ),
+                                icon: const Icon(Icons.refresh),
+                                label: const Text('Retry'),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+              ],
+            ),
+          ),
           bottomNavigationBar: Padding(
             padding: const EdgeInsets.fromLTRB(
               AppSpacing.sm,

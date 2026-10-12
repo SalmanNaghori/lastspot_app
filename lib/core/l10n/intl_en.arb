@@ -99,9 +99,17 @@
       "count": {}
     }
   },
-  "reject": "\u274c Reject",
-  "accept": "\u2705 Accept",
-  "openMatchChat": "\ud83d\udcac Open Match Group Chat",
+  "reject": "Reject",
+  "accept": "Accept",
+  "openMatchChat": "Open Match Group Chat",
+  "messageHost": "Message host",
+  "directMessage": "Direct message",
+  "groupChat": "Group chat",
+  "messageHint": "Write a message",
+  "sendMessage": "Send message",
+  "signInToChat": "Sign in to use chat",
+  "chatEmpty": "No messages yet. Start the conversation.",
+  "messageSendFailed": "Could not send the message. Please try again.",
   "login": "Login",
   "signup": "Sign Up",
   "email": "Email",
@@ -486,5 +494,10 @@
   "homeComingUpSubtitle": "Games over the next 7 days",
   "homeLaterOn": "Later on",
   "homeLaterSubtitle": "Activities after next week",
-  "detailsMapOpenFailed": "Could not open Maps. Please try again."
+  "detailsMapOpenFailed": "Could not open Maps. Please try again.",
+  "activityNowLive": "Your activity is now live. People can start requesting to join.",
+  "nextGameStartsHere": "Your next game starts here",
+  "turnSoundOff": "Turn sound off",
+  "turnSoundOn": "Turn sound on",
+  "goToHome": "Go to Home"
 }

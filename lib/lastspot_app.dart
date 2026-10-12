@@ -18,6 +18,7 @@ import 'features/auth/domain/usecases/resend_otp_usecase.dart';
 import 'features/auth/domain/usecases/check_auth_status_usecase.dart';
 import 'features/auth/domain/usecases/get_profile_usecase.dart';
 import 'features/auth/domain/usecases/register_device_usecase.dart';
+import 'core/services/account_session_service.dart';
 import 'features/cities/presentation/bloc/city_cubit.dart';
 import 'features/categories/presentation/bloc/category_bloc.dart';
 
@@ -45,6 +46,7 @@ class LastSpotApp extends StatelessWidget {
             checkAuthStatusUseCase: sl<CheckAuthStatusUseCase>(),
             getProfileUseCase: sl<GetProfileUseCase>(),
             registerDeviceUseCase: sl<RegisterDeviceUseCase>(),
+            accountSessionService: sl<AccountSessionService>(),
           ),
         ),
         BlocProvider(create: (context) => sl<SettingsCubit>()),
@@ -76,6 +78,7 @@ class LastSpotApp extends StatelessWidget {
               onGenerateTitle: (context) =>
                   AppLocalizations.of(context)?.appName ?? AppString.appName,
               debugShowCheckedModeBanner: false,
+              scaffoldMessengerKey: _rootScaffoldMessengerKey,
               localizationsDelegates: AppLocalizations.localizationsDelegates,
               supportedLocales: AppLocalizations.supportedLocales,
               locale: Locale(settingsState.locale, ''),
@@ -93,6 +96,23 @@ class LastSpotApp extends StatelessWidget {
                     listener: (context, state) {
                       if (state is Unauthenticated) {
                         appRouter.go(AppRoutes.login);
+                      } else if (state is AuthSessionNeedsSignIn) {
+                        appRouter.go(AppRoutes.login);
+                        _rootScaffoldMessengerKey.currentState?.showSnackBar(
+                          const SnackBar(
+                            content: Text(
+                              'This device session is not active. Please sign in again.',
+                            ),
+                          ),
+                        );
+                      } else if (state is AuthSessionCheckUnavailable) {
+                        _rootScaffoldMessengerKey.currentState?.showSnackBar(
+                          const SnackBar(
+                            content: Text(
+                              'Could not verify your session. Check your connection and try again.',
+                            ),
+                          ),
+                        );
                       } else if (state is AuthSuspended ||
                           state is AuthBanned ||
                           state is AuthDeleted) {
@@ -110,3 +130,6 @@ class LastSpotApp extends StatelessWidget {
     );
   }
 }
+
+final GlobalKey<ScaffoldMessengerState> _rootScaffoldMessengerKey =
+    GlobalKey<ScaffoldMessengerState>();

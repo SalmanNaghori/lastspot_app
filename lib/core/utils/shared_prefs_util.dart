@@ -13,6 +13,7 @@ class SharedPrefsKeys {
   static const String userToken = 'user_token';
   static const String userId = 'user_id';
   static const String onboardingCompleted = 'onboarding_completed';
+  static const String installationId = 'installation_id';
 }
 
 /// Abstract contract for SharedPreferences utility (Dependency Inversion Principle).

@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' hide AuthState;
+import '../../../../core/services/account_session_service.dart';
 import '../../domain/usecases/login_usecase.dart';
 import '../../domain/usecases/signup_usecase.dart';
 import '../../domain/usecases/logout_usecase.dart';
@@ -27,6 +28,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final CheckAuthStatusUseCase _checkAuthStatusUseCase;
   final GetProfileUseCase _getProfileUseCase;
   final RegisterDeviceUseCase _registerDeviceUseCase;
+  final AccountSessionService _accountSessionService;
 
   AuthBloc({
     required LoginUseCase loginUseCase,
@@ -38,6 +40,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     required CheckAuthStatusUseCase checkAuthStatusUseCase,
     required GetProfileUseCase getProfileUseCase,
     required RegisterDeviceUseCase registerDeviceUseCase,
+    required AccountSessionService accountSessionService,
   }) : _loginUseCase = loginUseCase,
        _signupUseCase = signupUseCase,
        _logoutUseCase = logoutUseCase,
@@ -47,8 +50,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
        _checkAuthStatusUseCase = checkAuthStatusUseCase,
        _getProfileUseCase = getProfileUseCase,
        _registerDeviceUseCase = registerDeviceUseCase,
+       _accountSessionService = accountSessionService,
        super(AuthInitial()) {
     on<AuthCheckRequested>(_onCheckRequested);
+    on<AuthSessionValidationRequested>(_onSessionValidationRequested);
     on<AuthLoginRequested>(_onLoginRequested);
     on<AuthSignupRequested>(_onSignupRequested);
     on<AuthLogoutRequested>(_onLogoutRequested);
@@ -64,7 +69,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     try {
       final userId = _checkAuthStatusUseCase();
       if (userId != null) {
-        await _handleUserSession(userId, emit);
+        await _validateRestoredSession(userId, emit);
       } else {
         emit(Unauthenticated());
       }
@@ -75,7 +80,78 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         error: e,
         stackTrace: st,
       );
+      emit(AuthSessionCheckUnavailable());
+    }
+  }
+
+  Future<void> _onSessionValidationRequested(
+    AuthSessionValidationRequested event,
+    Emitter<AuthState> emit,
+  ) async {
+    emit(AuthSessionValidationInProgress());
+    final userId = _checkAuthStatusUseCase();
+    if (userId == null) {
       emit(Unauthenticated());
+      return;
+    }
+
+    final status = await _accountSessionService.validateCurrentSession();
+    switch (status) {
+      case AccountSessionStatus.active:
+        emit(Authenticated());
+        return;
+      case AccountSessionStatus.inactiveOrUninitialized:
+      case AccountSessionStatus.credentialsExpired:
+        await _accountSessionService.clearLocalSession();
+        emit(AuthSessionNeedsSignIn());
+      case AccountSessionStatus.noSession:
+        emit(Unauthenticated());
+      case AccountSessionStatus.unavailable:
+        emit(AuthSessionCheckUnavailable());
+    }
+  }
+
+  Future<void> _validateRestoredSession(
+    String userId,
+    Emitter<AuthState> emit,
+  ) async {
+    final status = await _accountSessionService.validateCurrentSession();
+    await _handleValidationStatus(status, userId, emit);
+  }
+
+  Future<void> _handleValidationStatus(
+    AccountSessionStatus status,
+    String userId,
+    Emitter<AuthState> emit,
+  ) async {
+    switch (status) {
+      case AccountSessionStatus.active:
+        await _handleUserSession(userId, emit);
+      case AccountSessionStatus.inactiveOrUninitialized:
+      case AccountSessionStatus.credentialsExpired:
+        await _accountSessionService.clearLocalSession();
+        emit(AuthSessionNeedsSignIn());
+      case AccountSessionStatus.noSession:
+        emit(Unauthenticated());
+      case AccountSessionStatus.unavailable:
+        emit(AuthSessionCheckUnavailable());
+    }
+  }
+
+  Future<bool> _activateFreshSession(Emitter<AuthState> emit) async {
+    final status = await _accountSessionService.activateFreshSession();
+    switch (status) {
+      case AccountSessionStatus.active:
+        return true;
+      case AccountSessionStatus.inactiveOrUninitialized:
+      case AccountSessionStatus.credentialsExpired:
+      case AccountSessionStatus.noSession:
+        await _accountSessionService.clearLocalSession();
+        emit(AuthSessionNeedsSignIn());
+        return false;
+      case AccountSessionStatus.unavailable:
+        emit(AuthSessionCheckUnavailable());
+        return false;
     }
   }
 
@@ -91,10 +167,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     switch (result) {
       case Success():
         final userId = _checkAuthStatusUseCase();
-        if (userId != null) {
+        if (userId != null && await _activateFreshSession(emit)) {
           await _handleUserSession(userId, emit);
         } else {
-          emit(Unauthenticated());
+          if (userId == null) emit(Unauthenticated());
         }
       case Failure(exception: final exception):
         if (exception is NoInternetException) {
@@ -121,13 +197,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     switch (result) {
       case Success():
         final userId = _checkAuthStatusUseCase();
-        if (userId != null) {
+        if (userId != null && await _activateFreshSession(emit)) {
           await Future.delayed(
             const Duration(seconds: 1),
           ); // Wait for trigger to complete
           await _handleUserSession(userId, emit);
         } else {
-          emit(Unauthenticated());
+          if (userId == null) emit(Unauthenticated());
         }
       case Failure(exception: final exception):
         if (exception is NoInternetException) {
@@ -194,7 +270,16 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
     switch (result) {
       case Success():
-        emit(AuthOtpVerified());
+        if (event.type == OtpType.signup) {
+          final userId = _checkAuthStatusUseCase();
+          if (userId != null && await _activateFreshSession(emit)) {
+            await _handleUserSession(userId, emit);
+          } else if (userId == null) {
+            emit(AuthOtpVerified());
+          }
+        } else {
+          emit(AuthOtpVerified());
+        }
       case Failure(exception: final exception):
         if (exception is NoInternetException) {
           emit(const AuthError(message: 'no_internet'));
@@ -260,8 +345,17 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         return;
       }
 
-      // If active and profile complete, register device
-      await _registerDeviceUseCase(userId);
+      // Device and FCM registration are best-effort after session activation.
+      try {
+        await _registerDeviceUseCase(userId);
+      } catch (e, st) {
+        log(
+          'Device registration failed after session activation',
+          name: 'AuthBloc',
+          error: e,
+          stackTrace: st,
+        );
+      }
 
       emit(Authenticated());
     } catch (e, st) {
@@ -271,8 +365,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         error: e,
         stackTrace: st,
       );
-      // Fallback in case profile fetch fails but session is valid
-      emit(Unauthenticated());
+      // A profile fetch failure does not prove that the Auth session expired.
+      emit(AuthSessionCheckUnavailable());
     }
   }
 }

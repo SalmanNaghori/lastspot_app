@@ -162,13 +162,38 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get reject => '❌ Reject';
+  String get reject => 'Reject';
 
   @override
-  String get accept => '✅ Accept';
+  String get accept => 'Accept';
 
   @override
-  String get openMatchChat => '💬 Open Match Group Chat';
+  String get openMatchChat => 'Open Match Group Chat';
+
+  @override
+  String get messageHost => 'Message host';
+
+  @override
+  String get directMessage => 'Direct message';
+
+  @override
+  String get groupChat => 'Group chat';
+
+  @override
+  String get messageHint => 'Write a message';
+
+  @override
+  String get sendMessage => 'Send message';
+
+  @override
+  String get signInToChat => 'Sign in to use chat';
+
+  @override
+  String get chatEmpty => 'No messages yet. Start the conversation.';
+
+  @override
+  String get messageSendFailed =>
+      'Could not send the message. Please try again.';
 
   @override
   String get login => 'Login';
@@ -1135,4 +1160,20 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get detailsMapOpenFailed => 'Could not open Maps. Please try again.';
+
+  @override
+  String get activityNowLive =>
+      'Your activity is now live. People can start requesting to join.';
+
+  @override
+  String get nextGameStartsHere => 'Your next game starts here';
+
+  @override
+  String get turnSoundOff => 'Turn sound off';
+
+  @override
+  String get turnSoundOn => 'Turn sound on';
+
+  @override
+  String get goToHome => 'Go to Home';
 }

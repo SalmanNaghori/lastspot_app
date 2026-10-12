@@ -124,7 +124,8 @@ class HomeGreetingBanner extends StatelessWidget {
                                   minimumSize: const Size(0, AppSpacing.xxxl),
                                   backgroundColor:
                                       context.colorScheme.secondaryContainer,
-                                  foregroundColor: AppColor.secondaryColor,
+                                  foregroundColor:
+                                      context.colorScheme.onSecondaryContainer,
                                 ),
                                 icon: const Icon(Icons.arrow_outward_rounded),
                                 label: Text(loc.browseActivities),

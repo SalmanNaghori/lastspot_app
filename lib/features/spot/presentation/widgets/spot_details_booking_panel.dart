@@ -82,6 +82,34 @@ class SpotDetailsBookingPanel extends StatelessWidget {
           ],
           const SizedBox(height: AppSpacing.md),
           SpotDetailsCtaButton(loadedState: state),
+          if (!state.isHost &&
+              (availability == SpotJoinAvailability.pending ||
+                  availability == SpotJoinAvailability.accepted)) ...[
+            const SizedBox(height: AppSpacing.sm),
+            OutlinedButton.icon(
+              onPressed: () {
+                final uri = Uri(
+                  path: AppRoutes.chatPath(post.id),
+                  queryParameters: {
+                    'recipient': post.userId,
+                    'name': post.hostProfile?.fullName ?? loc.messageHost,
+                  },
+                );
+                context.push(uri.toString());
+              },
+              icon: const Icon(Icons.chat_bubble_outline),
+              label: Text(loc.messageHost),
+            ),
+          ],
+          if (!state.isHost &&
+              availability == SpotJoinAvailability.accepted) ...[
+            const SizedBox(height: AppSpacing.sm),
+            FilledButton.icon(
+              onPressed: () => context.push(AppRoutes.chatPath(post.id)),
+              icon: const Icon(Icons.forum_outlined),
+              label: Text(loc.openMatchChat),
+            ),
+          ],
           if (!compact && hint != null) ...[
             const SizedBox(height: AppSpacing.smLg),
             Text(

@@ -10,6 +10,9 @@ abstract class AuthEvent extends Equatable {
 
 class AuthCheckRequested extends AuthEvent {}
 
+/// Rechecks the current account session when the app resumes.
+class AuthSessionValidationRequested extends AuthEvent {}
+
 class AuthLoginRequested extends AuthEvent {
   final String email;
   final String password;

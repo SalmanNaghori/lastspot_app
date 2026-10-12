@@ -21,6 +21,17 @@ class AuthBanned extends AuthState {}
 
 class AuthDeleted extends AuthState {}
 
+/// The backend does not confirm this session/device pair. The session was
+/// cleared locally and interactive sign-in is required; the client cannot
+/// tell an initial rollout from a session that was replaced elsewhere.
+class AuthSessionNeedsSignIn extends AuthState {}
+
+/// Session validation could not reach Supabase. Keep the local session and
+/// retry later instead of treating a transport failure as a logout.
+class AuthSessionCheckUnavailable extends AuthState {}
+
+class AuthSessionValidationInProgress extends AuthState {}
+
 class Unauthenticated extends AuthState {}
 
 class AuthError extends AuthState {

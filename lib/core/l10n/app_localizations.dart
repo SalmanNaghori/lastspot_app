@@ -361,20 +361,68 @@ abstract class AppLocalizations {
   /// No description provided for @reject.
   ///
   /// In en, this message translates to:
-  /// **'❌ Reject'**
+  /// **'Reject'**
   String get reject;
 
   /// No description provided for @accept.
   ///
   /// In en, this message translates to:
-  /// **'✅ Accept'**
+  /// **'Accept'**
   String get accept;
 
   /// No description provided for @openMatchChat.
   ///
   /// In en, this message translates to:
-  /// **'💬 Open Match Group Chat'**
+  /// **'Open Match Group Chat'**
   String get openMatchChat;
+
+  /// No description provided for @messageHost.
+  ///
+  /// In en, this message translates to:
+  /// **'Message host'**
+  String get messageHost;
+
+  /// No description provided for @directMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Direct message'**
+  String get directMessage;
+
+  /// No description provided for @groupChat.
+  ///
+  /// In en, this message translates to:
+  /// **'Group chat'**
+  String get groupChat;
+
+  /// No description provided for @messageHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Write a message'**
+  String get messageHint;
+
+  /// No description provided for @sendMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Send message'**
+  String get sendMessage;
+
+  /// No description provided for @signInToChat.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in to use chat'**
+  String get signInToChat;
+
+  /// No description provided for @chatEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No messages yet. Start the conversation.'**
+  String get chatEmpty;
+
+  /// No description provided for @messageSendFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not send the message. Please try again.'**
+  String get messageSendFailed;
 
   /// No description provided for @login.
   ///
@@ -2199,6 +2247,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Could not open Maps. Please try again.'**
   String get detailsMapOpenFailed;
+
+  /// No description provided for @activityNowLive.
+  ///
+  /// In en, this message translates to:
+  /// **'Your activity is now live. People can start requesting to join.'**
+  String get activityNowLive;
+
+  /// No description provided for @nextGameStartsHere.
+  ///
+  /// In en, this message translates to:
+  /// **'Your next game starts here'**
+  String get nextGameStartsHere;
+
+  /// No description provided for @turnSoundOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn sound off'**
+  String get turnSoundOff;
+
+  /// No description provided for @turnSoundOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn sound on'**
+  String get turnSoundOn;
+
+  /// No description provided for @goToHome.
+  ///
+  /// In en, this message translates to:
+  /// **'Go to Home'**
+  String get goToHome;
 }
 
 class _AppLocalizationsDelegate

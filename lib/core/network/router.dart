@@ -266,7 +266,11 @@ final GoRouter appRouter = GoRouter(
       path: AppRoutes.chat,
       builder: (context, state) {
         final id = state.pathParameters['id']!;
-        return ChatScreen(spotId: id);
+        return ChatScreen(
+          spotId: id,
+          recipientUserId: state.uri.queryParameters['recipient'],
+          recipientName: state.uri.queryParameters['name'],
+        );
       },
     ),
     GoRoute(
