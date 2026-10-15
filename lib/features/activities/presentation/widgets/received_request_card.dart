@@ -21,9 +21,16 @@ class ReceivedRequestCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: context.surfaceColor,
         borderRadius: BorderRadius.circular(Dimensions.r16.dynamicR),
-        border: Border.all(color: context.dividerColor.withValues(alpha: 0.5), width: 1),
+        border: Border.all(
+          color: context.dividerColor.withValues(alpha: 0.5),
+          width: 1,
+        ),
         boxShadow: [
-          BoxShadow(color: AppColor.blackColor.withValues(alpha: 0.03), blurRadius: 10, offset: const Offset(0, 4)),
+          BoxShadow(
+            color: AppColor.blackColor.withValues(alpha: 0.03),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
         ],
       ),
       child: Column(
@@ -43,11 +50,15 @@ class ReceivedRequestCard extends StatelessWidget {
                 Expanded(
                   child: Row(
                     children: [
-                      Icon(Icons.event_note, size: Dimensions.r16.dynamicH, color: context.primaryColor),
+                      Icon(
+                        Icons.event_note,
+                        size: Dimensions.r16.dynamicH,
+                        color: context.primaryColor,
+                      ),
                       SizedBox(width: Dimensions.r6.dynamicW),
                       Expanded(
                         child: Text(
-                          spot?.title?.capitalizeFirst() ?? 'Activity',
+                          spot?.title.capitalizeFirst() ?? 'Activity',
                           style: TextStyle(
                             fontSize: Dimensions.r14.dynamicSP,
                             fontWeight: FontWeight.w600,
@@ -63,13 +74,19 @@ class ReceivedRequestCard extends StatelessWidget {
                 SizedBox(width: Dimensions.r8.dynamicW),
                 Text(
                   AppUtils.timeAgo(request.createdAt),
-                  style: TextStyle(fontSize: Dimensions.r12.dynamicSP, color: context.textSecondary),
+                  style: TextStyle(
+                    fontSize: Dimensions.r12.dynamicSP,
+                    color: context.textSecondary,
+                  ),
                 ),
               ],
             ),
           ),
 
-          Divider(height: 1, color: context.dividerColor.withValues(alpha: 0.3)),
+          Divider(
+            height: 1,
+            color: context.dividerColor.withValues(alpha: 0.3),
+          ),
 
           // Body: User Profile & Message
           Padding(
@@ -88,7 +105,10 @@ class ReceivedRequestCard extends StatelessWidget {
                       ),
                       clipBehavior: Clip.antiAlias,
                       child: avatar != null
-                          ? AppCachedNetworkImage(imageUrl: avatar, fit: BoxFit.cover)
+                          ? AppCachedNetworkImage(
+                              imageUrl: avatar,
+                              fit: BoxFit.cover,
+                            )
                           : Icon(Icons.person, color: context.primaryColor),
                     ),
                     SizedBox(width: Dimensions.r12.dynamicW),
@@ -107,7 +127,11 @@ class ReceivedRequestCard extends StatelessWidget {
                           SizedBox(height: Dimensions.r4.dynamicH),
                           Row(
                             children: [
-                              Icon(Icons.star, size: Dimensions.r14.dynamicH, color: context.warningColor),
+                              Icon(
+                                Icons.star,
+                                size: Dimensions.r14.dynamicH,
+                                color: context.warningColor,
+                              ),
                               SizedBox(width: Dimensions.r4.dynamicW),
                               Text(
                                 rating.toStringAsFixed(1),
@@ -131,8 +155,13 @@ class ReceivedRequestCard extends StatelessWidget {
                     padding: EdgeInsets.all(Dimensions.r12.dynamicW),
                     decoration: BoxDecoration(
                       color: context.backgroundColor,
-                      borderRadius: BorderRadius.circular(Dimensions.r8.dynamicR),
-                      border: Border.all(color: context.dividerColor.withValues(alpha: 0.3), width: 1),
+                      borderRadius: BorderRadius.circular(
+                        Dimensions.r8.dynamicR,
+                      ),
+                      border: Border.all(
+                        color: context.dividerColor.withValues(alpha: 0.3),
+                        width: 1,
+                      ),
                     ),
                     child: Text(
                       '"${request.message!}"',
@@ -151,7 +180,10 @@ class ReceivedRequestCard extends StatelessWidget {
 
           // Footer: Actions
           if (request.status == JoinRequestStatus.pending) ...[
-            Divider(height: 1, color: context.dividerColor.withValues(alpha: 0.3)),
+            Divider(
+              height: 1,
+              color: context.dividerColor.withValues(alpha: 0.3),
+            ),
             Padding(
               padding: EdgeInsets.all(Dimensions.r16.dynamicW),
               child: Row(
@@ -159,30 +191,54 @@ class ReceivedRequestCard extends StatelessWidget {
                   Expanded(
                     child: OutlinedButton(
                       onPressed: () {
-                        context.read<ActivitiesBloc>().add(RejectJoinRequestEvent(request.id));
+                        context.read<ActivitiesBloc>().add(
+                          RejectJoinRequestEvent(request.id),
+                        );
                       },
                       style: OutlinedButton.styleFrom(
                         foregroundColor: context.errorColor,
-                        side: BorderSide(color: context.errorColor.withValues(alpha: 0.5)),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(Dimensions.r999.dynamicR)),
-                        padding: EdgeInsets.symmetric(vertical: Dimensions.r12.dynamicH),
+                        side: BorderSide(
+                          color: context.errorColor.withValues(alpha: 0.5),
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(
+                            Dimensions.r999.dynamicR,
+                          ),
+                        ),
+                        padding: EdgeInsets.symmetric(
+                          vertical: Dimensions.r12.dynamicH,
+                        ),
                       ),
-                      child: Text(context.loc.reject, style: const TextStyle(fontWeight: FontWeight.w600)),
+                      child: Text(
+                        context.loc.reject,
+                        style: const TextStyle(fontWeight: FontWeight.w600),
+                      ),
                     ),
                   ),
                   SizedBox(width: Dimensions.r12.dynamicW),
                   Expanded(
                     child: FilledButton(
                       onPressed: () {
-                        context.read<ActivitiesBloc>().add(AcceptJoinRequestEvent(request.id));
+                        context.read<ActivitiesBloc>().add(
+                          AcceptJoinRequestEvent(request.id),
+                        );
                       },
                       style: FilledButton.styleFrom(
                         backgroundColor: context.primaryColor,
                         foregroundColor: AppColor.whiteColor,
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(Dimensions.r999.dynamicR)),
-                        padding: EdgeInsets.symmetric(vertical: Dimensions.r12.dynamicH),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(
+                            Dimensions.r999.dynamicR,
+                          ),
+                        ),
+                        padding: EdgeInsets.symmetric(
+                          vertical: Dimensions.r12.dynamicH,
+                        ),
                       ),
-                      child: Text(context.loc.accept, style: const TextStyle(fontWeight: FontWeight.w600)),
+                      child: Text(
+                        context.loc.accept,
+                        style: const TextStyle(fontWeight: FontWeight.w600),
+                      ),
                     ),
                   ),
                 ],

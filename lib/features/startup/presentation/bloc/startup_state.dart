@@ -9,7 +9,10 @@ class StartupState with _$StartupState {
 
   const factory StartupState.loading() = _Loading;
 
-  const factory StartupState.maintenanceMode({required String title, required String message}) = _MaintenanceMode;
+  const factory StartupState.maintenanceMode({
+    required String title,
+    required String message,
+  }) = _MaintenanceMode;
 
   const factory StartupState.updateRequired({
     required VersionMessage messageData,

@@ -1,0 +1,11 @@
+# observability.rules — logger, crash reporting, analytics, consent
+# SOP: sop/observability.md
+# Guardrails: guardrails/observability.md, guardrails/networking.md (ERR-5, ERR-6), guardrails/security.md (SEC-10..12)
+
+DECISION  ND-11  Logger, crash reporter and analytics vendor per docs/project/flutter/project-rules.md; ask if _TBD_.
+MUST      OBS-1  Log only through the project logger with levels; release: warning+ to the crash reporter, nothing to console; no print/debugPrint.
+MUST      OBS-2  Init crash reporting once before runApp in a guarded zone (FlutterError.onError, PlatformDispatcher.onError, isolate errors); off or tagged for non-prod flavors.
+MUST      OBS-3  Record handled-but-degrading failures as non-fatals with feature/operation/failure_kind keys.
+MUST-NOT  OBS-4  Put PII, tokens or payloads in logs, crash keys, breadcrumbs or analytics; use an opaque user id.
+MUST      OBS-5  Track analytics through one AnalyticsService with event/param constants from the tracking plan; no vendor SDK calls in features; screen views from a router observer.
+MUST      OBS-6  Respect consent before the first event and on withdrawal.

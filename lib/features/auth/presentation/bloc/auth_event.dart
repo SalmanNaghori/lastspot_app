@@ -13,6 +13,28 @@ class AuthCheckRequested extends AuthEvent {}
 /// Rechecks the current account session when the app resumes.
 class AuthSessionValidationRequested extends AuthEvent {}
 
+class AuthRecoveryLinkDetected extends AuthEvent {
+  final bool malformed;
+
+  const AuthRecoveryLinkDetected({this.malformed = false});
+
+  @override
+  List<Object> get props => [malformed];
+}
+
+class AuthRecoverySessionEstablished extends AuthEvent {}
+
+class AuthRecoveryExchangeFailed extends AuthEvent {}
+
+class PasswordRecoveryUpdateRequested extends AuthEvent {
+  final String password;
+
+  const PasswordRecoveryUpdateRequested({required this.password});
+
+  @override
+  List<Object> get props => [password];
+}
+
 class AuthLoginRequested extends AuthEvent {
   final String email;
   final String password;
@@ -76,3 +98,6 @@ class ResendOtpRequested extends AuthEvent {
   @override
   List<Object> get props => [email, type];
 }
+
+/// Dispatched by the UI when the user finishes profile completion.
+class AuthProfileCompleted extends AuthEvent {}

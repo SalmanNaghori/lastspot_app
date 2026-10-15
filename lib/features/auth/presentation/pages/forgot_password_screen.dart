@@ -28,16 +28,11 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
         if (state is AuthOtpSent) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(context.loc.passwordResetSent)),
-          );
-          // Optional: navigate to OTP screen if handling deep links,
-          // or just go back to login with success message.
+          AppUtils.showSnackBar(context, context.loc.passwordResetSent);
+          // The reset email returns to the mobile recovery callback.
           context.pop();
         } else if (state is AuthError) {
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(SnackBar(content: Text(state.message)));
+          AppUtils.showSnackBar(context, state.message, isError: true);
         }
       },
       child: ResponsiveLayout(
@@ -53,47 +48,78 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
       appBar: AppBar(
         backgroundColor: context.backgroundColor,
         elevation: 0,
+        scrolledUnderElevation: 0,
         iconTheme: IconThemeData(color: context.textPrimary),
       ),
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
-            padding: const EdgeInsets.all(Dimensions.r24),
+            padding: EdgeInsets.symmetric(horizontal: Dimensions.r24.dynamicW),
             child: Form(
               key: _formKey,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
+                  Center(
+                    child: Container(
+                      width: Dimensions.r80.dynamicW,
+                      height: Dimensions.r80.dynamicH,
+                      decoration: BoxDecoration(
+                        color: context.isDarkMode
+                            ? context.surfaceContainer
+                            : const Color(0xFFF0FDF4),
+                        shape: BoxShape.circle,
+                        boxShadow: [
+                          BoxShadow(
+                            color: context.primaryColor.withValues(alpha: 0.18),
+                            blurRadius: Dimensions.r20.dynamicR,
+                            offset: const Offset(0, 6),
+                          ),
+                        ],
+                        border: Border.all(
+                          color: context.primaryColor.withValues(alpha: 0.2),
+                          width: 1.5,
+                        ),
+                      ),
+                      child: Icon(
+                        Icons.lock_reset_rounded,
+                        size: Dimensions.r40.dynamicH,
+                        color: context.primaryColor,
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: Dimensions.r20.dynamicH),
                   Text(
                     context.loc.resetPassword,
+                    textAlign: TextAlign.center,
                     style: TextStyle(
-                      fontSize: Dimensions.r32,
-                      fontWeight: FontWeight.bold,
+                      fontSize: Dimensions.r28.dynamicSP,
+                      fontWeight: FontWeight.w900,
+                      letterSpacing: -0.5,
                       color: context.textPrimary,
                     ),
                   ),
-                  const SizedBox(height: Dimensions.r8),
+                  SizedBox(height: Dimensions.r8.dynamicH),
                   Text(
                     context.loc.resetPasswordDesc,
+                    textAlign: TextAlign.center,
                     style: TextStyle(
-                      fontSize: Dimensions.r16,
+                      fontSize: Dimensions.r15.dynamicSP,
                       color: context.textSecondary,
                     ),
                   ),
-                  const SizedBox(height: Dimensions.r32),
-                  TextFormField(
+                  SizedBox(height: Dimensions.r32.dynamicH),
+                  AppTextField(
                     controller: _emailController,
-                    decoration: InputDecoration(
-                      labelText: context.loc.email,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(Dimensions.r12),
-                      ),
-                    ),
+                    labelText: context.loc.email,
+                    prefixIcon: const Icon(Icons.email_outlined),
                     keyboardType: TextInputType.emailAddress,
+                    textInputAction: TextInputAction.done,
                     validator: (value) {
-                      if (value == null || value.trim().isEmpty)
+                      if (value == null || value.trim().isEmpty) {
                         return 'Email is required';
+                      }
                       if (!RegExp(
                         r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+",
                       ).hasMatch(value)) {
@@ -102,33 +128,40 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                       return null;
                     },
                   ),
-                  const SizedBox(height: Dimensions.r32),
+                  SizedBox(height: Dimensions.r24.dynamicH),
                   BlocBuilder<AuthBloc, AuthState>(
                     builder: (context, state) {
-                      return ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: context.primaryColor,
-                          foregroundColor: AppColor.whiteColor,
-                          padding: const EdgeInsets.symmetric(
-                            vertical: Dimensions.r16,
+                      final isLoading = state is AuthLoading;
+                      return SizedBox(
+                        height: Dimensions.r48.dynamicH * 1.15,
+                        child: FilledButton(
+                          style: FilledButton.styleFrom(
+                            backgroundColor: context.primaryColor,
+                            foregroundColor: AppColor.whiteColor,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(
+                                Dimensions.r14.dynamicR,
+                              ),
+                            ),
                           ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(Dimensions.r12),
-                          ),
-                        ),
-                        onPressed: state is AuthLoading
-                            ? null
-                            : _onResetPassword,
-                        child: state is AuthLoading
-                            ? SizedBox(
-                                height: 20,
-                                width: 20,
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 2,
-                                  color: context.textPrimary,
+                          onPressed: isLoading ? null : _onResetPassword,
+                          child: isLoading
+                              ? SizedBox(
+                                  height: Dimensions.r20.dynamicH,
+                                  width: Dimensions.r20.dynamicW,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                    color: AppColor.whiteColor,
+                                  ),
+                                )
+                              : Text(
+                                  context.loc.sendResetLink,
+                                  style: TextStyle(
+                                    fontSize: Dimensions.r16.dynamicSP,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
-                              )
-                            : Text(context.loc.sendResetLink),
+                        ),
                       );
                     },
                   ),

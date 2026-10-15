@@ -80,13 +80,21 @@ class ExploreBloc extends Bloc<ExploreEvent, ExploreState> {
             cityId: currentCityId,
             hasReachedMax: hasReachedMax,
             isPaginating: false,
+            dateFilter: currentState is ExploreLoaded
+                ? currentState.dateFilter
+                : ExploreDateFilter.any,
+            priceFilter: currentState is ExploreLoaded
+                ? currentState.priceFilter
+                : ExplorePriceFilter.any,
+            participantsFilter: currentState is ExploreLoaded
+                ? currentState.participantsFilter
+                : ExploreParticipantsFilter.any,
           ),
         );
       }
     } catch (e) {
       if (currentState is ExploreLoaded) {
         emit(currentState.copyWith(isPaginating: false));
-        // You might want to show a toast instead of replacing the list on pagination error
       } else {
         emit(ExploreError(e.toString()));
       }
@@ -104,25 +112,34 @@ class ExploreBloc extends Bloc<ExploreEvent, ExploreState> {
       } else {
         emit(currentState.copyWith(searchQuery: event.query));
       }
-      // Removed network request here to support local filtering per requirements
     }
   }
 
   void _onCategorySelected(CategorySelected event, Emitter<ExploreState> emit) {
+    final catId = (event.categoryId == null || event.categoryId!.isEmpty)
+        ? null
+        : event.categoryId;
+
     if (state is ExploreLoaded) {
       final currentState = state as ExploreLoaded;
-      if (event.categoryId == null || event.categoryId!.isEmpty) {
+      if (currentState.categoryId == catId) return;
+      if (catId == null) {
         emit(currentState.clearCategory());
       } else {
-        emit(currentState.copyWith(categoryId: event.categoryId));
+        emit(currentState.copyWith(categoryId: catId));
       }
-      // Removed network request here to support local filtering per requirements
+      add(const LoadExplorePosts(refresh: true));
+    } else {
+      emit(ExploreLoaded(requests: const [], categoryId: catId));
+      add(const LoadExplorePosts(refresh: true));
     }
   }
 
   void _onCitySelected(CitySelected event, Emitter<ExploreState> emit) {
     if (state is ExploreLoaded) {
-      emit((state as ExploreLoaded).copyWith(cityId: event.cityId));
+      final currentState = state as ExploreLoaded;
+      if (currentState.cityId == event.cityId) return;
+      emit(currentState.copyWith(cityId: event.cityId));
     } else {
       emit(ExploreLoaded(requests: const [], cityId: event.cityId));
     }

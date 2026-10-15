@@ -502,11 +502,41 @@ abstract class AppLocalizations {
   /// **'Activities'**
   String get navActivities;
 
+  /// No description provided for @navChats.
+  ///
+  /// In en, this message translates to:
+  /// **'Chats'**
+  String get navChats;
+
   /// No description provided for @navProfile.
   ///
   /// In en, this message translates to:
   /// **'Profile'**
   String get navProfile;
+
+  /// No description provided for @openProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Open profile'**
+  String get openProfile;
+
+  /// No description provided for @searchConversations.
+  ///
+  /// In en, this message translates to:
+  /// **'Search conversations...'**
+  String get searchConversations;
+
+  /// No description provided for @noConversationsFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No conversations found'**
+  String get noConversationsFound;
+
+  /// No description provided for @noConversationsFoundDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Try adjusting your search or filter to find what you\'re looking for.'**
+  String get noConversationsFoundDesc;
 
   /// No description provided for @explorePlaceholderText.
   ///
@@ -637,19 +667,19 @@ abstract class AppLocalizations {
   /// No description provided for @goodMorning.
   ///
   /// In en, this message translates to:
-  /// **'Good morning,'**
+  /// **'Good morning'**
   String get goodMorning;
 
   /// No description provided for @goodAfternoon.
   ///
   /// In en, this message translates to:
-  /// **'Good afternoon,'**
+  /// **'Good afternoon'**
   String get goodAfternoon;
 
   /// No description provided for @goodEvening.
   ///
   /// In en, this message translates to:
-  /// **'Good evening,'**
+  /// **'Good evening'**
   String get goodEvening;
 
   /// No description provided for @whatAreYouUpTo.
@@ -969,6 +999,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Theme'**
   String get themeTitle;
+
+  /// No description provided for @appColorTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'App Color'**
+  String get appColorTitle;
 
   /// No description provided for @themeSystem.
   ///
@@ -1516,6 +1552,168 @@ abstract class AppLocalizations {
   /// **'Requests {count}'**
   String tabRequestsCount(String count);
 
+  /// No description provided for @tabChats.
+  ///
+  /// In en, this message translates to:
+  /// **'Chats'**
+  String get tabChats;
+
+  /// No description provided for @tabChatsCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Chats {count}'**
+  String tabChatsCount(String count);
+
+  /// No description provided for @noConversations.
+  ///
+  /// In en, this message translates to:
+  /// **'No conversations yet'**
+  String get noConversations;
+
+  /// No description provided for @noConversationsDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Join or host an activity to start chatting with other players.'**
+  String get noConversationsDesc;
+
+  /// No description provided for @conversationLoadError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load conversations. Please try again.'**
+  String get conversationLoadError;
+
+  /// No description provided for @yesterday.
+  ///
+  /// In en, this message translates to:
+  /// **'Yesterday'**
+  String get yesterday;
+
+  /// No description provided for @messageCopied.
+  ///
+  /// In en, this message translates to:
+  /// **'Message copied'**
+  String get messageCopied;
+
+  /// No description provided for @jumpToLatest.
+  ///
+  /// In en, this message translates to:
+  /// **'Jump to latest'**
+  String get jumpToLatest;
+
+  /// No description provided for @newMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'New message'**
+  String get newMessage;
+
+  /// No description provided for @activityContext.
+  ///
+  /// In en, this message translates to:
+  /// **'Activity: {title}'**
+  String activityContext(String title);
+
+  /// No description provided for @filterAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get filterAll;
+
+  /// No description provided for @filterDirect.
+  ///
+  /// In en, this message translates to:
+  /// **'Direct'**
+  String get filterDirect;
+
+  /// No description provided for @filterGroups.
+  ///
+  /// In en, this message translates to:
+  /// **'Groups'**
+  String get filterGroups;
+
+  /// No description provided for @groupInfoTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Group Info'**
+  String get groupInfoTitle;
+
+  /// No description provided for @groupInfoParticipants.
+  ///
+  /// In en, this message translates to:
+  /// **'Participants'**
+  String get groupInfoParticipants;
+
+  /// No description provided for @groupInfoHost.
+  ///
+  /// In en, this message translates to:
+  /// **'Host'**
+  String get groupInfoHost;
+
+  /// No description provided for @groupInfoOrganizer.
+  ///
+  /// In en, this message translates to:
+  /// **'Organizer'**
+  String get groupInfoOrganizer;
+
+  /// No description provided for @groupInfoNoParticipants.
+  ///
+  /// In en, this message translates to:
+  /// **'No confirmed participants yet.'**
+  String get groupInfoNoParticipants;
+
+  /// No description provided for @groupInfoActivityDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Activity Details'**
+  String get groupInfoActivityDetails;
+
+  /// No description provided for @welcomeToActivity.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome to {activityTitle}! {emoji}'**
+  String welcomeToActivity(String activityTitle, String emoji);
+
+  /// No description provided for @groupWelcomeSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'This group is for coordinating the activity. Be respectful and enjoy!'**
+  String get groupWelcomeSubtitle;
+
+  /// No description provided for @groupOnlyParticipantsCanChat.
+  ///
+  /// In en, this message translates to:
+  /// **'Only confirmed participants and the host can send messages.'**
+  String get groupOnlyParticipantsCanChat;
+
+  /// No description provided for @noGroupConversations.
+  ///
+  /// In en, this message translates to:
+  /// **'No group chats yet'**
+  String get noGroupConversations;
+
+  /// No description provided for @noGroupConversationsDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Join or host an activity to start chatting with participants.'**
+  String get noGroupConversationsDesc;
+
+  /// No description provided for @noDirectConversations.
+  ///
+  /// In en, this message translates to:
+  /// **'No direct messages yet'**
+  String get noDirectConversations;
+
+  /// No description provided for @noDirectConversationsDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Direct messages between you and activity hosts will appear here.'**
+  String get noDirectConversationsDesc;
+
+  /// No description provided for @you.
+  ///
+  /// In en, this message translates to:
+  /// **'You'**
+  String get you;
+
   /// No description provided for @mockGoldenGateTitle.
   ///
   /// In en, this message translates to:
@@ -1942,29 +2140,83 @@ abstract class AppLocalizations {
   /// **'Cycling'**
   String get sportCycling;
 
+  /// No description provided for @sportKabaddi.
+  ///
+  /// In en, this message translates to:
+  /// **'Kabaddi'**
+  String get sportKabaddi;
+
+  /// No description provided for @sportKhoKho.
+  ///
+  /// In en, this message translates to:
+  /// **'Kho-Kho'**
+  String get sportKhoKho;
+
+  /// No description provided for @sportGilliDanda.
+  ///
+  /// In en, this message translates to:
+  /// **'Gilli-Danda'**
+  String get sportGilliDanda;
+
+  /// No description provided for @sportSatoliya.
+  ///
+  /// In en, this message translates to:
+  /// **'Satoliya / Lagori'**
+  String get sportSatoliya;
+
+  /// No description provided for @sportKiteFlying.
+  ///
+  /// In en, this message translates to:
+  /// **'Kite Flying'**
+  String get sportKiteFlying;
+
+  /// No description provided for @sportSkating.
+  ///
+  /// In en, this message translates to:
+  /// **'Skating'**
+  String get sportSkating;
+
+  /// No description provided for @sportHockey.
+  ///
+  /// In en, this message translates to:
+  /// **'Field Hockey'**
+  String get sportHockey;
+
+  /// No description provided for @sportUltimateFrisbee.
+  ///
+  /// In en, this message translates to:
+  /// **'Ultimate Frisbee'**
+  String get sportUltimateFrisbee;
+
+  /// No description provided for @sportPickleball.
+  ///
+  /// In en, this message translates to:
+  /// **'Pickleball'**
+  String get sportPickleball;
+
+  /// No description provided for @sportTugOfWar.
+  ///
+  /// In en, this message translates to:
+  /// **'Tug of War'**
+  String get sportTugOfWar;
+
+  /// No description provided for @sportHiking.
+  ///
+  /// In en, this message translates to:
+  /// **'Hiking / Trekking'**
+  String get sportHiking;
+
+  /// No description provided for @sportOutdoorYoga.
+  ///
+  /// In en, this message translates to:
+  /// **'Outdoor Yoga'**
+  String get sportOutdoorYoga;
+
   /// No description provided for @confirmAction.
   ///
   /// In en, this message translates to:
   /// **'Confirm'**
   String get confirmAction;
-
-  /// No description provided for @discoveryHeadline.
-  ///
-  /// In en, this message translates to:
-  /// **'Less scrolling.\nMore playing.'**
-  String get discoveryHeadline;
-
-  /// No description provided for @discoverySubtitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Find your people. Make your next game happen.'**
-  String get discoverySubtitle;
-
-  /// No description provided for @browseActivities.
-  ///
-  /// In en, this message translates to:
-  /// **'Find a game'**
-  String get browseActivities;
 
   /// No description provided for @activityHost.
   ///
@@ -2182,18 +2434,6 @@ abstract class AppLocalizations {
   /// **'Reset zoom'**
   String get galleryZoomOut;
 
-  /// No description provided for @discoveryEyebrow.
-  ///
-  /// In en, this message translates to:
-  /// **'YOUR NEXT GOOD TIME'**
-  String get discoveryEyebrow;
-
-  /// No description provided for @discoveryHost.
-  ///
-  /// In en, this message translates to:
-  /// **'Host an activity'**
-  String get discoveryHost;
-
   /// No description provided for @detailsSharedMapLink.
   ///
   /// In en, this message translates to:
@@ -2277,6 +2517,168 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Go to Home'**
   String get goToHome;
+
+  /// No description provided for @yourActivityHub.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Activity Hub'**
+  String get yourActivityHub;
+
+  /// No description provided for @homeActivityHubPending.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{You have 1 pending join request to review.} other{You have {count} pending join requests to review.}}'**
+  String homeActivityHubPending(int count);
+
+  /// No description provided for @homeActivityHubJoined.
+  ///
+  /// In en, this message translates to:
+  /// **'Your next joined activity is coming up.'**
+  String get homeActivityHubJoined;
+
+  /// No description provided for @homeActivityHubHosted.
+  ///
+  /// In en, this message translates to:
+  /// **'Your next hosted activity is coming up.'**
+  String get homeActivityHubHosted;
+
+  /// No description provided for @homeActivityHubEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No upcoming activities yet. Create one to get started.'**
+  String get homeActivityHubEmpty;
+
+  /// No description provided for @homeActivityHubRecommendation.
+  ///
+  /// In en, this message translates to:
+  /// **'A future activity is available in your selected city.'**
+  String get homeActivityHubRecommendation;
+
+  /// No description provided for @homeActivityHubError.
+  ///
+  /// In en, this message translates to:
+  /// **'Your activity details could not be loaded.'**
+  String get homeActivityHubError;
+
+  /// No description provided for @homeReviewRequests.
+  ///
+  /// In en, this message translates to:
+  /// **'Review Requests'**
+  String get homeReviewRequests;
+
+  /// No description provided for @homeViewActivity.
+  ///
+  /// In en, this message translates to:
+  /// **'View Activity'**
+  String get homeViewActivity;
+
+  /// No description provided for @homeManageActivity.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage Activity'**
+  String get homeManageActivity;
+
+  /// No description provided for @homeCreateActivity.
+  ///
+  /// In en, this message translates to:
+  /// **'Create Activity'**
+  String get homeCreateActivity;
+
+  /// No description provided for @homeGroupChat.
+  ///
+  /// In en, this message translates to:
+  /// **'Group Chat'**
+  String get homeGroupChat;
+
+  /// No description provided for @homeCityLoadError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load cities'**
+  String get homeCityLoadError;
+
+  /// No description provided for @homeRetryCategories.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry categories'**
+  String get homeRetryCategories;
+
+  /// No description provided for @homeFeedNetworkError.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t load activities. Check your connection and try again.'**
+  String get homeFeedNetworkError;
+
+  /// No description provided for @homeFeedLoadError.
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong while loading activities.'**
+  String get homeFeedLoadError;
+
+  /// No description provided for @dismiss.
+  ///
+  /// In en, this message translates to:
+  /// **'Dismiss'**
+  String get dismiss;
+
+  /// No description provided for @notificationPermissionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Stay Updated'**
+  String get notificationPermissionTitle;
+
+  /// No description provided for @notificationPermissionBody.
+  ///
+  /// In en, this message translates to:
+  /// **'We need notification permissions to alert you when someone wants to join your spot or when you are accepted to a spot.'**
+  String get notificationPermissionBody;
+
+  /// No description provided for @allow.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow'**
+  String get allow;
+
+  /// No description provided for @notNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Not Now'**
+  String get notNow;
+
+  /// No description provided for @full.
+  ///
+  /// In en, this message translates to:
+  /// **'FULL'**
+  String get full;
+
+  /// No description provided for @host.
+  ///
+  /// In en, this message translates to:
+  /// **'Host'**
+  String get host;
+
+  /// No description provided for @ofText.
+  ///
+  /// In en, this message translates to:
+  /// **'of'**
+  String get ofText;
+
+  /// No description provided for @spots.
+  ///
+  /// In en, this message translates to:
+  /// **'Spots'**
+  String get spots;
+
+  /// No description provided for @suggestedPlayingHours.
+  ///
+  /// In en, this message translates to:
+  /// **'Suggested Playing Hours'**
+  String get suggestedPlayingHours;
+
+  /// No description provided for @bestTimeToPlay.
+  ///
+  /// In en, this message translates to:
+  /// **'Best Time to Play'**
+  String get bestTimeToPlay;
 }
 
 class _AppLocalizationsDelegate

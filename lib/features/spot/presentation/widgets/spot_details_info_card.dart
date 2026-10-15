@@ -3,6 +3,7 @@ import 'package:lastspot_app/core/base_import.dart';
 /// Shared schedule/venue treatment within the activity details view.
 class SpotDetailsInfoCard extends StatelessWidget {
   final IconData icon;
+  final String? assetPath;
   final String title;
   final String value;
   final String? subtitle;
@@ -12,6 +13,7 @@ class SpotDetailsInfoCard extends StatelessWidget {
   const SpotDetailsInfoCard({
     super.key,
     required this.icon,
+    this.assetPath,
     required this.title,
     required this.value,
     this.subtitle,
@@ -31,12 +33,25 @@ class SpotDetailsInfoCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                padding: const EdgeInsets.all(AppSpacing.smLg),
+                padding: EdgeInsets.all(
+                  assetPath != null
+                      ? Dimensions.r8.dynamicH
+                      : AppSpacing.smLg,
+                ),
                 decoration: BoxDecoration(
-                  color: colors.primaryContainer,
+                  color: colors.primaryContainer.withValues(alpha: 0.4),
                   borderRadius: AppRadius.lgBorderRadius,
                 ),
-                child: Icon(icon, color: colors.onPrimaryContainer),
+                child: assetPath != null
+                    ? Image.asset(
+                        assetPath!,
+                        width: Dimensions.r24.dynamicW,
+                        height: Dimensions.r24.dynamicH,
+                        fit: BoxFit.contain,
+                        errorBuilder: (context, error, stackTrace) =>
+                            Icon(icon, color: colors.onPrimaryContainer),
+                      )
+                    : Icon(icon, color: colors.onPrimaryContainer),
               ),
               const SizedBox(width: AppSpacing.md),
               Expanded(

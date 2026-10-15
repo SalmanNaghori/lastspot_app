@@ -15,38 +15,38 @@ class ProfileHeader extends StatelessWidget {
       children: [
         AppCachedNetworkImage(
           imageUrl: profile.avatarUrl?.replaceAll('/svg?', '/png?'),
-          width: 104,
-          height: 104,
+          width: Dimensions.r100.dynamicW,
+          height: Dimensions.r100.dynamicH,
           isCircle: true,
           memCacheWidth: 300,
           memCacheHeight: 300,
           errorWidget: CircleAvatar(
-            radius: 52,
+            radius: Dimensions.r50.dynamicR,
             backgroundColor: context.colorScheme.surfaceContainerHighest,
             child: Icon(
               Icons.person,
-              size: 52,
+              size: Dimensions.r48.dynamicH,
               color: context.colorScheme.onSurfaceVariant,
             ),
           ),
         ),
-        const SizedBox(height: Dimensions.r16),
+        SizedBox(height: Dimensions.r16.dynamicH),
         Text(
           profile.fullName ?? loc.yourName,
           style: context.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
           textAlign: TextAlign.center,
         ),
         if (profile.city != null && profile.city!.isNotEmpty) ...[
-          const SizedBox(height: 4),
+          SizedBox(height: Dimensions.r4.dynamicH),
           Row(
             mainAxisSize: MainAxisSize.min,
             children: [
               Icon(
                 Icons.location_on,
-                size: 16,
+                size: Dimensions.r16.dynamicH,
                 color: context.colorScheme.primary,
               ),
-              const SizedBox(width: 4),
+              SizedBox(width: Dimensions.r4.dynamicW),
               Text(
                 profile.city!,
                 style: context.titleMedium?.copyWith(
@@ -58,7 +58,7 @@ class ProfileHeader extends StatelessWidget {
           ),
         ],
         if (profile.bio != null && profile.bio!.isNotEmpty) ...[
-          const SizedBox(height: Dimensions.r12),
+          SizedBox(height: Dimensions.r12.dynamicH),
           Text(
             profile.bio!,
             style: context.bodyMedium,
@@ -66,13 +66,28 @@ class ProfileHeader extends StatelessWidget {
           ),
         ],
         if (profile.sportsInterests.isNotEmpty) ...[
-          const SizedBox(height: Dimensions.r16),
+          SizedBox(height: Dimensions.r16.dynamicH),
           Wrap(
-            spacing: Dimensions.r8,
-            runSpacing: Dimensions.r8,
+            spacing: Dimensions.r8.dynamicW,
+            runSpacing: Dimensions.r8.dynamicH,
             alignment: WrapAlignment.center,
             children: profile.sportsInterests.map((sport) {
               return Chip(
+                avatar: Image.asset(
+                  AppAssets.getCategoryAsset(sport),
+                  width: Dimensions.r18.dynamicW,
+                  height: Dimensions.r18.dynamicH,
+                  cacheWidth: 64,
+                  cacheHeight: 64,
+                  fit: BoxFit.contain,
+                  errorBuilder: (context, error, stackTrace) {
+                    return Icon(
+                      AppAssets.getCategoryFallbackIcon(sport),
+                      size: Dimensions.r14.dynamicH,
+                      color: context.primaryColor,
+                    );
+                  },
+                ),
                 label: Text(sport),
                 labelStyle: context.bodySmall?.copyWith(
                   color: context.colorScheme.onPrimaryContainer,
@@ -82,21 +97,23 @@ class ProfileHeader extends StatelessWidget {
                     .withValues(alpha: 0.5),
                 side: BorderSide.none,
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(Dimensions.r8),
+                  borderRadius: BorderRadius.circular(Dimensions.r8.dynamicR),
                 ),
               );
             }).toList(),
           ),
         ],
-        const SizedBox(height: Dimensions.r24),
+        SizedBox(height: Dimensions.r24.dynamicH),
         OutlinedButton.icon(
           onPressed: () async {
-            final result = await context.safePush<dynamic>('/edit-profile');
+            final result = await context.safePush<dynamic>(
+              AppRoutes.editProfile,
+            );
             if (result != null && result is UserProfile && context.mounted) {
               context.read<ProfileCubit>().setProfileLocally(result);
             }
           },
-          icon: const Icon(Icons.edit_outlined, size: 18),
+          icon: Icon(Icons.edit_outlined, size: Dimensions.r18.dynamicH),
           label: Text(loc.editProfile),
         ),
       ],

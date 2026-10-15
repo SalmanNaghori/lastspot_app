@@ -4,11 +4,7 @@ class ProfileSection extends StatelessWidget {
   final String title;
   final List<Widget> items;
 
-  const ProfileSection({
-    super.key,
-    required this.title,
-    required this.items,
-  });
+  const ProfileSection({super.key, required this.title, required this.items});
 
   @override
   Widget build(BuildContext context) {
@@ -16,26 +12,32 @@ class ProfileSection extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: Dimensions.r8,
-            vertical: Dimensions.r8,
+          padding: EdgeInsets.symmetric(
+            horizontal: Dimensions.r8.dynamicW,
+            vertical: Dimensions.r8.dynamicH,
           ),
           child: Text(
             title.toUpperCase(),
-            style: context.labelMedium?.copyWith(
-              color: context.isDarkMode ? AppColor.whiteColor : AppColor.textSecondary,
-              fontWeight: FontWeight.bold,
+            style: TextStyle(
+              fontSize: Dimensions.r12.dynamicSP,
+              color: context.textSecondary,
+              fontWeight: FontWeight.w700,
               letterSpacing: 1.2,
             ),
           ),
         ),
-        Material(
-          color: context.isDarkMode ? AppColor.surfaceContainerDark : AppColor.surfaceContainerLight,
-          borderRadius: BorderRadius.circular(Dimensions.r12),
+        Container(
+          decoration: BoxDecoration(
+            color: context.surfaceColor,
+            borderRadius: BorderRadius.circular(Dimensions.r16.dynamicR),
+            border: Border.all(
+              color: context.borderColor.withValues(alpha: 0.6),
+            ),
+          ),
           clipBehavior: Clip.antiAlias,
           child: Column(children: items),
         ),
-        const SizedBox(height: Dimensions.r24),
+        SizedBox(height: Dimensions.r24.dynamicH),
       ],
     );
   }

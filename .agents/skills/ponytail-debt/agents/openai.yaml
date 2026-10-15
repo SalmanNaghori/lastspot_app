@@ -1,0 +1,4 @@
+interface:
+  display_name: "Ponytail Debt"
+  short_description: "Inventory deliberate Ponytail shortcuts"
+  default_prompt: "Use $ponytail-debt to inventory deliberate shortcuts and their upgrade triggers."

@@ -38,14 +38,14 @@ class SettingsScreenMobile extends StatelessWidget {
       body: BlocBuilder<SettingsCubit, SettingsState>(
         builder: (context, state) {
           return ListView(
-            padding: const EdgeInsets.all(Dimensions.r16),
+            padding: EdgeInsets.all(Dimensions.r16.dynamicW),
             children: [
               SettingsSectionTitle(title: context.loc.themeTitle),
               ThemeSelectorCard(state: state),
-              const SizedBox(height: Dimensions.r24),
-              const SettingsSectionTitle(title: 'App color'),
+              SizedBox(height: Dimensions.r24.dynamicH),
+              SettingsSectionTitle(title: context.loc.appColorTitle),
               AppColorSelectorCard(state: state),
-              const SizedBox(height: Dimensions.r24),
+              SizedBox(height: Dimensions.r24.dynamicH),
               SettingsSectionTitle(title: context.loc.languageTitle),
               LanguageSelectorCard(state: state),
             ],

@@ -183,8 +183,9 @@ class SpotRepositoryImpl extends BaseRepository implements SpotRepository {
     if (title != null) updates['title'] = title;
     if (description != null) updates['description'] = description;
     if (locationName != null) updates['location_name'] = locationName;
-    if (eventDateTime != null)
+    if (eventDateTime != null) {
       updates['event_date_time'] = eventDateTime.toIso8601String();
+    }
     if (maxParticipants != null) updates['max_participants'] = maxParticipants;
     if (pricePerPerson != null) updates['price_per_person'] = pricePerPerson;
 

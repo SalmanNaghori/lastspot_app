@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+
 import '../../../../core/network/base/base_repository.dart';
 import '../../../../core/network/api_endpoints.dart';
 import '../../../../core/utils/result.dart';
@@ -37,7 +39,7 @@ class AuthRepositoryImpl extends BaseRepository implements AuthRepository {
   }) {
     return executeApi(
       operationName: ApiEndpoints.authSignIn,
-      requestData: {'email': email},
+      requestData: kDebugMode ? null : {'email': email},
       operation: () =>
           _remoteDataSource.signIn(email: email, password: password),
     );
@@ -54,11 +56,24 @@ class AuthRepositoryImpl extends BaseRepository implements AuthRepository {
   @override
   Future<Result<void, Exception>> sendPasswordResetEmail({
     required String email,
+    required String redirectTo,
   }) {
     return executeApi(
       operationName: ApiEndpoints.authResetPassword,
       requestData: {'email': email},
-      operation: () => _remoteDataSource.sendPasswordResetEmail(email: email),
+      operation: () => _remoteDataSource.sendPasswordResetEmail(
+        email: email,
+        redirectTo: redirectTo,
+      ),
+    );
+  }
+
+  @override
+  Future<Result<void, Exception>> updatePassword({required String password}) {
+    return executeApi(
+      operationName: 'Auth.updatePassword',
+      requestData: const {},
+      operation: () => _remoteDataSource.updatePassword(password: password),
     );
   }
 

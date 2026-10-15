@@ -1,0 +1,12 @@
+# docs.rules — living documentation in the same change
+# SOP: sop/living-docs.md
+# Guardrails: guardrails/documentation.md
+
+MUST      DOC-1  User-visible change -> CHANGELOG.md [Unreleased] entry in user language (Added/Changed/Fixed/Removed/Security).
+MUST      DOC-2  New/renamed/moved/flagged/retired feature -> its row in docs/project/flutter/features.md (retired -> ## Retired).
+MUST      DOC-3  Architectural decision -> new/superseding ADR + docs/adr/README.md index row.
+MUST      DOC-4  Shared widget public API change -> dartdoc + shared-widget catalogue.
+MUST      DOC-5  Project default or dependency change -> docs/project/flutter/project-rules.md + docs/project/flutter/dependency-inventory.md; never reintroduce _TBD_.
+MUST      DOC-6  Setup/workflow change (pin, codegen, config, flavors, branches, PR rules) -> CONTRIBUTING.md with commands the repo really uses.
+MUST      DOC-7  Greenfield: create CHANGELOG.md + CONTRIBUTING.md from templates/ at kickoff, features.md empty until the first feature, then maintain. Brownfield: initialise features.md (one row per existing feature, evidence, Since: pre-adoption, unknowns _TBD_), keep existing CHANGELOG/CONTRIBUTING and add missing sections, create missing ones without inventing history; then maintain.
+MUST      DOC-8  RepoSeed manages standards updates, .agents/skills/flutter-workflow/references/CHANGELOG.md and the installed revision in .reposeed/config.json. App-owned docs/project/flutter/ and docs/adr/ edits do not change managed standards or their revision; see REPOSEED.md.

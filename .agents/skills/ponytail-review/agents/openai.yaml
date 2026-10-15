@@ -1,0 +1,4 @@
+interface:
+  display_name: "Ponytail Review"
+  short_description: "Review a diff for removable complexity"
+  default_prompt: "Use $ponytail-review to find avoidable complexity in this change."

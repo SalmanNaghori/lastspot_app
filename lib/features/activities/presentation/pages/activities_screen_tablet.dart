@@ -3,12 +3,10 @@ import 'package:lastspot_app/core/base_import.dart';
 import '../bloc/activities_bloc.dart';
 import '../bloc/activities_state.dart';
 import '../bloc/activities_event.dart';
-import 'package:lastspot_app/core/widgets/custom_segmented_control.dart';
 import '../widgets/activities_list_section.dart';
 import '../widgets/activity_empty_state.dart';
 import '../widgets/requests_tab_section.dart';
 import '../widgets/tab_preview_row.dart';
-import 'package:lastspot_app/core/widgets/custom_app_bar.dart';
 
 class ActivitiesScreenTablet extends StatefulWidget {
   const ActivitiesScreenTablet({super.key});
@@ -26,7 +24,29 @@ class _ActivitiesScreenTabletState extends State<ActivitiesScreenTablet> {
     super.dispose();
   }
 
+  Future<void> _onRefresh() async {
+    context.read<ActivitiesBloc>().add(const RefreshActivitiesEvent());
+    await Future.delayed(const Duration(seconds: 1));
+  }
 
+  void _onTabChanged(int index) {
+    _selectedTab.value = index;
+    if (index == 2) {
+      context.read<ActivitiesBloc>().add(const LoadActivitiesEvent());
+    }
+  }
+
+  void _onRetry() {
+    context.read<ActivitiesBloc>().add(const LoadActivitiesEvent());
+  }
+
+  void _onCreateActivity() {
+    context.push(AppRoutes.create);
+  }
+
+  void _onExploreActivities() {
+    context.go(AppRoutes.explore);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -62,22 +82,14 @@ class _ActivitiesScreenTabletState extends State<ActivitiesScreenTablet> {
             child: ClipRRect(
               borderRadius: BorderRadius.circular(Dimensions.r20),
               child: RefreshIndicator(
-                onRefresh: () async {
-                  context.read<ActivitiesBloc>().add(
-                    const RefreshActivitiesEvent(),
-                  );
-                  await Future.delayed(const Duration(seconds: 1));
-                },
+                onRefresh: _onRefresh,
                 child: BlocConsumer<ActivitiesBloc, ActivitiesState>(
                   listener: (context, state) {
                     if (state is ActivitiesActionMessage) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(state.message),
-                          backgroundColor: state.isError
-                              ? context.errorColor
-                              : context.primaryColor,
-                        ),
+                      AppUtils.showSnackBar(
+                        context,
+                        state.message,
+                        isError: state.isError,
                       );
                     }
                   },
@@ -98,9 +110,7 @@ class _ActivitiesScreenTabletState extends State<ActivitiesScreenTablet> {
                             Text(state.message, style: context.bodyLarge),
                             SizedBox(height: Dimensions.r16.dynamicH),
                             FilledButton(
-                              onPressed: () => context
-                                  .read<ActivitiesBloc>()
-                                  .add(const LoadActivitiesEvent()),
+                              onPressed: _onRetry,
                               child: Text(loc.retry),
                             ),
                           ],
@@ -123,21 +133,20 @@ class _ActivitiesScreenTabletState extends State<ActivitiesScreenTablet> {
                                   children: [
                                     CustomSegmentedControl(
                                       selectedIndex: tabIndex,
-                                      onTabChanged: (index) {
-                                        _selectedTab.value = index;
-                                        if (index == 2) {
-                                          context.read<ActivitiesBloc>().add(
-                                            const LoadActivitiesEvent(),
-                                          );
-                                        }
-                                      },
+                                      onTabChanged: _onTabChanged,
                                       tabs: [
-                                        loc.tabMyActivitiesCount(state.hosted.length.toString()),
-                                        loc.tabJoinedCount(state.joined.length.toString()),
-                                        loc.tabRequestsCount(state.receivedRequests.length.toString()),
+                                        loc.tabMyActivitiesCount(
+                                          state.hosted.length.toString(),
+                                        ),
+                                        loc.tabJoinedCount(
+                                          state.joined.length.toString(),
+                                        ),
+                                        loc.tabRequestsCount(
+                                          state.receivedRequests.length
+                                              .toString(),
+                                        ),
                                       ],
                                     ),
-
                                     SizedBox(height: Dimensions.r16.dynamicH),
                                     Text(
                                       loc.manageActivitiesDesc,
@@ -154,42 +163,53 @@ class _ActivitiesScreenTabletState extends State<ActivitiesScreenTablet> {
                                       const AlwaysScrollableScrollPhysics(),
                                   slivers: [
                                     if (tabIndex == 0) ...[
-                                      if (state.hosted.isEmpty && !state.isRefreshing)
+                                      if (state.hosted.isEmpty &&
+                                          !state.isRefreshing)
                                         ActivityEmptyState(
                                           title: loc.emptyHostedTitle,
                                           message: loc.emptyHostedDesc,
                                           actionText: loc.generateActivity,
-                                          onAction: () =>
-                                              context.push(AppRoutes.create),
+                                          onAction: _onCreateActivity,
                                         )
                                       else
                                         ActivitiesListSection(
                                           activities: state.hosted,
-                                          horizontalPadding: Dimensions.r32.dynamicW,
-                                          isLoading: state.hosted.isEmpty && state.isRefreshing,
-                                        )
+                                          horizontalPadding:
+                                              Dimensions.r32.dynamicW,
+                                          isLoading:
+                                              state.hosted.isEmpty &&
+                                              state.isRefreshing,
+                                        ),
                                     ] else if (tabIndex == 1) ...[
-                                      if (state.joined.isEmpty && !state.isRefreshing)
+                                      if (state.joined.isEmpty &&
+                                          !state.isRefreshing)
                                         ActivityEmptyState(
                                           title: loc.emptyJoinedTitle,
                                           message: loc.emptyJoinedDesc,
                                           actionText:
                                               loc.exploreActivitiesAction,
-                                          onAction: () =>
-                                              context.go(AppRoutes.explore),
+                                          onAction: _onExploreActivities,
                                         )
                                       else
                                         ActivitiesListSection(
                                           activities: state.joined,
-                                          horizontalPadding: Dimensions.r32.dynamicW,
-                                          isLoading: state.joined.isEmpty && state.isRefreshing,
-                                        )
-                                    ] else ...[
+                                          horizontalPadding:
+                                              Dimensions.r32.dynamicW,
+                                          isLoading:
+                                              state.joined.isEmpty &&
+                                              state.isRefreshing,
+                                        ),
+                                    ] else if (tabIndex == 2) ...[
                                       RequestsTabSection(
-                                        receivedRequests: state.receivedRequests,
+                                        receivedRequests:
+                                            state.receivedRequests,
                                         sentRequests: state.sentRequests,
-                                        horizontalPadding: Dimensions.r32.dynamicW,
-                                        isLoading: state.receivedRequests.isEmpty && state.sentRequests.isEmpty && state.isRefreshing,
+                                        horizontalPadding:
+                                            Dimensions.r32.dynamicW,
+                                        isLoading:
+                                            state.receivedRequests.isEmpty &&
+                                            state.sentRequests.isEmpty &&
+                                            state.isRefreshing,
                                       ),
                                     ],
                                     SliverToBoxAdapter(

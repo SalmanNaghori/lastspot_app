@@ -1,0 +1,6 @@
+interface:
+  display_name: "Project Understanding"
+  short_description: "Maintain project knowledge, flows, and handovers"
+  default_prompt: "Use $project-understanding to build an evidence-linked guide to this project, its important flows, and its knowledge gaps."
+policy:
+  allow_implicit_invocation: true

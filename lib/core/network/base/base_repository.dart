@@ -1,16 +1,18 @@
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../network_exceptions.dart';
 import '../../utils/result.dart';
+import '../../utils/debug_json_formatter.dart';
 
 /// A base repository that abstracts the Supabase API call, logging,
 /// and try-catch error handling into a single reusable method.
 abstract class BaseRepository {
   /// Executes a Supabase API call or any async function, logs its request/response,
-  /// handles exceptions safely, and returns a [Result<T, Exception>].
+  /// handles exceptions safely, and returns a `Result<T, Exception>`.
   Future<Result<T, Exception>> executeApi<T>({
     required String operationName,
     Map<String, dynamic>? requestData,
@@ -22,28 +24,31 @@ abstract class BaseRepository {
       final response = await operation();
       stopwatch.stop();
 
-      final buffer = StringBuffer();
-      buffer.writeln(
-        '========================================================================',
-      );
-      buffer.writeln('🚀 REQ: $operationName');
-      if (requestData != null) {
-        buffer.writeln('📦 PAYLOAD: $requestData');
-      }
-      buffer.writeln(
-        '✅ RES: $operationName (${stopwatch.elapsedMilliseconds}ms)',
-      );
+      if (kDebugMode) {
+        final buffer = StringBuffer();
+        buffer.writeln(
+          '========================================================================',
+        );
+        buffer.writeln('🚀 REQ: $operationName');
+        if (requestData != null) {
+          buffer.writeln(
+            '📦 PAYLOAD: ${DebugJsonFormatter.format(requestData)}',
+          );
+        }
+        buffer.writeln(
+          '✅ RES: $operationName (${stopwatch.elapsedMilliseconds}ms)',
+        );
 
-      if (response != null) {
-        buffer.writeln('📄 DATA: ${_formatData(response)}');
-      } else {
-        buffer.writeln('📄 DATA: (empty/void)');
+        if (response != null) {
+          buffer.writeln('📄 DATA: ${_formatData(response)}');
+        } else {
+          buffer.writeln('📄 DATA: (empty/void)');
+        }
+        buffer.write(
+          '========================================================================',
+        );
+        log(buffer.toString(), name: 'Supabase');
       }
-      buffer.write(
-        '========================================================================',
-      );
-
-      log(buffer.toString(), name: 'Supabase');
 
       return Success(response);
     } on SocketException catch (_) {
@@ -88,7 +93,7 @@ abstract class BaseRepository {
 
   /// Executes a Supabase API call, logs its request/response,
   /// and rethrows exceptions instead of returning a Result.
-  /// Use this for repositories that have not yet migrated to the Result<T, Exception> pattern.
+  /// Use this until a repository migrates to the `Result<T, Exception>` pattern.
   Future<T> executeApiRaw<T>({
     required String operationName,
     Map<String, dynamic>? requestData,
@@ -100,28 +105,31 @@ abstract class BaseRepository {
       final response = await operation();
       stopwatch.stop();
 
-      final buffer = StringBuffer();
-      buffer.writeln(
-        '========================================================================',
-      );
-      buffer.writeln('🚀 REQ: $operationName');
-      if (requestData != null) {
-        buffer.writeln('📦 PAYLOAD: $requestData');
-      }
-      buffer.writeln(
-        '✅ RES: $operationName (${stopwatch.elapsedMilliseconds}ms)',
-      );
+      if (kDebugMode) {
+        final buffer = StringBuffer();
+        buffer.writeln(
+          '========================================================================',
+        );
+        buffer.writeln('🚀 REQ: $operationName');
+        if (requestData != null) {
+          buffer.writeln(
+            '📦 PAYLOAD: ${DebugJsonFormatter.format(requestData)}',
+          );
+        }
+        buffer.writeln(
+          '✅ RES: $operationName (${stopwatch.elapsedMilliseconds}ms)',
+        );
 
-      if (response != null) {
-        buffer.writeln('📄 DATA: ${_formatData(response)}');
-      } else {
-        buffer.writeln('📄 DATA: (empty/void)');
+        if (response != null) {
+          buffer.writeln('📄 DATA: ${_formatData(response)}');
+        } else {
+          buffer.writeln('📄 DATA: (empty/void)');
+        }
+        buffer.write(
+          '========================================================================',
+        );
+        log(buffer.toString(), name: 'Supabase');
       }
-      buffer.write(
-        '========================================================================',
-      );
-
-      log(buffer.toString(), name: 'Supabase');
 
       return response;
     } catch (e, st) {
@@ -144,16 +152,17 @@ abstract class BaseRepository {
     dynamic error, [
     StackTrace? st,
   ]) {
+    if (!kDebugMode) return;
     final buffer = StringBuffer();
     buffer.writeln(
       '========================================================================',
     );
     buffer.writeln('🚀 REQ: $operationName');
     if (requestData != null) {
-      buffer.writeln('📦 PAYLOAD: $requestData');
+      buffer.writeln('📦 PAYLOAD: ${DebugJsonFormatter.format(requestData)}');
     }
     buffer.writeln('❌ ERR: $operationName (${ms}ms)');
-    buffer.writeln('⚠️ ERROR: $error');
+    buffer.writeln('⚠️ ERROR: ${DebugJsonFormatter.format(error)}');
     if (st != null) {
       buffer.writeln('📜 STACK: $st');
     }
@@ -164,23 +173,6 @@ abstract class BaseRepository {
   }
 
   String _formatData(dynamic data) {
-    if (data == null) return '(empty/void)';
-    try {
-      if (data is List) {
-        return data.map((e) => _formatSingleData(e)).toList().toString();
-      }
-      return _formatSingleData(data);
-    } catch (_) {
-      return data.toString();
-    }
-  }
-
-  String _formatSingleData(dynamic item) {
-    try {
-      // ignore: avoid_dynamic_calls
-      return item.toJson().toString();
-    } catch (_) {
-      return item.toString();
-    }
+    return DebugJsonFormatter.format(data);
   }
 }

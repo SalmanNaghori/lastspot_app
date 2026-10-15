@@ -18,9 +18,9 @@ class ReportRepositoryImpl implements ReportRepository {
       'reason': reason,
       if (description != null && description.isNotEmpty)
         'description': description,
-      if (reportedUserId != null) 'reported_user_id': reportedUserId,
-      if (requestId != null) 'request_id': requestId,
-      if (messageId != null) 'message_id': messageId,
+      'reported_user_id': ?reportedUserId,
+      'request_id': ?requestId,
+      'message_id': ?messageId,
     };
 
     await remoteDataSource.submitReport(data);

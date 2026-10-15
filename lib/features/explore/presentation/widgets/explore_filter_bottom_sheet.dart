@@ -1,7 +1,5 @@
 import 'package:lastspot_app/core/base_import.dart';
 
-import '../../../../core/widgets/app_filter_chip.dart';
-import '../../../../core/widgets/app_section_title.dart';
 import '../bloc/explore_state.dart';
 
 class ExploreFilterBottomSheet extends StatefulWidget {

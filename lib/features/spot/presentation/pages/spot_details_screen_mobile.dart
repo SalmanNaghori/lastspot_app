@@ -25,6 +25,13 @@ class SpotDetailsScreenMobile extends StatelessWidget {
     );
     if (!context.mounted || action == null) return;
     switch (action) {
+      case SpotDetailsMenuAction.groupChat:
+        await context.push(
+          AppRoutes.activityGroupChatPath(
+            loaded.post.id,
+            title: loaded.post.title,
+          ),
+        );
       case SpotDetailsMenuAction.edit:
         await context.push(AppRoutes.editSpot, extra: loaded.post);
         if (context.mounted) onRetry();

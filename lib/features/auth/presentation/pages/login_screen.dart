@@ -41,9 +41,7 @@ class _LoginScreenState extends State<LoginScreen> {
             state is AuthDeleted) {
           context.go(AppRoutes.accountStatus);
         } else if (state is AuthError) {
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(SnackBar(content: Text(state.message)));
+          AppUtils.showSnackBar(context, state.message, isError: true);
         }
       },
       child: ResponsiveLayout(
@@ -59,35 +57,77 @@ class _LoginScreenState extends State<LoginScreen> {
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
-            padding: const EdgeInsets.all(Dimensions.r24),
+            padding: EdgeInsets.all(Dimensions.r24.dynamicW),
             child: Form(
               key: _formKey,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Text(
-                    AppString.appName,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: Dimensions.r32,
-                      fontWeight: FontWeight.bold,
-                      color: context.primaryColor,
+                  Center(
+                    child: Container(
+                      width: Dimensions.r80.dynamicW,
+                      height: Dimensions.r80.dynamicH,
+                      decoration: BoxDecoration(
+                        color: context.isDarkMode
+                            ? context.surfaceContainer
+                            : const Color(0xFFF0FDF4),
+                        shape: BoxShape.circle,
+                        boxShadow: [
+                          BoxShadow(
+                            color: context.primaryColor.withValues(alpha: 0.18),
+                            blurRadius: Dimensions.r20.dynamicR,
+                            offset: const Offset(0, 6),
+                          ),
+                        ],
+                        border: Border.all(
+                          color: context.primaryColor.withValues(alpha: 0.2),
+                          width: 1.5,
+                        ),
+                      ),
+                      padding: EdgeInsets.all(Dimensions.r12.dynamicW),
+                      child: AppAssets.footballEquipmentGen.image(
+                        fit: BoxFit.contain,
+                        cacheWidth: 200,
+                        cacheHeight: 200,
+                      ),
                     ),
                   ),
-                  const SizedBox(height: Dimensions.r8),
+                  SizedBox(height: Dimensions.r16.dynamicH),
+                  RichText(
+                    textAlign: TextAlign.center,
+                    text: TextSpan(
+                      style: TextStyle(
+                        fontSize: Dimensions.r28.dynamicSP,
+                        fontWeight: FontWeight.w900,
+                        letterSpacing: -0.5,
+                      ),
+                      children: [
+                        TextSpan(
+                          text: AppString.appNamePrefix,
+                          style: TextStyle(color: context.textPrimary),
+                        ),
+                        TextSpan(
+                          text: AppString.appNameSuffix,
+                          style: TextStyle(color: context.primaryColor),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: Dimensions.r8.dynamicH),
                   Text(
                     context.loc.loginSubtitle,
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      fontSize: Dimensions.r16,
+                      fontSize: Dimensions.r15.dynamicSP,
                       color: context.textSecondary,
                     ),
                   ),
-                  const SizedBox(height: Dimensions.r48),
+                  SizedBox(height: Dimensions.r32.dynamicH),
                   AppTextField(
                     controller: _emailController,
                     labelText: context.loc.email,
+                    prefixIcon: const Icon(Icons.email_outlined),
                     keyboardType: TextInputType.emailAddress,
                     textInputAction: TextInputAction.next,
                     validator: (value) {
@@ -102,10 +142,11 @@ class _LoginScreenState extends State<LoginScreen> {
                       return null;
                     },
                   ),
-                  const SizedBox(height: Dimensions.r16),
+                  SizedBox(height: Dimensions.r16.dynamicH),
                   AppTextField(
                     controller: _passwordController,
                     labelText: context.loc.password,
+                    prefixIcon: const Icon(Icons.lock_outline_rounded),
                     isPassword: true,
                     obscureText: _obscurePassword,
                     onTogglePassword: () {
@@ -121,7 +162,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       return null;
                     },
                   ),
-                  const SizedBox(height: Dimensions.r8),
+                  SizedBox(height: Dimensions.r8.dynamicH),
                   Align(
                     alignment: Alignment.centerRight,
                     child: TextButton(
@@ -130,46 +171,63 @@ class _LoginScreenState extends State<LoginScreen> {
                       },
                       child: Text(
                         context.loc.forgotPassword,
-                        style: TextStyle(color: context.textSecondary),
+                        style: TextStyle(
+                          color: context.textSecondary,
+                          fontSize: Dimensions.r13.dynamicSP,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                     ),
                   ),
-                  const SizedBox(height: Dimensions.r24),
+                  SizedBox(height: Dimensions.r20.dynamicH),
                   BlocBuilder<AuthBloc, AuthState>(
                     builder: (context, state) {
-                      return ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: context.primaryColor,
-                          foregroundColor: AppColor.whiteColor,
-                          padding: const EdgeInsets.symmetric(
-                            vertical: Dimensions.r16,
+                      return SizedBox(
+                        height: Dimensions.r48.dynamicH * 1.15,
+                        child: FilledButton(
+                          style: FilledButton.styleFrom(
+                            backgroundColor: context.primaryColor,
+                            foregroundColor: AppColor.whiteColor,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(
+                                Dimensions.r16.dynamicR,
+                              ),
+                            ),
+                            elevation: 0,
                           ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(Dimensions.r12),
-                          ),
-                        ),
-                        onPressed: state is AuthLoading ? null : _onLogin,
-                        child: state is AuthLoading
-                            ? const SizedBox(
-                                height: 20,
-                                width: 20,
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 2,
-                                  color: AppColor.whiteColor,
+                          onPressed: state is AuthLoading ? null : _onLogin,
+                          child: state is AuthLoading
+                              ? SizedBox(
+                                  height: Dimensions.r20.dynamicH,
+                                  width: Dimensions.r20.dynamicW,
+                                  child: const CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                    color: AppColor.whiteColor,
+                                  ),
+                                )
+                              : Text(
+                                  context.loc.login,
+                                  style: TextStyle(
+                                    fontSize: Dimensions.r16.dynamicSP,
+                                    fontWeight: FontWeight.w700,
+                                  ),
                                 ),
-                              )
-                            : Text(context.loc.login),
+                        ),
                       );
                     },
                   ),
-                  const SizedBox(height: Dimensions.r16),
+                  SizedBox(height: Dimensions.r16.dynamicH),
                   TextButton(
                     onPressed: () {
                       context.safePush(AppRoutes.signup);
                     },
                     child: Text(
                       context.loc.dontHaveAccount,
-                      style: TextStyle(color: context.primaryColor),
+                      style: TextStyle(
+                        color: context.primaryColor,
+                        fontSize: Dimensions.r14.dynamicSP,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ),
                 ],

@@ -3,11 +3,10 @@ import 'package:lastspot_app/core/base_import.dart';
 import '../bloc/activities_bloc.dart';
 import '../bloc/activities_state.dart';
 import '../bloc/activities_event.dart';
-import 'package:lastspot_app/core/widgets/custom_segmented_control.dart';
 import '../widgets/activities_list_section.dart';
 import '../widgets/activity_empty_state.dart';
 import '../widgets/requests_tab_section.dart';
-import 'package:lastspot_app/core/widgets/custom_app_bar.dart';
+
 class ActivitiesScreenMobile extends StatefulWidget {
   const ActivitiesScreenMobile({super.key});
 
@@ -24,7 +23,29 @@ class _ActivitiesScreenMobileState extends State<ActivitiesScreenMobile> {
     super.dispose();
   }
 
+  Future<void> _onRefresh() async {
+    context.read<ActivitiesBloc>().add(const RefreshActivitiesEvent());
+    await Future.delayed(const Duration(seconds: 1));
+  }
 
+  void _onTabChanged(int index) {
+    _selectedTab.value = index;
+    if (index == 2) {
+      context.read<ActivitiesBloc>().add(const LoadActivitiesEvent());
+    }
+  }
+
+  void _onRetry() {
+    context.read<ActivitiesBloc>().add(const LoadActivitiesEvent());
+  }
+
+  void _onCreateActivity() {
+    context.push(AppRoutes.create);
+  }
+
+  void _onExploreActivities() {
+    context.go(AppRoutes.explore);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,20 +60,14 @@ class _ActivitiesScreenMobileState extends State<ActivitiesScreenMobile> {
       body: SafeArea(
         top: false,
         child: RefreshIndicator(
-          onRefresh: () async {
-            context.read<ActivitiesBloc>().add(const RefreshActivitiesEvent());
-            await Future.delayed(const Duration(seconds: 1));
-          },
+          onRefresh: _onRefresh,
           child: BlocConsumer<ActivitiesBloc, ActivitiesState>(
             listener: (context, state) {
               if (state is ActivitiesActionMessage) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(state.message),
-                    backgroundColor: state.isError
-                        ? context.errorColor
-                        : context.primaryColor,
-                  ),
+                AppUtils.showSnackBar(
+                  context,
+                  state.message,
+                  isError: state.isError,
                 );
               }
             },
@@ -72,12 +87,7 @@ class _ActivitiesScreenMobileState extends State<ActivitiesScreenMobile> {
                       SizedBox(height: Dimensions.r16.dynamicH),
                       Text(state.message, style: context.bodyLarge),
                       SizedBox(height: Dimensions.r16.dynamicH),
-                      FilledButton(
-                        onPressed: () => context.read<ActivitiesBloc>().add(
-                          const LoadActivitiesEvent(),
-                        ),
-                        child: Text(loc.retry),
-                      ),
+                      FilledButton(onPressed: _onRetry, child: Text(loc.retry)),
                     ],
                   ),
                 );
@@ -99,18 +109,17 @@ class _ActivitiesScreenMobileState extends State<ActivitiesScreenMobile> {
                               children: [
                                 CustomSegmentedControl(
                                   selectedIndex: tabIndex,
-                                  onTabChanged: (index) {
-                                    _selectedTab.value = index;
-                                    if (index == 2) {
-                                      context.read<ActivitiesBloc>().add(
-                                        const LoadActivitiesEvent(),
-                                      );
-                                    }
-                                  },
+                                  onTabChanged: _onTabChanged,
                                   tabs: [
-                                    loc.tabMyActivitiesCount(state.hosted.length.toString()),
-                                    loc.tabJoinedCount(state.joined.length.toString()),
-                                    loc.tabRequestsCount(state.receivedRequests.length.toString()),
+                                    loc.tabMyActivitiesCount(
+                                      state.hosted.length.toString(),
+                                    ),
+                                    loc.tabJoinedCount(
+                                      state.joined.length.toString(),
+                                    ),
+                                    loc.tabRequestsCount(
+                                      state.receivedRequests.length.toString(),
+                                    ),
                                   ],
                                 ),
                                 SizedBox(height: Dimensions.r16.dynamicH),
@@ -130,34 +139,41 @@ class _ActivitiesScreenMobileState extends State<ActivitiesScreenMobile> {
                               title: loc.emptyHostedTitle,
                               message: loc.emptyHostedDesc,
                               actionText: loc.generateActivity,
-                              onAction: () => context.push(AppRoutes.create),
+                              onAction: _onCreateActivity,
+                              imageGen: AppAssets.emptyActivitiesGen,
                             )
                           else
                             ActivitiesListSection(
                               activities: state.hosted,
                               horizontalPadding: Dimensions.r16.dynamicW,
-                              isLoading: state.hosted.isEmpty && state.isRefreshing,
-                            )
+                              isLoading:
+                                  state.hosted.isEmpty && state.isRefreshing,
+                            ),
                         ] else if (tabIndex == 1) ...[
                           if (state.joined.isEmpty && !state.isRefreshing)
                             ActivityEmptyState(
                               title: loc.emptyJoinedTitle,
                               message: loc.emptyJoinedDesc,
                               actionText: loc.exploreActivitiesAction,
-                              onAction: () => context.go(AppRoutes.explore),
+                              onAction: _onExploreActivities,
+                              imageGen: AppAssets.emptyActivitiesGen,
                             )
                           else
                             ActivitiesListSection(
                               activities: state.joined,
                               horizontalPadding: Dimensions.r16.dynamicW,
-                              isLoading: state.joined.isEmpty && state.isRefreshing,
-                            )
-                        ] else ...[
+                              isLoading:
+                                  state.joined.isEmpty && state.isRefreshing,
+                            ),
+                        ] else if (tabIndex == 2) ...[
                           RequestsTabSection(
                             receivedRequests: state.receivedRequests,
                             sentRequests: state.sentRequests,
                             horizontalPadding: Dimensions.r16.dynamicW,
-                            isLoading: state.receivedRequests.isEmpty && state.sentRequests.isEmpty && state.isRefreshing,
+                            isLoading:
+                                state.receivedRequests.isEmpty &&
+                                state.sentRequests.isEmpty &&
+                                state.isRefreshing,
                           ),
                         ],
                         SliverToBoxAdapter(

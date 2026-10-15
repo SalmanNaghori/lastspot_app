@@ -1,5 +1,4 @@
 import '../../../../core/base_import.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../features/notifications/presentation/bloc/notifications_cubit.dart';
 import '../../../../features/notifications/presentation/bloc/notifications_state.dart';
 
@@ -61,6 +60,7 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
         ],
       ),
       actions: [
+        const UserProfileAvatar(),
         Padding(
           padding: EdgeInsets.only(right: Dimensions.r8.dynamicW),
           child: Stack(

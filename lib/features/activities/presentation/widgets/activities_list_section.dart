@@ -24,57 +24,64 @@ class ActivitiesListSection extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
       sliver: AnimationLimiter(
         child: SliverList(
-        delegate: SliverChildBuilderDelegate((context, index) {
-          if (isLoading) {
+          delegate: SliverChildBuilderDelegate((context, index) {
+            if (isLoading) {
+              return AnimationWrapper(
+                index: index,
+                child: Padding(
+                  padding: EdgeInsets.only(bottom: Dimensions.r16.dynamicH),
+                  child: const ActivityShimmerCard(),
+                ),
+              );
+            }
+
+            final activity = activities[index];
+            final dateStr =
+                '${AppConstants.formatActivityDate(activity.eventDateTime)} · ${AppUtils.formatTime(activity.eventDateTime)}';
+            final locationStr = AppUtils.getDisplayLocation(
+              context,
+              activity.locationName,
+            );
+            final statsStr =
+                '${activity.currentParticipants}/${activity.maxParticipants} participants · ${activity.pricePerPerson > 0 ? AppUtils.formatCurrency(activity.pricePerPerson) : context.loc.free}';
+
+            String statusStr = context.loc.statusHosted;
+            if (activity.status == RequestStatus.full) {
+              statusStr = context.loc.statusFull;
+            } else if (activity.status == RequestStatus.completed) {
+              statusStr = context.loc.statusCompleted;
+            } else if (activity.status == RequestStatus.cancelled) {
+              statusStr = context.loc.statusCancelled;
+            } else if (activity.status == RequestStatus.expired) {
+              statusStr = context.loc.statusExpired;
+            }
+
             return AnimationWrapper(
               index: index,
               child: Padding(
                 padding: EdgeInsets.only(bottom: Dimensions.r16.dynamicH),
-                child: const ActivityShimmerCard(),
+                child: CompactActivityCard(
+                  title: activity.title,
+                  date: dateStr,
+                  location: locationStr,
+                  stats: statsStr,
+                  status: statusStr,
+                  isFull: activity.status == RequestStatus.full,
+                  onTap: () {
+                    context.push(AppRoutes.spotDetailsPath(activity.id));
+                  },
+                  onChatTap: () => context.push(
+                    AppRoutes.activityGroupChatPath(
+                      activity.id,
+                      title: activity.title,
+                    ),
+                  ),
+                ),
               ),
             );
-          }
-
-          final activity = activities[index];
-          final dateStr =
-              '${AppConstants.formatActivityDate(activity.eventDateTime)} · ${AppUtils.formatTime(activity.eventDateTime)}';
-          final locationStr = AppUtils.getDisplayLocation(
-            context,
-            activity.locationName,
-          );
-          final statsStr =
-              '${activity.currentParticipants}/${activity.maxParticipants} participants · ${activity.pricePerPerson > 0 ? AppUtils.formatCurrency(activity.pricePerPerson) : context.loc.free}';
-
-          String statusStr = context.loc.statusHosted;
-          if (activity.status == RequestStatus.full) {
-            statusStr = context.loc.statusFull;
-          } else if (activity.status == RequestStatus.completed) {
-            statusStr = context.loc.statusCompleted;
-          } else if (activity.status == RequestStatus.cancelled) {
-            statusStr = context.loc.statusCancelled;
-          } else if (activity.status == RequestStatus.expired) {
-            statusStr = context.loc.statusExpired;
-          }
-
-          return AnimationWrapper(
-            index: index,
-            child: Padding(
-              padding: EdgeInsets.only(bottom: Dimensions.r16.dynamicH),
-              child: CompactActivityCard(
-                title: activity.title,
-                date: dateStr,
-                location: locationStr,
-                stats: statsStr,
-                status: statusStr,
-                isFull: activity.status == RequestStatus.full,
-                onTap: () {
-                  context.push(AppRoutes.spotDetailsPath(activity.id));
-                },
-              ),
-            ),
-          );
-        }, childCount: isLoading ? 4 : activities.length),
-      )),
+          }, childCount: isLoading ? 4 : activities.length),
+        ),
+      ),
     );
   }
 }

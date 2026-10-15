@@ -49,20 +49,19 @@ class SupabaseDeviceDataSourceImpl implements DeviceRemoteDataSource {
     try {
       fcmTokenStr = await FcmTokenUtil.getToken();
     } catch (_) {
-      // Push token availability is optional for authentication.
+      // Push token availability is optional for device registration.
     }
 
-    // A null token must not overwrite a token already registered for this
-    // installation. The verified RPC requires text, so defer registration
-    // until a token is available.
-    if (fcmTokenStr == null || fcmTokenStr.isEmpty) return;
+    final tokenToRegister = (fcmTokenStr != null && fcmTokenStr.isNotEmpty)
+        ? fcmTokenStr
+        : null;
 
     await _client.rpc(
       'register_my_device',
       params: {
         'p_device_identifier': installationId,
         'p_platform': platform,
-        'p_fcm_token': fcmTokenStr,
+        'p_fcm_token': tokenToRegister,
         'p_device_model': deviceName,
         'p_os_version': osVersion,
         'p_app_version': packageInfo.version,
@@ -87,27 +86,19 @@ class SupabaseDeviceDataSourceImpl implements DeviceRemoteDataSource {
 
   @override
   Future<void> updateFcmToken(String userId, String token) async {
-    String deviceId = '';
-    if (Platform.isAndroid) {
-      final androidInfo = await _deviceInfoPlugin.androidInfo;
-      deviceId = androidInfo.id;
-    } else if (Platform.isIOS) {
-      final iosInfo = await _deviceInfoPlugin.iosInfo;
-      deviceId = iosInfo.identifierForVendor ?? 'unknown_ios_id';
-    }
-
-    if (deviceId.isEmpty) return;
+    if (token.isEmpty) return;
 
     try {
+      final installationId = await _installationIdService.getId();
       await _client
           .from('user_devices')
           .update({
             'fcm_token': token,
             'updated_at': DateTime.now().toIso8601String(),
           })
-          .match({'user_id': userId, 'device_identifier': deviceId});
+          .match({'user_id': userId, 'device_identifier': installationId});
     } catch (e) {
-      // Ignore
+      // Best-effort token update
     }
   }
 }

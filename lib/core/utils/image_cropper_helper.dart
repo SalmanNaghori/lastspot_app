@@ -13,6 +13,7 @@ class ImageCropperHelper {
     required BuildContext context,
     required ImageSource source,
   }) async {
+    final primaryColor = context.primaryColor;
     try {
       // 1. Pick Image
       final XFile? pickedFile = await _picker.pickImage(source: source);
@@ -25,7 +26,7 @@ class ImageCropperHelper {
         uiSettings: [
           AndroidUiSettings(
             toolbarTitle: 'Crop Photo',
-            toolbarColor: context.primaryColor,
+            toolbarColor: primaryColor,
             toolbarWidgetColor: Colors.white,
             initAspectRatio: CropAspectRatioPreset.square,
             lockAspectRatio: true,

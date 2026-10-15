@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 
 enum AppThemeColor {
+  sportsGreen('Sports Green', Color(0xFF15803D)),
+  emerald('Emerald Pitch', Color(0xFF166534)),
+  forest('Forest Turf', Color(0xFF1B4D3E)),
   violet('Violet', Color(0xFF5B46E8)),
   deepViolet('Deep violet', Color(0xFF3C28A4)),
   terracotta('Terracotta', Color(0xFF752A21));
@@ -17,26 +20,24 @@ class AppColor {
   AppColor._();
 
   // ============================================================
-  // BRAND COLORS
+  // BRAND COLORS (FAREEQ-INSPIRED SPORTS IDENTITY)
   // ============================================================
 
-  /// Main LastSpot brand color.
-  /// Used for primary actions, selected navigation,
-  /// links and important highlights.
-  static const Color primaryColor = Color(0xFF5B46E8);
+  /// Main LastSpot sports brand color (pitch/turf green).
+  /// Used for primary CTAs, selected navigation, active chips.
+  static const Color primaryColor = Color(0xFF15803D);
 
-  /// Darker indigo for strong contrast.
-  static const Color primaryDarkColor = Color(0xFF3C28A4);
+  /// Darker pitch green for strong contrast.
+  static const Color primaryDarkColor = Color(0xFF0F5128);
 
-  /// Soft lavender used for containers/background highlights.
-  static const Color primaryContainerLight = Color(0xFFEAE5FF);
+  /// Soft mint/grass green container surface.
+  static const Color primaryContainerLight = Color(0xFFE8F5E9);
 
-  /// Deep indigo used for primary containers in dark mode.
-  static const Color primaryContainerDark = Color(0xFF2A205B);
+  /// Deep forest container for dark mode.
+  static const Color primaryContainerDark = Color(0xFF1C3A29);
 
-  /// Secondary brand accent.
-  /// Used sparingly for important attention areas.
-  static const Color secondaryColor = Color(0xFF0F172A);
+  /// Secondary brand dark neutral.
+  static const Color secondaryColor = Color(0xFF1A1D1B);
 
   /// Secondary accent for dark theme.
   static const Color secondaryDarkColor = Color(0xFFCBD5E1);
@@ -45,73 +46,78 @@ class AppColor {
   // ACCENT COLORS
   // ============================================================
 
-  /// Warm coral accent.
-  /// Good for Create, highlights and important secondary actions.
-  static const Color accentColor = Color(0xFFBF4939);
+  /// Warm energetic sports accent (urgent matches, limited spots).
+  static const Color accentColor = Color(0xFFEA580C);
 
-  static const Color accentHighlight = Color(0xFFFF9B87);
+  static const Color accentHighlight = Color(0xFFFB923C);
 
-  static const Color accentLight = Color(0xFFFFE5DF);
+  static const Color accentLight = Color(0xFFFFEDD5);
 
-  static const Color accentDark = Color(0xFF752A21);
+  static const Color accentDark = Color(0xFF9A3412);
 
   // ============================================================
-  // LIGHT THEME
+  // LIGHT THEME (WARM CREAM & SOFT NEUTRALS)
   // ============================================================
 
-  static const Color backgroundLight = Color(0xFFF7F6FC);
+  /// Warm cream background
+  static const Color backgroundLight = Color(0xFFFAF8F5);
 
+  /// Clean crisp white for elevated cards
   static const Color surfaceLight = Color(0xFFFFFFFF);
 
-  static const Color surfaceContainerLight = Color(0xFFF0EDF8);
+  /// Soft warm neutral container
+  static const Color surfaceContainerLight = Color(0xFFF3EFE9);
 
-  static const Color surfaceContainerLowLight = Color(0xFFFAF9FE);
+  /// Subtle light warm surface
+  static const Color surfaceContainerLowLight = Color(0xFFFDFBF7);
 
-  static const Color surfaceContainerHighLight = Color(0xFFE9E4F4);
+  /// Elevated warm neutral card surface
+  static const Color surfaceContainerHighLight = Color(0xFFEBE5DB);
 
-  static const Color cardBorderLight = Color(0xFFDDD8EB);
+  /// Soft warm card border
+  static const Color cardBorderLight = Color(0xFFE5DFD5);
 
-  /// Border light color alias (used in cached network image & cards)
-  static const Color borderLight = Color(0xFFDDD8EB);
+  /// Border light color alias
+  static const Color borderLight = Color(0xFFE5DFD5);
 
-  static const Color dividerLight = Color(0xFFE5E0F0);
+  static const Color dividerLight = Color(0xFFEFE9DE);
 
   // ============================================================
   // DARK THEME
   // ============================================================
 
-  static const Color backgroundDark = Color(0xFF10101C);
+  static const Color backgroundDark = Color(0xFF111412);
 
-  static const Color surfaceDark = Color(0xFF191827);
+  static const Color surfaceDark = Color(0xFF191D1A);
 
-  static const Color surfaceContainerDark = Color(0xFF252336);
+  static const Color surfaceContainerDark = Color(0xFF212723);
 
-  static const Color surfaceContainerLowDark = Color(0xFF201E30);
+  static const Color surfaceContainerLowDark = Color(0xFF1C211E);
 
-  static const Color surfaceContainerHighDark = Color(0xFF302C43);
+  static const Color surfaceContainerHighDark = Color(0xFF2B332E);
 
-  static const Color cardBorderDark = Color(0xFF454057);
+  static const Color cardBorderDark = Color(0xFF36403A);
 
   /// Border dark color alias
-  static const Color borderDark = Color(0xFF454057);
+  static const Color borderDark = Color(0xFF36403A);
 
-  static const Color dividerDark = Color(0xFF454057);
+  static const Color dividerDark = Color(0xFF36403A);
 
   // ============================================================
-  // TEXT COLORS
+  // TEXT COLORS (BOLD DARK HEADINGS & REFINED SECONDARY)
   // ============================================================
 
-  static const Color textPrimaryLight = Color(0xFF211C38);
+  static const Color textPrimaryLight = Color(0xFF111827);
 
-  static const Color textSecondaryLight = Color(0xFF6D657F);
+  static const Color textSecondaryLight = Color(0xFF4B5563);
 
-  static const Color textTertiaryLight = Color(0xFF94A3B8);
+  static const Color textTertiaryLight = Color(0xFF9CA3AF);
 
-  static const Color textPrimaryDark = Color(0xFFFAF9FE);
+  static const Color textPrimaryDark = Color(0xFFF9FAFB);
 
-  static const Color textSecondaryDark = Color(0xFFCBD5E1);
+  static const Color textSecondaryDark = Color(0xFFD1D5DB);
 
-  static const Color textTertiaryDark = Color(0xFF94A3B8);
+  static const Color textTertiaryDark = Color(0xFF9CA3AF);
 
   // ============================================================
   // STATUS & SEMANTIC COLORS
@@ -124,12 +130,12 @@ class AppColor {
 
   static const Color errorContainerDark = Color(0xFF7F1D1D);
 
-  /// Success / joined / available
-  static const Color successColor = Color(0xFF3469D6);
+  /// Success / joined / available (Pitch Green)
+  static const Color successColor = Color(0xFF15803D);
 
-  static const Color successContainerLight = Color(0xFFE0EAFF);
+  static const Color successContainerLight = Color(0xFFDCFCE7);
 
-  static const Color successContainerDark = Color(0xFF213C70);
+  static const Color successContainerDark = Color(0xFF14532D);
 
   /// Warning / almost full / pending
   static const Color warningColor = Color(0xFFF59E0B);

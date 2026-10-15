@@ -6,6 +6,8 @@ import '../utils/shared_prefs_util.dart';
 import '../services/image_service.dart';
 import '../services/installation_id_service.dart';
 import '../services/account_session_service.dart';
+import '../services/password_recovery_link_monitor.dart';
+import '../services/in_app_feedback_manager.dart';
 
 // Auth Data
 import '../../features/auth/data/datasources/auth_remote_datasource.dart';
@@ -46,6 +48,7 @@ import '../../features/auth/domain/usecases/logout_usecase.dart';
 import '../../features/auth/domain/usecases/reset_password_usecase.dart';
 import '../../features/auth/domain/usecases/verify_otp_usecase.dart';
 import '../../features/auth/domain/usecases/resend_otp_usecase.dart';
+import '../../features/auth/domain/usecases/update_password_usecase.dart';
 import '../../features/auth/domain/usecases/check_auth_status_usecase.dart';
 import '../../features/auth/domain/usecases/get_profile_usecase.dart';
 import '../../features/auth/domain/usecases/get_profile_stats_usecase.dart';
@@ -100,12 +103,30 @@ import '../../features/notifications/domain/usecases/subscribe_to_notifications_
 import '../../features/notifications/presentation/bloc/notifications_cubit.dart';
 import '../../features/notifications/presentation/bloc/notifications_list_cubit.dart';
 
+// Chat
+import '../../features/chat/data/datasources/chat_remote_datasource.dart';
+import '../../features/chat/data/repositories/chat_repository_impl.dart';
+import '../../features/chat/domain/repositories/chat_repository.dart';
+import '../../features/chat/domain/usecases/get_chat_messages_usecase.dart';
+import '../../features/chat/domain/usecases/get_my_conversations_usecase.dart';
+import '../../features/chat/domain/usecases/get_or_create_direct_chat_usecase.dart';
+import '../../features/chat/domain/usecases/get_or_create_group_chat_usecase.dart';
+import '../../features/chat/domain/usecases/mark_chat_read_usecase.dart';
+import '../../features/chat/domain/usecases/send_chat_message_usecase.dart';
+import '../../features/chat/domain/usecases/stream_chat_messages_usecase.dart';
+import '../../features/chat/presentation/bloc/chat_cubit.dart';
+import '../../features/chat/presentation/bloc/conversations_cubit.dart';
+
 final sl = GetIt.instance;
 
 /// Call once in [main] before [runApp].
 Future<void> setupServiceLocator() async {
   // ── Core ──────────────────────────────────────────────
   sl.registerSingleton<SupabaseClient>(SupabaseConfig.client);
+  sl.registerSingleton<PasswordRecoveryLinkMonitor>(
+    PasswordRecoveryLinkMonitor.instance,
+  );
+  sl.registerSingleton<InAppFeedbackManager>(appFeedbackManager);
 
   final sharedPreferences = await SharedPreferences.getInstance();
   sl.registerLazySingleton<SharedPreferences>(() => sharedPreferences);
@@ -129,7 +150,9 @@ Future<void> setupServiceLocator() async {
     () => SettingsCubit(prefs: sl<SharedPrefsUtil>()),
   );
 
-  sl.registerSingleton<PushNotificationService>(PushNotificationService());
+  sl.registerSingleton<PushNotificationService>(
+    PushNotificationService(feedbackManager: sl<InAppFeedbackManager>()),
+  );
   sl.registerSingleton<LocalNotificationService>(LocalNotificationService());
 
   // ── Data Sources ──────────────────────────────────────
@@ -205,6 +228,9 @@ Future<void> setupServiceLocator() async {
   sl.registerSingleton<ResetPasswordUseCase>(
     ResetPasswordUseCase(sl<AuthRepository>()),
   );
+  sl.registerSingleton<UpdatePasswordUseCase>(
+    UpdatePasswordUseCase(sl<AuthRepository>()),
+  );
   sl.registerSingleton<VerifyOtpUseCase>(
     VerifyOtpUseCase(sl<AuthRepository>()),
   );
@@ -238,6 +264,8 @@ Future<void> setupServiceLocator() async {
       getCategoriesUseCase: sl(),
       updateUserCityUseCase: sl(),
       getActiveCitiesUseCase: sl(),
+      spotRepository: sl(),
+      authRepository: sl(),
     ),
   );
 
@@ -349,6 +377,50 @@ Future<void> setupServiceLocator() async {
       markReadUseCase: sl<MarkNotificationReadUseCase>(),
       deleteUseCase: sl<DeleteNotificationUseCase>(),
       notificationsCubit: sl<NotificationsCubit>(),
+    ),
+  );
+
+  // Chat
+  sl.registerSingleton<ChatRemoteDataSource>(
+    SupabaseChatRemoteDataSourceImpl(client: sl<SupabaseClient>()),
+  );
+  sl.registerSingleton<ChatRepository>(
+    ChatRepositoryImpl(remoteDataSource: sl<ChatRemoteDataSource>()),
+  );
+  sl.registerSingleton<GetOrCreateDirectChatUseCase>(
+    GetOrCreateDirectChatUseCase(sl<ChatRepository>()),
+  );
+  sl.registerSingleton<GetOrCreateGroupChatUseCase>(
+    GetOrCreateGroupChatUseCase(sl<ChatRepository>()),
+  );
+  sl.registerSingleton<GetMyConversationsUseCase>(
+    GetMyConversationsUseCase(sl<ChatRepository>()),
+  );
+  sl.registerSingleton<GetChatMessagesUseCase>(
+    GetChatMessagesUseCase(sl<ChatRepository>()),
+  );
+  sl.registerSingleton<SendChatMessageUseCase>(
+    SendChatMessageUseCase(sl<ChatRepository>()),
+  );
+  sl.registerSingleton<MarkChatReadUseCase>(
+    MarkChatReadUseCase(sl<ChatRepository>()),
+  );
+  sl.registerSingleton<StreamChatMessagesUseCase>(
+    StreamChatMessagesUseCase(sl<ChatRepository>()),
+  );
+  sl.registerFactory<ChatCubit>(
+    () => ChatCubit(
+      getOrCreateDirectChatUseCase: sl<GetOrCreateDirectChatUseCase>(),
+      getOrCreateGroupChatUseCase: sl<GetOrCreateGroupChatUseCase>(),
+      getChatMessagesUseCase: sl<GetChatMessagesUseCase>(),
+      sendChatMessageUseCase: sl<SendChatMessageUseCase>(),
+      markChatReadUseCase: sl<MarkChatReadUseCase>(),
+      streamChatMessagesUseCase: sl<StreamChatMessagesUseCase>(),
+    ),
+  );
+  sl.registerFactory<ConversationsCubit>(
+    () => ConversationsCubit(
+      getMyConversationsUseCase: sl<GetMyConversationsUseCase>(),
     ),
   );
 }

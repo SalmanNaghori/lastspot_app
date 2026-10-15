@@ -22,21 +22,76 @@ class SpotDetailsOverview extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Container(
-          padding: const EdgeInsets.symmetric(
-            horizontal: AppSpacing.smLg,
-            vertical: AppSpacing.sm,
-          ),
-          decoration: BoxDecoration(
-            color: colors.secondaryContainer,
-            borderRadius: AppRadius.pillBorderRadius,
-          ),
-          child: Text(
-            status,
-            style: context.labelMedium?.copyWith(
-              color: colors.onSecondaryContainer,
+        Row(
+          children: [
+            Container(
+              padding: EdgeInsets.symmetric(
+                horizontal: Dimensions.r10.dynamicW,
+                vertical: Dimensions.r6.dynamicH,
+              ),
+              decoration: BoxDecoration(
+                color: context.isDarkMode
+                    ? context.surfaceContainer
+                    : context.surfaceContainer.withValues(alpha: 0.5),
+                borderRadius: BorderRadius.circular(Dimensions.r16.dynamicR),
+                border: Border.all(
+                  color: context.borderColor.withValues(alpha: 0.6),
+                  width: Dimensions.w1,
+                ),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Image.asset(
+                    AppAssets.getCategoryAsset(post.categoryId),
+                    width: Dimensions.r18.dynamicW,
+                    height: Dimensions.r18.dynamicH,
+                    cacheWidth: 64,
+                    cacheHeight: 64,
+                    fit: BoxFit.contain,
+                    errorBuilder: (context, error, stackTrace) => Icon(
+                      AppAssets.getCategoryFallbackIcon(post.categoryId),
+                      size: Dimensions.r14.dynamicH,
+                      color: context.primaryColor,
+                    ),
+                  ),
+                  SizedBox(width: Dimensions.r6.dynamicW),
+                  Text(
+                    post.categoryId.toTitleCase(),
+                    style: TextStyle(
+                      fontSize: Dimensions.r11.dynamicSP,
+                      fontWeight: FontWeight.w700,
+                      letterSpacing: 0.2,
+                      color: context.textPrimary,
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
+            SizedBox(width: Dimensions.r8.dynamicW),
+            Container(
+              padding: EdgeInsets.symmetric(
+                horizontal: Dimensions.r12.dynamicW,
+                vertical: Dimensions.r6.dynamicH,
+              ),
+              decoration: BoxDecoration(
+                color: post.status == RequestStatus.open
+                    ? context.primaryColor.withValues(alpha: 0.12)
+                    : colors.secondaryContainer,
+                borderRadius: BorderRadius.circular(Dimensions.r16.dynamicR),
+              ),
+              child: Text(
+                status,
+                style: TextStyle(
+                  fontSize: Dimensions.r11.dynamicSP,
+                  fontWeight: FontWeight.w700,
+                  color: post.status == RequestStatus.open
+                      ? context.primaryColor
+                      : colors.onSecondaryContainer,
+                ),
+              ),
+            ),
+          ],
         ),
         const SizedBox(height: AppSpacing.md),
         Text(

@@ -70,8 +70,15 @@ class ProfileCubit extends Cubit<ProfileState> {
     }
   }
 
-  void setProfileLocally(UserProfile profile, [ProfileStats stats = const ProfileStats()]) {
+  void setProfileLocally(
+    UserProfile profile, [
+    ProfileStats stats = const ProfileStats(),
+  ]) {
     emit(ProfileLoaded(profile, stats));
+  }
+
+  void clear() {
+    emit(ProfileInitial());
   }
 
   Future<void> saveProfile({

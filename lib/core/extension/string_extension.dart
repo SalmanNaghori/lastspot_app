@@ -40,14 +40,13 @@ extension StringExtension on String {
     );
     // Capitalize each word
     List<String> list = cleaned.split(RegExp(r'\s+'));
-    list.asMap().forEach((index, element) {
-      if (index == 0) {
-        list[index] = element[0].toUpperCase() + element.substring(1);
-      } else {
-        list[index] = element.toLowerCase();
-      }
-    });
-    return list.join(' ');
+    return list
+        .where((e) => e.isNotEmpty)
+        .map(
+          (element) =>
+              element[0].toUpperCase() + element.substring(1).toLowerCase(),
+        )
+        .join(' ');
   }
 
   /// Convert hex code to color
@@ -62,22 +61,6 @@ extension StringExtension on String {
   String withCountryCode({required String countryDialCode}) {
     return "$countryDialCode $this";
   }
-
-  /// show snackBar (Alternative to Toast since fluttertoast isn't installed)
-  ScaffoldFeatureController<SnackBar, SnackBarClosedReason> showSnackBar(
-    BuildContext context, {
-    Color? textColor,
-    Color? backgroundColor,
-    EdgeInsetsGeometry? margin,
-    EdgeInsetsGeometry? padding,
-  }) => ScaffoldMessenger.of(context).showSnackBar(
-    SnackBar(
-      content: Text(this, style: TextStyle(color: textColor)),
-      backgroundColor: backgroundColor,
-      margin: margin,
-      padding: padding,
-    ),
-  );
 }
 
 extension StringNullablity on String? {

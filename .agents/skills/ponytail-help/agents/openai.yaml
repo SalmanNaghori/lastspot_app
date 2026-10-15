@@ -1,0 +1,4 @@
+interface:
+  display_name: "Ponytail Help"
+  short_description: "Explain bundled Ponytail skills and levels"
+  default_prompt: "Use $ponytail-help to explain the Ponytail skills and intensity levels bundled by RepoSeed."

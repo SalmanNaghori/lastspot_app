@@ -15,11 +15,35 @@ class ProfileListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: Icon(icon, color: context.colorScheme.onSurface),
-      title: Text(title, style: context.bodyLarge),
+      contentPadding: EdgeInsets.symmetric(
+        horizontal: Dimensions.r16.dynamicW,
+        vertical: Dimensions.r4.dynamicH,
+      ),
+      leading: Container(
+        width: Dimensions.r36.dynamicW,
+        height: Dimensions.r36.dynamicH,
+        decoration: BoxDecoration(
+          color: context.primaryColor.withValues(alpha: 0.08),
+          borderRadius: BorderRadius.circular(Dimensions.r10.dynamicR),
+        ),
+        child: Icon(
+          icon,
+          size: Dimensions.r20.dynamicH,
+          color: context.primaryColor,
+        ),
+      ),
+      title: Text(
+        title,
+        style: TextStyle(
+          fontSize: Dimensions.r15.dynamicSP,
+          fontWeight: FontWeight.w600,
+          color: context.textPrimary,
+        ),
+      ),
       trailing: Icon(
-        Icons.chevron_right,
-        color: context.colorScheme.onSurfaceVariant,
+        Icons.chevron_right_rounded,
+        size: Dimensions.r20.dynamicH,
+        color: context.textSecondary,
       ),
       onTap: onTap,
     );

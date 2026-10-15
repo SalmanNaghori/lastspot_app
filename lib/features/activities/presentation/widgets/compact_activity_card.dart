@@ -8,6 +8,7 @@ class CompactActivityCard extends StatelessWidget {
   final String status;
   final bool isFull;
   final VoidCallback onTap;
+  final VoidCallback? onChatTap;
 
   const CompactActivityCard({
     super.key,
@@ -18,6 +19,7 @@ class CompactActivityCard extends StatelessWidget {
     required this.status,
     this.isFull = false,
     required this.onTap,
+    this.onChatTap,
   });
 
   @override
@@ -98,6 +100,18 @@ class CompactActivityCard extends StatelessWidget {
                     ],
                   ),
                 ),
+                if (onChatTap != null) ...[
+                  IconButton(
+                    icon: const Icon(Icons.forum_outlined),
+                    tooltip: context.loc.groupChat,
+                    color: context.primaryColor,
+                    iconSize: Dimensions.r20.dynamicH,
+                    padding: EdgeInsets.zero,
+                    constraints: const BoxConstraints(),
+                    onPressed: onChatTap,
+                  ),
+                  SizedBox(width: Dimensions.r12.dynamicW),
+                ],
                 Icon(
                   Icons.chevron_right,
                   color: context.textTertiary,

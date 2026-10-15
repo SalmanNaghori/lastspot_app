@@ -2,7 +2,6 @@ import 'package:lastspot_app/core/base_import.dart';
 
 import '../bloc/report_cubit.dart';
 import '../bloc/report_state.dart';
-import 'package:lastspot_app/core/widgets/custom_app_bar.dart';
 
 class ReportScreenTablet extends StatefulWidget {
   final String? reportedUserId;

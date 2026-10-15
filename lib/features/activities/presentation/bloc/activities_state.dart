@@ -58,7 +58,13 @@ class ActivitiesLoaded extends ActivitiesState {
   }
 
   @override
-  List<Object> get props => [hosted, joined, receivedRequests, sentRequests, isRefreshing];
+  List<Object> get props => [
+    hosted,
+    joined,
+    receivedRequests,
+    sentRequests,
+    isRefreshing,
+  ];
 }
 
 class ActivitiesError extends ActivitiesState {

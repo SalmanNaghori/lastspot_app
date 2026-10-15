@@ -96,6 +96,11 @@ flutter:
   assets:
     - assets/ain/
     - assets/audio/
+    - assets/images/categories/
+    - assets/images/empty_states/
+    - assets/images/onboarding/
+    - assets/images/nav/
+    - assets/icons/
 
 flutter_gen:
   integrations:

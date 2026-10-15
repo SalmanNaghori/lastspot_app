@@ -1,0 +1,24 @@
+---
+description: Use for Flutter initialization, greenfield kickoff before app files exist, brownfield adoption, implementation, review, debugging, and architecture work.
+alwaysApply: false
+---
+
+# Flutter workflow
+
+For Flutter tasks, read the app-root `.agents/skills/flutter-workflow/SKILL.md`
+and `.agents/skills/flutter-workflow/references/REPOSEED.md` before planning or changing code. Follow their mode
+selection and load only the Flutter references needed for the task. This rule
+does not apply to unrelated backend or other-stack work.
+
+From this installed rule, the entrypoints are the
+[workflow skill](../../../SKILL.md) and
+[integration contract](../../../references/REPOSEED.md).
+
+On an initialization request, inspect existing app code and recorded decisions:
+greenfield runs orientation-first kickoff; brownfield runs evidence-based
+adoption; an adopted app resumes its saved workflow. Reuse confirmed answers.
+Review, diagnosis, explanation and planning alone remain read-only. Scaffolding
+requires the user's implementation authorization and resolved app choices.
+
+The full SOPs, guardrails, checklists, living-document rules and reporting format
+remain in `.agents/skills/flutter-workflow/references/`; the skill routes to them without duplicating the pipeline.

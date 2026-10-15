@@ -1,3 +1,4 @@
+import 'dart:developer' as developer;
 import 'dart:io';
 
 import 'package:lastspot_app/core/network/api_endpoints.dart';
@@ -151,7 +152,9 @@ class SupabaseSpotDataSourceImpl implements SpotRemoteDataSource {
   Future<RequestModel> getSpotDetails(String requestId) async {
     final response = await _client
         .from(ApiEndpoints.tableRequests)
-        .select('*, profiles:user_id(*), request_images(*)')
+        .select(
+          '*, profiles:user_id(id, full_name, avatar_url, created_at), request_images(*)',
+        )
         .eq('id', requestId)
         .single();
     return RequestModel.fromJson(response);
@@ -170,7 +173,7 @@ class SupabaseSpotDataSourceImpl implements SpotRemoteDataSource {
     final userIds = list.map((e) => e['user_id']).toSet().toList();
     final profilesResponse = await _client
         .from('profiles')
-        .select()
+        .select('id, full_name, avatar_url, created_at')
         .inFilter('id', userIds);
 
     final profilesMap = {for (var p in profilesResponse) p['id']: p};
@@ -222,14 +225,20 @@ class SupabaseSpotDataSourceImpl implements SpotRemoteDataSource {
                     }
                     return JoinRequestModel.fromJson(json);
                   } catch (err) {
-                    print('Error parsing stream join request: $err');
+                    developer.log(
+                      'Error parsing stream join request: $err',
+                      name: 'SpotRemoteDataSource',
+                    );
                     return null;
                   }
                 })
                 .whereType<JoinRequestModel>()
                 .toList();
           } catch (e) {
-            print('Error in streamPendingRequests asyncMap: $e');
+            developer.log(
+              'Error in streamPendingRequests asyncMap: $e',
+              name: 'SpotRemoteDataSource',
+            );
             return [];
           }
         });
@@ -251,7 +260,6 @@ class SupabaseSpotDataSourceImpl implements SpotRemoteDataSource {
           .eq('status', 'pending')
           .order('created_at', ascending: false);
 
-      print('DEBUG: getReceivedJoinRequests raw response: $response');
       final list = response as List<dynamic>;
       if (list.isEmpty) return [];
 
@@ -273,8 +281,7 @@ class SupabaseSpotDataSourceImpl implements SpotRemoteDataSource {
                 json['profiles'] = profile;
               }
               return JoinRequestModel.fromJson(json);
-            } catch (err) {
-              print('DEBUG: Error parsing JoinRequestModel: $err for row: $e');
+            } catch (_) {
               return null;
             }
           })
@@ -290,10 +297,8 @@ class SupabaseSpotDataSourceImpl implements SpotRemoteDataSource {
       }
 
       final finalList = uniqueRequests.values.toList();
-      print('DEBUG: getReceivedJoinRequests parsed count: ${finalList.length}');
       return finalList;
-    } catch (e) {
-      print('DEBUG: getReceivedJoinRequests query error: $e');
+    } catch (_) {
       rethrow;
     }
   }
@@ -313,14 +318,11 @@ class SupabaseSpotDataSourceImpl implements SpotRemoteDataSource {
           .eq('user_id', userId)
           .order('created_at', ascending: false);
 
-      print('DEBUG: getSentJoinRequests raw response: $response');
-
       final parsedList = (response as List<dynamic>)
           .map((e) {
             try {
               return JoinRequestModel.fromJson(e as Map<String, dynamic>);
-            } catch (err) {
-              print('DEBUG: Error parsing JoinRequestModel: $err for row: $e');
+            } catch (_) {
               return null;
             }
           })
@@ -336,10 +338,8 @@ class SupabaseSpotDataSourceImpl implements SpotRemoteDataSource {
       }
 
       final finalList = uniqueRequests.values.toList();
-      print('DEBUG: getSentJoinRequests parsed count: ${finalList.length}');
       return finalList;
-    } catch (e) {
-      print('DEBUG: getSentJoinRequests query error: $e');
+    } catch (_) {
       rethrow;
     }
   }

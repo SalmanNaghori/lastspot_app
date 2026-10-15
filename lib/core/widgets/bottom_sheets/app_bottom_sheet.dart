@@ -1,5 +1,4 @@
 import '../../base_import.dart';
-import '../../theme/app_motion.dart';
 
 class AppBottomSheet {
   AppBottomSheet._();

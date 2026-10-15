@@ -9,7 +9,11 @@ abstract class AuthRemoteDataSource {
   });
   Future<void> signIn({required String email, required String password});
   Future<void> signOut();
-  Future<void> sendPasswordResetEmail({required String email});
+  Future<void> sendPasswordResetEmail({
+    required String email,
+    required String redirectTo,
+  });
+  Future<void> updatePassword({required String password});
   Future<void> verifyOtp({
     required String email,
     required String token,
@@ -51,8 +55,16 @@ class SupabaseAuthDataSourceImpl implements AuthRemoteDataSource {
   }
 
   @override
-  Future<void> sendPasswordResetEmail({required String email}) async {
-    await _client.auth.resetPasswordForEmail(email);
+  Future<void> sendPasswordResetEmail({
+    required String email,
+    required String redirectTo,
+  }) async {
+    await _client.auth.resetPasswordForEmail(email, redirectTo: redirectTo);
+  }
+
+  @override
+  Future<void> updatePassword({required String password}) async {
+    await _client.auth.updateUser(UserAttributes(password: password));
   }
 
   @override

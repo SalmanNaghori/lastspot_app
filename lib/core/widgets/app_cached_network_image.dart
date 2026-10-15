@@ -1,6 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import '../base_import.dart';
-import '../theme/app_motion.dart';
 
 /// App-wide cached network image widget with smooth loading shimmer/pulse
 /// animations and graceful error fallbacks.

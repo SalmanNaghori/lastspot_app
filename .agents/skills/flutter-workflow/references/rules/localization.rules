@@ -1,0 +1,12 @@
+# localization.rules — strings, ARB, plurals, formatting, RTL
+# SOP: sop/localization.md
+# Guardrails: guardrails/localization.md
+
+DECISION  ND-5    String source per docs/project/flutter/project-rules.md PR-F2 (gen-l10n .arb recommended for any multi-language roadmap); ask if _TBD_ blocks authorized implementation. Read-only reviews report the gap without kickoff. Rules apply once the source is selected; ARB/ICU specifics apply to l10n projects.
+MUST      I18N-1  Take all user-facing text (widgets, dialogs, snackbars, validators, failure messages) from the PR-F2 source; no literals.
+MUST      I18N-2  Add every new key to the template ARB with @key description and typed placeholders; never concatenate translated fragments.
+MUST      I18N-3  Use ICU plural/select for counts and gender; no `count == 1 ?` string logic.
+MUST      I18N-4  Format dates/numbers/currency with intl DateFormat/NumberFormat and the current locale; currency code comes from data.
+MUST      I18N-5  When an RTL locale is supported: EdgeInsetsDirectional, AlignmentDirectional, start/end; mirror directional icons.
+MUST-NOT  I18N-6  Bake text into images or show raw server enum codes; map codes to keys with a generic fallback.
+SHOULD    I18N-7  Keys lowerCamelCase prefixed by feature (checkoutPayButton); shared keys prefixed common (commonRetry).

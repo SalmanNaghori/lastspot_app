@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'package:lastspot_app/core/base_import.dart';
 import 'package:lastspot_app/core/services/image_service.dart';
-import 'package:lastspot_app/core/di/service_locator.dart';
 import '../bloc/create_spot_bloc.dart';
 import '../../../cities/domain/entities/city_entity.dart';
 import '../../domain/entities/request_entity.dart';
@@ -112,8 +111,10 @@ class _CreateSpotScreenState extends State<CreateSpotScreen> {
         _formState.locationController.text.trim().isEmpty ||
         _formState.selectedCategoryId.value == null ||
         _formState.selectedCity.value == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(context.loc.validationTitleLocationCategory)),
+      AppUtils.showSnackBar(
+        context,
+        context.loc.validationTitleLocationCategory,
+        isError: true,
       );
       return;
     }
@@ -126,8 +127,10 @@ class _CreateSpotScreenState extends State<CreateSpotScreen> {
       _formState.eventTime.value.minute,
     );
     if (!eventDateTime.isAfter(DateTime.now())) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Choose a future date and time.')),
+      AppUtils.showSnackBar(
+        context,
+        'Choose a future date and time.',
+        isError: true,
       );
       return;
     }
@@ -137,8 +140,10 @@ class _CreateSpotScreenState extends State<CreateSpotScreen> {
     );
     if (!_formState.isFree.value &&
         (enteredPrice == null || enteredPrice <= 0)) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(context.loc.pleaseEnterValidPrice)),
+      AppUtils.showSnackBar(
+        context,
+        context.loc.pleaseEnterValidPrice,
+        isError: true,
       );
       return;
     }
@@ -170,9 +175,7 @@ class _CreateSpotScreenState extends State<CreateSpotScreen> {
           }
           context.go(AppRoutes.createSuccess);
         } else if (state is CreateSpotError) {
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(SnackBar(content: Text(state.message)));
+          AppUtils.showSnackBar(context, state.message, isError: true);
         }
       },
       builder: (context, state) {

@@ -1,0 +1,6 @@
+interface:
+  display_name: "Security Checklist"
+  short_description: "Pause on exposed credentials and review security"
+  default_prompt: "Use $security-checklist to pause on exposed credentials before proceeding, guide safe recovery, and assess the security impact of the task."
+policy:
+  allow_implicit_invocation: true

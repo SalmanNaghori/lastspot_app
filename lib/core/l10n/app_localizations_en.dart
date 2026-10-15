@@ -235,7 +235,23 @@ class AppLocalizationsEn extends AppLocalizations {
   String get navActivities => 'Activities';
 
   @override
+  String get navChats => 'Chats';
+
+  @override
   String get navProfile => 'Profile';
+
+  @override
+  String get openProfile => 'Open profile';
+
+  @override
+  String get searchConversations => 'Search conversations...';
+
+  @override
+  String get noConversationsFound => 'No conversations found';
+
+  @override
+  String get noConversationsFoundDesc =>
+      'Try adjusting your search or filter to find what you\'re looking for.';
 
   @override
   String get explorePlaceholderText => 'Discover activities near you';
@@ -303,13 +319,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get statCompleted => 'Completed';
 
   @override
-  String get goodMorning => 'Good morning,';
+  String get goodMorning => 'Good morning';
 
   @override
-  String get goodAfternoon => 'Good afternoon,';
+  String get goodAfternoon => 'Good afternoon';
 
   @override
-  String get goodEvening => 'Good evening,';
+  String get goodEvening => 'Good evening';
 
   @override
   String get whatAreYouUpTo => 'What are you up for today?';
@@ -476,6 +492,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get themeTitle => 'Theme';
+
+  @override
+  String get appColorTitle => 'App Color';
 
   @override
   String get themeSystem => 'System Default';
@@ -769,6 +788,99 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get tabChats => 'Chats';
+
+  @override
+  String tabChatsCount(String count) {
+    return 'Chats $count';
+  }
+
+  @override
+  String get noConversations => 'No conversations yet';
+
+  @override
+  String get noConversationsDesc =>
+      'Join or host an activity to start chatting with other players.';
+
+  @override
+  String get conversationLoadError =>
+      'Could not load conversations. Please try again.';
+
+  @override
+  String get yesterday => 'Yesterday';
+
+  @override
+  String get messageCopied => 'Message copied';
+
+  @override
+  String get jumpToLatest => 'Jump to latest';
+
+  @override
+  String get newMessage => 'New message';
+
+  @override
+  String activityContext(String title) {
+    return 'Activity: $title';
+  }
+
+  @override
+  String get filterAll => 'All';
+
+  @override
+  String get filterDirect => 'Direct';
+
+  @override
+  String get filterGroups => 'Groups';
+
+  @override
+  String get groupInfoTitle => 'Group Info';
+
+  @override
+  String get groupInfoParticipants => 'Participants';
+
+  @override
+  String get groupInfoHost => 'Host';
+
+  @override
+  String get groupInfoOrganizer => 'Organizer';
+
+  @override
+  String get groupInfoNoParticipants => 'No confirmed participants yet.';
+
+  @override
+  String get groupInfoActivityDetails => 'Activity Details';
+
+  @override
+  String welcomeToActivity(String activityTitle, String emoji) {
+    return 'Welcome to $activityTitle! $emoji';
+  }
+
+  @override
+  String get groupWelcomeSubtitle =>
+      'This group is for coordinating the activity. Be respectful and enjoy!';
+
+  @override
+  String get groupOnlyParticipantsCanChat =>
+      'Only confirmed participants and the host can send messages.';
+
+  @override
+  String get noGroupConversations => 'No group chats yet';
+
+  @override
+  String get noGroupConversationsDesc =>
+      'Join or host an activity to start chatting with participants.';
+
+  @override
+  String get noDirectConversations => 'No direct messages yet';
+
+  @override
+  String get noDirectConversationsDesc =>
+      'Direct messages between you and activity hosts will appear here.';
+
+  @override
+  String get you => 'You';
+
+  @override
   String get mockGoldenGateTitle => 'Golden Gate Sunset Walk';
 
   @override
@@ -993,17 +1105,43 @@ class AppLocalizationsEn extends AppLocalizations {
   String get sportCycling => 'Cycling';
 
   @override
+  String get sportKabaddi => 'Kabaddi';
+
+  @override
+  String get sportKhoKho => 'Kho-Kho';
+
+  @override
+  String get sportGilliDanda => 'Gilli-Danda';
+
+  @override
+  String get sportSatoliya => 'Satoliya / Lagori';
+
+  @override
+  String get sportKiteFlying => 'Kite Flying';
+
+  @override
+  String get sportSkating => 'Skating';
+
+  @override
+  String get sportHockey => 'Field Hockey';
+
+  @override
+  String get sportUltimateFrisbee => 'Ultimate Frisbee';
+
+  @override
+  String get sportPickleball => 'Pickleball';
+
+  @override
+  String get sportTugOfWar => 'Tug of War';
+
+  @override
+  String get sportHiking => 'Hiking / Trekking';
+
+  @override
+  String get sportOutdoorYoga => 'Outdoor Yoga';
+
+  @override
   String get confirmAction => 'Confirm';
-
-  @override
-  String get discoveryHeadline => 'Less scrolling.\nMore playing.';
-
-  @override
-  String get discoverySubtitle =>
-      'Find your people. Make your next game happen.';
-
-  @override
-  String get browseActivities => 'Find a game';
 
   @override
   String get activityHost => 'Host';
@@ -1128,12 +1266,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get galleryZoomOut => 'Reset zoom';
 
   @override
-  String get discoveryEyebrow => 'YOUR NEXT GOOD TIME';
-
-  @override
-  String get discoveryHost => 'Host an activity';
-
-  @override
   String get detailsSharedMapLink => 'Shared map link';
 
   @override
@@ -1176,4 +1308,99 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get goToHome => 'Go to Home';
+
+  @override
+  String get yourActivityHub => 'Your Activity Hub';
+
+  @override
+  String homeActivityHubPending(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'You have $count pending join requests to review.',
+      one: 'You have 1 pending join request to review.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get homeActivityHubJoined => 'Your next joined activity is coming up.';
+
+  @override
+  String get homeActivityHubHosted => 'Your next hosted activity is coming up.';
+
+  @override
+  String get homeActivityHubEmpty =>
+      'No upcoming activities yet. Create one to get started.';
+
+  @override
+  String get homeActivityHubRecommendation =>
+      'A future activity is available in your selected city.';
+
+  @override
+  String get homeActivityHubError =>
+      'Your activity details could not be loaded.';
+
+  @override
+  String get homeReviewRequests => 'Review Requests';
+
+  @override
+  String get homeViewActivity => 'View Activity';
+
+  @override
+  String get homeManageActivity => 'Manage Activity';
+
+  @override
+  String get homeCreateActivity => 'Create Activity';
+
+  @override
+  String get homeGroupChat => 'Group Chat';
+
+  @override
+  String get homeCityLoadError => 'Could not load cities';
+
+  @override
+  String get homeRetryCategories => 'Retry categories';
+
+  @override
+  String get homeFeedNetworkError =>
+      'Couldn\'t load activities. Check your connection and try again.';
+
+  @override
+  String get homeFeedLoadError =>
+      'Something went wrong while loading activities.';
+
+  @override
+  String get dismiss => 'Dismiss';
+
+  @override
+  String get notificationPermissionTitle => 'Stay Updated';
+
+  @override
+  String get notificationPermissionBody =>
+      'We need notification permissions to alert you when someone wants to join your spot or when you are accepted to a spot.';
+
+  @override
+  String get allow => 'Allow';
+
+  @override
+  String get notNow => 'Not Now';
+
+  @override
+  String get full => 'FULL';
+
+  @override
+  String get host => 'Host';
+
+  @override
+  String get ofText => 'of';
+
+  @override
+  String get spots => 'Spots';
+
+  @override
+  String get suggestedPlayingHours => 'Suggested Playing Hours';
+
+  @override
+  String get bestTimeToPlay => 'Best Time to Play';
 }

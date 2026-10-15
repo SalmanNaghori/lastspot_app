@@ -1,0 +1,6 @@
+interface:
+  display_name: "Flutter Workflow"
+  short_description: "Run the complete Flutter app workflow"
+  default_prompt: "Use $flutter-workflow to initialize or continue this Flutter app's workflow."
+policy:
+  allow_implicit_invocation: true

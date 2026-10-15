@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 6,
+  "platforms": [
+    "antigravity"
+  ],
+  "stacks": [
+    "flutter"
+  ],
+  "profiles": [],
+  "ponytail": {
+    "enabled": true,
+    "distribution": "bundled-skills",
+    "version": "4.9.0",
+    "commit": "0a4dd63ad4541f4f655c4108a295916f3c1d8fda",
+    "source": "https://github.com/DietrichGebert/ponytail",
+    "skills": [
+      "ponytail",
+      "ponytail-audit",
+      "ponytail-debt",
+      "ponytail-gain",
+      "ponytail-help",
+      "ponytail-review"
+    ]
+  },
+  "graphify": {
+    "enabled": true,
+    "package": "graphifyy",
+    "version": "0.9.49",
+    "runtime": "uvx-dependency",
+    "extractionMode": "ast-only",
+    "platforms": [
+      "antigravity"
+    ],
+    "gitHooks": {
+      "enabled": true,
+      "mode": "post-commit-and-checkout"
+    }
+  },
+  "flutter": {
+    "version": "1.1.0",
+    "revision": 6,
+    "root": ".agents/skills/flutter-workflow",
+    "projectRoot": "docs/project/flutter",
+    "adrRoot": "docs/adr",
+    "universalPolicy": "conflicts-only"
+  }
+}

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Diagnosing Bugs"
+  short_description: "Find root causes before proposing fixes"
+  default_prompt: "Use $diagnosing-bugs to reproduce this issue, identify its root cause, and report evidence."

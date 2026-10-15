@@ -6,10 +6,7 @@ import 'interactive_settings_tile.dart';
 class LanguageSelectorCard extends StatelessWidget {
   final SettingsState state;
 
-  const LanguageSelectorCard({
-    super.key,
-    required this.state,
-  });
+  const LanguageSelectorCard({super.key, required this.state});
 
   @override
   Widget build(BuildContext context) {

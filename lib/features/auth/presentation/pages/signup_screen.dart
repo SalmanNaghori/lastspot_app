@@ -25,9 +25,11 @@ class _SignupScreenState extends State<SignupScreen> {
   void _onSignup() {
     if (_formKey.currentState?.validate() ?? false) {
       if (!_termsAccepted) {
-        ScaffoldMessenger.of(
+        AppUtils.showSnackBar(
           context,
-        ).showSnackBar(SnackBar(content: Text(context.loc.acceptTermsError)));
+          context.loc.acceptTermsError,
+          isError: true,
+        );
         return;
       }
       context.read<AuthBloc>().add(
@@ -53,9 +55,7 @@ class _SignupScreenState extends State<SignupScreen> {
             state is AuthDeleted) {
           context.go(AppRoutes.accountStatus);
         } else if (state is AuthError) {
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(SnackBar(content: Text(state.message)));
+          AppUtils.showSnackBar(context, state.message, isError: true);
         }
       },
       child: ResponsiveLayout(
@@ -76,30 +76,63 @@ class _SignupScreenState extends State<SignupScreen> {
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: Dimensions.r24),
+            padding: EdgeInsets.symmetric(horizontal: Dimensions.r24.dynamicW),
             child: Form(
               key: _formKey,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
+                  Center(
+                    child: Container(
+                      width: Dimensions.r80.dynamicW,
+                      height: Dimensions.r80.dynamicH,
+                      decoration: BoxDecoration(
+                        color: context.isDarkMode
+                            ? context.surfaceContainer
+                            : const Color(0xFFF0FDF4),
+                        shape: BoxShape.circle,
+                        boxShadow: [
+                          BoxShadow(
+                            color: context.primaryColor.withValues(alpha: 0.18),
+                            blurRadius: Dimensions.r20.dynamicR,
+                            offset: const Offset(0, 6),
+                          ),
+                        ],
+                        border: Border.all(
+                          color: context.primaryColor.withValues(alpha: 0.2),
+                          width: 1.5,
+                        ),
+                      ),
+                      padding: EdgeInsets.all(Dimensions.r12.dynamicW),
+                      child: AppAssets.cricketEquipmentGen.image(
+                        fit: BoxFit.contain,
+                        cacheWidth: 200,
+                        cacheHeight: 200,
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: Dimensions.r16.dynamicH),
                   Text(
                     context.loc.createAccount,
+                    textAlign: TextAlign.center,
                     style: TextStyle(
-                      fontSize: Dimensions.r32,
-                      fontWeight: FontWeight.bold,
+                      fontSize: Dimensions.r28.dynamicSP,
+                      fontWeight: FontWeight.w900,
+                      letterSpacing: -0.5,
                       color: context.textPrimary,
                     ),
                   ),
-                  const SizedBox(height: Dimensions.r8),
+                  SizedBox(height: Dimensions.r8.dynamicH),
                   Text(
                     context.loc.joinCommunitySubtitle,
+                    textAlign: TextAlign.center,
                     style: TextStyle(
-                      fontSize: Dimensions.r16,
+                      fontSize: Dimensions.r15.dynamicSP,
                       color: context.textSecondary,
                     ),
                   ),
-                  const SizedBox(height: Dimensions.r32),
+                  SizedBox(height: Dimensions.r24.dynamicH),
                   // Full Name
                   AppTextField(
                     controller: _nameController,
@@ -108,12 +141,13 @@ class _SignupScreenState extends State<SignupScreen> {
                     textCapitalization: TextCapitalization.words,
                     textInputAction: TextInputAction.next,
                     validator: (value) {
-                      if (value == null || value.trim().isEmpty)
+                      if (value == null || value.trim().isEmpty) {
                         return context.loc.fullNameRequired;
+                      }
                       return null;
                     },
                   ),
-                  const SizedBox(height: Dimensions.r16),
+                  SizedBox(height: Dimensions.r16.dynamicH),
                   // Email
                   AppTextField(
                     controller: _emailController,
@@ -122,8 +156,9 @@ class _SignupScreenState extends State<SignupScreen> {
                     keyboardType: TextInputType.emailAddress,
                     textInputAction: TextInputAction.next,
                     validator: (value) {
-                      if (value == null || value.trim().isEmpty)
+                      if (value == null || value.trim().isEmpty) {
                         return context.loc.emailRequired;
+                      }
                       if (!RegExp(
                         r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+",
                       ).hasMatch(value)) {
@@ -132,7 +167,7 @@ class _SignupScreenState extends State<SignupScreen> {
                       return null;
                     },
                   ),
-                  const SizedBox(height: Dimensions.r16),
+                  SizedBox(height: Dimensions.r16.dynamicH),
                   // Password
                   AppTextField(
                     controller: _passwordController,
@@ -147,14 +182,16 @@ class _SignupScreenState extends State<SignupScreen> {
                     },
                     textInputAction: TextInputAction.next,
                     validator: (value) {
-                      if (value == null || value.isEmpty)
+                      if (value == null || value.isEmpty) {
                         return context.loc.passwordRequired;
-                      if (value.length < 6)
+                      }
+                      if (value.length < 6) {
                         return context.loc.passwordLengthError;
+                      }
                       return null;
                     },
                   ),
-                  const SizedBox(height: Dimensions.r16),
+                  SizedBox(height: Dimensions.r16.dynamicH),
                   // Confirm Password
                   AppTextField(
                     controller: _confirmPasswordController,
@@ -169,8 +206,9 @@ class _SignupScreenState extends State<SignupScreen> {
                     },
                     textInputAction: TextInputAction.done,
                     validator: (value) {
-                      if (value != _passwordController.text)
+                      if (value != _passwordController.text) {
                         return context.loc.passwordsDoNotMatch;
+                      }
                       return null;
                     },
                   ),
@@ -186,42 +224,45 @@ class _SignupScreenState extends State<SignupScreen> {
                     controlAffinity: ListTileControlAffinity.leading,
                     contentPadding: EdgeInsets.zero,
                   ),
-                  const SizedBox(height: Dimensions.r32),
+                  SizedBox(height: Dimensions.r24.dynamicH),
                   // Signup Button
                   BlocBuilder<AuthBloc, AuthState>(
                     builder: (context, state) {
-                      return ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: context.primaryColor,
-                          foregroundColor: AppColor.whiteColor,
-                          padding: const EdgeInsets.symmetric(
-                            vertical: Dimensions.r16,
-                          ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(Dimensions.r16),
-                          ),
-                        ),
-                        onPressed: state is AuthLoading ? null : _onSignup,
-                        child: state is AuthLoading
-                            ? SizedBox(
-                                height: 20,
-                                width: 20,
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 2,
-                                  color: context.textPrimary,
-                                ),
-                              )
-                            : Text(
-                                context.loc.signup,
-                                style: TextStyle(
-                                  fontSize: Dimensions.r16,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                      return SizedBox(
+                        height: Dimensions.r48.dynamicH * 1.15,
+                        child: FilledButton(
+                          style: FilledButton.styleFrom(
+                            backgroundColor: context.primaryColor,
+                            foregroundColor: AppColor.whiteColor,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(
+                                Dimensions.r16.dynamicR,
                               ),
+                            ),
+                            elevation: 0,
+                          ),
+                          onPressed: state is AuthLoading ? null : _onSignup,
+                          child: state is AuthLoading
+                              ? SizedBox(
+                                  height: Dimensions.r20.dynamicH,
+                                  width: Dimensions.r20.dynamicW,
+                                  child: const CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                    color: AppColor.whiteColor,
+                                  ),
+                                )
+                              : Text(
+                                  context.loc.signup,
+                                  style: TextStyle(
+                                    fontSize: Dimensions.r16.dynamicSP,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                        ),
                       );
                     },
                   ),
-                  const SizedBox(height: Dimensions.r24),
+                  SizedBox(height: Dimensions.r24.dynamicH),
                   // Login Link
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,

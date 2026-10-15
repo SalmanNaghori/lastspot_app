@@ -14,8 +14,8 @@ class Dimensions {
   static const double galleryMaxScale = 4;
   static const double dialogMaxWidth = 440;
 
-  static late double screenWidth;
-  static late double screenHeight;
+  static double screenWidth = 375.0;
+  static double screenHeight = 812.0;
 
   static void init(BuildContext context) {
     screenWidth = MediaQuery.of(context).size.width;
@@ -42,11 +42,22 @@ class Dimensions {
   static const double r24 = 24.0;
   static const double r28 = 28.0;
   static const double r32 = 32.0;
+  static const double r36 = 36.0;
+  static const double r40 = 40.0;
   static const double r48 = 48.0;
   static const double r50 = 50.0;
   static const double r56 = 56.0;
   static const double r60 = 60.0;
   static const double r64 = 64.0;
+  static const double r72 = 72.0;
+  static const double r80 = 80.0;
+  static const double r96 = 96.0;
+  static const double r100 = 100.0;
+  static const double r120 = 120.0;
+  static const double r140 = 140.0;
+  static const double r160 = 160.0;
+  static const double r180 = 180.0;
+  static const double r200 = 200.0;
   static const double r999 = 999.0;
 
   // ---------------------------------------------------------------------------

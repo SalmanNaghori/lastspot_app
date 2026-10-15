@@ -1,10 +1,9 @@
 import 'package:lastspot_app/core/base_import.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import '../bloc/notifications_list_cubit.dart';
 import '../bloc/notifications_list_state.dart';
 import '../widgets/notification_item.dart';
-import '../../../../core/widgets/custom_app_bar.dart';
 import '../../domain/entities/notification_entity.dart';
+import '../../../../core/services/in_app_feedback_manager.dart';
 
 class NotificationsScreenMobile extends StatefulWidget {
   const NotificationsScreenMobile({super.key});
@@ -47,15 +46,43 @@ class _NotificationsScreenMobileState extends State<NotificationsScreenMobile> {
       context.read<NotificationsListCubit>().markAsRead(notification.id);
     }
 
-    // Attempt to extract the correct ID from the notification payload.
+    if (InAppFeedbackManager.isChatMessage(
+      notification.data,
+      type: notification.type,
+    )) {
+      final conversationId = InAppFeedbackManager.conversationIdFrom(
+        notification.data,
+      );
+      if (conversationId == null ||
+          !InAppFeedbackManager.isSafeRouteIdentifier(conversationId)) {
+        return;
+      }
+      context.push(
+        AppRoutes.conversationChatPath(
+          conversationId,
+          isDirect:
+              notification.data['is_direct']?.toString() == 'true' ||
+              notification.data['chat_type']?.toString().toLowerCase() ==
+                  'direct',
+          name: InAppFeedbackManager.senderNameFrom(notification.data),
+          activityTitle: InAppFeedbackManager.activityNameFrom(
+            notification.data,
+          ),
+          requestId: notification.data['request_id']?.toString(),
+        ),
+      );
+      return;
+    }
+
+    // Activity notifications carry one of the existing activity identifiers.
     // The backend might send 'request_id', 'activity_id', or 'spot_id' depending on the event.
-    final String targetId = notification.data['request_id']?.toString() ??
+    final String targetId =
+        notification.data['request_id']?.toString() ??
         notification.data['activity_id']?.toString() ??
         notification.data['spot_id']?.toString() ??
         '';
 
     if (targetId.isEmpty) {
-      debugPrint('No target ID found in notification data: ${notification.data}');
       return;
     }
 
@@ -129,24 +156,36 @@ class _NotificationsScreenMobileState extends State<NotificationsScreenMobile> {
           } else if (state is NotificationsListLoaded) {
             if (state.notifications.isEmpty) {
               return Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.notifications_none,
-                      size: Dimensions.r64.dynamicH,
-                      color: context.textSecondary.withValues(alpha: 0.5),
-                    ),
-                    SizedBox(height: Dimensions.r16.dynamicH),
-                    Text(
-                      'No notifications yet',
-                      style: TextStyle(
-                        fontSize: Dimensions.r18.dynamicSP,
-                        fontWeight: FontWeight.w600,
-                        color: context.textPrimary,
+                child: Padding(
+                  padding: EdgeInsets.all(Dimensions.r24.dynamicW),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      AppAssets.emptyNotificationsGen.image(
+                        width: Dimensions.r96.dynamicW * 1.4,
+                        height: Dimensions.r96.dynamicH * 1.4,
+                        cacheWidth: 360,
+                        cacheHeight: 360,
+                        fit: BoxFit.contain,
+                        errorBuilder: (context, error, stackTrace) {
+                          return Icon(
+                            Icons.notifications_none,
+                            size: Dimensions.r64.dynamicH,
+                            color: context.textSecondary.withValues(alpha: 0.5),
+                          );
+                        },
                       ),
-                    ),
-                  ],
+                      SizedBox(height: Dimensions.r16.dynamicH),
+                      Text(
+                        'No notifications yet',
+                        style: TextStyle(
+                          fontSize: Dimensions.r18.dynamicSP,
+                          fontWeight: FontWeight.w700,
+                          color: context.textPrimary,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               );
             }

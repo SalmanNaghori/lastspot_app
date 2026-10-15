@@ -23,6 +23,10 @@ class SpotDetailsBookingPanel extends StatelessWidget {
       request: state.userJoinRequest,
       now: DateTime.now(),
     );
+    final canAccessGroupChat = SpotParticipationPolicy.canAccessGroupChat(
+      isHost: state.isHost,
+      request: state.userJoinRequest,
+    );
     final hint = state.isHost
         ? loc.detailsHostHint
         : switch (availability) {
@@ -43,10 +47,18 @@ class SpotDetailsBookingPanel extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Wrap(
-            spacing: AppSpacing.sm,
-            runSpacing: AppSpacing.xs,
+            spacing: Dimensions.r8.dynamicW,
+            runSpacing: Dimensions.r4.dynamicH,
             crossAxisAlignment: WrapCrossAlignment.center,
             children: [
+              Image.asset(
+                AppAssets.priceTag3d,
+                width: Dimensions.r22.dynamicW,
+                height: Dimensions.r22.dynamicH,
+                fit: BoxFit.contain,
+                errorBuilder: (context, error, stackTrace) =>
+                    const SizedBox.shrink(),
+              ),
               Text(
                 post.pricePerPerson > 0
                     ? AppUtils.formatCurrency(post.pricePerPerson)
@@ -64,13 +76,30 @@ class SpotDetailsBookingPanel extends StatelessWidget {
                 ),
             ],
           ),
-          const SizedBox(height: AppSpacing.sm),
-          Text(
-            loc.detailsAvailability(
-              SpotParticipationPolicy.remainingSpots(post),
-              post.maxParticipants,
-            ),
-            style: context.bodySmall?.copyWith(color: colors.onSurfaceVariant),
+          SizedBox(height: Dimensions.r8.dynamicH),
+          Row(
+            children: [
+              Image.asset(
+                AppAssets.participants3d,
+                width: Dimensions.r16.dynamicW,
+                height: Dimensions.r16.dynamicH,
+                fit: BoxFit.contain,
+                errorBuilder: (context, error, stackTrace) =>
+                    const SizedBox.shrink(),
+              ),
+              SizedBox(width: Dimensions.r6.dynamicW),
+              Expanded(
+                child: Text(
+                  loc.detailsAvailability(
+                    SpotParticipationPolicy.remainingSpots(post),
+                    post.maxParticipants,
+                  ),
+                  style: context.bodySmall?.copyWith(
+                    color: colors.onSurfaceVariant,
+                  ),
+                ),
+              ),
+            ],
           ),
           if (!compact) ...[
             const SizedBox(height: AppSpacing.smLg),
@@ -101,13 +130,15 @@ class SpotDetailsBookingPanel extends StatelessWidget {
               label: Text(loc.messageHost),
             ),
           ],
-          if (!state.isHost &&
-              availability == SpotJoinAvailability.accepted) ...[
+          // Group Chat: visible and accessible to host and accepted participants
+          if (canAccessGroupChat) ...[
             const SizedBox(height: AppSpacing.sm),
             FilledButton.icon(
-              onPressed: () => context.push(AppRoutes.chatPath(post.id)),
+              onPressed: () => context.push(
+                AppRoutes.activityGroupChatPath(post.id, title: post.title),
+              ),
               icon: const Icon(Icons.forum_outlined),
-              label: Text(loc.openMatchChat),
+              label: Text(loc.groupChat),
             ),
           ],
           if (!compact && hint != null) ...[

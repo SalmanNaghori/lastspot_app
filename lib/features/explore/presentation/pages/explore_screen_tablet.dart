@@ -3,7 +3,9 @@ import 'package:lastspot_app/core/base_import.dart';
 import 'explore_screen_mobile.dart';
 
 class ExploreScreenTablet extends StatelessWidget {
-  const ExploreScreenTablet({super.key});
+  final String? initialCategoryId;
+
+  const ExploreScreenTablet({super.key, this.initialCategoryId});
 
   @override
   Widget build(BuildContext context) {
@@ -25,9 +27,9 @@ class ExploreScreenTablet extends StatelessWidget {
               ),
             ],
           ),
-          child: const ClipRRect(
+          child: ClipRRect(
             borderRadius: BorderRadius.all(Radius.circular(Dimensions.r20)),
-            child: ExploreScreenMobile(),
+            child: ExploreScreenMobile(initialCategoryId: initialCategoryId),
           ),
         ),
       ),

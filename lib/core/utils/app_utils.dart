@@ -3,6 +3,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../base_import.dart';
 import 'package:lastspot_app/features/cities/presentation/bloc/city_cubit.dart';
 import 'package:lastspot_app/features/cities/presentation/bloc/city_state.dart';
+import '../services/in_app_feedback_manager.dart';
 
 /// App-wide utility methods as specified in project Rule 13.
 class AppUtils {
@@ -21,10 +22,10 @@ class AppUtils {
     BuildContext context,
     String message, {
     bool isError = false,
+    bool? persistent,
     Duration duration = const Duration(seconds: 3),
   }) {
-    ScaffoldMessenger.of(context).hideCurrentSnackBar();
-    ScaffoldMessenger.of(context).showSnackBar(
+    context.read<InAppFeedbackManager>().showFeedback(
       SnackBar(
         content: Text(
           message,
@@ -36,7 +37,11 @@ class AppUtils {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(Dimensions.r12),
         ),
+        action: isError
+            ? SnackBarAction(label: context.loc.dismiss, onPressed: () {})
+            : null,
       ),
+      isPersistent: persistent ?? isError,
     );
   }
 
@@ -155,6 +160,45 @@ class AppUtils {
     } else if (confirmed == false) {
       onCancel?.call();
     }
+  }
+
+  /// Returns a representative emoji for a given category name or activity title
+  static String getCategoryEmoji(String? categoryOrTitle) {
+    if (categoryOrTitle == null) return '🏆';
+    final lower = categoryOrTitle.toLowerCase();
+    if (lower.contains('cricket')) return '🏏';
+    if (lower.contains('football') || lower.contains('soccer')) return '⚽';
+    if (lower.contains('badminton')) return '🏸';
+    if (lower.contains('tennis')) return '🎾';
+    if (lower.contains('basketball')) return '🏀';
+    if (lower.contains('volleyball')) return '🏐';
+    if (lower.contains('running') || lower.contains('run')) return '🏃';
+    if (lower.contains('cycling') || lower.contains('bike')) return '🚴';
+    if (lower.contains('travel') || lower.contains('trip')) return '✈️';
+    if (lower.contains('hiking') || lower.contains('trek')) return '🥾';
+    if (lower.contains('event')) return '🎉';
+    return '🏆';
+  }
+
+  /// Returns a representative icon for a given category name or activity title
+  static IconData getCategoryIcon(String? categoryOrTitle) {
+    if (categoryOrTitle == null) return Icons.groups_rounded;
+    final lower = categoryOrTitle.toLowerCase();
+    if (lower.contains('cricket')) return Icons.sports_cricket;
+    if (lower.contains('football') || lower.contains('soccer')) {
+      return Icons.sports_soccer;
+    }
+    if (lower.contains('badminton') || lower.contains('tennis')) {
+      return Icons.sports_tennis;
+    }
+    if (lower.contains('basketball')) return Icons.sports_basketball;
+    if (lower.contains('volleyball')) return Icons.sports_volleyball;
+    if (lower.contains('running')) return Icons.directions_run;
+    if (lower.contains('cycling')) return Icons.directions_bike;
+    if (lower.contains('travel')) return Icons.flight_takeoff;
+    if (lower.contains('hiking')) return Icons.landscape;
+    if (lower.contains('event')) return Icons.event;
+    return Icons.groups_rounded;
   }
 }
 

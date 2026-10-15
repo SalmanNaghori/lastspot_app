@@ -16,17 +16,29 @@ class AccountStatusScreen extends StatelessWidget {
       },
       builder: (context, state) {
         return ResponsiveLayout(
-          mobile: _buildContent(context, state),
-          tablet: _buildContent(context, state),
+          mobile: AccountStatusContent(state: state),
+          tablet: AccountStatusContent(state: state, isTablet: true),
         );
       },
     );
   }
+}
 
-  Widget _buildContent(BuildContext context, AuthState state) {
+class AccountStatusContent extends StatelessWidget {
+  final AuthState state;
+  final bool isTablet;
+
+  const AccountStatusContent({
+    super.key,
+    required this.state,
+    this.isTablet = false,
+  });
+
+  @override
+  Widget build(BuildContext context) {
     String title = 'Account Status';
     String message = 'There is an issue with your account.';
-    IconData iconData = Icons.info_outline;
+    IconData iconData = Icons.info_outline_rounded;
     Color iconColor = context.primaryColor;
 
     if (state is AuthSuspended) {
@@ -37,75 +49,91 @@ class AccountStatusScreen extends StatelessWidget {
     } else if (state is AuthBanned) {
       title = context.loc.accountBannedTitle;
       message = context.loc.accountBannedDesc;
-      iconData = Icons.block;
+      iconData = Icons.block_rounded;
       iconColor = context.errorColor;
     } else if (state is AuthDeleted) {
       title = context.loc.accountDeletedTitle;
       message = context.loc.accountDeletedDesc;
-      iconData = Icons.delete_outline;
+      iconData = Icons.delete_outline_rounded;
       iconColor = context.errorColor;
     }
 
     return Scaffold(
       backgroundColor: context.backgroundColor,
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(Dimensions.r24),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Icon(iconData, size: 80, color: iconColor),
-              const SizedBox(height: Dimensions.r24),
-              Text(
-                title,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: Dimensions.r24,
-                  fontWeight: FontWeight.bold,
-                  color: context.textPrimary,
-                ),
-              ),
-              const SizedBox(height: Dimensions.r16),
-              Text(
-                message,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: Dimensions.r16,
-                  color: context.textSecondary,
-                ),
-              ),
-              const SizedBox(height: Dimensions.r48),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: context.primaryColor,
-                  foregroundColor: AppColor.whiteColor,
-                  padding: const EdgeInsets.symmetric(vertical: Dimensions.r16),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(Dimensions.r12),
-                  ),
-                ),
-                onPressed: () {
-                  // E.g., launch url for support or just show a snackbar
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(context.loc.supportContactComingSoon),
+        child: Center(
+          child: SingleChildScrollView(
+            padding: EdgeInsets.all(Dimensions.r24.dynamicW),
+            child: ConstrainedBox(
+              constraints: BoxConstraints(maxWidth: isTablet ? 500 : 440),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Center(
+                    child: Container(
+                      width: Dimensions.r80.dynamicW,
+                      height: Dimensions.r80.dynamicH,
+                      decoration: BoxDecoration(
+                        color: iconColor.withValues(alpha: 0.1),
+                        shape: BoxShape.circle,
+                      ),
+                      child: Icon(
+                        iconData,
+                        size: Dimensions.r40.dynamicH,
+                        color: iconColor,
+                      ),
                     ),
-                  );
-                },
-                child: Text(context.loc.contactSupport),
+                  ),
+                  SizedBox(height: Dimensions.r24.dynamicH),
+                  Text(
+                    title,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: Dimensions.r24.dynamicSP,
+                      fontWeight: FontWeight.w800,
+                      color: context.textPrimary,
+                    ),
+                  ),
+                  SizedBox(height: Dimensions.r12.dynamicH),
+                  Text(
+                    message,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: Dimensions.r15.dynamicSP,
+                      color: context.textSecondary,
+                      height: 1.4,
+                    ),
+                  ),
+                  SizedBox(height: Dimensions.r40.dynamicH),
+                  SizedBox(
+                    height: Dimensions.r56.dynamicH,
+                    child: FilledButton(
+                      onPressed: () {
+                        AppUtils.showSnackBar(
+                          context,
+                          context.loc.supportContactComingSoon,
+                        );
+                      },
+                      child: Text(context.loc.contactSupport),
+                    ),
+                  ),
+                  SizedBox(height: Dimensions.r16.dynamicH),
+                  TextButton(
+                    onPressed: () {
+                      context.read<AuthBloc>().add(AuthLogoutRequested());
+                    },
+                    child: Text(
+                      context.loc.logout,
+                      style: TextStyle(
+                        color: context.errorColor,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ],
               ),
-              const SizedBox(height: Dimensions.r16),
-              TextButton(
-                onPressed: () {
-                  context.read<AuthBloc>().add(AuthLogoutRequested());
-                },
-                child: Text(
-                  context.loc.logout,
-                  style: const TextStyle(color: Colors.redAccent),
-                ),
-              ),
-            ],
+            ),
           ),
         ),
       ),

@@ -1,5 +1,4 @@
 import 'package:lastspot_app/core/base_import.dart';
-import 'package:lastspot_app/core/constants/date_formats.dart';
 import '../../../spot/domain/entities/join_request_entity.dart';
 import '../bloc/activities_bloc.dart';
 import '../bloc/activities_event.dart';
@@ -7,22 +6,26 @@ import '../bloc/activities_event.dart';
 class SentRequestCard extends StatelessWidget {
   final JoinRequestEntity request;
 
-  const SentRequestCard({
-    super.key,
-    required this.request,
-  });
+  const SentRequestCard({super.key, required this.request});
 
   @override
   Widget build(BuildContext context) {
     final statusColor = AppConstants.getStatusColor(context, request.status);
-    final statusText = request.status.toString().split('.').last.capitalizeFirst();
+    final statusText = request.status
+        .toString()
+        .split('.')
+        .last
+        .capitalizeFirst();
     final spot = request.request; // The activity requested to join
 
     return Container(
       decoration: BoxDecoration(
         color: context.surfaceColor,
         borderRadius: BorderRadius.circular(Dimensions.r16.dynamicR),
-        border: Border.all(color: context.dividerColor.withValues(alpha: 0.5), width: 1),
+        border: Border.all(
+          color: context.dividerColor.withValues(alpha: 0.5),
+          width: 1,
+        ),
         boxShadow: [
           BoxShadow(
             color: AppColor.blackColor.withValues(alpha: 0.03),
@@ -52,7 +55,9 @@ class SentRequestCard extends StatelessWidget {
                   ),
                   decoration: BoxDecoration(
                     color: statusColor.withValues(alpha: 0.1),
-                    borderRadius: BorderRadius.circular(Dimensions.r999.dynamicR), // Pill shape
+                    borderRadius: BorderRadius.circular(
+                      Dimensions.r999.dynamicR,
+                    ), // Pill shape
                   ),
                   child: Text(
                     statusText,
@@ -74,8 +79,11 @@ class SentRequestCard extends StatelessWidget {
               ],
             ),
           ),
-          
-          Divider(height: 1, color: context.dividerColor.withValues(alpha: 0.3)),
+
+          Divider(
+            height: 1,
+            color: context.dividerColor.withValues(alpha: 0.3),
+          ),
 
           // Body: Activity Context
           Padding(
@@ -107,7 +115,9 @@ class SentRequestCard extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              spot.title.isNotEmpty ? spot.title.capitalizeFirst() : 'Activity',
+                              spot.title.isNotEmpty
+                                  ? spot.title.capitalizeFirst()
+                                  : 'Activity',
                               style: TextStyle(
                                 fontSize: Dimensions.r16.dynamicSP,
                                 fontWeight: FontWeight.w700,
@@ -127,7 +137,9 @@ class SentRequestCard extends StatelessWidget {
                                 SizedBox(width: Dimensions.r4.dynamicW),
                                 Expanded(
                                   child: Text(
-                                    AppConstants.formatActivityDate(spot.eventDateTime),
+                                    AppConstants.formatActivityDate(
+                                      spot.eventDateTime,
+                                    ),
                                     style: TextStyle(
                                       fontSize: Dimensions.r13.dynamicSP,
                                       color: context.textSecondary,
@@ -145,30 +157,48 @@ class SentRequestCard extends StatelessWidget {
                   )
                 : Text(
                     'Activity details unavailable',
-                    style: TextStyle(color: context.textSecondary, fontStyle: FontStyle.italic),
+                    style: TextStyle(
+                      color: context.textSecondary,
+                      fontStyle: FontStyle.italic,
+                    ),
                   ),
           ),
 
           // Footer: Actions
-          if (request.status == JoinRequestStatus.pending || request.status == JoinRequestStatus.accepted) ...[
-            Divider(height: 1, color: context.dividerColor.withValues(alpha: 0.3)),
+          if (request.status == JoinRequestStatus.pending ||
+              request.status == JoinRequestStatus.accepted) ...[
+            Divider(
+              height: 1,
+              color: context.dividerColor.withValues(alpha: 0.3),
+            ),
             Padding(
               padding: EdgeInsets.all(Dimensions.r16.dynamicW),
               child: SizedBox(
                 width: double.infinity,
                 child: OutlinedButton(
                   onPressed: () {
-                    context.read<ActivitiesBloc>().add(CancelJoinRequestEvent(request.id));
+                    context.read<ActivitiesBloc>().add(
+                      CancelJoinRequestEvent(request.id),
+                    );
                   },
                   style: OutlinedButton.styleFrom(
                     foregroundColor: context.errorColor,
-                    side: BorderSide(color: context.errorColor.withValues(alpha: 0.5)),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(Dimensions.r999.dynamicR),
+                    side: BorderSide(
+                      color: context.errorColor.withValues(alpha: 0.5),
                     ),
-                    padding: EdgeInsets.symmetric(vertical: Dimensions.r12.dynamicH),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(
+                        Dimensions.r999.dynamicR,
+                      ),
+                    ),
+                    padding: EdgeInsets.symmetric(
+                      vertical: Dimensions.r12.dynamicH,
+                    ),
                   ),
-                  child: Text(context.loc.cancel, style: const TextStyle(fontWeight: FontWeight.w600)),
+                  child: Text(
+                    context.loc.cancel,
+                    style: const TextStyle(fontWeight: FontWeight.w600),
+                  ),
                 ),
               ),
             ),

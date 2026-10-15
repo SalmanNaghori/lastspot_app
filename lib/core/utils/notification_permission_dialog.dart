@@ -1,6 +1,5 @@
 import '../base_import.dart';
 import '../services/push_notification_service.dart';
-import '../di/service_locator.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
 class NotificationPermissionDialog {
@@ -33,7 +32,7 @@ class NotificationPermissionDialog {
                 ),
                 SizedBox(height: Dimensions.r16.dynamicH),
                 Text(
-                  AppString.notificationPermissionTitle,
+                  context.loc.notificationPermissionTitle,
                   style: context.textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
@@ -41,7 +40,7 @@ class NotificationPermissionDialog {
                 ),
                 SizedBox(height: Dimensions.r12.dynamicH),
                 Text(
-                  AppString.notificationPermissionBody,
+                  context.loc.notificationPermissionBody,
                   style: context.textTheme.bodyMedium?.copyWith(
                     color: context.textSecondary,
                   ),
@@ -49,12 +48,12 @@ class NotificationPermissionDialog {
                 ),
                 SizedBox(height: Dimensions.r32.dynamicH),
                 AppButton.primary(
-                  label: AppString.allow,
+                  label: context.loc.allow,
                   onPressed: () => Navigator.of(context).pop(true),
                 ),
                 SizedBox(height: Dimensions.r12.dynamicH),
                 AppButton.text(
-                  label: AppString.notNow,
+                  label: context.loc.notNow,
                   onPressed: () => Navigator.of(context).pop(false),
                 ),
                 SizedBox(height: Dimensions.r12.dynamicH),

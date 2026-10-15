@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#5948e8">
+  <title>LastSpot — mobile design prototype</title>
+  <link rel="stylesheet" href="prototype.css">
+</head>
+<body>
+  <aside class="studio-sidebar" aria-label="Screen inventory">
+    <a class="studio-brand" href="#home"><span class="brand-symbol">L<span></span></span><span>LastSpot<span class="studio-kicker">DESIGN PROTOTYPE · 01</span></span></a>
+    <p class="studio-intro">Find people. Fill the last spot.<br>Make the activity happen.</p>
+    <label class="screen-search"><span>Find a screen</span><input id="screen-search" type="search" placeholder="Search the inventory…"></label>
+    <nav id="screen-index"></nav>
+    <a class="handoff-link" href="HANDOFF.md" target="_blank">Developer handoff ↗</a>
+  </aside>
+  <main class="studio-main">
+    <header class="studio-toolbar">
+      <div><span class="eyebrow">LASTSPOT / MOBILE EXPERIENCE</span><h1 id="screen-title">Home</h1></div>
+      <div class="studio-controls">
+        <label>Appearance<select id="theme-picker"><option value="light">Light</option><option value="dark">Dark</option></select></label>
+        <label>Platform<select id="platform-picker"><option value="ios">iOS</option><option value="android">Android</option></select></label>
+        <label>State<select id="state-picker"><option value="default">Default</option></select></label>
+        <button class="studio-button" id="reset-demo">Reset demo</button>
+      </div>
+    </header>
+    <div class="preview-layout">
+      <div class="device-column">
+        <div class="device-caption"><span class="live-dot"></span>INTERACTIVE · 390 × 844</div>
+        <section class="phone" id="phone" aria-label="LastSpot mobile prototype">
+          <div class="statusbar" id="statusbar"><span>9:41</span><span class="status-icons" aria-label="Signal, Wi-Fi and battery">▮▮▮ <span>◒</span> ▰</span></div>
+          <div id="app" class="app"></div>
+          <div id="feedback" aria-live="polite"></div>
+          <div id="modal-root"></div>
+          <div class="home-indicator" aria-hidden="true"></div>
+        </section>
+        <p class="preview-note">Illustrative sample data · No account or backend connection</p>
+      </div>
+      <aside class="inspector" aria-label="Screen specification">
+        <div class="inspector-heading"><span class="eyebrow">SCREEN NOTES</span><span id="screen-number"></span></div>
+        <h2 id="spec-title"></h2><p id="spec-purpose"></p>
+        <div class="spec-block"><h3>Primary action</h3><p id="spec-action"></p></div>
+        <div class="spec-block"><h3>Navigation & behavior</h3><p id="spec-navigation"></p></div>
+        <div class="spec-block"><h3>Flutter mapping</h3><code id="spec-route"></code></div>
+        <div class="spec-block"><h3>Explore a journey</h3><div id="journeys" class="journey-buttons"></div></div>
+        <div class="spec-block"><h3>Message & session scenarios</h3><div class="scenario-buttons"><button data-scenario="other">Receive message in another chat</button><button data-scenario="current">Receive message in this chat</button><button data-scenario="rapid">Receive three notifications</button><button data-scenario="keyboard">Toggle keyboard preview</button><button data-scenario="expired">Expire session</button></div><p class="fine-print">Scenario controls are prototype tools. They are not part of the mobile product.</p></div>
+        <a class="text-link" href="SCREEN-INVENTORY.md" target="_blank">View complete screen inventory ↗</a>
+      </aside>
+    </div>
+  </main>
+  <script src="screens.js"></script>
+  <script src="prototype.js"></script>
+</body>
+</html>

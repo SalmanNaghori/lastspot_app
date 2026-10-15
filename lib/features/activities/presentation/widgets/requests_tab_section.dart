@@ -2,7 +2,6 @@ import 'package:lastspot_app/core/base_import.dart';
 import '../../../spot/domain/entities/join_request_entity.dart';
 import 'package:lastspot_app/core/widgets/animation/widget_animation.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import 'package:lastspot_app/core/widgets/custom_segmented_control.dart';
 import 'request_shimmer_card.dart';
 import 'received_request_card.dart';
 import 'sent_request_card.dart';
@@ -81,6 +80,7 @@ class _RequestsTabSectionState extends State<RequestsTabSection> {
             message: isReceived
                 ? context.loc.emptyReceivedRequestsDesc
                 : context.loc.emptySentRequestsDesc,
+            imageGen: AppAssets.emptyJoinRequestsGen,
           )
         else
           SliverPadding(

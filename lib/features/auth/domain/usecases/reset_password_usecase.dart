@@ -6,7 +6,13 @@ class ResetPasswordUseCase {
 
   ResetPasswordUseCase(this._repository);
 
-  Future<Result<void, Exception>> call({required String email}) async {
-    return _repository.sendPasswordResetEmail(email: email);
+  Future<Result<void, Exception>> call({
+    required String email,
+    required String redirectTo,
+  }) async {
+    return _repository.sendPasswordResetEmail(
+      email: email,
+      redirectTo: redirectTo,
+    );
   }
 }

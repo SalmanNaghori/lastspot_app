@@ -1,0 +1,4 @@
+interface:
+  display_name: "Ponytail Gain"
+  short_description: "Show Ponytail's scoped benchmark results"
+  default_prompt: "Use $ponytail-gain to summarize Ponytail's published benchmark and limitations."

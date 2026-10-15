@@ -123,7 +123,12 @@
   "navExplore": "Explore",
   "navCreate": "Create",
   "navActivities": "Activities",
+  "navChats": "Chats",
   "navProfile": "Profile",
+  "openProfile": "Open profile",
+  "searchConversations": "Search conversations...",
+  "noConversationsFound": "No conversations found",
+  "noConversationsFoundDesc": "Try adjusting your search or filter to find what you're looking for.",
   "explorePlaceholderText": "Discover activities near you",
   "activitiesEmptyMessage": "Your activities will appear here.\nActivities you create or join will appear here.",
   "exploreActivitiesAction": "Explore Activities",
@@ -145,9 +150,9 @@
   "statCreated": "Created",
   "statJoined": "Joined",
   "statCompleted": "Completed",
-  "goodMorning": "Good morning,",
-  "goodAfternoon": "Good afternoon,",
-  "goodEvening": "Good evening,",
+  "goodMorning": "Good morning",
+  "goodAfternoon": "Good afternoon",
+  "goodEvening": "Good evening",
   "whatAreYouUpTo": "What are you up for today?",
   "urgentMatchesSubtitle": "Join nearby activities before they fill up!",
   "viewAll": "View All",
@@ -206,6 +211,7 @@
   "resetPasswordDesc": "Enter your email address and we'll send you a link to reset your password.",
   "settingsTitle": "Settings",
   "themeTitle": "Theme",
+  "appColorTitle": "App Color",
   "themeSystem": "System Default",
   "themeLight": "Light",
   "themeDark": "Dark",
@@ -328,6 +334,59 @@
       }
     }
   },
+  "tabChats": "Chats",
+  "tabChatsCount": "Chats {count}",
+  "@tabChatsCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "noConversations": "No conversations yet",
+  "noConversationsDesc": "Join or host an activity to start chatting with other players.",
+  "conversationLoadError": "Could not load conversations. Please try again.",
+  "yesterday": "Yesterday",
+  "messageCopied": "Message copied",
+  "jumpToLatest": "Jump to latest",
+  "newMessage": "New message",
+  "matchGroupChat": "Match Group Chat",
+  "activityContext": "Activity: {title}",
+  "@activityContext": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "filterAll": "All",
+  "filterDirect": "Direct",
+  "filterGroups": "Groups",
+  "groupInfoTitle": "Group Info",
+  "groupInfoParticipants": "Participants",
+  "groupInfoHost": "Host",
+  "groupInfoOrganizer": "Organizer",
+  "groupInfoNoParticipants": "No confirmed participants yet.",
+  "groupInfoActivityDetails": "Activity Details",
+  "welcomeToActivity": "Welcome to {activityTitle}! {emoji}",
+  "@welcomeToActivity": {
+    "placeholders": {
+      "activityTitle": {
+        "type": "String"
+      },
+      "emoji": {
+        "type": "String"
+      }
+    }
+  },
+  "groupWelcomeSubtitle": "This group is for coordinating the activity. Be respectful and enjoy!",
+  "groupOnlyParticipantsCanChat": "Only confirmed participants and the host can send messages.",
+  "noGroupConversations": "No group chats yet",
+  "noGroupConversationsDesc": "Join or host an activity to start chatting with participants.",
+  "noDirectConversations": "No direct messages yet",
+  "noDirectConversationsDesc": "Direct messages between you and activity hosts will appear here.",
+  "you": "You",
+
   "mockGoldenGateTitle": "Golden Gate Sunset Walk",
   "mockGoldenGateDate": "Today \u00b7 6:00 PM",
   "mockGoldenGateLoc": "Golden Gate Park",
@@ -404,10 +463,19 @@
   "sportSwimming": "Swimming",
   "sportRunning": "Running",
   "sportCycling": "Cycling",
+  "sportKabaddi": "Kabaddi",
+  "sportKhoKho": "Kho-Kho",
+  "sportGilliDanda": "Gilli-Danda",
+  "sportSatoliya": "Satoliya / Lagori",
+  "sportKiteFlying": "Kite Flying",
+  "sportSkating": "Skating",
+  "sportHockey": "Field Hockey",
+  "sportUltimateFrisbee": "Ultimate Frisbee",
+  "sportPickleball": "Pickleball",
+  "sportTugOfWar": "Tug of War",
+  "sportHiking": "Hiking / Trekking",
+  "sportOutdoorYoga": "Outdoor Yoga",
   "confirmAction": "Confirm",
-  "discoveryHeadline": "Less scrolling.\nMore playing.",
-  "discoverySubtitle": "Find your people. Make your next game happen.",
-  "browseActivities": "Find a game",
   "activityHost": "Host",
   "activityFull": "Full",
   "activityCapacity": "{current} of {total} joined",
@@ -484,8 +552,6 @@
   "galleryNext": "Next photo",
   "galleryZoomIn": "Zoom in",
   "galleryZoomOut": "Reset zoom",
-  "discoveryEyebrow": "YOUR NEXT GOOD TIME",
-  "discoveryHost": "Host an activity",
   "detailsSharedMapLink": "Shared map link",
   "detailsMapLinkHint": "Open the location shared by the host.",
   "detailsMapSearchHint": "Search this venue in Maps; confirm the meeting point with your host.",
@@ -499,5 +565,40 @@
   "nextGameStartsHere": "Your next game starts here",
   "turnSoundOff": "Turn sound off",
   "turnSoundOn": "Turn sound on",
-  "goToHome": "Go to Home"
+  "goToHome": "Go to Home",
+  "yourActivityHub": "Your Activity Hub",
+  "homeActivityHubPending": "{count, plural, one{You have 1 pending join request to review.} other{You have {count} pending join requests to review.}}",
+  "@homeActivityHubPending": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "homeActivityHubJoined": "Your next joined activity is coming up.",
+  "homeActivityHubHosted": "Your next hosted activity is coming up.",
+  "homeActivityHubEmpty": "No upcoming activities yet. Create one to get started.",
+  "homeActivityHubRecommendation": "A future activity is available in your selected city.",
+  "homeActivityHubError": "Your activity details could not be loaded.",
+  "homeReviewRequests": "Review Requests",
+  "homeViewActivity": "View Activity",
+  "homeManageActivity": "Manage Activity",
+  "homeCreateActivity": "Create Activity",
+  "homeGroupChat": "Group Chat",
+  "homeCityLoadError": "Could not load cities",
+  "homeRetryCategories": "Retry categories",
+  "homeFeedNetworkError": "Couldn't load activities. Check your connection and try again.",
+  "homeFeedLoadError": "Something went wrong while loading activities.",
+  "dismiss": "Dismiss",
+  "newMessage": "New message",
+  "notificationPermissionTitle": "Stay Updated",
+  "notificationPermissionBody": "We need notification permissions to alert you when someone wants to join your spot or when you are accepted to a spot.",
+  "allow": "Allow",
+  "notNow": "Not Now",
+  "full": "FULL",
+  "host": "Host",
+  "ofText": "of",
+  "spots": "Spots",
+  "suggestedPlayingHours": "Suggested Playing Hours",
+  "bestTimeToPlay": "Best Time to Play"
 }

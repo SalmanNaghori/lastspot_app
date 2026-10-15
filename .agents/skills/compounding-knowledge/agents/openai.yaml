@@ -1,0 +1,4 @@
+interface:
+  display_name: "Compounding Knowledge"
+  short_description: "Capture reusable project knowledge"
+  default_prompt: "Use $compounding-knowledge to identify what this task taught us."

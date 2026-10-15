@@ -10,7 +10,8 @@ class CreateSpotSuccessScreen extends StatefulWidget {
   const CreateSpotSuccessScreen({super.key});
 
   @override
-  State<CreateSpotSuccessScreen> createState() => _CreateSpotSuccessScreenState();
+  State<CreateSpotSuccessScreen> createState() =>
+      _CreateSpotSuccessScreenState();
 }
 
 class _CreateSpotSuccessScreenState extends State<CreateSpotSuccessScreen> {
@@ -29,7 +30,11 @@ class _CreateSpotSuccessScreenState extends State<CreateSpotSuccessScreen> {
     try {
       await _audioPlayer.setReleaseMode(ReleaseMode.stop);
       await _audioPlayer.setVolume(1.0);
-      await _audioPlayer.play(AssetSource(Assets.audio.activityCreatedVictory.replaceFirst('assets/', '')));
+      await _audioPlayer.play(
+        AssetSource(
+          Assets.audio.activityCreatedVictory.replaceFirst('assets/', ''),
+        ),
+      );
     } catch (error, stackTrace) {
       developer.log(
         'Could not play the activity creation celebration audio.',
@@ -73,15 +78,25 @@ class _CreateSpotSuccessScreenState extends State<CreateSpotSuccessScreen> {
               Align(
                 alignment: Alignment.centerRight,
                 child: IconButton.filledTonal(
-                  tooltip: _soundEnabled ? context.loc.turnSoundOff : context.loc.turnSoundOn,
+                  tooltip: _soundEnabled
+                      ? context.loc.turnSoundOff
+                      : context.loc.turnSoundOn,
                   onPressed: _toggleSound,
-                  icon: Icon(_soundEnabled ? Icons.volume_up_rounded : Icons.volume_off_rounded),
+                  icon: Icon(
+                    _soundEnabled
+                        ? Icons.volume_up_rounded
+                        : Icons.volume_off_rounded,
+                  ),
                 ),
               ),
               const Spacer(),
               Expanded(
                 flex: 5,
-                child: Lottie.asset(Assets.ain.anCongratulationScreen.path, repeat: true, fit: BoxFit.contain),
+                child: Lottie.asset(
+                  Assets.ain.anCongratulationScreen.path,
+                  repeat: true,
+                  fit: BoxFit.contain,
+                ),
               ),
               SizedBox(height: Dimensions.r16.dynamicH),
               Text(
@@ -97,11 +112,17 @@ class _CreateSpotSuccessScreenState extends State<CreateSpotSuccessScreen> {
               Text(
                 context.loc.activityNowLive,
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: Dimensions.r14.dynamicSP, color: context.textSecondary),
+                style: TextStyle(
+                  fontSize: Dimensions.r14.dynamicSP,
+                  color: context.textSecondary,
+                ),
               ),
               SizedBox(height: Dimensions.r12.dynamicH),
               Container(
-                padding: EdgeInsets.symmetric(horizontal: Dimensions.r14.dynamicW, vertical: Dimensions.r10.dynamicH),
+                padding: EdgeInsets.symmetric(
+                  horizontal: Dimensions.r14.dynamicW,
+                  vertical: Dimensions.r10.dynamicH,
+                ),
                 decoration: BoxDecoration(
                   color: context.primaryColor.withValues(alpha: 0.08),
                   borderRadius: BorderRadius.circular(Dimensions.r999.dynamicR),
@@ -109,11 +130,18 @@ class _CreateSpotSuccessScreenState extends State<CreateSpotSuccessScreen> {
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Icon(Icons.people_alt_outlined, size: Dimensions.r16.dynamicH, color: context.primaryColor),
+                    Icon(
+                      Icons.people_alt_outlined,
+                      size: Dimensions.r16.dynamicH,
+                      color: context.primaryColor,
+                    ),
                     SizedBox(width: Dimensions.r8.dynamicW),
                     Text(
                       context.loc.nextGameStartsHere,
-                      style: context.bodySmall?.copyWith(color: context.primaryColor, fontWeight: FontWeight.w600),
+                      style: context.bodySmall?.copyWith(
+                        color: context.primaryColor,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ],
                 ),
@@ -121,7 +149,10 @@ class _CreateSpotSuccessScreenState extends State<CreateSpotSuccessScreen> {
               const Spacer(),
               SizedBox(
                 width: double.infinity,
-                child: FilledButton(onPressed: _goHome, child: Text(context.loc.goToHome)),
+                child: FilledButton(
+                  onPressed: _goHome,
+                  child: Text(context.loc.goToHome),
+                ),
               ),
             ],
           ),

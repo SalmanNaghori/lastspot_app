@@ -1,5 +1,4 @@
 import 'package:lastspot_app/core/base_import.dart';
-import 'package:lastspot_app/core/theme/app_motion.dart';
 import 'package:lastspot_app/features/spot/domain/entities/request_entity.dart';
 
 import 'spot_hero_image.dart';

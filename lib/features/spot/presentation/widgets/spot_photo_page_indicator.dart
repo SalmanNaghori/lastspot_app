@@ -1,5 +1,4 @@
 import 'package:lastspot_app/core/base_import.dart';
-import '../../../../core/theme/app_motion.dart';
 
 class SpotPhotoPageIndicator extends StatelessWidget {
   final int page;

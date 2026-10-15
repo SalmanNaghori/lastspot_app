@@ -1,5 +1,4 @@
 import 'package:lastspot_app/core/base_import.dart';
-import '../../../../core/theme/app_color.dart';
 import '../bloc/settings_cubit.dart';
 import '../bloc/settings_state.dart';
 

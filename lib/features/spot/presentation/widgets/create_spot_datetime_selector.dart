@@ -134,10 +134,9 @@ class CreateSpotDatetimeSelector extends StatelessWidget {
                           (newTime.hour == now.hour &&
                               newTime.minute < now.minute)) {
                         if (context.mounted) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(context.loc.pleaseSelectFutureTime),
-                            ),
+                          AppUtils.showSnackBar(
+                            context,
+                            context.loc.pleaseSelectFutureTime,
                           );
                         }
                         return;

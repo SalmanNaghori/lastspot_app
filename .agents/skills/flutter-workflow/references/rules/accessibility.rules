@@ -1,0 +1,13 @@
+# accessibility.rules — semantics, targets, text scale, contrast, motion
+# SOP: sop/accessibility.md
+# Guardrails: guardrails/accessibility.md
+
+MUST      A11Y-1  Give every icon-only/image-only control a label (tooltip / semanticLabel / Semantics) from the string source; mark decorative images excludeFromSemantics.
+MUST      A11Y-2  Keep tap targets >= 48x48 dp (44x44 pt iOS); never shrinkWrap/compact density in shared widgets.
+MUST      A11Y-3  Render without overflow at 1.3x text scale, usable at 2.0x; never clamp textScaler to 1.0 app-wide.
+MUST      A11Y-4  Meet contrast 4.5:1 text / 3:1 large text + UI components in every supported theme (fix in tokens).
+MUST-NOT  A11Y-5  Convey state by color alone; pair with icon/text.
+MUST      A11Y-6  Expose role/state on custom controls via Semantics; focus order follows visual order; operable by screen reader and keyboard.
+MUST      A11Y-7  Announce async results/errors; move focus to the first invalid field on failed submit.
+MUST      A11Y-8  Respect MediaQuery.disableAnimationsOf; no flashing > 3/s.
+SHOULD    A11Y-9  Add meetsGuideline(android/iOS/labeled tap target, textContrast) to shared widget tests. (TEST-3)

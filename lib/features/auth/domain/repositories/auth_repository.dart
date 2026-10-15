@@ -23,7 +23,11 @@ abstract class AuthRepository {
   /// Sends a password-reset OTP email to [email].
   Future<Result<void, Exception>> sendPasswordResetEmail({
     required String email,
+    required String redirectTo,
   });
+
+  /// Updates the password for the current, verified password-recovery session.
+  Future<Result<void, Exception>> updatePassword({required String password});
 
   /// Verifies the OTP entered by the user.
   Future<Result<void, Exception>> verifyOtp({

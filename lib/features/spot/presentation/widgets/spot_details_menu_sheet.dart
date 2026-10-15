@@ -2,7 +2,7 @@ import 'package:lastspot_app/core/base_import.dart';
 import '../../domain/policies/spot_participation_policy.dart';
 import '../bloc/spot_details_bloc.dart';
 
-enum SpotDetailsMenuAction { copy, edit }
+enum SpotDetailsMenuAction { copy, edit, groupChat }
 
 class SpotDetailsMenuSheet extends StatelessWidget {
   final SpotDetailsLoaded loadedState;
@@ -12,6 +12,11 @@ class SpotDetailsMenuSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final loc = context.loc;
+    final isEligibleForChat = SpotParticipationPolicy.canAccessGroupChat(
+      isHost: loadedState.isHost,
+      request: loadedState.userJoinRequest,
+    );
+
     return SingleChildScrollView(
       padding: const EdgeInsets.fromLTRB(
         AppSpacing.sm,
@@ -32,6 +37,13 @@ class SpotDetailsMenuSheet extends StatelessWidget {
             title: Text(loc.detailsCopy),
             onTap: () => Navigator.of(context).pop(SpotDetailsMenuAction.copy),
           ),
+          if (isEligibleForChat)
+            ListTile(
+              leading: const Icon(Icons.forum_outlined),
+              title: Text(loc.groupChat),
+              onTap: () =>
+                  Navigator.of(context).pop(SpotDetailsMenuAction.groupChat),
+            ),
           if (SpotParticipationPolicy.canEdit(
             loadedState.post,
             isHost: loadedState.isHost,

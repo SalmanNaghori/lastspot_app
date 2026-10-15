@@ -1,61 +1,21 @@
 import 'package:lastspot_app/core/base_import.dart';
 
+/// Reusable gradient background displaying the 3D sports equipment illustration
+/// when an activity has no user-uploaded cover image.
 class SportGradientBackground extends StatelessWidget {
   final String categoryId;
 
   const SportGradientBackground({super.key, required this.categoryId});
 
-  (Color, Color, IconData) get _style {
-    switch (categoryId.toLowerCase()) {
-      case 'cricket':
-        return (
-          CategoryColors.cricketDark,
-          CategoryColors.cricketLight,
-          Icons.sports_cricket,
-        );
-      case 'football':
-        return (
-          CategoryColors.footballDark,
-          CategoryColors.footballLight,
-          Icons.sports_soccer,
-        );
-      case 'basketball':
-        return (
-          CategoryColors.basketballDark,
-          CategoryColors.basketballLight,
-          Icons.sports_basketball,
-        );
-      case 'tennis':
-        return (
-          CategoryColors.tennisDark,
-          CategoryColors.tennisLight,
-          Icons.sports_tennis,
-        );
-      case 'badminton':
-        return (
-          CategoryColors.badmintonDark,
-          CategoryColors.badmintonLight,
-          Icons.sports_tennis,
-        );
-      default:
-        return (
-          CategoryColors.defaultDark,
-          CategoryColors.defaultLight,
-          Icons.sports,
-        );
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
-    final (darkColor, lightColor, icon) = _style;
-    final isCricket = categoryId.toLowerCase() == 'cricket';
-    final gradientColors = isCricket
-        ? [
-            Color.lerp(context.primaryColor, Colors.black, 0.28)!,
-            context.primaryColor,
-          ]
-        : [darkColor, lightColor];
+    final isDark = context.isDarkMode;
+    final softTint = AppAssets.getCategorySoftTint(categoryId);
+    final fallbackIcon = AppAssets.getCategoryFallbackIcon(categoryId);
+
+    final gradientColors = isDark
+        ? [context.surfaceContainer, context.surfaceColor]
+        : [softTint.withValues(alpha: 0.9), context.backgroundColor];
 
     return Container(
       decoration: BoxDecoration(
@@ -66,10 +26,20 @@ class SportGradientBackground extends StatelessWidget {
         ),
       ),
       child: Center(
-        child: Icon(
-          icon,
-          size: Dimensions.r64.dynamicH * 1.25,
-          color: AppColor.whiteColor.withValues(alpha: 0.12),
+        child: Padding(
+          padding: EdgeInsets.all(Dimensions.r16.dynamicH),
+          child: AppAssets.getCategoryGen(categoryId).image(
+            fit: BoxFit.contain,
+            cacheWidth: 320,
+            cacheHeight: 320,
+            errorBuilder: (context, error, stackTrace) {
+              return Icon(
+                fallbackIcon,
+                size: Dimensions.r64.dynamicH,
+                color: context.primaryColor.withValues(alpha: 0.35),
+              );
+            },
+          ),
         ),
       ),
     );

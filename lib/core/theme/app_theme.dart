@@ -14,7 +14,7 @@ class AppTheme {
   // ============================================================
 
   static ThemeData get lightTheme {
-    return lightThemeFor(AppThemeColor.violet);
+    return lightThemeFor(AppThemeColor.sportsGreen);
   }
 
   static ThemeData lightThemeFor(AppThemeColor themeColor) {
@@ -36,7 +36,7 @@ class AppTheme {
   // ============================================================
 
   static ThemeData get darkTheme {
-    return darkThemeFor(AppThemeColor.violet);
+    return darkThemeFor(AppThemeColor.sportsGreen);
   }
 
   static ThemeData darkThemeFor(AppThemeColor themeColor) {

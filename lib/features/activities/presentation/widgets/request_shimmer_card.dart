@@ -29,9 +29,7 @@ class RequestShimmerCard extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      AppShimmerBox(
-                        height: Dimensions.r16.dynamicH,
-                      ),
+                      AppShimmerBox(height: Dimensions.r16.dynamicH),
                       SizedBox(height: Dimensions.r8.dynamicH),
                       AppShimmerBox(
                         width: Dimensions.r60.dynamicW,

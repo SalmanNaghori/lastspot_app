@@ -79,7 +79,10 @@ class StartupBloc extends Bloc<StartupEvent, StartupState> {
             (rule.platform == 'all' || rule.platform == platform)) {
           if (rule.affectedVersions.contains(currentVersionString)) {
             emit(
-              StartupState.maintenanceMode(title: rule.title, message: rule.message),
+              StartupState.maintenanceMode(
+                title: rule.title,
+                message: rule.message,
+              ),
             );
             return;
           }

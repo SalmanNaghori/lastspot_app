@@ -21,16 +21,47 @@ class AuthBanned extends AuthState {}
 
 class AuthDeleted extends AuthState {}
 
-/// The backend does not confirm this session/device pair. The session was
+/// The backend does not confirm this session/device pair. The session is
 /// cleared locally and interactive sign-in is required; the client cannot
 /// tell an initial rollout from a session that was replaced elsewhere.
-class AuthSessionNeedsSignIn extends AuthState {}
+class AuthSessionNeedsSignIn extends AuthState {
+  final String? message;
+
+  const AuthSessionNeedsSignIn({this.message});
+
+  @override
+  List<Object?> get props => [message];
+}
 
 /// Session validation could not reach Supabase. Keep the local session and
 /// retry later instead of treating a transport failure as a logout.
-class AuthSessionCheckUnavailable extends AuthState {}
+class AuthSessionCheckUnavailable extends AuthState {
+  final String? message;
+
+  const AuthSessionCheckUnavailable({this.message});
+
+  @override
+  List<Object?> get props => [message];
+}
 
 class AuthSessionValidationInProgress extends AuthState {}
+
+class AuthPasswordRecoveryReady extends AuthState {}
+
+class AuthPasswordRecoveryInvalid extends AuthState {}
+
+class AuthPasswordRecoveryUpdating extends AuthState {}
+
+class AuthPasswordRecoveryUpdateFailed extends AuthState {
+  final String message;
+
+  const AuthPasswordRecoveryUpdateFailed(this.message);
+
+  @override
+  List<Object?> get props => [message];
+}
+
+class AuthPasswordRecoveryCompleted extends AuthState {}
 
 class Unauthenticated extends AuthState {}
 

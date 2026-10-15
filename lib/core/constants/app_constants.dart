@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:lastspot_app/core/base_import.dart';
 import 'package:lastspot_app/features/spot/domain/entities/join_request_entity.dart';
-import 'date_formats.dart';
 
 class AppConstants {
   AppConstants._();
@@ -15,7 +14,8 @@ class AppConstants {
   static bool get isIOS => !kIsWeb && Platform.isIOS;
   static bool get isAndroid => !kIsWeb && Platform.isAndroid;
   static bool get isWeb => kIsWeb;
-  static bool get isDesktop => !kIsWeb && (Platform.isMacOS || Platform.isWindows || Platform.isLinux);
+  static bool get isDesktop =>
+      !kIsWeb && (Platform.isMacOS || Platform.isWindows || Platform.isLinux);
 
   // Global Configs
   static const int paginationLimit = 20;
@@ -25,28 +25,53 @@ class AppConstants {
   // Data
   static List<String> getAvailableSports(BuildContext context) {
     return [
+      context.loc.sportCricket,
       context.loc.sportSoccer,
-      context.loc.sportBasketball,
-      context.loc.sportTennis,
       context.loc.sportVolleyball,
       context.loc.sportBadminton,
-      context.loc.sportTableTennis,
-      context.loc.sportCricket,
-      context.loc.sportSwimming,
-      context.loc.sportRunning,
+      context.loc.sportKabaddi,
+      context.loc.sportKhoKho,
+      context.loc.sportGilliDanda,
+      context.loc.sportSatoliya,
+      context.loc.sportKiteFlying,
       context.loc.sportCycling,
+      context.loc.sportRunning,
+      context.loc.sportTennis,
+      context.loc.sportBasketball,
+      context.loc.sportSkating,
+      context.loc.sportHockey,
+      context.loc.sportUltimateFrisbee,
+      context.loc.sportPickleball,
+      context.loc.sportTugOfWar,
+      context.loc.sportHiking,
+      context.loc.sportOutdoorYoga,
+      context.loc.sportTableTennis,
+      context.loc.sportSwimming,
     ];
   }
 
   // Utility Methods
   static String getMonthName(int month) {
     if (month < 1 || month > 12) return '';
-    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const months = [
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec',
+    ];
     return months[month - 1];
   }
 
   /// Formats a [DateTime] into a friendly display string for activities.
-  /// 
+  ///
   /// Example:
   /// - If [dt] is today, returns 'Today'
   /// - If [dt] is tomorrow, returns 'Tomorrow'
@@ -67,7 +92,7 @@ class AppConstants {
   }
 
   /// Returns the appropriate color for a given [JoinRequestStatus].
-  /// 
+  ///
   /// Example:
   /// - Pending -> Warning color (Orange/Yellow)
   /// - Accepted -> Success color (Green)

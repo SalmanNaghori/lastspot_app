@@ -38,8 +38,9 @@ class CreateSpotExistingImage extends StatelessWidget {
           right: 4,
           child: GestureDetector(
             onTap: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text(context.loc.deleteImageNotSupported)),
+              AppUtils.showSnackBar(
+                context,
+                context.loc.deleteImageNotSupported,
               );
             },
             child: Container(

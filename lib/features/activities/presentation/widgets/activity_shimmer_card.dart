@@ -18,11 +18,7 @@ class ActivityShimmerCard extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Expanded(
-                child: AppShimmerBox(
-                  height: Dimensions.r20.dynamicH,
-                ),
-              ),
+              Expanded(child: AppShimmerBox(height: Dimensions.r20.dynamicH)),
               SizedBox(width: Dimensions.r16.dynamicW),
               AppShimmerBox(
                 width: Dimensions.r60.dynamicW,
@@ -50,11 +46,7 @@ class ActivityShimmerCard extends StatelessWidget {
           height: Dimensions.r16.dynamicH,
         ),
         SizedBox(width: Dimensions.r8.dynamicW),
-        Expanded(
-          child: AppShimmerBox(
-            height: Dimensions.r14.dynamicH,
-          ),
-        ),
+        Expanded(child: AppShimmerBox(height: Dimensions.r14.dynamicH)),
       ],
     );
   }

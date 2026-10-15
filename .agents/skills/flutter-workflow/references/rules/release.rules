@@ -1,0 +1,22 @@
+# release.rules — CI, toolchain, versioning, flavors, store compliance, flags, forced update
+# SOP: sop/ci-cd.md, sop/release-and-versioning.md
+# Guardrails: guardrails/release.md, guardrails/security.md (SEC-17..19), guardrails/testing.md (TEST-9, TEST-20)
+# Checklist: checklists/release.md
+
+## CI
+MUST      CI-1   PR pipeline: pinned Flutter, pub get --enforce-lockfile, codegen check, format check, analyze, test. No merge on red/skipped.
+MUST      CI-2   One Flutter pin shared by developers, agents and CI (ND-13); run commands through it.
+MUST      CI-3   Regenerate code in CI and fail on diff when generated files are committed.
+MUST-NOT  CI-4   Commit or echo signing keys, store credentials or config JSONs; use the CI secret store.
+MUST      CI-5   Build store artefacts only in CI from a tag.
+MUST      CI-6   Protect default/release branches: required checks + review.
+
+## Release
+MUST      REL-1  version MAJOR.MINOR.PATCH+BUILD; BUILD strictly increases per upload; tag vX.Y.Z on the built commit.
+MUST      REL-2  Promote CHANGELOG [Unreleased] into the version section on release.
+MUST-NOT  REL-3  Branch feature code on flavor names; flavors differ only by config, ids, names, icons.
+MUST      REL-4  Update privacy manifest, App Store privacy labels, Play Data safety, account deletion, target SDK when the change requires it.
+MUST      REL-5  Pass checklists/release.md: integration tests, real-device smoke on both platforms, symbols uploaded, staged rollout.
+MUST      REL-6  Read flags via one FeatureFlags interface with safe local defaults; every flag has owner + removal date; remove expired flags.
+MUST-NOT  REL-7  Use remote config/flags to ship untested paths or behaviour that needs store review.
+MUST      REL-8  Backend-coupled apps: min-supported-version check at startup (force/soft update) that never blocks on network failure.

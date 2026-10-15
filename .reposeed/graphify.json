@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 4,
+  "package": "graphifyy",
+  "version": "0.9.49",
+  "platforms": [
+    "antigravity"
+  ],
+  "manager": "uvx-dependency",
+  "extractionMode": "ast-only",
+  "source": "https://pypi.org/project/graphifyy/",
+  "gitHooks": {
+    "enabled": true,
+    "mode": "post-commit-and-checkout"
+  }
+}

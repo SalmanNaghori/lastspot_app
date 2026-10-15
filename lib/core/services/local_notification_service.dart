@@ -13,7 +13,7 @@ class LocalNotificationService {
         AndroidInitializationSettings('@mipmap/ic_launcher');
     const InitializationSettings initializationSettings =
         InitializationSettings(android: initializationSettingsAndroid);
-        
+
     await _localNotificationsPlugin.initialize(
       settings: initializationSettings,
       onDidReceiveNotificationResponse: (NotificationResponse response) {
@@ -41,12 +41,12 @@ class LocalNotificationService {
 
     const AndroidNotificationDetails androidPlatformChannelSpecifics =
         AndroidNotificationDetails(
-      'lastspot_default',
-      'LastSpot Notifications',
-      importance: Importance.max,
-      priority: Priority.high,
-      showWhen: true,
-    );
+          'lastspot_default',
+          'LastSpot Notifications',
+          importance: Importance.max,
+          priority: Priority.high,
+          showWhen: true,
+        );
     const NotificationDetails platformChannelSpecifics = NotificationDetails(
       android: androidPlatformChannelSpecifics,
     );

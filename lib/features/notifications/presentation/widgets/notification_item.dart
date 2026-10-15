@@ -6,21 +6,26 @@ class NotificationItem extends StatelessWidget {
   final VoidCallback onTap;
   final VoidCallback onDismiss;
 
-  const NotificationItem({super.key, required this.notification, required this.onTap, required this.onDismiss});
+  const NotificationItem({
+    super.key,
+    required this.notification,
+    required this.onTap,
+    required this.onDismiss,
+  });
 
   IconData _getIconForType(String type) {
     switch (type) {
       case 'join_request':
-        return Icons.person_add;
+        return Icons.person_add_rounded;
       case 'join_accepted':
-        return Icons.check_circle;
+        return Icons.check_circle_rounded;
       case 'join_rejected':
-        return Icons.cancel;
+        return Icons.cancel_rounded;
       case 'broadcast':
-        return Icons.campaign;
+        return Icons.campaign_rounded;
       case 'system':
       default:
-        return Icons.info;
+        return Icons.info_outline_rounded;
     }
   }
 
@@ -43,6 +48,10 @@ class NotificationItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bool isUnread = !notification.isRead;
+    final categorySlug =
+        notification.data['sport_slug']?.toString() ??
+        notification.data['category']?.toString() ??
+        notification.data['category_slug']?.toString();
 
     return Dismissible(
       key: Key(notification.id),
@@ -52,27 +61,56 @@ class NotificationItem extends StatelessWidget {
         color: context.errorColor,
         alignment: Alignment.centerRight,
         padding: EdgeInsets.symmetric(horizontal: Dimensions.r16.dynamicW),
-        child: Icon(Icons.delete, color: AppColor.whiteColor),
+        child: Icon(Icons.delete_outline_rounded, color: AppColor.whiteColor),
       ),
       child: Material(
-        color: isUnread ? context.primaryColor.withValues(alpha: 0.05) : context.surfaceColor,
+        color: isUnread
+            ? context.primaryColor.withValues(alpha: 0.05)
+            : context.surfaceColor,
         child: InkWell(
           onTap: onTap,
           child: Container(
-            padding: EdgeInsets.symmetric(horizontal: Dimensions.r16.dynamicW, vertical: Dimensions.r12.dynamicH),
+            padding: EdgeInsets.symmetric(
+              horizontal: Dimensions.r16.dynamicW,
+              vertical: Dimensions.r12.dynamicH,
+            ),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                  padding: EdgeInsets.all(Dimensions.r10.dynamicW),
+                  width: Dimensions.r40.dynamicW,
+                  height: Dimensions.r40.dynamicH,
                   decoration: BoxDecoration(
-                    color: _getIconColorForType(notification.type, context).withValues(alpha: 0.1),
+                    color: _getIconColorForType(
+                      notification.type,
+                      context,
+                    ).withValues(alpha: 0.1),
                     shape: BoxShape.circle,
                   ),
-                  child: Icon(
-                    _getIconForType(notification.type),
-                    color: _getIconColorForType(notification.type, context),
-                    size: Dimensions.r20.dynamicH,
+                  child: Center(
+                    child: categorySlug != null && categorySlug.isNotEmpty
+                        ? Image.asset(
+                            AppAssets.getCategoryAsset(categorySlug),
+                            width: Dimensions.r24.dynamicW,
+                            height: Dimensions.r24.dynamicH,
+                            fit: BoxFit.contain,
+                            errorBuilder: (context, error, stackTrace) => Icon(
+                              _getIconForType(notification.type),
+                              color: _getIconColorForType(
+                                notification.type,
+                                context,
+                              ),
+                              size: Dimensions.r20.dynamicH,
+                            ),
+                          )
+                        : Icon(
+                            _getIconForType(notification.type),
+                            color: _getIconColorForType(
+                              notification.type,
+                              context,
+                            ),
+                            size: Dimensions.r20.dynamicH,
+                          ),
                   ),
                 ),
                 SizedBox(width: Dimensions.r12.dynamicW),
@@ -87,7 +125,9 @@ class NotificationItem extends StatelessWidget {
                               notification.title.capitalizeFirst(),
                               style: TextStyle(
                                 fontSize: Dimensions.r16.dynamicSP,
-                                fontWeight: isUnread ? FontWeight.bold : FontWeight.w600,
+                                fontWeight: isUnread
+                                    ? FontWeight.bold
+                                    : FontWeight.w600,
                                 color: context.textPrimary,
                               ),
                             ),
@@ -97,7 +137,10 @@ class NotificationItem extends StatelessWidget {
                             Container(
                               width: Dimensions.r8.dynamicW,
                               height: Dimensions.r8.dynamicH,
-                              decoration: const BoxDecoration(color: AppColor.errorColor, shape: BoxShape.circle),
+                              decoration: const BoxDecoration(
+                                color: AppColor.errorColor,
+                                shape: BoxShape.circle,
+                              ),
                             ),
                           ],
                         ],
@@ -105,12 +148,18 @@ class NotificationItem extends StatelessWidget {
                       SizedBox(height: Dimensions.r4.dynamicH),
                       Text(
                         notification.body,
-                        style: TextStyle(fontSize: Dimensions.r14.dynamicSP, color: context.textSecondary),
+                        style: TextStyle(
+                          fontSize: Dimensions.r14.dynamicSP,
+                          color: context.textSecondary,
+                        ),
                       ),
                       SizedBox(height: Dimensions.r4.dynamicH),
                       Text(
                         AppUtils.timeAgo(notification.createdAt),
-                        style: TextStyle(fontSize: Dimensions.r12.dynamicSP, color: context.textSecondary),
+                        style: TextStyle(
+                          fontSize: Dimensions.r12.dynamicSP,
+                          color: context.textSecondary,
+                        ),
                       ),
                     ],
                   ),

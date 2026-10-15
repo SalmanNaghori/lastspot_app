@@ -1,3 +1,5 @@
+import 'dart:developer' as developer;
+
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'installation_id_service.dart';
@@ -36,10 +38,27 @@ class AccountSessionService {
         'activate_my_session',
         params: {'p_device_identifier': installationId},
       );
-      return result == true
-          ? AccountSessionStatus.active
-          : AccountSessionStatus.inactiveOrUninitialized;
-    } catch (error) {
+      if (result == true) {
+        return AccountSessionStatus.active;
+      }
+      if (result == false || result == null) {
+        developer.log(
+          'activate_my_session returned an explicit rejection '
+          '(result: $result, type: ${result.runtimeType}). '
+          'The RPC response did not include a rejection reason.',
+          name: 'AccountSessionService',
+          level: 1000,
+        );
+        return AccountSessionStatus.inactiveOrUninitialized;
+      }
+      developer.log(
+        'activate_my_session returned an unexpected value type: ${result.runtimeType}',
+        name: 'AccountSessionService',
+        level: 1000,
+      );
+      return AccountSessionStatus.unavailable;
+    } catch (error, stackTrace) {
+      _logRpcError('activate_my_session', error, stackTrace);
       return _classifyError(error);
     }
   }
@@ -56,10 +75,26 @@ class AccountSessionService {
         'is_my_active_device',
         params: {'p_device_identifier': installationId},
       );
-      return sessionActive == true && deviceActive == true
-          ? AccountSessionStatus.active
-          : AccountSessionStatus.inactiveOrUninitialized;
-    } catch (error) {
+      if (sessionActive is bool && deviceActive is bool) {
+        if (sessionActive && deviceActive) return AccountSessionStatus.active;
+        developer.log(
+          'Session validation returned inactive status '
+          '(sessionActive: $sessionActive, deviceActive: $deviceActive)',
+          name: 'AccountSessionService',
+          level: 900,
+        );
+        return AccountSessionStatus.inactiveOrUninitialized;
+      }
+      developer.log(
+        'Session validation returned unexpected value types '
+        '(sessionActive: ${sessionActive.runtimeType}, '
+        'deviceActive: ${deviceActive.runtimeType})',
+        name: 'AccountSessionService',
+        level: 1000,
+      );
+      return AccountSessionStatus.unavailable;
+    } catch (error, stackTrace) {
+      _logRpcError('session validation', error, stackTrace);
       return _classifyError(error);
     }
   }
@@ -84,5 +119,24 @@ class AccountSessionService {
       return AccountSessionStatus.credentialsExpired;
     }
     return AccountSessionStatus.unavailable;
+  }
+
+  void _logRpcError(String operation, Object error, StackTrace stackTrace) {
+    final details = switch (error) {
+      AuthException() =>
+        'type: AuthException, status: ${error.statusCode}, '
+            'code: ${error.code}, message: ${error.message}',
+      PostgrestException() =>
+        'type: PostgrestException, code: ${error.code}, '
+            'message: ${error.message}',
+      _ => 'type: ${error.runtimeType}, message: $error',
+    };
+    developer.log(
+      '$operation failed ($details)',
+      name: 'AccountSessionService',
+      error: error,
+      stackTrace: stackTrace,
+      level: 1000,
+    );
   }
 }

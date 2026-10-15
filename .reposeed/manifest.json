@@ -1,0 +1,859 @@
+{
+  "schemaVersion": 1,
+  "generator": "reposeed@0.13.0",
+  "generatedAt": "2026-10-14T17:03:36.668207+00:00",
+  "platforms": [
+    "antigravity"
+  ],
+  "stacks": [
+    "flutter"
+  ],
+  "profiles": [],
+  "files": {
+    ".agents/skills/flutter-workflow/references/agent.md": {
+      "sha256": "be15738f7214a437d9e3fdb9d2fb5c91746d91ce2e7a075bf3c20eece05fc75a",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/references/guardrails/routing.md": {
+      "sha256": "c47cedf4561a1054eb884822b464614b13015f36e1a62e9bdedf494ceb985162",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/references/guardrails/architecture.md": {
+      "sha256": "36b018640e4724b1f768617f7e1cb3da73ebbbbf70dddd30fbb4a648bedc432d",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/references/guardrails/localization.md": {
+      "sha256": "3a5872680dd41e950471ab1dc452e7067d409963de6d0c16be28fe84ba374134",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/references/guardrails/platform.md": {
+      "sha256": "d2d0d977ebf5e8a7b8779eb976b50ad1274e22fd3ffe4bbebbf9f7b432d6e434",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/references/guardrails/networking.md": {
+      "sha256": "04819c0dba4ce8493cf4f3bc95bc3267cc8e226dad8b23fd5f9b013348a3adfc",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/references/guardrails/ai-development.md": {
+      "sha256": "715c2d663e93fcef0e7011d0b0f5accfc1eba79654948f8d27fbd3627543380f",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/references/guardrails/dependencies.md": {
+      "sha256": "deb0921642da67995161ce3b0a34ce431379561efec0f241924a8203920d29f3",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/references/guardrails/accessibility.md": {
+      "sha256": "be01d446491f83392bd81f504f0360a95f7535431f11a88831fc63996e3cce89",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/references/guardrails/state-management.md": {
+      "sha256": "449c33efb8c02e9abc3bc9b922622f25a2f4d670484e84b997d32553f765e002",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/references/guardrails/testing.md": {
+      "sha256": "d56cf5179fcf99010ebc063afc4888a998ad2df6015b37c811d0423932401c7b",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/references/guardrails/performance.md": {
+      "sha256": "af8da0d518f38463104fca34583d6f1f034159481bd28142f8c34c73baae1169",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/references/guardrails/README.md": {
+      "sha256": "3ea1a9091bcf24f926e4dce94963c6f1f6830f63a2d1c63c54e5bf27da2264a6",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/references/guardrails/persistence.md": {
+      "sha256": "4cb93be08d080998ce6352a3256122684d7959a1545b094f249ce3c804f348e3",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/references/guardrails/release.md": {
+      "sha256": "7e6fc9e75ae094378433a2d3fc030d207277090cd2cc2529e6b3bde45e52c2d2",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/references/guardrails/documentation.md": {
+      "sha256": "bf29d9f6dbe7a1c44fa5aa0db0f6a42bd321821e21d695e09b0ace39b65e1d63",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/references/guardrails/observability.md": {
+      "sha256": "8267fcc9131fc094e5d344f9f74727475e3a8507e59388545b412b43b40afd49",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/references/guardrails/ui.md": {
+      "sha256": "720dcd98babb499ad799593032fbc6513656d4b98b6482a22294a98ee87b13f8",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/references/guardrails/security.md": {
+      "sha256": "fee57d42f36dfb4be1e728d08f188a822d9aa4135fbd62fdc94da98473270e21",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/references/CHANGELOG.md": {
+      "sha256": "445dc051ccab1daca9b28ee2f722668c4d8c0c4dc667da87dd4cba3c17475bf2",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/references/checklists/greenfield-kickoff.md": {
+      "sha256": "6715050e5ecf7ee3b08a45ff34384ff1496a08213a5c3330fb82c33b77c0f586",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/references/checklists/new-feature.md": {
+      "sha256": "62962efef7319a704fccc88413db57a299511ef9c9114beecfbac7fe683cf13f",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/references/checklists/architecture-compliance.md": {
+      "sha256": "96fa246dbe234dd1b104458b205b9e901249891f3260ae33d81ff5298b654c0c",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/references/checklists/exception-request.md": {
+      "sha256": "8af07cc02bfe267bdb124250ce7e185344597b1dec072f8e7f771080fc85fe54",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/references/checklists/brownfield-audit.md": {
+      "sha256": "ede1042039372002b87b0055a4c16e1e373ba9393f7e66c17f6836a85d931f2c",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/references/checklists/release.md": {
+      "sha256": "5fd0703d3ee806bed9ff1bb1a6758ae45c94929943ee8b644311b82d8d0ee2e7",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/references/checklists/pr-review.md": {
+      "sha256": "30f404bd953f7920a66d798b774308d126eb9be3424e4bffd1778aeb26a26d6d",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/references/checklists/definition-of-done.md": {
+      "sha256": "98f6b637decf5ef82c635ccd40cbcf46cff72cff7f31afed46d0b7cae8c9d3d8",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/references/initial_prompt.txt": {
+      "sha256": "78e87d40f37fd33695010b4234d50700cddad249f4ffcf4951c579d6fccca9f6",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/references/sop/forms-and-validation.md": {
+      "sha256": "d0ea3b55d94bd583e32b4cf8c50fe1be9ea0a92a3fa0a4932a7313b82e8b1b90",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/references/sop/routing.md": {
+      "sha256": "c8367ca2ac37494f972490f6aa9c8e42cd75433adbc20aab0beb8ce263d005ba",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/references/sop/code-quality.md": {
+      "sha256": "925603b0fac11b9d6253bd370863b0ee95f1bdd1fa961848dbe330483c12ac7e",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/references/sop/architecture.md": {
+      "sha256": "dab9aa0df95f138a663fcc583831cc3980fe7e968432e52047841fe84ee0e101",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/references/sop/localization.md": {
+      "sha256": "9bc48523444051267f838798513d930d02f714dbbdb8bacaae5a9c015c37c04f",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/references/sop/networking.md": {
+      "sha256": "73651d1e4efe57bff5a4fa43e6c634e66879e7be510399142e021d5f82f14acf",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/references/sop/persistence-and-offline.md": {
+      "sha256": "d145c0175c75f7810c2b67e3b3ac4c8ea353c800d8027b6f3392ae762f3222d8",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/references/sop/git-and-pr.md": {
+      "sha256": "f7d8a0d833fdc547a6f562d2ca464f54ea83786022c2937f478e46e0dd34273c",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/references/sop/dependency-management.md": {
+      "sha256": "13ac5c5510aa2fbf9c497403192439f0cabde45f8b063c91080406433f50e6c9",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/references/sop/async-programming.md": {
+      "sha256": "d18ef7b76edd1eac73465cd6a314de655e83d7d4498c18f479d011b1d736fe9f",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/references/sop/accessibility.md": {
+      "sha256": "e1a0b2b84b28e7cfa8d29366b0c9991989067d06cbacbec154a466da6a058597",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/references/sop/release-and-versioning.md": {
+      "sha256": "5c11696be4a902c69975f9e6604d588289834b048479717f599ac14009155284",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/references/sop/state-management.md": {
+      "sha256": "bca54e1547a9e5d9ac309a36dae6c5296275c02c3714028b33049489884ed749",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/references/sop/dependency-injection.md": {
+      "sha256": "90ae183a3cb36a85ec06fab10445d8edd8a0cb340ba24459969426181b6050ef",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/references/sop/testing.md": {
+      "sha256": "3a11d08e50da8753ab11ffb2ec13ad5a0b7a659a0f2e97ecc12b15b9e1b7e9d2",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/references/sop/naming-conventions.md": {
+      "sha256": "ed885053e541d62992d62fc240a27fbf3d66c77c1c5712549c0ed42e4aacf9dd",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/references/sop/theming-and-responsive.md": {
+      "sha256": "af9ad2def4c642b8c1a29e7d4e4b4962d55f94973d5a96f7c1e1d7f81ce3eebb",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/references/sop/repository.md": {
+      "sha256": "43edb697630caba0c8006597d724b39fd76d7d45ec8d608c743cf74e1333f77c",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/references/sop/bloc.md": {
+      "sha256": "9f0a2696ac9819afdff23bea92551575f6ae48f308916c9ae35f65c8b20ec6cc",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/references/sop/performance.md": {
+      "sha256": "97118cda70becb36f7fec1de2fed46a204796c4681ff9cbd69a6e3847af0de51",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/references/sop/README.md": {
+      "sha256": "85934ec83b303099c48a83600f1eb51dcbac05de1729076eea41d5a48d3b4275",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/references/sop/feature-architecture.md": {
+      "sha256": "608286f45f73c0d8abfa281cfe7bb7c082ba8a62f898845fa35c1c004c400e0c",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/references/sop/configuration.md": {
+      "sha256": "ffc81d95a95d7d7c75c37f2a43b7ef223509a2ed6c529a55ee3bf02235b9ec8b",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/references/sop/ui-architecture.md": {
+      "sha256": "985fdd523f0cb51d5327efea1a4e705ea29ce9921d8b159cb8e5715a59ca81dd",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/references/sop/platform-integration.md": {
+      "sha256": "0c6296ad9f6ecc1578a87c7b4e9f6d08df37c723ea7918be59c60fcc55c385c1",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/references/sop/models-and-data.md": {
+      "sha256": "457b7b4721abe0a88e8ad3a30a3e2802a9e7208c389dc7caca5cb56e00c8a12a",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/references/sop/observability.md": {
+      "sha256": "9f79325f0abf8683fd3ce1795f7fb28784222175409401d645796b00199bf020",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/references/sop/error-handling.md": {
+      "sha256": "26264c1e4d1263219f3b2f25f9ed94af743c4592af80386d084c4b243074db24",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/references/sop/living-docs.md": {
+      "sha256": "271ce0f589f5a4ee7802de20426a628e74aa6c16d30ba3adb69e56b63565c462",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/references/sop/ci-cd.md": {
+      "sha256": "8703a680c58293299eaf780533c25d26f72adb543d444026b9c7256d0f3e9563",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/references/sop/project-structure.md": {
+      "sha256": "8dbd829d705ef9a8bdbaafd1a0899d6832e4fa8e4b174d3df554fa1248391fa9",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/references/sop/security.md": {
+      "sha256": "c711ca35c9c8d9ac597367a31dfd66558842fc89a8e37c9af241372926ae4328",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/references/sop/definition-of-done.md": {
+      "sha256": "34ef8cdb37845513bfe91442797aac7b3b789af0cf32340cbb3c98f83c9263de",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/references/REPOSEED.md": {
+      "sha256": "41fab30f45151f2cf4d9f2437cfd724a6484d7e4bb7f43faf8c63d5752dc1116",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/references/rules/security.rules": {
+      "sha256": "9cb5f0ebe7db9601c0068ffdce1da0e5583abc0ad2d524e8ff8fbae1b49a2729",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/references/rules/bloc.rules": {
+      "sha256": "86a7a972b6e69160e5a0e395db3e476deffcf90ba5a3fe4d3f3f081fce0eddd5",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/references/rules/error.rules": {
+      "sha256": "d3cdd97d3a562de8c9f1a11edfb2451387ed5f91a6538614c36201e551b5712c",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/references/rules/localization.rules": {
+      "sha256": "138909626516f89adb16cc929602635a6c82283ec0f826f61d98c2814ab2c2ba",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/references/rules/networking.rules": {
+      "sha256": "4c2f63620b9e27e4924c0e6171495218eb2d2ba34aa47a3f5e7f5660b60b7a64",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/references/rules/persistence.rules": {
+      "sha256": "335f53a239b8b349d342e700af8fc9e00fa1502eeec4f7d0b931253ecb1175c3",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/references/rules/performance.rules": {
+      "sha256": "a43f1542c1365d71fe7fbff8a7af1da5be7392796f112c9f4b54bd6c745fe75c",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/references/rules/naming.rules": {
+      "sha256": "3d698b56e46885c5f4b6095056e7d9d31754b9fa8a73d49020566f3e24cf2059",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/references/rules/accessibility.rules": {
+      "sha256": "116edb0a5e9e929eec38bce275f8df54a05d3eacb422cbd82adc46a2e8e47eb5",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/references/rules/state.rules": {
+      "sha256": "93ec3462c684b96ffb613f770b2d7d4bf664449b2ca3700e5a53ee9b7b340393",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/references/rules/README.md": {
+      "sha256": "8a43b27f93286e6336ff6c3d7041e4ad5845a929aac246ac828b7707f1ad05c9",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/references/rules/architecture.rules": {
+      "sha256": "a6e26165b71e0a17372fe6188f328a8748f2fa67b2782bcdcf3a9990003d850e",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/references/rules/flutter.rules": {
+      "sha256": "fcd98076bd6e13aa1461115cc3b8cfa9bdaa03de0af9f6dff68442097625f17e",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/references/rules/docs.rules": {
+      "sha256": "d24171860c09edb5abdfce87763b1bbc7ca0d460284725a5c39210ee04498ab6",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/references/rules/testing.rules": {
+      "sha256": "6910bb5e12718fa6908bdfcb48921e49a8d7f85ee5b28fd1ef892832d7e4149c",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/references/rules/platform.rules": {
+      "sha256": "530a8ef3e2e22b7eedf66bb1a8928ae8947b246749f656d656d2a7288dfb95c0",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/references/rules/release.rules": {
+      "sha256": "f0ddf370fc7df130b3fdf0e7287ee124041bc4be685c9ec6b8fee8a5764a47b8",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/references/rules/dependency.rules": {
+      "sha256": "819f2bff5af06f3270c42b9e1830e429ce0828845ba497dce8033b9a26626f0d",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/references/rules/routing.rules": {
+      "sha256": "f5964cb9bb829ae048e0b694684d215a4719c1e1cd89a64d0a7ca5cc036030be",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/references/rules/ai-agent.rules": {
+      "sha256": "c8fa04f61e6bbb668e884176a3c1c1deb387b013b646a5021f92f0817b985863",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/references/rules/ui.rules": {
+      "sha256": "21d89a81baaefeea5fbfb2691f29d094624bbd1296db607e734f161b452fca2e",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/references/rules/observability.rules": {
+      "sha256": "5b1a220c26bd1aac41cda1b934e01dfab0c082d012a3d42166f13116cc2c0777",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/references/ADOPT.md": {
+      "sha256": "d427a43c041f21eec335f0a45f7ac22165e0c3e793b76422bc5ccab7721be1b7",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/references/profiles/README.md": {
+      "sha256": "e998003b28957caff0f5dd5e2bbb3fe578eb6bc97c7477f045120b86d7370962",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/references/profiles/reference/adr/0001-layer-first-structure.md": {
+      "sha256": "23043f65f9156ee84667c7a6eb7b51ea97ae70532e6821cd810257211240e53c",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/references/profiles/reference/adr/0002-get-it-service-locator.md": {
+      "sha256": "7f75242c42cb251a8973a8ad5af6297d17e4a74e7a8a3d36c94306c2b172ebc7",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/references/profiles/reference/adr/0008-env-config-dart-define.md": {
+      "sha256": "0be3eeea86fdadfe26c38f2ccc019365da31da9f855b753f3665d5de745eef4c",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/references/profiles/reference/adr/0004-auto-route-navigation.md": {
+      "sha256": "4969ea4899fdf074bd37351143d445fd638eb9291e7ad82f8a694fbbe0168e3e",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/references/profiles/reference/adr/0006-hive-and-encrypted-getstorage.md": {
+      "sha256": "7ab637c381a792008445c720afddccda62725fcdcc213aaa27e74d0e461f747e",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/references/profiles/reference/adr/0005-dio-either-single-model-layer.md": {
+      "sha256": "d5f5d6de2e725302b1361edc6b43286a21b9d53491bb3270212665d5ad5fa838",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/references/profiles/reference/adr/0003-flutter-bloc-basecubit-status.md": {
+      "sha256": "0a55957b73528127093d7661df8605642e89c27032ee1c2884adc8ae915cc991",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/references/profiles/reference/adr/0007-global-event-bus-realtime.md": {
+      "sha256": "a5ea530890ce0b676775e1560530edf771a8a780e3f6fc0b9e47e3f32c25e2eb",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/references/profiles/reference/rules-overlay.md": {
+      "sha256": "556221ef858b054716ce4c97bf4ce2780253f55903e634efc493934735354a74",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/references/profiles/reference/architecture-map.md": {
+      "sha256": "06cd65597f39de682958d4d6b0df851e83e7e8bc693dde21d9c12d4312781e43",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/references/profiles/reference/README.md": {
+      "sha256": "090b43bec922536aed3e922298acbbec1489e2adf81aebe62d4844a48d183933",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/references/profiles/reference/audit-report.md": {
+      "sha256": "44ba89a6c6d31ff73d3bad1b301481bfd8b8adc3abf7d09c5406d51a71d0d0a4",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/references/profiles/reference/dependency-inventory.md": {
+      "sha256": "f966799c3714cd02f0b5d8787a778a2ce8be9bd99a7b63c92f3ac84edc7d86a5",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/references/profiles/reference/project-rules.md": {
+      "sha256": "6a3fdd9b6476e66d44990f57ec7ae995a762bdec322cfdc0d477e4fd67aff6f5",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/references/profiles/reference/remediation-backlog.md": {
+      "sha256": "0f6013a3e0d96bf9efb47aa63b1468a7baa4586bd2080534537cda7c1e6e16e3",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/agents/openai.yaml": {
+      "sha256": "c8682a4f4f269282367545dccd325dd373bf5c37cdd4fc2f9af1b52bcf917a90",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/scripts/check_compliance.py": {
+      "sha256": "70613f6c62d8611d794dd884277890719f6bb6c19aa2d02d6037ad2b4c1b267b",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/SKILL.md": {
+      "sha256": "52d020b4291ac581e04213ab27432d06df6de0c4797ee4d745c6b2786ae1085e",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/assets/.cursor/rules/flutter-ai.mdc": {
+      "sha256": "7242cfc42116c2fcb09d1894d6ebf2701ba47e213b61d0418a9a180c3a8a93c8",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/assets/adr/TEMPLATE.md": {
+      "sha256": "06bfeb6c5a6cf58f19aaaa6426726619d590ad75308c01699bd07794ad3d93f7",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/assets/adr/README.md": {
+      "sha256": "29b6f033699daab0673939a51eb889ac5d382c62919ee8dd3fabaf57e45d2fe5",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/assets/project/architecture-map.md": {
+      "sha256": "e4f2ad5e7f35e39d35bf0f1c5a8872ece341af167bc8deb4a7a8377b606788d2",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/assets/project/README.md": {
+      "sha256": "84753d939023a55f4716c938104eed73ac2f94e183aca7814ec65cce4eea8dd1",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/assets/project/audit-report.md": {
+      "sha256": "62c5367ce644d9832b666bdf3567ed7175f4ece8f0b24df64d12e348ee3590b0",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/assets/project/dependency-inventory.md": {
+      "sha256": "a991aee807f5622df3f204def4221818c0bd9ba3ec38aeb987203ebff69674c7",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/assets/project/project-rules.md": {
+      "sha256": "fa8144d6cc3619486b7b8ae79e59f386ea93ebcccaab60ce0f218e138879fe51",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/assets/project/features.md": {
+      "sha256": "61dea92c266f5f99d48cc205de2f62c82fe4a9091664646be7092210501a99c3",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/assets/project/remediation-backlog.md": {
+      "sha256": "998526284289acb5239d0136c28536321b213d54e2c6b9cda83a895232201d65",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/assets/.github/pull_request_template.md": {
+      "sha256": "ae1e5631b493f2412a23fcc32abd42ee8bfab8c6bfb5636c7821e8c0aea76f6f",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/assets/.github/copilot-instructions.md": {
+      "sha256": "e6e8a9c5c88a17fd1e3e62c879c85301abf52948d162885cfab08790bbcd7995",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/assets/templates/CHANGELOG.md": {
+      "sha256": "41f077c47c5be140638fdb10ac155e8f51a3e25fd15a336412601b5a3b2b4dfe",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/assets/templates/README.md": {
+      "sha256": "2b5ad73714bb8a903b978d8872eafe7cd72facf6e6969fe7b4f12b9cbc93a0e3",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/assets/templates/CONTRIBUTING.md": {
+      "sha256": "abdb847491c0405cd10470d43921e63c2b9582870e220467995240bde66f0c5b",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/assets/templates/AGENTS.md": {
+      "sha256": "42b9a951d8a97ff155405e58a17c496eee94ff761a28edb2fdbfb17c8ed6fa12",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".agents/skills/flutter-workflow/assets/templates/CLAUDE.md": {
+      "sha256": "77acbb4e29983a52a94a22120af18dd539aa32377d9a52fa002b8a2f6ed8bc33",
+      "source": "Flutter workflow",
+      "mode": "file"
+    },
+    ".gitignore": {
+      "sha256": "3278d039e7db3e53604e06f9590a25eb7b2d5632b565ce9b976477b69f7b3af8",
+      "source": "managed Graphify local-state exclusions",
+      "mode": "managed-block"
+    },
+    "AGENTS.md": {
+      "sha256": "c168d880033578d37784d98f2bb6d198969b7f049e2f5afdc9016a84f689fcd6",
+      "source": "Flutter stack routing",
+      "mode": "managed-block"
+    },
+    "AGENTS.local.md": {
+      "sha256": "1203df4dbdac005002f6ddcb40eab2326b8fa8248661af90ded20cfd6f8dee95",
+      "source": "detected-project-guidance",
+      "mode": "managed-block"
+    },
+    ".reposeed/guides/OPERATING_GUIDELINES.md": {
+      "sha256": "05c99428f1b31c8005bef21bae4340e593a2c4ceb315556b8542204063846541",
+      "source": "foundation/OPERATING_GUIDELINES.md",
+      "mode": "file"
+    },
+    ".reposeed/guides/GRAPHIFY.md": {
+      "sha256": "51bdc02393cc581a0bdd8bb2311f08c777e134c1adbe954adfee99b4731534a1",
+      "source": "foundation/GRAPHIFY.md",
+      "mode": "file"
+    },
+    ".reposeed/guides/PONYTAIL.md": {
+      "sha256": "0ca2f8c60e5c31f9d57548dabe4220f20370c8173aa1be868c1862b005c877bd",
+      "source": "foundation/PONYTAIL.md",
+      "mode": "file"
+    },
+    ".reposeed/guides/PLATFORM_SUPPORT.md": {
+      "sha256": "d64a57303a632ecc5e830a332f7e3f997f7dfb0308dc84c3f12dc071e8b6fb97",
+      "source": "foundation/PLATFORM_SUPPORT.md",
+      "mode": "file"
+    },
+    ".agents/skills/clarify-before-building/agents/openai.yaml": {
+      "sha256": "ed1f7cb773499fee2a0e40f880ca9ab73db33f425a8a040c9d389837284ebb9b",
+      "source": "foundation skill clarify-before-building",
+      "mode": "file"
+    },
+    ".agents/skills/clarify-before-building/SKILL.md": {
+      "sha256": "ddc3667aad94287cda92086f78d7921010639d8aefd3ecdf0c77fa2b18beaaa5",
+      "source": "foundation skill clarify-before-building",
+      "mode": "file"
+    },
+    ".agents/skills/code-review/agents/openai.yaml": {
+      "sha256": "45e4abb3b81baba8e8e9a1992c29765c738ab3f056ea8b3bb94a79a6ed3947b4",
+      "source": "foundation skill code-review",
+      "mode": "file"
+    },
+    ".agents/skills/code-review/SKILL.md": {
+      "sha256": "a9a4533ea40faca1c9eb1c8f708a735cca75aa6e1b0d3bac7fd26e9aabc6d279",
+      "source": "foundation skill code-review",
+      "mode": "file"
+    },
+    ".agents/skills/compounding-knowledge/agents/openai.yaml": {
+      "sha256": "95a78d7ab5dc80e24a290a98d1980c615511692202c80a16b074da3b9c623dae",
+      "source": "foundation skill compounding-knowledge",
+      "mode": "file"
+    },
+    ".agents/skills/compounding-knowledge/SKILL.md": {
+      "sha256": "3e1c7d4305422de95f75efb42374a15fe2988a075d8c73625967da6fcdf21944",
+      "source": "foundation skill compounding-knowledge",
+      "mode": "file"
+    },
+    ".agents/skills/diagnosing-bugs/agents/openai.yaml": {
+      "sha256": "f8d0678ff5dc465ce7ba332e49ecc5e13bb93036173ebea44dd29cd5fa56c9dd",
+      "source": "foundation skill diagnosing-bugs",
+      "mode": "file"
+    },
+    ".agents/skills/diagnosing-bugs/SKILL.md": {
+      "sha256": "14371f976c4535a2aab31eb568e119e929ab2dc6d52286994ed3083e6e29f8d0",
+      "source": "foundation skill diagnosing-bugs",
+      "mode": "file"
+    },
+    ".agents/skills/ponytail/LICENSE": {
+      "sha256": "b08ee8ff5ae1e8a72506826fb0a7762d18e96997c10555c7ae91b3b8c28b5976",
+      "source": "foundation skill ponytail",
+      "mode": "file"
+    },
+    ".agents/skills/ponytail/agents/openai.yaml": {
+      "sha256": "e0f032fa14904675043fd4a0225b5d1cd59bbcea40ced8ffdd0ae07ec2929f7e",
+      "source": "foundation skill ponytail",
+      "mode": "file"
+    },
+    ".agents/skills/ponytail/SKILL.md": {
+      "sha256": "b36752a82b5430ca21b531c700bca30e597c6880392d341b3fe464a0478556ad",
+      "source": "foundation skill ponytail",
+      "mode": "file"
+    },
+    ".agents/skills/ponytail-audit/agents/openai.yaml": {
+      "sha256": "3282ffa77dabea9394b49e02ad6e7fe148ab8d00eaf86fbd6a56d24fd62ee6c1",
+      "source": "foundation skill ponytail-audit",
+      "mode": "file"
+    },
+    ".agents/skills/ponytail-audit/SKILL.md": {
+      "sha256": "eb05c4d27d42fdbdab865ac415d4ba6432bf62d1aca79b48c77abb2a7c8824bb",
+      "source": "foundation skill ponytail-audit",
+      "mode": "file"
+    },
+    ".agents/skills/ponytail-debt/agents/openai.yaml": {
+      "sha256": "d4a8c568609e45269cf41a7b2f2983ff1eceb25539380fc8ea7ace57a280449a",
+      "source": "foundation skill ponytail-debt",
+      "mode": "file"
+    },
+    ".agents/skills/ponytail-debt/SKILL.md": {
+      "sha256": "9ea5321ba256e690180c60745c1896009c80b6be952ef18f2ee6d4e5876081d4",
+      "source": "foundation skill ponytail-debt",
+      "mode": "file"
+    },
+    ".agents/skills/ponytail-gain/agents/openai.yaml": {
+      "sha256": "c0db8e01bc1f40d5c29edb8f5e8387c363d8006a57174477b6ee355ba304f7da",
+      "source": "foundation skill ponytail-gain",
+      "mode": "file"
+    },
+    ".agents/skills/ponytail-gain/SKILL.md": {
+      "sha256": "5c6362f68be0c88591e03beae43dcb003e391512ee83dc2cf14b85b23f820caa",
+      "source": "foundation skill ponytail-gain",
+      "mode": "file"
+    },
+    ".agents/skills/ponytail-help/agents/openai.yaml": {
+      "sha256": "65101b12ad6d7855eea9f96ec97ab56052feee49b21ecd048a4d04fde741b2b2",
+      "source": "foundation skill ponytail-help",
+      "mode": "file"
+    },
+    ".agents/skills/ponytail-help/SKILL.md": {
+      "sha256": "df35fada77e7597725b75a72202f538352ef146421667a65d97f943dbe8e624e",
+      "source": "foundation skill ponytail-help",
+      "mode": "file"
+    },
+    ".agents/skills/ponytail-review/agents/openai.yaml": {
+      "sha256": "7672f2e69830538ab539f38562d2d10291ded2a34feaf4dfdf653509c9d618d6",
+      "source": "foundation skill ponytail-review",
+      "mode": "file"
+    },
+    ".agents/skills/ponytail-review/SKILL.md": {
+      "sha256": "909b470aaf7143c803e68cd3b91be17deea61b307916266f902250239d4914de",
+      "source": "foundation skill ponytail-review",
+      "mode": "file"
+    },
+    ".agents/skills/project-understanding/references/diagrams.md": {
+      "sha256": "429b083d24543b56b50422da8b1754f281106bfde91483a2e816692bcc8643bb",
+      "source": "foundation skill project-understanding",
+      "mode": "file"
+    },
+    ".agents/skills/project-understanding/references/explain.md": {
+      "sha256": "ac44cbddbd5082f7bf60c87389f690107b6c63dd7a12a0f2b65250e947b23420",
+      "source": "foundation skill project-understanding",
+      "mode": "file"
+    },
+    ".agents/skills/project-understanding/references/tracking.md": {
+      "sha256": "ff0044e64a9cf41686c8eaa9a5fb91e997fad77fae4912df3e571abe0871cc0c",
+      "source": "foundation skill project-understanding",
+      "mode": "file"
+    },
+    ".agents/skills/project-understanding/references/preview.md": {
+      "sha256": "262d849abd44eebf4c1697393b6f022261303b2e102cda446a98ac3460cc6ee7",
+      "source": "foundation skill project-understanding",
+      "mode": "file"
+    },
+    ".agents/skills/project-understanding/references/maintain.md": {
+      "sha256": "f0f86fe1ab1e68723b534b8c6f68a31bb1d429ad372811b1bacfde28df001357",
+      "source": "foundation skill project-understanding",
+      "mode": "file"
+    },
+    ".agents/skills/project-understanding/agents/openai.yaml": {
+      "sha256": "3cce3d0b00b5fabc6655abf2bdde32b4a72c388ccd0d1b9659c2c457600a2855",
+      "source": "foundation skill project-understanding",
+      "mode": "file"
+    },
+    ".agents/skills/project-understanding/SKILL.md": {
+      "sha256": "79a668aeec549568b8df5e6ca17de801dc9380a060770d4dff106496274acc3c",
+      "source": "foundation skill project-understanding",
+      "mode": "file"
+    },
+    ".agents/skills/prompt-enhancer/agents/openai.yaml": {
+      "sha256": "e4a84fa5404738fc6caea5b670a675296c190b3704a4f9ddf9e50247fe31b79c",
+      "source": "foundation skill prompt-enhancer",
+      "mode": "file"
+    },
+    ".agents/skills/prompt-enhancer/SKILL.md": {
+      "sha256": "b8b7c6eb0ae103729daa1b77ffc005575eb34645fd304b92f1cd4825a7c514e5",
+      "source": "foundation skill prompt-enhancer",
+      "mode": "file"
+    },
+    ".agents/skills/security-checklist/agents/openai.yaml": {
+      "sha256": "66acdfaa1efd611621c509a2b76869fb6d7e704050ac54bc6daee09dff0d0e6b",
+      "source": "foundation skill security-checklist",
+      "mode": "file"
+    },
+    ".agents/skills/security-checklist/SKILL.md": {
+      "sha256": "e61fa09570e2c36f8bbb2140480556a64898db01412ffad3492d20a6b79e7cf0",
+      "source": "foundation skill security-checklist",
+      "mode": "file"
+    },
+    ".agents/skills/tdd/agents/openai.yaml": {
+      "sha256": "54255f5b6a60d15720fd25434601a64f4b4f8ab305e5e8fff5aeeaa5e02d011c",
+      "source": "foundation skill tdd",
+      "mode": "file"
+    },
+    ".agents/skills/tdd/SKILL.md": {
+      "sha256": "cc2a688aeef914e57c53fd7d8533e72e26b5e4c15127736ed9d50adc7d6f549d",
+      "source": "foundation skill tdd",
+      "mode": "file"
+    },
+    ".agents/skills/verification-before-completion/agents/openai.yaml": {
+      "sha256": "db0007c5543bb724c2f4318ee9cc522258ca029a13586f150cc953a1e8104c6b",
+      "source": "foundation skill verification-before-completion",
+      "mode": "file"
+    },
+    ".agents/skills/verification-before-completion/SKILL.md": {
+      "sha256": "ee835578d70929df49fecda79a998f7c77efe9f29d53d6a58ea44988663c0a63",
+      "source": "foundation skill verification-before-completion",
+      "mode": "file"
+    },
+    ".agents/skills/writing-plans/agents/openai.yaml": {
+      "sha256": "0902f8d54065d8d381e5276ea3e885d676ff350aef0dc977ddd1467a040c439f",
+      "source": "foundation skill writing-plans",
+      "mode": "file"
+    },
+    ".agents/skills/writing-plans/SKILL.md": {
+      "sha256": "2f50a1e2f5965cd92571e357a84aa3dc89066352f3fda3c1616368a0f8b62e5b",
+      "source": "foundation skill writing-plans",
+      "mode": "file"
+    },
+    ".reposeed/config.json": {
+      "sha256": "2f8f072d7d24a5ec98b31b15b22a95ce9403f024b39da58cb199fb0b63720c1b",
+      "source": "configuration",
+      "mode": "file"
+    },
+    ".reposeed/graphify.json": {
+      "sha256": "393e276a7ba79a0599da07948c95caa463e057dd8411768f2709cbc0e5079cda",
+      "source": "managed Graphify integration",
+      "mode": "file"
+    }
+  }
+}

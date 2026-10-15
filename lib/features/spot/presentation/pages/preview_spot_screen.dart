@@ -156,16 +156,36 @@ class PreviewSpotScreen extends StatelessWidget {
                   vertical: Dimensions.r6.dynamicH,
                 ),
                 decoration: BoxDecoration(
-                  color: context.primaryColor,
+                  color: context.primaryColor.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(Dimensions.r16.dynamicR),
-                ),
-                child: Text(
-                  categoryName,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: Dimensions.r12.dynamicSP,
-                    fontWeight: FontWeight.bold,
+                  border: Border.all(
+                    color: context.primaryColor.withValues(alpha: 0.25),
                   ),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Image.asset(
+                      AppAssets.getCategoryAsset(categoryName.toLowerCase()),
+                      width: Dimensions.r18.dynamicW,
+                      height: Dimensions.r18.dynamicH,
+                      fit: BoxFit.contain,
+                      errorBuilder: (context, error, stackTrace) => Icon(
+                        Icons.sports_soccer_rounded,
+                        size: Dimensions.r16.dynamicH,
+                        color: context.primaryColor,
+                      ),
+                    ),
+                    SizedBox(width: Dimensions.r6.dynamicW),
+                    Text(
+                      categoryName,
+                      style: TextStyle(
+                        color: context.primaryColor,
+                        fontSize: Dimensions.r13.dynamicSP,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ],
                 ),
               ),
               SizedBox(height: Dimensions.r16.dynamicH),
@@ -195,7 +215,10 @@ class PreviewSpotScreen extends StatelessWidget {
                 icon: Icons.location_on_outlined,
                 text: formState.selectedCity.value != null
                     ? '${formState.selectedCity.value!.name} • ${AppUtils.getDisplayLocation(context, formState.locationController.text)}'
-                    : AppUtils.getDisplayLocation(context, formState.locationController.text),
+                    : AppUtils.getDisplayLocation(
+                        context,
+                        formState.locationController.text,
+                      ),
                 onTap: () {
                   AppUtils.launchMap(formState.locationController.text);
                 },

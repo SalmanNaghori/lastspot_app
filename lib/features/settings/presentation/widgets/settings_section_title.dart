@@ -3,10 +3,7 @@ import 'package:lastspot_app/core/base_import.dart';
 class SettingsSectionTitle extends StatelessWidget {
   final String title;
 
-  const SettingsSectionTitle({
-    super.key,
-    required this.title,
-  });
+  const SettingsSectionTitle({super.key, required this.title});
 
   @override
   Widget build(BuildContext context) {

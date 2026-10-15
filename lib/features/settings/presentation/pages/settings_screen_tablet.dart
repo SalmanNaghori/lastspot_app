@@ -41,14 +41,14 @@ class SettingsScreenTablet extends StatelessWidget {
           child: BlocBuilder<SettingsCubit, SettingsState>(
             builder: (context, state) {
               return ListView(
-                padding: const EdgeInsets.all(Dimensions.r24),
+                padding: EdgeInsets.all(Dimensions.r24.dynamicW),
                 children: [
                   SettingsSectionTitle(title: context.loc.themeTitle),
                   ThemeSelectorCard(state: state),
-                  const SizedBox(height: Dimensions.r32),
-                  const SettingsSectionTitle(title: 'App color'),
+                  SizedBox(height: Dimensions.r32.dynamicH),
+                  SettingsSectionTitle(title: context.loc.appColorTitle),
                   AppColorSelectorCard(state: state),
-                  const SizedBox(height: Dimensions.r32),
+                  SizedBox(height: Dimensions.r32.dynamicH),
                   SettingsSectionTitle(title: context.loc.languageTitle),
                   LanguageSelectorCard(state: state),
                 ],

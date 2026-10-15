@@ -1,18 +1,14 @@
-import 'dart:math' as math;
-
-import 'package:url_launcher/url_launcher.dart';
 import 'package:lastspot_app/core/base_import.dart';
-import 'package:lastspot_app/gen/assets.gen.dart';
-import 'package:lottie/lottie.dart';
+import 'package:url_launcher/url_launcher.dart';
+
 import '../../../auth/presentation/bloc/auth_bloc.dart';
 import '../../../auth/presentation/bloc/auth_event.dart';
 import '../../../auth/presentation/bloc/auth_state.dart';
+import '../../data/models/app_settings_model.dart';
 import '../bloc/startup_bloc.dart';
 import '../bloc/startup_event.dart';
 import '../bloc/startup_state.dart';
-import '../../data/models/app_settings_model.dart';
-import '../../../../core/di/service_locator.dart';
-import '../../../../core/utils/shared_prefs_util.dart';
+import '../widgets/splash_branding_view.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -21,7 +17,12 @@ class SplashScreen extends StatefulWidget {
   State<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> {
+class _SplashScreenState extends State<SplashScreen>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _animController;
+  late final Animation<double> _fadeAnimation;
+  late final Animation<double> _scaleAnimation;
+
   @override
   void initState() {
     super.initState();
@@ -29,13 +30,78 @@ class _SplashScreenState extends State<SplashScreen> {
       SystemUiMode.manual,
       overlays: const [SystemUiOverlay.bottom],
     );
+
+    _animController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 900),
+    );
+
+    _fadeAnimation = CurvedAnimation(
+      parent: _animController,
+      curve: const Interval(0.0, 0.75, curve: Curves.easeOutCubic),
+    );
+
+    _scaleAnimation = Tween<double>(begin: 0.92, end: 1.0).animate(
+      CurvedAnimation(
+        parent: _animController,
+        curve: const Interval(0.0, 0.85, curve: Curves.easeOutCubic),
+      ),
+    );
+
+    _animController.forward();
     context.read<StartupBloc>().add(StartupInitialCheckRequested());
   }
 
   @override
   void dispose() {
+    _animController.dispose();
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
     super.dispose();
+  }
+
+  void _onStartupStateChanged(BuildContext context, StartupState state) {
+    state.maybeWhen(
+      success: () {
+        _continueAfterStartup(context);
+      },
+      maintenanceMode: (title, message) {
+        context.go(
+          AppRoutes.maintenance,
+          extra: {'title': title, 'message': message},
+        );
+      },
+      updateRequired: (messageData, storeUrl, isForced, latestVersion) {
+        if (isForced) {
+          context.go(
+            AppRoutes.forceUpdate,
+            extra: {'messageData': messageData, 'storeUrl': storeUrl},
+          );
+        } else {
+          _showSoftUpdateDialog(context, messageData, storeUrl, latestVersion);
+        }
+      },
+      orElse: () {},
+    );
+  }
+
+  void _onAuthStateChanged(BuildContext context, AuthState state) {
+    if (state is Authenticated) {
+      context.go(AppRoutes.home);
+    } else if (state is Unauthenticated || state is AuthError) {
+      context.go(AppRoutes.login);
+    } else if (state is AuthSessionNeedsSignIn ||
+        state is AuthSessionCheckUnavailable) {
+      // A validation outage keeps the local Supabase session intact;
+      // login is shown as a safe recovery surface until it can be
+      // verified or the user signs in again.
+      context.go(AppRoutes.login);
+    } else if (state is AuthProfileIncomplete) {
+      context.go(AppRoutes.profileSetup);
+    } else if (state is AuthSuspended ||
+        state is AuthBanned ||
+        state is AuthDeleted) {
+      context.go(AppRoutes.accountStatus);
+    }
   }
 
   @override
@@ -43,139 +109,27 @@ class _SplashScreenState extends State<SplashScreen> {
     return MultiBlocListener(
       listeners: [
         BlocListener<StartupBloc, StartupState>(
-          listener: (context, state) {
-            state.maybeWhen(
-              success: () {
-                _continueAfterStartup(context);
-              },
-              maintenanceMode: (title, message) {
-                context.go(
-                  AppRoutes.maintenance,
-                  extra: {'title': title, 'message': message},
-                );
-              },
-              updateRequired: (messageData, storeUrl, isForced, latestVersion) {
-                if (isForced) {
-                  context.go(
-                    AppRoutes.forceUpdate,
-                    extra: {'messageData': messageData, 'storeUrl': storeUrl},
-                  );
-                } else {
-                  _showSoftUpdateDialog(
-                    context,
-                    messageData,
-                    storeUrl,
-                    latestVersion,
-                  );
-                }
-              },
-              orElse: () {},
-            );
-          },
+          listener: _onStartupStateChanged,
         ),
-        BlocListener<AuthBloc, AuthState>(
-          listener: (context, state) {
-            if (state is Authenticated) {
-              context.go(AppRoutes.home);
-            } else if (state is Unauthenticated || state is AuthError) {
-              context.go(AppRoutes.login);
-            } else if (state is AuthSessionNeedsSignIn ||
-                state is AuthSessionCheckUnavailable) {
-              // A validation outage keeps the local Supabase session intact;
-              // login is shown as a safe recovery surface until it can be
-              // verified or the user signs in again.
-              context.go(AppRoutes.login);
-            } else if (state is AuthProfileIncomplete) {
-              context.go(AppRoutes.profileSetup);
-            } else if (state is AuthSuspended ||
-                state is AuthBanned ||
-                state is AuthDeleted) {
-              context.go(AppRoutes.accountStatus);
-            }
-          },
-        ),
+        BlocListener<AuthBloc, AuthState>(listener: _onAuthStateChanged),
       ],
-      child: Builder(
-        builder: (context) {
-          final colors = context.colorScheme;
-          final animationSize = math.min(
-            math.min(
-              MediaQuery.sizeOf(context).width * 0.96,
-              MediaQuery.sizeOf(context).height * 0.48,
+      child: AnnotatedRegion<SystemUiOverlayStyle>(
+        value: const SystemUiOverlayStyle(
+          statusBarColor: Colors.transparent,
+          statusBarIconBrightness: Brightness.light,
+          statusBarBrightness: Brightness.dark,
+          systemNavigationBarColor: AppColor.primaryColor,
+          systemNavigationBarIconBrightness: Brightness.light,
+        ),
+        child: Scaffold(
+          backgroundColor: AppColor.primaryColor,
+          body: SafeArea(
+            child: SplashBrandingView(
+              fadeAnimation: _fadeAnimation,
+              scaleAnimation: _scaleAnimation,
             ),
-            420.0,
-          );
-          return AnnotatedRegion<SystemUiOverlayStyle>(
-            value: AppTheme.systemUiOverlayStyle(context),
-            child: Scaffold(
-              backgroundColor: colors.surface,
-              body: Stack(
-                clipBehavior: Clip.none,
-                children: [
-                  Positioned(
-                    top: 10,
-                    left: 0,
-                    right: 0,
-                    height: animationSize,
-                    child: Center(
-                      child: Lottie.asset(
-                        Assets.ain.anSplashScreen.path,
-                        width: animationSize,
-                        height: animationSize,
-                        repeat: true,
-                        fit: BoxFit.contain,
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    left: Dimensions.w(24),
-                    right: Dimensions.w(24),
-                    bottom:
-                        MediaQuery.viewPaddingOf(context).bottom +
-                        Dimensions.h50,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          'Welcome to',
-                          textAlign: TextAlign.center,
-                          style: context.titleLarge?.copyWith(
-                            color: colors.onSurfaceVariant,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        Text(
-                          context.loc.appName,
-                          textAlign: TextAlign.center,
-                          style: context.headlineMedium?.copyWith(
-                            color: colors.primary,
-                            fontWeight: FontWeight.w800,
-                            letterSpacing: -0.6,
-                          ),
-                        ),
-                        SizedBox(height: Dimensions.h(28)),
-                        SizedBox(
-                          width: Dimensions.w(132),
-                          child: LinearProgressIndicator(
-                            minHeight: Dimensions.h(4),
-                            borderRadius: BorderRadius.circular(
-                              Dimensions.r999,
-                            ),
-                            backgroundColor: colors.primary.withValues(
-                              alpha: 0.12,
-                            ),
-                            color: colors.primary,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          );
-        },
+          ),
+        ),
       ),
     );
   }
@@ -212,44 +166,63 @@ class _SplashScreenState extends State<SplashScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(messageData.message),
-              const SizedBox(height: 16),
+              SizedBox(height: Dimensions.r16.dynamicH),
               ...messageData.releaseNotes.map((note) => Text('• $note')),
             ],
           ),
           actions: [
             TextButton(
-              onPressed: () {
-                final startupBloc = context.read<StartupBloc>();
-                Navigator.pop(dialogContext);
-                if (latestVersion != null) {
-                  startupBloc.add(StartupUpdateSkipped(latestVersion));
-                } else {
-                  _continueAfterStartup(context);
-                }
-              },
-              child: const Text('Maybe Later'),
+              onPressed: () =>
+                  _onMaybeLaterPressed(context, dialogContext, latestVersion),
+              child: Text(context.loc.maybeLater),
             ),
             ElevatedButton(
-              onPressed: () async {
-                final startupBloc = context.read<StartupBloc>();
-                Navigator.pop(dialogContext);
-                if (storeUrl.isNotEmpty) {
-                  final uri = Uri.tryParse(storeUrl);
-                  if (uri != null && await canLaunchUrl(uri)) {
-                    await launchUrl(uri, mode: LaunchMode.externalApplication);
-                  }
-                }
-                if (latestVersion != null) {
-                  startupBloc.add(StartupUpdateSkipped(latestVersion));
-                } else if (context.mounted) {
-                  _continueAfterStartup(context);
-                }
-              },
-              child: const Text('Update Now'),
+              onPressed: () => _onUpdateNowPressed(
+                context,
+                dialogContext,
+                storeUrl,
+                latestVersion,
+              ),
+              child: Text(context.loc.updateNow),
             ),
           ],
         );
       },
     );
+  }
+
+  void _onMaybeLaterPressed(
+    BuildContext context,
+    BuildContext dialogContext,
+    String? latestVersion,
+  ) {
+    final startupBloc = context.read<StartupBloc>();
+    Navigator.pop(dialogContext);
+    if (latestVersion != null) {
+      startupBloc.add(StartupUpdateSkipped(latestVersion));
+    } else {
+      _continueAfterStartup(context);
+    }
+  }
+
+  Future<void> _onUpdateNowPressed(
+    BuildContext context,
+    BuildContext dialogContext,
+    String storeUrl,
+    String? latestVersion,
+  ) async {
+    final startupBloc = context.read<StartupBloc>();
+    Navigator.pop(dialogContext);
+    if (storeUrl.isNotEmpty) {
+      final uri = Uri.tryParse(storeUrl);
+      if (uri != null && await canLaunchUrl(uri)) {
+        await launchUrl(uri, mode: LaunchMode.externalApplication);
+      }
+    }
+    if (latestVersion != null) {
+      startupBloc.add(StartupUpdateSkipped(latestVersion));
+    } else if (context.mounted) {
+      _continueAfterStartup(context);
+    }
   }
 }

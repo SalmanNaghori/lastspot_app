@@ -1,8 +1,6 @@
 import 'dart:io';
 import 'package:lastspot_app/core/base_import.dart';
-import 'package:lastspot_app/core/di/service_locator.dart';
 import 'package:lastspot_app/core/utils/currency_input_formatter.dart';
-import 'package:lastspot_app/core/widgets/selection_bottom_sheet.dart';
 import '../../../cities/domain/entities/city_entity.dart';
 import '../../../cities/presentation/bloc/city_cubit.dart';
 import '../../../cities/presentation/bloc/city_state.dart';
@@ -17,6 +15,7 @@ import '../widgets/create_spot_existing_image.dart';
 import '../widgets/create_spot_file_image.dart';
 import '../widgets/create_spot_participants_selector.dart';
 import '../widgets/create_spot_datetime_selector.dart';
+import '../widgets/category_playing_time_tip.dart';
 
 class CreateSpotScreenMobile extends StatelessWidget {
   final CreateSpotFormState formState;
@@ -310,23 +309,52 @@ class CreateSpotScreenMobile extends StatelessWidget {
                   SizedBox(height: Dimensions.r24.dynamicH),
 
                   // 3. Category
-                  CreateSpotSectionTitle(title: context.loc.category),
+                  CreateSpotSectionTitle(title: '${context.loc.category} *'),
                   SizedBox(height: Dimensions.r8.dynamicH),
                   ValueListenableBuilder<String?>(
                     valueListenable: formState.selectedCategoryId,
                     builder: (context, categoryId, _) {
-                      // Find category name if possible
-                      String label = context.loc.selectCategory;
-                      if (categoryId != null &&
-                          blocState is CreateSpotCategoriesLoaded) {
+                      if (blocState is CreateSpotCategoriesLoaded) {
                         final cats = (blocState as CreateSpotCategoriesLoaded)
                             .categories;
-                        final found = cats
-                            .where((c) => c.id == categoryId)
-                            .firstOrNull;
-                        if (found != null) label = found.name;
+                        final selectedCat = cats
+                            .cast<CategoryEntity?>()
+                            .firstWhere(
+                              (c) => c?.id == categoryId,
+                              orElse: () => null,
+                            );
+
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            SizedBox(
+                              height: Dimensions.r96.dynamicH * 1.15,
+                              child: ListView.separated(
+                                scrollDirection: Axis.horizontal,
+                                itemCount: cats.length,
+                                separatorBuilder: (_, _) =>
+                                    SizedBox(width: Dimensions.r12.dynamicW),
+                                itemBuilder: (context, index) {
+                                  final cat = cats[index];
+                                  return SportCategoryTile(
+                                    category: cat,
+                                    isSelected: cat.id == categoryId,
+                                    onTap: () =>
+                                        formState.selectedCategoryId.value =
+                                            cat.id,
+                                  );
+                                },
+                              ),
+                            ),
+                            if (selectedCat != null)
+                              CategoryPlayingTimeTip(category: selectedCat),
+                          ],
+                        );
                       }
 
+                      // Fallback picker
+                      String label = context.loc.selectCategory;
                       return CreateSpotSelectionField(
                         label: label,
                         icon: Icons.category_outlined,

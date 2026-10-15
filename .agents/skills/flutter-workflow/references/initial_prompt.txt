@@ -1,0 +1,56 @@
+New project (greenfield)
+
+I just added .agents/skills/flutter-workflow/references/ to this repo. Treat it as the governance layer.
+
+Read in order:
+1. .agents/skills/flutter-workflow/references/REPOSEED.md, then .agents/skills/flutter-workflow/references/agent.md
+2. .agents/skills/flutter-workflow/references/ADOPT.md (section A)
+3. .agents/skills/flutter-workflow/references/checklists/greenfield-kickoff.md
+4. docs/project/flutter/README.md and docs/project/flutter/project-rules.md
+5. .agents/skills/flutter-workflow/assets/templates/README.md
+
+Rules for this chat:
+- Do NOT load profiles/ (that includes the example ADRs in profiles/reference/adr/).
+- Do NOT create any lib/ files yet.
+- Do NOT invent stack choices.
+
+Run the greenfield kickoff. Ask me orientation FIRST (Feature First vs Layer First) and wait. Then ask the remaining kickoff questions in one message, offering the documented defaults: level, state, DI, routing, HTTP, storage, serializer + result type, strings/locales, platforms/form factors/themes, test stack + critical journeys, logging/crash/analytics, flavors, toolchain pin, CI/CD, branching, lint set.
+
+After I answer:
+- Fill docs/project/flutter/*.md with confirmed decisions, including applicable PR-A6 paths. Keep unobserved facts unknown and defer architecture-map symbols until code exists. Leave docs/project/flutter/features.md empty.
+- Write ADR-0001+ from docs/adr/TEMPLATE.md for those choices and index them in docs/adr/README.md.
+- RepoSeed already installed the selected root entrypoints. Preserve their managed blocks. Fill CONTRIBUTING.md from my answers and keep the existing changelog format; do not overwrite root files with standalone templates. Cursor and GitHub source adapters are under .agents/skills/flutter-workflow/assets/.cursor/ and .agents/skills/flutter-workflow/assets/.github/, not templates/.
+- Stop. Show me what you wrote and wait — do not scaffold features until I say so.
+
+From then on, maintain CHANGELOG.md, CONTRIBUTING.md and docs/project/flutter/features.md in the same change as the code (agent.md → MAINTAIN LIVING DOCS).
+
+
+Existing project (brownfield)
+
+I just added .agents/skills/flutter-workflow/references/ to this existing Flutter app. Treat it as the governance layer.
+
+Read in order:
+1. .agents/skills/flutter-workflow/references/REPOSEED.md, then .agents/skills/flutter-workflow/references/agent.md
+2. .agents/skills/flutter-workflow/references/ADOPT.md (section B)
+3. .agents/skills/flutter-workflow/references/checklists/greenfield-kickoff.md (section 2 only — Stay vs Strangler)
+4. .agents/skills/flutter-workflow/references/checklists/brownfield-audit.md
+5. docs/project/flutter/README.md and .agents/skills/flutter-workflow/assets/templates/README.md
+
+Rules for this chat:
+- Do NOT load profiles/ as the source of truth.
+- Do NOT invent history, class names, features, changelog entries or setup commands. Write "Not determinable from repository evidence" or _TBD_ instead.
+- Do NOT bulk-move folders (no lib/layers → lib/features migration).
+- Detect the tree that already exists.
+
+Audit this repo per checklists/brownfield-audit.md (pubspec, main/DI, 2–3 vertical slices, rg for pattern drift). Then ask me once: Stay on the current tree, or Strangler (legacy root + new-feature root).
+
+After I answer:
+- Replace docs/project/flutter/* stubs with THIS app's reality (including PR-A6 check variables) and write ADRs for choices the code already made.
+- Initialise the living docs from evidence:
+  - docs/project/flutter/features.md: one row per existing feature (from the route table, feature folders, screens), status supported by evidence (observed if runtime/release is unknown), Since: pre-adoption, unknowns _TBD_.
+  - CHANGELOG.md: keep it if it exists; otherwise create it with [Unreleased] + a baseline section for the current pubspec.yaml version. Do not reconstruct past entries.
+  - CONTRIBUTING.md: keep it if it exists and add only missing sections; otherwise create it from the template using the commands this repo actually uses.
+- Preserve RepoSeed root entrypoints and managed blocks. Merge only app-specific guidance outside those blocks; the selected adapters are already installed.
+- List open NEEDS-DECISION items. Stop there — no feature work until I approve the project profile.
+
+From then on, maintain CHANGELOG.md, CONTRIBUTING.md and docs/project/flutter/features.md in the same change as the code (agent.md → MAINTAIN LIVING DOCS).

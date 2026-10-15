@@ -9,6 +9,7 @@ import '../../features/startup/data/models/app_settings_model.dart';
 import '../../features/auth/presentation/pages/login_screen.dart';
 import '../../features/auth/presentation/pages/signup_screen.dart';
 import '../../features/auth/presentation/pages/forgot_password_screen.dart';
+import '../../features/auth/presentation/pages/reset_password_screen.dart';
 import '../../features/auth/presentation/pages/profile_setup_screen.dart';
 import '../../features/auth/presentation/pages/account_status_screen.dart';
 import '../../features/spot/presentation/pages/home_screen.dart';
@@ -23,6 +24,7 @@ import '../../features/spot/presentation/bloc/spot_details_bloc.dart';
 import '../../features/spot/presentation/pages/manage_requests_screen.dart';
 import '../../features/spot/presentation/bloc/manage_requests_bloc.dart';
 import '../../features/spot/presentation/pages/chat_screen.dart';
+import '../../features/chat/presentation/pages/group_info_screen.dart';
 import '../../features/spot/domain/usecases/create_spot_usecase.dart';
 import '../../features/spot/domain/usecases/update_spot_usecase.dart';
 import '../../features/spot/domain/usecases/get_spot_details_usecase.dart';
@@ -38,9 +40,11 @@ import '../../features/auth/domain/repositories/auth_repository.dart';
 import '../../features/categories/presentation/bloc/category_bloc.dart';
 import '../../features/categories/presentation/bloc/category_event.dart' as ce;
 import '../widgets/authenticated_app_shell.dart';
+import '../services/in_app_feedback_manager.dart';
 import '../../features/explore/presentation/pages/explore_screen.dart';
 import '../../features/explore/presentation/bloc/explore_bloc.dart';
 import '../../features/activities/presentation/pages/activities_screen.dart';
+import '../../features/chat/presentation/pages/chats_screen.dart';
 import '../../features/profile/presentation/pages/profile_screen.dart';
 import '../../features/profile/presentation/pages/edit_profile_screen.dart';
 import '../../features/reports/presentation/pages/report_screen.dart';
@@ -57,6 +61,7 @@ export 'app_routes.dart';
 
 final GoRouter appRouter = GoRouter(
   initialLocation: AppRoutes.splash,
+  observers: [appFeedbackManager],
   routes: [
     GoRoute(
       path: AppRoutes.splash,
@@ -97,6 +102,10 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: AppRoutes.forgotPassword,
       builder: (context, state) => const ForgotPasswordScreen(),
+    ),
+    GoRoute(
+      path: AppRoutes.resetPassword,
+      builder: (context, state) => const ResetPasswordScreen(),
     ),
     GoRoute(
       path: AppRoutes.profileSetup,
@@ -147,13 +156,15 @@ final GoRouter appRouter = GoRouter(
                         sl<CategoryBloc>()..add(ce.LoadCategoriesEvent()),
                   ),
                 ],
-                child: const ExploreScreen(),
+                child: ExploreScreen(
+                  initialCategoryId: state.uri.queryParameters['category_id'],
+                ),
               ),
             ),
           ],
         ),
 
-        // Branch 3: Activities
+        // Branch 2: Activities
         StatefulShellBranch(
           routes: [
             GoRoute(
@@ -162,12 +173,12 @@ final GoRouter appRouter = GoRouter(
             ),
           ],
         ),
-        // Branch 4: Profile
+        // Branch 3: Chats
         StatefulShellBranch(
           routes: [
             GoRoute(
-              path: AppRoutes.profile,
-              builder: (context, state) => const ProfileScreen(),
+              path: AppRoutes.chats,
+              builder: (context, state) => const ChatsScreen(),
             ),
           ],
         ),
@@ -266,12 +277,37 @@ final GoRouter appRouter = GoRouter(
       path: AppRoutes.chat,
       builder: (context, state) {
         final id = state.pathParameters['id']!;
+        final isConversation =
+            state.uri.queryParameters['is_conversation'] == 'true';
+        final isDirect = state.uri.queryParameters['is_direct'] != null
+            ? state.uri.queryParameters['is_direct'] == 'true'
+            : (state.uri.queryParameters['recipient'] != null);
         return ChatScreen(
-          spotId: id,
+          id: id,
+          isConversationId: isConversation,
+          isDirect: isDirect,
           recipientUserId: state.uri.queryParameters['recipient'],
           recipientName: state.uri.queryParameters['name'],
+          activityTitle: state.uri.queryParameters['activity_title'],
+          requestId: state.uri.queryParameters['request_id'],
         );
       },
+    ),
+    GoRoute(
+      path: AppRoutes.groupInfo,
+      builder: (context, state) {
+        final id = state.pathParameters['id']!;
+        return GroupInfoScreen(
+          spotId: id,
+          getSpotDetailsUseCase: sl<GetSpotDetailsUseCase>(),
+          getConfirmedPlayersUseCase: sl<GetConfirmedPlayersUseCase>(),
+          currentUserId: sl<AuthRepository>().getCurrentUserId(),
+        );
+      },
+    ),
+    GoRoute(
+      path: AppRoutes.profile,
+      builder: (context, state) => const ProfileScreen(),
     ),
     GoRoute(
       path: AppRoutes.editProfile,

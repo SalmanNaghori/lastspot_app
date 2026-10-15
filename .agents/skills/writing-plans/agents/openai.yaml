@@ -1,0 +1,4 @@
+interface:
+  display_name: "Writing Plans"
+  short_description: "Turn requirements into executable plans"
+  default_prompt: "Use $writing-plans to turn these requirements into a checkable implementation plan."

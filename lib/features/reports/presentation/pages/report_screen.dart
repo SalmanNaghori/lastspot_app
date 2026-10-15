@@ -3,7 +3,6 @@ import 'package:lastspot_app/core/base_import.dart';
 import 'report_screen_mobile.dart';
 import 'report_screen_tablet.dart';
 import '../bloc/report_cubit.dart';
-import '../../../../core/di/service_locator.dart';
 
 class ReportScreen extends StatelessWidget {
   final String? reportedUserId;

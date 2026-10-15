@@ -1,0 +1,13 @@
+# persistence.rules — local storage, cache, offline, migrations
+# SOP: sop/persistence-and-offline.md
+# Guardrails: guardrails/persistence.md, guardrails/security.md (SEC-6, SEC-8, SEC-9)
+
+DECISION  ND-6    Storage packages per the storage ADR; ask if _TBD_.
+MUST      STORE-1 Access storage only via local data sources behind repositories; never open boxes/tables/prefs/files from widgets or state holders.
+MUST-NOT  STORE-2 Add a second package for an existing storage capability.
+MUST      STORE-3 Version persisted schemas; ship a migration (or an explicit, commented wipe for cache-only data) with every persisted-model change; never reuse adapter type ids.
+MUST      STORE-4 Declare cache policy: source of truth, strategy, max age, size bound, invalidation.
+MUST      STORE-5 Offline outbox: persistent, idempotent (client id / idempotency key), backoff, user-visible permanent failure.
+MUST      STORE-6 Clear user-scoped stores, outbox and media caches on logout/account deletion; namespace per user in multi-account apps.
+MUST      STORE-7 Keep keys and box/table names as constants in the storage module.
+SHOULD    STORE-8 Open heavy stores lazily or after first frame (PERF-10).

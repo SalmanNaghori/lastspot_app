@@ -1,37 +1,42 @@
+import 'package:equatable/equatable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+
 import '../../domain/entities/category.dart';
 
-class CategoryModel extends CategoryEntity {
-  const CategoryModel({
-    required super.id,
-    required super.name,
-    required super.slug,
-    required super.icon,
-    super.description,
-    super.isActive = true,
-    super.sortOrder = 0,
-  });
+part 'category_model.freezed.dart';
+part 'category_model.g.dart';
 
-  factory CategoryModel.fromJson(Map<String, dynamic> json) {
-    return CategoryModel(
-      id: json['id'] as String,
-      name: json['name'] as String,
-      slug: json['slug'] as String,
-      icon: json['icon'] as String,
-      description: json['description'] as String?,
-      isActive: json['is_active'] as bool? ?? true,
-      sortOrder: json['display_order'] as int? ?? 0,
-    );
-  }
+@freezed
+abstract class CategoryModel extends Equatable
+    with _$CategoryModel
+    implements CategoryEntity {
+  const CategoryModel._() : super();
 
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'name': name,
-      'slug': slug,
-      'icon': icon,
-      'description': description,
-      'is_active': isActive,
-      'display_order': sortOrder,
-    };
-  }
+  const factory CategoryModel({
+    required String id,
+    required String name,
+    required String slug,
+    required String icon,
+    String? description,
+    @JsonKey(name: 'is_active') @Default(true) bool isActive,
+    @JsonKey(name: 'display_order') @Default(0) int sortOrder,
+  }) = _CategoryModel;
+
+  factory CategoryModel.fromJson(Map<String, dynamic> json) =>
+      _$CategoryModelFromJson(json);
+
+  @override
+  List<Object?> get props => [
+    id,
+    name,
+    slug,
+    icon,
+    description,
+    isActive,
+    sortOrder,
+  ];
+
+  @JsonKey(includeToJson: false, includeFromJson: false)
+  @override
+  bool? get stringify => true;
 }

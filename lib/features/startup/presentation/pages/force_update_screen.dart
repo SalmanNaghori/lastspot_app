@@ -15,92 +15,125 @@ class ForceUpdateScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ResponsiveLayout(
-      mobile: _buildContent(context),
-      tablet: _buildContent(context),
+      mobile: ForceUpdateContent(messageData: messageData, storeUrl: storeUrl),
+      tablet: ForceUpdateContent(
+        messageData: messageData,
+        storeUrl: storeUrl,
+        isTablet: true,
+      ),
     );
   }
+}
 
-  Widget _buildContent(BuildContext context) {
+class ForceUpdateContent extends StatelessWidget {
+  final VersionMessage messageData;
+  final String storeUrl;
+  final bool isTablet;
+
+  const ForceUpdateContent({
+    super.key,
+    required this.messageData,
+    required this.storeUrl,
+    this.isTablet = false,
+  });
+
+  @override
+  Widget build(BuildContext context) {
     // PopScope prevents back navigation (non-dismissible)
     return PopScope(
       canPop: false,
       child: Scaffold(
         backgroundColor: context.backgroundColor,
         body: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.all(Dimensions.r24),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Icon(
-                  Icons.system_update_alt,
-                  size: Dimensions.r64,
-                  color: context.primaryColor,
-                ),
-                const SizedBox(height: Dimensions.r24),
-                Text(
-                  messageData.title,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: Dimensions.r24,
-                    fontWeight: FontWeight.bold,
-                    color: context.textPrimary,
-                  ),
-                ),
-                const SizedBox(height: Dimensions.r16),
-                Text(
-                  messageData.message,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: Dimensions.r16,
-                    color: context.textSecondary,
-                  ),
-                ),
-                const SizedBox(height: Dimensions.r24),
-                if (messageData.releaseNotes.isNotEmpty) ...[
-                  Text(
-                    "What's New:",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: context.textPrimary,
-                    ),
-                  ),
-                  const SizedBox(height: Dimensions.r8),
-                  ...messageData.releaseNotes.map(
-                    (note) => Padding(
-                      padding: const EdgeInsets.only(bottom: Dimensions.r4),
-                      child: Text(
-                        '• $note',
-                        style: TextStyle(color: context.textSecondary),
+          child: Center(
+            child: SingleChildScrollView(
+              padding: EdgeInsets.all(Dimensions.r24.dynamicW),
+              child: ConstrainedBox(
+                constraints: BoxConstraints(maxWidth: isTablet ? 500 : 440),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Center(
+                      child: Container(
+                        width: Dimensions.r80.dynamicW,
+                        height: Dimensions.r80.dynamicH,
+                        decoration: BoxDecoration(
+                          color: context.primaryColor.withValues(alpha: 0.1),
+                          shape: BoxShape.circle,
+                        ),
+                        child: Icon(
+                          Icons.system_update_alt_rounded,
+                          size: Dimensions.r40.dynamicH,
+                          color: context.primaryColor,
+                        ),
                       ),
                     ),
-                  ),
-                  const SizedBox(height: Dimensions.r32),
-                ],
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: context.primaryColor,
-                    foregroundColor: AppColor.whiteColor,
-                    padding: const EdgeInsets.symmetric(
-                      vertical: Dimensions.r16,
+                    SizedBox(height: Dimensions.r24.dynamicH),
+                    Text(
+                      messageData.title,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: Dimensions.r24.dynamicSP,
+                        fontWeight: FontWeight.w800,
+                        color: context.textPrimary,
+                      ),
                     ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(Dimensions.r12),
+                    SizedBox(height: Dimensions.r12.dynamicH),
+                    Text(
+                      messageData.message,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: Dimensions.r15.dynamicSP,
+                        color: context.textSecondary,
+                        height: 1.4,
+                      ),
                     ),
-                  ),
-                  onPressed: () async {
-                    final url = Uri.parse(storeUrl);
-                    if (await canLaunchUrl(url)) {
-                      await launchUrl(
-                        url,
-                        mode: LaunchMode.externalApplication,
-                      );
-                    }
-                  },
-                  child: const Text('Update Now'),
+                    SizedBox(height: Dimensions.r24.dynamicH),
+                    if (messageData.releaseNotes.isNotEmpty) ...[
+                      Text(
+                        "What's New:",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: Dimensions.r14.dynamicSP,
+                          color: context.textPrimary,
+                        ),
+                      ),
+                      SizedBox(height: Dimensions.r8.dynamicH),
+                      ...messageData.releaseNotes.map(
+                        (note) => Padding(
+                          padding: EdgeInsets.only(
+                            bottom: Dimensions.r4.dynamicH,
+                          ),
+                          child: Text(
+                            '• $note',
+                            style: TextStyle(
+                              color: context.textSecondary,
+                              fontSize: Dimensions.r13.dynamicSP,
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: Dimensions.r32.dynamicH),
+                    ],
+                    SizedBox(
+                      height: Dimensions.r56.dynamicH,
+                      child: FilledButton(
+                        onPressed: () async {
+                          final url = Uri.parse(storeUrl);
+                          if (await canLaunchUrl(url)) {
+                            await launchUrl(
+                              url,
+                              mode: LaunchMode.externalApplication,
+                            );
+                          }
+                        },
+                        child: const Text('Update Now'),
+                      ),
+                    ),
+                  ],
                 ),
-              ],
+              ),
             ),
           ),
         ),

@@ -1,5 +1,7 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import '../services/password_recovery_link_monitor.dart';
+
 class SupabaseConfig {
   static const String supabaseUrl = 'https://zrhmpidlutbyoiysjwxt.supabase.co';
   static const String supabaseAnonKey =
@@ -9,6 +11,10 @@ class SupabaseConfig {
     await Supabase.initialize(
       url: supabaseUrl,
       anonKey: supabaseAnonKey, // ignore: deprecated_member_use
+      authOptions: FlutterAuthClientOptions(
+        detectSessionInUriPredicate:
+            PasswordRecoveryLinkMonitor.instance.detectSessionInUri,
+      ),
     );
   }
 

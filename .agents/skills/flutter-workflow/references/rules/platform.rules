@@ -1,0 +1,10 @@
+# platform.rules — permissions, push, platform channels, background work
+# SOP: sop/platform-integration.md
+# Guardrails: guardrails/platform.md, guardrails/security.md (SEC-15, SEC-20), guardrails/routing.md (ROUTE-7)
+
+MUST      PLAT-1  Every permission: specific purpose string (localized) + README purpose row; remove unused permissions.
+MUST      PLAT-2  Request permissions just-in-time from a user action via one PermissionService; not at startup.
+MUST      PLAT-3  Handle granted / denied / permanently denied (open settings) / restricted / limited; degrade gracefully.
+MUST      PLAT-4  Push: validate payload, wait for app+session readiness via a signal, route through the typed router; handle foreground/background/terminated; refresh token on rotation; unregister on logout.
+MUST-NOT  PLAT-5  Call MethodChannel/EventChannel from widgets or state holders; wrap each capability in one typed service (Pigeon recommended); map PlatformException to Failure.
+MUST      PLAT-6  Background work only with an ADR and within store policy; background isolates build their own dependencies (ASYNC-7).

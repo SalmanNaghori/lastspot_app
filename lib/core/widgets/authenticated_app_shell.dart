@@ -3,13 +3,15 @@ import 'dart:async';
 import 'package:supabase_flutter/supabase_flutter.dart' hide AuthState;
 
 import '../../features/notifications/presentation/bloc/notifications_cubit.dart';
+import '../../features/auth/presentation/bloc/profile_cubit.dart';
+import '../../features/chat/presentation/bloc/conversations_cubit.dart';
+import '../../features/chat/presentation/bloc/conversations_state.dart';
 import '../base_import.dart';
-import '../di/service_locator.dart';
-import '../theme/app_motion.dart';
 import '../utils/notification_permission_dialog.dart';
 import '../../features/auth/presentation/bloc/auth_bloc.dart';
 import '../../features/auth/presentation/bloc/auth_event.dart';
 import '../../features/auth/presentation/bloc/auth_state.dart';
+import '../services/in_app_feedback_manager.dart';
 
 class AuthenticatedAppShell extends StatefulWidget {
   final StatefulNavigationShell navigationShell;
@@ -23,6 +25,8 @@ class AuthenticatedAppShell extends StatefulWidget {
 class _AuthenticatedAppShellState extends State<AuthenticatedAppShell>
     with WidgetsBindingObserver {
   late NotificationsCubit _notificationsCubit;
+  late ProfileCubit _profileCubit;
+  late ConversationsCubit _conversationsCubit;
   StreamSubscription? _newNotifSub;
 
   @override
@@ -30,27 +34,66 @@ class _AuthenticatedAppShellState extends State<AuthenticatedAppShell>
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     _notificationsCubit = sl<NotificationsCubit>();
+    _profileCubit = sl<ProfileCubit>();
+    _conversationsCubit = sl<ConversationsCubit>();
     final userId = Supabase.instance.client.auth.currentUser?.id;
     if (userId != null) {
+      appFeedbackManager.setSessionActive(true);
       _notificationsCubit.initialize(userId);
+      _profileCubit.fetchProfile(userId);
+      _conversationsCubit.loadConversations();
     }
 
     _newNotifSub = _notificationsCubit.onNewNotification.listen((notif) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(notif.title),
-            behavior: SnackBarBehavior.floating,
-            duration: const Duration(seconds: 3),
-            action: SnackBarAction(
-              label: 'View',
-              onPressed: () {
-                context.push(AppRoutes.notifications);
-              },
-            ),
-          ),
-        );
+      if (!mounted) return;
+      final feedback = context.read<InAppFeedbackManager>();
+      final data = Map<String, dynamic>.from(notif.data)
+        ..putIfAbsent('type', () => notif.type);
+      if (InAppFeedbackManager.isChatMessage(data, type: notif.type)) {
+        _conversationsCubit.loadConversations(isRefresh: true);
+        final conversationId = InAppFeedbackManager.conversationIdFrom(data);
+        if (conversationId != null) {
+          feedback.showIncomingChatMessage(
+            data: data,
+            senderName:
+                InAppFeedbackManager.senderNameFrom(data) ?? notif.title,
+            activityName: InAppFeedbackManager.activityNameFrom(data),
+            preview: notif.body,
+            eventKeys: [
+              'notification:${notif.id}',
+              ..._notificationEventKeys(data),
+            ],
+            onTap: () {
+              if (!mounted) return;
+              context.push(
+                AppRoutes.conversationChatPath(
+                  conversationId,
+                  isDirect:
+                      data['is_direct']?.toString() == 'true' ||
+                      data['chat_type']?.toString().toLowerCase() == 'direct',
+                  name: InAppFeedbackManager.senderNameFrom(data),
+                  activityTitle: InAppFeedbackManager.activityNameFrom(data),
+                  requestId: data['request_id']?.toString(),
+                ),
+              );
+            },
+          );
+          return;
+        }
       }
+
+      feedback.showNotification(
+        title: notif.title,
+        subtitle: notif.body,
+        data: data,
+        eventKeys: [
+          'notification:${notif.id}',
+          ..._notificationEventKeys(data),
+        ],
+        onTap: () {
+          if (mounted) context.push(AppRoutes.notifications);
+        },
+      );
     });
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -60,21 +103,83 @@ class _AuthenticatedAppShellState extends State<AuthenticatedAppShell>
     });
   }
 
+  bool _precachedNavAssets = false;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (!_precachedNavAssets) {
+      _precachedNavAssets = true;
+      precacheImage(AppAssets.navHomeGen.provider(), context);
+      precacheImage(AppAssets.navExploreGen.provider(), context);
+      precacheImage(AppAssets.navCreateGen.provider(), context);
+      precacheImage(AppAssets.navActivitiesGen.provider(), context);
+      precacheImage(AppAssets.navChatsGen.provider(), context);
+    }
+  }
+
+  List<String> _notificationEventKeys(Map<String, dynamic> data) => [
+    for (final key in const ['event_id', 'notification_id', 'message_id', 'id'])
+      if (data[key]?.toString().trim().isNotEmpty == true) 'event:${data[key]}',
+  ];
+
+  DateTime? _pausedAt;
+  DateTime? _lastVerifiedAt;
+  Timer? _resumeDebounceTimer;
+  static const _sessionValidationFreshness = Duration(seconds: 30);
+  static const _briefInactivityThreshold = Duration(seconds: 3);
+
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (state == AppLifecycleState.resumed && mounted) {
-      context.read<AuthBloc>().add(AuthSessionValidationRequested());
+    if (state == AppLifecycleState.paused ||
+        state == AppLifecycleState.inactive) {
+      _pausedAt ??= DateTime.now();
+    } else if (state == AppLifecycleState.resumed && mounted) {
+      _onAppResumed();
     }
+  }
+
+  void _onAppResumed() {
+    final pausedDuration = _pausedAt != null
+        ? DateTime.now().difference(_pausedAt!)
+        : null;
+    _pausedAt = null;
+
+    // Avoid repeated checks if the app only briefly became inactive (e.g. notification shade)
+    if (pausedDuration != null && pausedDuration < _briefInactivityThreshold) {
+      return;
+    }
+
+    // Freshness policy: if verified within 30 seconds, avoid redundant verification
+    if (_lastVerifiedAt != null &&
+        DateTime.now().difference(_lastVerifiedAt!) <
+            _sessionValidationFreshness) {
+      return;
+    }
+
+    _resumeDebounceTimer?.cancel();
+    _resumeDebounceTimer = Timer(const Duration(milliseconds: 300), () {
+      if (!mounted) return;
+      final authBloc = context.read<AuthBloc>();
+      if (authBloc.state is Authenticated) {
+        _lastVerifiedAt = DateTime.now();
+        authBloc.add(AuthSessionValidationRequested());
+      }
+    });
   }
 
   @override
   void dispose() {
+    _resumeDebounceTimer?.cancel();
     WidgetsBinding.instance.removeObserver(this);
     _newNotifSub?.cancel();
+    _profileCubit.close();
+    _conversationsCubit.close();
     super.dispose();
   }
 
   void _goBranch(int index) {
+    appFeedbackManager.clearTransient();
     if (index == 2) {
       context.push(AppRoutes.create);
       return;
@@ -93,124 +198,36 @@ class _AuthenticatedAppShellState extends State<AuthenticatedAppShell>
 
   @override
   Widget build(BuildContext context) {
-    final loc = context.loc;
     final overlayStyle = AppTheme.systemUiOverlayStyle(context);
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: overlayStyle,
-      child: BlocProvider.value(
-        value: _notificationsCubit,
-        child: Scaffold(
-          backgroundColor: context.backgroundColor,
-          body: BlocBuilder<AuthBloc, AuthState>(
-            builder: (context, state) => Stack(
-              children: [
-                widget.navigationShell,
-                if (state is AuthSessionValidationInProgress)
-                  Positioned.fill(
-                    child: ColoredBox(
-                      color: context.backgroundColor.withValues(alpha: 0.78),
-                      child: Center(
-                        child: CircularProgressIndicator(
-                          color: context.colorScheme.primary,
-                        ),
-                      ),
-                    ),
-                  ),
-                if (state is AuthSessionCheckUnavailable)
-                  Positioned.fill(
-                    child: ColoredBox(
-                      color: context.backgroundColor.withValues(alpha: 0.96),
-                      child: Center(
-                        child: Padding(
-                          padding: const EdgeInsets.all(AppSpacing.lg),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Icon(
-                                Icons.cloud_off_outlined,
-                                size: 36,
-                                color: context.colorScheme.onSurfaceVariant,
-                              ),
-                              const SizedBox(height: AppSpacing.md),
-                              Text(
-                                'Could not verify your session. Check your connection and try again.',
-                                textAlign: TextAlign.center,
-                                style: context.bodyLarge,
-                              ),
-                              const SizedBox(height: AppSpacing.md),
-                              FilledButton.icon(
-                                onPressed: () => context.read<AuthBloc>().add(
-                                  AuthSessionValidationRequested(),
-                                ),
-                                icon: const Icon(Icons.refresh),
-                                label: const Text('Retry'),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-              ],
-            ),
-          ),
-          bottomNavigationBar: Padding(
-            padding: const EdgeInsets.fromLTRB(
-              AppSpacing.sm,
-              0,
-              AppSpacing.sm,
-              AppSpacing.sm,
-            ),
-            child: ClipRRect(
-              borderRadius: AppRadius.xxlBorderRadius,
-              child: NavigationBar(
-                animationDuration: AppMotion.duration(
-                  context,
-                  AppMotion.standard,
-                ),
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider.value(value: _notificationsCubit),
+          BlocProvider.value(value: _profileCubit),
+          BlocProvider.value(value: _conversationsCubit),
+        ],
+        child: BlocBuilder<ConversationsCubit, ConversationsState>(
+          builder: (context, convState) {
+            int unreadChats = 0;
+            if (convState is ConversationsLoaded) {
+              unreadChats = convState.conversations.fold<int>(
+                0,
+                (sum, c) => sum + c.unreadCount,
+              );
+            }
+
+            return Scaffold(
+              backgroundColor: context.backgroundColor,
+              body: widget.navigationShell,
+              bottomNavigationBar: LastSpotBottomNavigationBar(
                 selectedIndex: _getSelectedIndex(),
                 onDestinationSelected: _goBranch,
-                destinations: [
-                  NavigationDestination(
-                    icon: const Icon(Icons.home_outlined),
-                    selectedIcon: const Icon(Icons.home),
-                    label: loc.navHome,
-                  ),
-                  NavigationDestination(
-                    icon: const Icon(Icons.search_outlined),
-                    selectedIcon: const Icon(Icons.search),
-                    label: loc.navExplore,
-                  ),
-                  NavigationDestination(
-                    icon: Container(
-                      padding: const EdgeInsets.all(AppSpacing.smLg),
-                      decoration: BoxDecoration(
-                        color: context.colorScheme.secondaryContainer,
-                        borderRadius: AppRadius.lgBorderRadius,
-                      ),
-                      child: Icon(
-                        Icons.add_rounded,
-                        color: context.colorScheme.onSecondaryContainer,
-                      ),
-                    ),
-                    selectedIcon: const Icon(Icons.add_circle),
-                    label: loc.navCreate,
-                  ),
-                  NavigationDestination(
-                    icon: const Icon(Icons.calendar_today_outlined),
-                    selectedIcon: const Icon(Icons.calendar_today),
-                    label: loc.navActivities,
-                  ),
-                  NavigationDestination(
-                    icon: const Icon(Icons.person_outline),
-                    selectedIcon: const Icon(Icons.person),
-                    label: loc.navProfile,
-                  ),
-                ],
+                chatsUnreadCount: unreadChats,
               ),
-            ),
-          ),
+            );
+          },
         ),
       ),
     );

@@ -1,6 +1,5 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:lastspot_app/core/base_import.dart';
-import 'package:lastspot_app/core/di/service_locator.dart';
 import 'package:lastspot_app/features/auth/presentation/bloc/profile_cubit.dart';
 
 import 'profile_screen_mobile.dart';

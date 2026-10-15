@@ -21,6 +21,11 @@ abstract final class SpotParticipationPolicy {
           post.status == RequestStatus.full ||
           post.status == RequestStatus.draft);
 
+  static bool canAccessGroupChat({
+    required bool isHost,
+    JoinRequestEntity? request,
+  }) => isHost || request?.status == JoinRequestStatus.accepted;
+
   static SpotJoinAvailability availability({
     required RequestEntity post,
     JoinRequestEntity? request,

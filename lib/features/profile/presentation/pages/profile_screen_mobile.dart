@@ -49,23 +49,23 @@ class ProfileScreenMobile extends StatelessWidget {
         onRefresh: onRefresh,
         child: SingleChildScrollView(
           physics: const AlwaysScrollableScrollPhysics(),
-          padding: const EdgeInsets.symmetric(horizontal: Dimensions.r16),
+          padding: EdgeInsets.symmetric(horizontal: Dimensions.r16.dynamicW),
           child: Column(
             children: [
               if (state is ProfileLoading || state is ProfileInitial)
                 const ProfileSkeleton()
               else if (state is ProfileError)
                 Padding(
-                  padding: const EdgeInsets.only(top: Dimensions.r48),
+                  padding: EdgeInsets.only(top: Dimensions.r48.dynamicH),
                   child: ErrorState(
                     message: (state as ProfileError).message,
                     onRetry: onRefresh,
                   ),
                 )
               else if (state is ProfileLoaded) ...[
-                const SizedBox(height: Dimensions.r24),
+                SizedBox(height: Dimensions.r24.dynamicH),
                 ProfileHeader(profile: (state as ProfileLoaded).profile),
-                const SizedBox(height: Dimensions.r32),
+                SizedBox(height: Dimensions.r32.dynamicH),
 
                 // Statistics
                 ProfileStatistics(
@@ -73,7 +73,7 @@ class ProfileScreenMobile extends StatelessWidget {
                   joinedCount: (state as ProfileLoaded).stats.joinedCount,
                   completedCount: (state as ProfileLoaded).stats.completedCount,
                 ),
-                const SizedBox(height: Dimensions.r32),
+                SizedBox(height: Dimensions.r32.dynamicH),
 
                 // Sections
                 ProfileSection(
@@ -122,16 +122,16 @@ class ProfileScreenMobile extends StatelessWidget {
                   ],
                 ),
 
-                const SizedBox(height: Dimensions.r24),
+                SizedBox(height: Dimensions.r24.dynamicH),
                 TextButton(
                   onPressed: () => _onLogout(context, loc),
                   style: TextButton.styleFrom(
                     foregroundColor: context.colorScheme.error,
-                    minimumSize: const Size.fromHeight(Dimensions.r48),
+                    minimumSize: Size.fromHeight(Dimensions.r48.dynamicH),
                   ),
                   child: Text(loc.logout),
                 ),
-                const SizedBox(height: Dimensions.r48),
+                SizedBox(height: Dimensions.r48.dynamicH),
               ],
             ],
           ),

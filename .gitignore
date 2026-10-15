@@ -46,3 +46,38 @@ app.*.map.json
 
 # FVM Version Cache
 .fvm/
+
+# Scratch & Local Development Scripts
+scratch/
+
+# Build runner & Generated Dart code
+*.g.dart
+*.freezed.dart
+*.mocks.dart
+
+# Platform Local Configuration & Generated Files
+.flutter-plugins
+.flutter-plugins-dependencies
+android/local.properties
+android/.gradle/
+ios/.symlinks/
+ios/Flutter/Generated.xcconfig
+ios/Flutter/flutter_export_environment.sh
+
+# Environment & Secret Files
+.env
+.env.*
+!.env.example
+
+<!-- reposeed:begin -->
+# Keep the shared Graphify graph in Git; exclude machine-local state.
+graphify-out/.graphify_*
+!graphify-out/.graphify_labels.json
+!graphify-out/.graphify_labels.json.sig
+graphify-out/cache/
+graphify-out/cost.json
+graphify-out/memory/
+graphify-out/reflections/
+graphify-out/[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]/
+<!-- reposeed:end -->
+

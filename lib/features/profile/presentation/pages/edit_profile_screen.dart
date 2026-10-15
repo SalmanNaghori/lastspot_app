@@ -3,10 +3,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:lastspot_app/core/base_import.dart';
 import 'package:lastspot_app/core/utils/image_cropper_helper.dart';
-import 'package:lastspot_app/core/di/service_locator.dart';
 import 'package:lastspot_app/features/auth/domain/entities/user_profile.dart';
 import 'package:lastspot_app/features/auth/presentation/bloc/profile_cubit.dart';
-import 'package:lastspot_app/core/widgets/selection_bottom_sheet.dart';
 import 'package:lastspot_app/features/cities/domain/entities/city_entity.dart';
 import 'package:lastspot_app/features/cities/presentation/bloc/city_cubit.dart';
 import 'package:lastspot_app/features/cities/presentation/bloc/city_state.dart';
@@ -143,9 +141,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           if (state is ProfileSaved) {
             context.pop(state.profile);
           } else if (state is ProfileError) {
-            ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(SnackBar(content: Text(state.message)));
+            AppUtils.showSnackBar(context, state.message, isError: true);
           } else if (state is ProfileLoaded) {
             _nameController.text = state.profile.fullName ?? '';
             _bioController.text = state.profile.bio ?? '';
