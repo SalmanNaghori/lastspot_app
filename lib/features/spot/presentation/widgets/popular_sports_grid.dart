@@ -1,7 +1,8 @@
 import 'package:lastspot_app/core/base_import.dart';
+import 'package:lastspot_app/core/widgets/sports_category_perspective_carousel.dart';
 import '../../../categories/domain/entities/category.dart';
 
-/// Horizontal 3D sports category carousel matching the Fareeq design.
+/// 3D perspective-stack sports category section for Home screen.
 class PopularSportsGrid extends StatelessWidget {
   final List<CategoryEntity> categories;
   final ValueChanged<CategoryEntity> onCategoryTap;
@@ -50,60 +51,42 @@ class PopularSportsGrid extends StatelessWidget {
             ],
           ),
         ),
-        SizedBox(height: Dimensions.r12.dynamicH),
+        SizedBox(height: Dimensions.r10.dynamicH),
         Builder(
           builder: (context) {
-            final displayCategories = categories.length > 10
-                ? categories.sublist(0, 10)
+            final displayCategories = categories.length > 12
+                ? categories.sublist(0, 12)
                 : categories;
 
-            return SizedBox(
-              height: Dimensions.r96.dynamicH * 1.15,
-              child: displayCategories.isEmpty
-                  ? ListView.separated(
-                      scrollDirection: Axis.horizontal,
-                      padding: EdgeInsets.symmetric(
-                        horizontal: Dimensions.r16.dynamicW,
+            if (displayCategories.isEmpty) {
+              return SizedBox(
+                height: Dimensions.r140.dynamicH + Dimensions.r20.dynamicH,
+                child: Center(
+                  child: Container(
+                    width: Dimensions.r120.dynamicW,
+                    height: Dimensions.r140.dynamicH,
+                    decoration: BoxDecoration(
+                      color: context.isDarkMode
+                          ? context.surfaceContainer
+                          : AppColor.surfaceContainerLight,
+                      borderRadius: BorderRadius.circular(
+                        Dimensions.r20.dynamicR,
                       ),
-                      itemCount: 4,
-                      separatorBuilder: (_, _) =>
-                          SizedBox(width: Dimensions.r12.dynamicW),
-                      itemBuilder: (context, index) {
-                        return Container(
-                          width: Dimensions.r80.dynamicW * 1.1,
-                          height: Dimensions.r96.dynamicH * 1.05,
-                          decoration: BoxDecoration(
-                            color: context.isDarkMode
-                                ? context.surfaceContainer
-                                : AppColor.surfaceContainerLight,
-                            borderRadius: BorderRadius.circular(
-                              Dimensions.r18.dynamicR,
-                            ),
-                            border: Border.all(
-                              color: context.borderColor.withValues(alpha: 0.6),
-                              width: 1,
-                            ),
-                          ),
-                        );
-                      },
-                    )
-                  : ListView.separated(
-                      scrollDirection: Axis.horizontal,
-                      padding: EdgeInsets.symmetric(
-                        horizontal: Dimensions.r16.dynamicW,
+                      border: Border.all(
+                        color: context.borderColor.withValues(alpha: 0.6),
+                        width: 1,
                       ),
-                      itemCount: displayCategories.length,
-                      separatorBuilder: (_, _) =>
-                          SizedBox(width: Dimensions.r12.dynamicW),
-                      itemBuilder: (context, index) {
-                        final category = displayCategories[index];
-                        return SportCategoryTile(
-                          key: ValueKey('sport_tile_${category.id}'),
-                          category: category,
-                          onTap: () => onCategoryTap(category),
-                        );
-                      },
                     ),
+                  ),
+                ),
+              );
+            }
+
+            return SportsCategoryPerspectiveCarousel(
+              key: const ValueKey('home_sports_perspective_carousel'),
+              categories: displayCategories,
+              mode: SportsCarouselMode.home,
+              onCategoryTap: onCategoryTap,
             );
           },
         ),
@@ -111,3 +94,4 @@ class PopularSportsGrid extends StatelessWidget {
     );
   }
 }
+

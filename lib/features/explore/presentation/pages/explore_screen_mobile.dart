@@ -9,11 +9,11 @@ import '../../../categories/presentation/bloc/category_state.dart';
 
 import '../bloc/explore_bloc.dart';
 import '../bloc/explore_event.dart';
+import 'package:skeletonizer/skeletonizer.dart';
+import '../../../spot/presentation/widgets/activity_card.dart';
+import '../../../../core/widgets/sports_category_perspective_carousel.dart';
 import '../bloc/explore_state.dart';
-import '../widgets/explore_carousel_skeleton.dart';
-import '../widgets/explore_filter_bar.dart';
 import '../widgets/explore_filter_bottom_sheet.dart';
-import '../widgets/explore_perspective_carousel.dart';
 
 class ExploreScreenMobile extends StatefulWidget {
   final String? initialCategoryId;
@@ -493,47 +493,48 @@ class _ExploreScreenMobileState extends State<ExploreScreenMobile> {
                     ),
                   ),
 
-                  // Sticky Categories Filter
-                  SliverPersistentHeader(
-                    pinned: true,
-                    delegate: _SliverCategoryDelegate(
-                      child: Container(
-                        color: context.backgroundColor,
-                        padding: EdgeInsets.symmetric(
-                          vertical: Dimensions.r8.dynamicH,
-                        ),
-                        child: BlocBuilder<CategoryBloc, CategoryState>(
-                          builder: (context, categoryState) {
-                            if (categoryState is CategoryLoaded) {
-                              final activeCategories =
-                                  categoryState.categories
-                                      .where((c) => c.isActive)
-                                      .toList()
-                                    ..sort((a, b) {
-                                      int cmp = a.sortOrder.compareTo(
-                                        b.sortOrder,
-                                      );
-                                      if (cmp != 0) return cmp;
-                                      return a.name.compareTo(b.name);
-                                    });
-                              return BlocBuilder<ExploreBloc, ExploreState>(
-                                builder: (context, exploreState) {
-                                  String? selectedCategoryId;
-                                  if (exploreState is ExploreLoaded) {
-                                    selectedCategoryId =
-                                        exploreState.categoryId;
-                                  }
-                                  return ExploreFilterBar(
-                                    categories: activeCategories,
-                                    selectedCategoryId: selectedCategoryId,
-                                    onCategorySelected: _onCategorySelected,
-                                  );
-                                },
-                              );
-                            }
-                            return const SizedBox.shrink();
-                          },
-                        ),
+                  // 3D Perspective Sports Category Carousel
+                  SliverToBoxAdapter(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(
+                        vertical: Dimensions.r6.dynamicH,
+                      ),
+                      child: BlocBuilder<CategoryBloc, CategoryState>(
+                        builder: (context, categoryState) {
+                          if (categoryState is CategoryLoaded) {
+                            final activeCategories =
+                                categoryState.categories
+                                    .where((c) => c.isActive)
+                                    .toList()
+                                  ..sort((a, b) {
+                                    int cmp = a.sortOrder.compareTo(
+                                      b.sortOrder,
+                                    );
+                                    if (cmp != 0) return cmp;
+                                    return a.name.compareTo(b.name);
+                                  });
+                            return BlocBuilder<ExploreBloc, ExploreState>(
+                              builder: (context, exploreState) {
+                                String? selectedCategoryId;
+                                if (exploreState is ExploreLoaded) {
+                                  selectedCategoryId =
+                                      exploreState.categoryId;
+                                }
+                                return SportsCategoryPerspectiveCarousel(
+                                  key: const ValueKey(
+                                    'explore_sports_perspective_carousel',
+                                  ),
+                                  categories: activeCategories,
+                                  selectedCategoryId: selectedCategoryId,
+                                  includeAllOption: true,
+                                  mode: SportsCarouselMode.explore,
+                                  onCategorySelected: _onCategorySelected,
+                                );
+                              },
+                            );
+                          }
+                          return const SizedBox.shrink();
+                        },
                       ),
                     ),
                   ),
@@ -578,12 +579,53 @@ class _ExploreScreenMobileState extends State<ExploreScreenMobile> {
                     ),
                   ),
 
-                  // Results List
+                  // Results List (Vertical Scrollable Cards)
                   BlocBuilder<ExploreBloc, ExploreState>(
                     builder: (context, state) {
                       if (state is ExploreLoading || state is ExploreInitial) {
-                        return const SliverToBoxAdapter(
-                          child: ExploreCarouselSkeleton(),
+                        final dummySpot = RequestEntity(
+                          id: 'dummy',
+                          userId: 'dummy',
+                          categoryId: 'sports',
+                          title: 'Loading Activity Title',
+                          description:
+                              'Loading Activity Description which is a bit long to cover two lines of text typically in this view.',
+                          locationName: 'Loading Location',
+                          latitude: 0,
+                          longitude: 0,
+                          eventDateTime:
+                              DateTime.now().add(const Duration(days: 1)),
+                          maxParticipants: 10,
+                          currentParticipants: 5,
+                          pricePerPerson: 100,
+                          status: RequestStatus.open,
+                          createdAt: DateTime.now(),
+                          updatedAt: DateTime.now(),
+                        );
+                        return SliverPadding(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: Dimensions.r16.dynamicW,
+                          ),
+                          sliver: SliverList(
+                            delegate: SliverChildBuilderDelegate(
+                              (context, index) => Skeletonizer(
+                                enabled: true,
+                                child: Skeleton.ignorePointer(
+                                  child: IgnorePointer(
+                                    ignoring: true,
+                                    child: ActivityCard(
+                                      spot: dummySpot,
+                                      categoryName: 'Category',
+                                      categoryIcon: '🎯',
+                                      heroTagPrefix: 'explore_shimmer',
+                                      onTap: () {},
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              childCount: 4,
+                            ),
+                          ),
                         );
                       }
 
@@ -692,23 +734,63 @@ class _ExploreScreenMobileState extends State<ExploreScreenMobile> {
                           );
                         }
 
-                        return SliverToBoxAdapter(
-                          child: ExplorePerspectiveCarousel(
-                            key: ValueKey(
-                              'carousel_${state.categoryId ?? "all"}_${state.searchQuery ?? ""}_${state.cityId ?? ""}',
-                            ),
-                            spots: displayedPosts,
-                            heroTagPrefix: 'explore',
-                            onSpotTap: _onSpotTap,
-                            onEndReached: () {
-                              if (!state.hasReachedMax &&
-                                  (state.searchQuery == null ||
-                                      state.searchQuery!.isEmpty)) {
-                                context.read<ExploreBloc>().add(
-                                  const LoadExplorePosts(),
+                        return SliverPadding(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: Dimensions.r16.dynamicW,
+                          ),
+                          sliver: SliverList(
+                            delegate: SliverChildBuilderDelegate(
+                              (context, index) {
+                                if (index >= displayedPosts.length) {
+                                  return Center(
+                                    child: Padding(
+                                      padding: EdgeInsets.symmetric(
+                                        vertical: Dimensions.r16.dynamicH,
+                                      ),
+                                      child: const CircularProgressIndicator(),
+                                    ),
+                                  );
+                                }
+                                final spot = displayedPosts[index];
+                                final categoryState =
+                                    context.read<CategoryBloc>().state;
+                                final category =
+                                    categoryState is CategoryLoaded
+                                        ? categoryState.categories
+                                              .where(
+                                                (c) => c.id == spot.categoryId,
+                                              )
+                                              .firstOrNull
+                                        : null;
+                                return AnimationConfiguration.staggeredList(
+                                  position: index,
+                                  duration: const Duration(milliseconds: 300),
+                                  child: SlideAnimation(
+                                    verticalOffset: 30.0,
+                                    child: FadeInAnimation(
+                                      child: Padding(
+                                        padding: EdgeInsets.only(
+                                          bottom: Dimensions.r16.dynamicH,
+                                        ),
+                                        child: ActivityCard(
+                                          spot: spot,
+                                          categoryName:
+                                              category?.name ?? 'Sport',
+                                          categoryIcon: category?.icon ?? '🎯',
+                                          heroTagPrefix: 'explore',
+                                          onTap: () => _onSpotTap(spot),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
                                 );
-                              }
-                            },
+                              },
+                              childCount: (state.hasReachedMax ||
+                                      (state.searchQuery != null &&
+                                          state.searchQuery!.isNotEmpty))
+                                  ? displayedPosts.length
+                                  : displayedPosts.length + 1,
+                            ),
                           ),
                         );
                       }
@@ -727,30 +809,5 @@ class _ExploreScreenMobileState extends State<ExploreScreenMobile> {
         ),
       ),
     );
-  }
-}
-
-class _SliverCategoryDelegate extends SliverPersistentHeaderDelegate {
-  final Widget child;
-
-  _SliverCategoryDelegate({required this.child});
-
-  @override
-  double get minExtent => 60.0;
-  @override
-  double get maxExtent => 60.0;
-
-  @override
-  Widget build(
-    BuildContext context,
-    double shrinkOffset,
-    bool overlapsContent,
-  ) {
-    return SizedBox.expand(child: child);
-  }
-
-  @override
-  bool shouldRebuild(_SliverCategoryDelegate oldDelegate) {
-    return true;
   }
 }
