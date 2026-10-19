@@ -32,13 +32,6 @@
             </list>
           </value>
         </entry>
-        <entry key="animations">
-          <value>
-            <list>
-              <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/animations-2.2.0/lib" />
-            </list>
-          </value>
-        </entry>
         <entry key="app_links">
           <value>
             <list>
@@ -1841,7 +1834,6 @@
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/analyzer-10.1.0/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/analyzer-14.4.0/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/analyzer_buffer-0.3.4/lib" />
-      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/animations-2.2.0/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/app_links-7.0.0/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/app_links_linux-1.0.3/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/app_links_platform_interface-2.0.2/lib" />

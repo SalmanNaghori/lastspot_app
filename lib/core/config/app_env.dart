@@ -13,10 +13,7 @@ class AppEnv {
   AppEnv._();
 
   /// The active environment name (e.g., 'dev', 'local', 'staging', 'prod').
-  static const String environment = String.fromEnvironment(
-    'APP_ENV',
-    defaultValue: 'dev',
-  );
+  static const String environment = String.fromEnvironment('APP_ENV', defaultValue: 'dev');
 
   /// Active environment as strongly-typed enum.
   static EnvironmentType get currentType {
@@ -34,16 +31,7 @@ class AppEnv {
   }
 
   /// Application title/display name for the active environment.
-  static const String appName = String.fromEnvironment(
-    'APP_NAME',
-    defaultValue: 'KhelBhai',
-  );
-
-  /// Application version string.
-  static const String appVersion = String.fromEnvironment(
-    'APP_VERSION',
-    defaultValue: '1.0.3',
-  );
+  static const String appName = String.fromEnvironment('APP_NAME', defaultValue: 'KhelBhai');
 
   /// Supabase backend project URL.
   static const String supabaseUrl = String.fromEnvironment(
@@ -59,21 +47,18 @@ class AppEnv {
   );
 
   /// Flag to display an environment watermark banner in the app.
-  static const bool showBanner = bool.fromEnvironment(
-    'SHOW_BANNER',
-    defaultValue: false,
-  );
+  static const bool showBanner = bool.fromEnvironment('SHOW_BANNER', defaultValue: false);
 
   /// Optional custom API base URL if an intermediate gateway is used.
-  static const String apiBaseUrl = String.fromEnvironment(
-    'API_BASE_URL',
-    defaultValue: '',
-  );
+  static const String apiBaseUrl = String.fromEnvironment('API_BASE_URL', defaultValue: '');
 
   // Environment checks
   static bool get isDev => environment.toLowerCase() == 'dev';
+
   static bool get isLocal => environment.toLowerCase() == 'local';
+
   static bool get isStaging => environment.toLowerCase() == 'staging';
+
   static bool get isProd => environment.toLowerCase() == 'prod';
 
   /// Uppercase label for banner displays (e.g., 'DEV', 'LOCAL', 'STAGING').
@@ -98,6 +83,7 @@ class AppEnv {
 /// Compatibility accessor for AppEnv
 class AppEnvironment {
   AppEnvironment._();
+
   EnvironmentType get type => AppEnv.currentType;
   static final AppEnvironment current = AppEnvironment._();
 }

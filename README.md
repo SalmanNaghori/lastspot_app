@@ -280,12 +280,6 @@ The codebase follows **Feature-First Clean Architecture**, ensuring that busines
 lastspot_app/
 ├── .vscode/                   # VS Code launch configs, tasks, and editor settings
 ├── .idea/runConfigurations/   # Android Studio / IntelliJ run and shell configurations
-├── env/                       # Compile-time environment JSON definitions
-│   ├── dev.json               # Development environment parameters
-│   ├── staging.json           # Staging environment parameters
-│   ├── prod.json              # Production environment parameters
-│   ├── local.json             # Local offline / emulator development
-│   └── env.example.json       # Template definition
 ├── android/                   # Native Android host configuration (AGP 8.11.1, Kotlin 2.2.20)
 ├── ios/                       # Native iOS host configuration (CocoaPods, Runner)
 ├── assets/                    # Static assets
@@ -417,7 +411,6 @@ Centralized in [`lib/core/config/app_env.dart`](lib/core/config/app_env.dart):
 | :--- | :--- | :--- | :--- |
 | `APP_ENV` | `String` | `'dev'` | Target environment: `dev`, `staging`, `prod`, `local` |
 | `APP_NAME` | `String` | `'KhelBhai'` | Display application title |
-| `APP_VERSION` | `String` | `'1.0.3'` | Application semantic version |
 | `SUPABASE_URL` | `String` | `https://zrhmpidlutbyoiysjwxt.supabase.co` | Supabase project URL |
 | `SUPABASE_ANON_KEY` | `String` | `eyJhbGciOi...` | Supabase anonymous public client key |
 | `SHOW_BANNER` | `bool` | `false` | Enables top-right interactive watermark banner |
@@ -425,17 +418,18 @@ Centralized in [`lib/core/config/app_env.dart`](lib/core/config/app_env.dart):
 
 ### Environment Definition Files
 
-The project supports both JSON and standard `.env` formats for `--dart-define-from-file`:
+The project uses `.env` files for compile-time binding via `--dart-define-from-file`:
 
-- **JSON Format:** `env/dev.json`, `env/staging.json`, `env/prod.json`, `env/local.json`, `env/env.example.json`
-- **Dotenv Format:** `.env.dev`, `.env.staging`, `.env.prod`, `.env.local`, `.env.example`
+- **Development:** `.env.dev`
+- **Staging:** `.env.staging`
+- **Production:** `.env.prod`
+- **Local Development:** `.env.local`
 
 Template file: [`.env.example`](.env.example)
 
 ```properties
 APP_ENV=dev
 APP_NAME=KhelBhai (Dev)
-APP_VERSION=1.0.3
 SUPABASE_URL=https://your-project.supabase.co
 SUPABASE_ANON_KEY=your-anon-public-key
 SHOW_BANNER=true
@@ -661,21 +655,21 @@ bash tool/build_apk_with_banner.sh prod false
 #### Android APK (Standard Release)
 
 ```bash
-fvm flutter build apk --release --dart-define-from-file=env/prod.json
+fvm flutter build apk --release --dart-define-from-file=.env.prod
 ```
 *Output:* `build/app/outputs/flutter-apk/app-release.apk`
 
 #### Android App Bundle (AAB for Google Play)
 
 ```bash
-VERSION=$(grep '^version:' pubspec.yaml | awk '{print $2}') && fvm flutter build appbundle --release --dart-define-from-file=env/prod.json --build-name=$(echo $VERSION | cut -d+ -f1) --build-number=$(echo $VERSION | cut -d+ -f2)
+VERSION=$(grep '^version:' pubspec.yaml | awk '{print $2}') && fvm flutter build appbundle --release --dart-define-from-file=.env.prod --build-name=$(echo $VERSION | cut -d+ -f1) --build-number=$(echo $VERSION | cut -d+ -f2)
 ```
 *Output:* `build/app/outputs/bundle/release/app-release.aab`
 
 #### iOS Release IPA (for App Store / TestFlight)
 
 ```bash
-VERSION=$(grep '^version:' pubspec.yaml | awk '{print $2}') && fvm flutter build ipa --release --dart-define-from-file=env/prod.json --build-name=$(echo $VERSION | cut -d+ -f1) --build-number=$(echo $VERSION | cut -d+ -f2)
+VERSION=$(grep '^version:' pubspec.yaml | awk '{print $2}') && fvm flutter build ipa --release --dart-define-from-file=.env.prod --build-name=$(echo $VERSION | cut -d+ -f1) --build-number=$(echo $VERSION | cut -d+ -f2)
 ```
 *Output:* `build/ios/archive/Runner.xcarchive` & `build/ios/ipa/`
 

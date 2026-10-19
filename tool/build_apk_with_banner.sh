@@ -8,9 +8,9 @@ VERSION=$(grep '^version:' pubspec.yaml | awk '{print $2}')
 BUILD_NAME=$(echo "$VERSION" | cut -d+ -f1)
 BUILD_NUMBER=$(echo "$VERSION" | cut -d+ -f2)
 
-ENV_FILE="env/${ENV_TARGET}.json"
+ENV_FILE=".env.${ENV_TARGET}"
 if [ ! -f "$ENV_FILE" ]; then
-  ENV_FILE=".env.${ENV_TARGET}"
+  ENV_FILE=".env"
 fi
 
 echo "🚀 Building KhelBhai APK for [$ENV_TARGET] (version: $VERSION, banner: $BANNER_FLAG)..."

@@ -1,7 +1,7 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="KhelBhai (Staging) + Banner" type="FlutterRunConfigurationType" factoryName="Flutter">
     <option name="filePath" value="$PROJECT_DIR$/lib/main.dart" />
-    <option name="additionalArgs" value="--dart-define-from-file=env/staging.json --dart-define=SHOW_BANNER=true" />
+    <option name="additionalArgs" value="--dart-define-from-file=.env.staging --dart-define=SHOW_BANNER=true" />
     <method v="2" />
   </configuration>
 </component>

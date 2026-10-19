@@ -50,12 +50,10 @@ class _EnvBannerState extends State<EnvBanner> {
         _versionNotifier.value = buildNumber.isNotEmpty
             ? 'v$version+$buildNumber'
             : 'v$version';
-        return;
       }
     } catch (_) {
-      // Platform channels may be unavailable during testing or bootstrap
+      // Platform channels may be unavailable during testing
     }
-    _versionNotifier.value = 'v${AppEnv.appVersion}';
   }
 
   // Reads the compile-time flag --dart-define=SHOW_BANNER=true.

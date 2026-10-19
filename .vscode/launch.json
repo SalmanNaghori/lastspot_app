@@ -7,7 +7,7 @@
       "type": "dart",
       "program": "lib/main.dart",
       "args": [
-        "--dart-define-from-file=env/dev.json"
+        "--dart-define-from-file=.env.dev"
       ]
     },
     {
@@ -16,7 +16,7 @@
       "type": "dart",
       "program": "lib/main.dart",
       "args": [
-        "--dart-define-from-file=env/dev.json",
+        "--dart-define-from-file=.env.dev",
         "--dart-define=SHOW_BANNER=true"
       ]
     },
@@ -26,7 +26,7 @@
       "type": "dart",
       "program": "lib/main.dart",
       "args": [
-        "--dart-define-from-file=env/local.json"
+        "--dart-define-from-file=.env.local"
       ]
     },
     {
@@ -35,7 +35,7 @@
       "type": "dart",
       "program": "lib/main.dart",
       "args": [
-        "--dart-define-from-file=env/local.json",
+        "--dart-define-from-file=.env.local",
         "--dart-define=SHOW_BANNER=true"
       ]
     },
@@ -45,7 +45,7 @@
       "type": "dart",
       "program": "lib/main.dart",
       "args": [
-        "--dart-define-from-file=env/staging.json"
+        "--dart-define-from-file=.env.staging"
       ]
     },
     {
@@ -54,7 +54,7 @@
       "type": "dart",
       "program": "lib/main.dart",
       "args": [
-        "--dart-define-from-file=env/staging.json",
+        "--dart-define-from-file=.env.staging",
         "--dart-define=SHOW_BANNER=true"
       ]
     },
@@ -64,7 +64,7 @@
       "type": "dart",
       "program": "lib/main.dart",
       "args": [
-        "--dart-define-from-file=env/prod.json"
+        "--dart-define-from-file=.env.prod"
       ]
     },
     {
@@ -80,7 +80,7 @@
       "flutterMode": "release",
       "program": "lib/main.dart",
       "args": [
-        "--dart-define-from-file=env/prod.json"
+        "--dart-define-from-file=.env.prod"
       ]
     }
   ],
