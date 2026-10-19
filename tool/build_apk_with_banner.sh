@@ -13,6 +13,11 @@ if [ ! -f "$ENV_FILE" ]; then
   ENV_FILE=".env"
 fi
 
+if [ ! -f "$ENV_FILE" ]; then
+  echo "❌ Error: Environment file not found for [$ENV_TARGET] (.env.${ENV_TARGET} or .env)!"
+  exit 1
+fi
+
 echo "🚀 Building KhelBhai APK for [$ENV_TARGET] (version: $VERSION, banner: $BANNER_FLAG)..."
 
 fvm flutter clean
@@ -38,4 +43,9 @@ elif [ -f "build/app/outputs/flutter-apk/app-debug.apk" ]; then
   cp build/app/outputs/flutter-apk/app-debug.apk "build/app/outputs/flutter-apk/${OUTPUT_NAME}"
 fi
 
-echo "✅ Built: build/app/outputs/flutter-apk/${OUTPUT_NAME}"
+if [ -f "build/app/outputs/flutter-apk/${OUTPUT_NAME}" ]; then
+  echo "✅ Built: build/app/outputs/flutter-apk/${OUTPUT_NAME}"
+else
+  echo "❌ Error: Output APK was not generated!"
+  exit 1
+fi
