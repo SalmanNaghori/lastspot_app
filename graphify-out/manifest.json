@@ -2059,20 +2059,20 @@
   },
   "schema.sql": {
     "mtime": 1790505564.5619476,
-    "seen": 1792145743.942233,
-    "ast_hash": "",
+    "seen": 1792412459.8596292,
+    "ast_hash": "15b264a618890c961ead426ce302ce5e",
     "semantic_hash": ""
   },
   "supabase/migrations/202610120001_spot_messages.sql": {
     "mtime": 1791787051.9867542,
-    "seen": 1792145743.942234,
-    "ast_hash": "",
+    "seen": 1792412459.85963,
+    "ast_hash": "a9a8e2fb114414c13063366dd18f2da1",
     "semantic_hash": ""
   },
   "supabase/migrations/202610140001_expand_gujarat_outdoor_sports.sql": {
     "mtime": 1791994630.2963014,
-    "seen": 1792145743.942234,
-    "ast_hash": "",
+    "seen": 1792412459.85963,
+    "ast_hash": "d8085441f43aaf0257fa67d9740171b7",
     "semantic_hash": ""
   },
   ".agents/rules/graphify.md": {
@@ -4263,6 +4263,90 @@
     "mtime": 1792412071.9748666,
     "seen": 1792412278.107011,
     "ast_hash": "22c2be948acaca4525407bb06715d7c8",
+    "semantic_hash": ""
+  },
+  "lib/features/auth/data/models/user_device_model.g.dart": {
+    "mtime": 1792393738.1044488,
+    "seen": 1792412459.859491,
+    "ast_hash": "fe09e07cf91c9cc0655532d394844cc4",
+    "semantic_hash": ""
+  },
+  "lib/features/auth/domain/entities/profile_stats.g.dart": {
+    "mtime": 1792393738.104514,
+    "seen": 1792412459.859495,
+    "ast_hash": "25c76fe56783f6fff8b3b81dffb9514a",
+    "semantic_hash": ""
+  },
+  "lib/features/auth/domain/entities/user_profile.g.dart": {
+    "mtime": 1792393738.1045754,
+    "seen": 1792412459.8594959,
+    "ast_hash": "845a20e4a4e47775e48b44a5de1c3cca",
+    "semantic_hash": ""
+  },
+  "lib/features/categories/data/models/category_model.g.dart": {
+    "mtime": 1792393738.104639,
+    "seen": 1792412459.859513,
+    "ast_hash": "e4792aa882767e9ea3b461506d901258",
+    "semantic_hash": ""
+  },
+  "lib/features/chat/data/models/chat_conversation_model.g.dart": {
+    "mtime": 1792400936.4271674,
+    "seen": 1792412459.859518,
+    "ast_hash": "0f8226e0d1cb9b5dd0aedaa4c1e8e34c",
+    "semantic_hash": ""
+  },
+  "lib/features/chat/data/models/chat_message_model.g.dart": {
+    "mtime": 1792393738.1047802,
+    "seen": 1792412459.859519,
+    "ast_hash": "b68c8212790f359acc67c111ddd09a00",
+    "semantic_hash": ""
+  },
+  "lib/features/chat/data/models/chat_participant_model.g.dart": {
+    "mtime": 1792393738.1048439,
+    "seen": 1792412459.859521,
+    "ast_hash": "09179912f2f54ea1b66ef8f3731a478c",
+    "semantic_hash": ""
+  },
+  "lib/features/cities/data/models/city_model.g.dart": {
+    "mtime": 1792393738.1049137,
+    "seen": 1792412459.85954,
+    "ast_hash": "a6e5573ecaf4c56601f069a5ee4a218f",
+    "semantic_hash": ""
+  },
+  "lib/features/notifications/data/models/notification_model.g.dart": {
+    "mtime": 1792393738.105001,
+    "seen": 1792412459.859552,
+    "ast_hash": "ab506c23e2cde806f723cf3efbc42a7f",
+    "semantic_hash": ""
+  },
+  "lib/features/spot/data/models/join_request_model.g.dart": {
+    "mtime": 1792393738.1050634,
+    "seen": 1792412459.859584,
+    "ast_hash": "ef5e1008cb67e139dd475b02d6ba57ce",
+    "semantic_hash": ""
+  },
+  "lib/features/spot/data/models/request_image_model.g.dart": {
+    "mtime": 1792393738.1051345,
+    "seen": 1792412459.859585,
+    "ast_hash": "234b7fd986ce3dc4f739fab3403dc801",
+    "semantic_hash": ""
+  },
+  "lib/features/spot/data/models/request_model.g.dart": {
+    "mtime": 1792393738.105194,
+    "seen": 1792412459.859587,
+    "ast_hash": "64a511c8f83ce369f180507c5343bc86",
+    "semantic_hash": ""
+  },
+  "supabase/migrations/202610180002_chat_push_notifications.sql": {
+    "mtime": 1792346125.1271706,
+    "seen": 1792412459.859631,
+    "ast_hash": "206e1ecb4c67f41ca90652004d822f33",
+    "semantic_hash": ""
+  },
+  "supabase/migrations/202610190001_chat_conversations_activity_title.sql": {
+    "mtime": 1792400909.4533253,
+    "seen": 1792412459.859631,
+    "ast_hash": "f529181744d42cfcc77d786109eead7a",
     "semantic_hash": ""
   }
 }
