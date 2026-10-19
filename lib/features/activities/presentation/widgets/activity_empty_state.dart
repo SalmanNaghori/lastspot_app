@@ -1,5 +1,4 @@
 import 'package:lastspot_app/core/base_import.dart';
-import 'package:lastspot_app/gen/assets.gen.dart';
 import 'package:lottie/lottie.dart';
 
 class ActivityEmptyState extends StatelessWidget {

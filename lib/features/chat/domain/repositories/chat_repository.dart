@@ -17,4 +17,5 @@ abstract class ChatRepository {
   });
   Future<Result<void, Exception>> markAsRead(String conversationId);
   Stream<ChatMessageEntity> streamMessages(String conversationId);
+  Stream<ChatMessageEntity> streamUserMessages();
 }

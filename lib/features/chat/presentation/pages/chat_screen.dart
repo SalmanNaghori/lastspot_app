@@ -2,6 +2,7 @@ import '../../../../core/base_import.dart';
 
 import '../bloc/chat_cubit.dart';
 import '../bloc/chat_state.dart';
+import '../../../../core/services/chat_visibility_tracker.dart';
 import '../../../../core/services/in_app_feedback_manager.dart';
 import 'chat_screen_mobile.dart';
 import 'chat_screen_tablet.dart';
@@ -12,6 +13,8 @@ class ChatScreen extends StatefulWidget {
   final bool? isDirect;
   final String? recipientUserId;
   final String? recipientName;
+  final String? recipientAvatarUrl;
+  final String? category;
   final String? activityTitle;
   final String? requestId;
 
@@ -22,6 +25,8 @@ class ChatScreen extends StatefulWidget {
     this.isDirect,
     this.recipientUserId,
     this.recipientName,
+    this.recipientAvatarUrl,
+    this.category,
     this.activityTitle,
     this.requestId,
   });
@@ -44,6 +49,13 @@ class _ChatScreenState extends State<ChatScreen> {
         widget.requestId ?? (widget.isConversationId ? null : widget.id);
     if (widget.isConversationId) {
       _feedbackManager?.openConversation(widget.id, requestId: requestId);
+      if (sl.isRegistered<ChatVisibilityTracker>()) {
+        sl<ChatVisibilityTracker>().enterConversation(
+          conversationId: widget.id,
+          chatType: widget.isDirect == true ? 'direct' : 'group',
+          requestId: requestId,
+        );
+      }
     } else {
       _feedbackManager?.openConversationRequest(requestId!);
     }
@@ -51,6 +63,10 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   void dispose() {
+    final convId = _openedConversationId ?? widget.id;
+    if (sl.isRegistered<ChatVisibilityTracker>()) {
+      sl<ChatVisibilityTracker>().leaveConversation(convId);
+    }
     _feedbackManager?.closeConversation(
       _openedConversationId ?? '',
       requestId:
@@ -88,6 +104,13 @@ class _ChatScreenState extends State<ChatScreen> {
         listener: (context, state) {
           if (state is ChatLoaded) {
             _openedConversationId = state.conversationId;
+            if (sl.isRegistered<ChatVisibilityTracker>()) {
+              sl<ChatVisibilityTracker>().enterConversation(
+                conversationId: state.conversationId,
+                chatType: state.isDirect ? 'direct' : 'group',
+                requestId: state.requestId,
+              );
+            }
             _feedbackManager?.openConversation(
               state.conversationId,
               requestId:
@@ -96,9 +119,15 @@ class _ChatScreenState extends State<ChatScreen> {
             );
           }
         },
-        child: const ResponsiveLayout(
-          mobile: ChatScreenMobile(),
-          tablet: ChatScreenTablet(),
+        child: ResponsiveLayout(
+          mobile: ChatScreenMobile(
+            avatarUrl: widget.recipientAvatarUrl,
+            category: widget.category,
+          ),
+          tablet: ChatScreenTablet(
+            avatarUrl: widget.recipientAvatarUrl,
+            category: widget.category,
+          ),
         ),
       ),
     );

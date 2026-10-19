@@ -165,16 +165,11 @@ class PreviewSpotScreen extends StatelessWidget {
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Image.asset(
-                      AppAssets.getCategoryAsset(categoryName.toLowerCase()),
-                      width: Dimensions.r18.dynamicW,
-                      height: Dimensions.r18.dynamicH,
-                      fit: BoxFit.contain,
-                      errorBuilder: (context, error, stackTrace) => Icon(
-                        Icons.sports_soccer_rounded,
-                        size: Dimensions.r16.dynamicH,
-                        color: context.primaryColor,
-                      ),
+                    Category3DIcon(
+                      category:
+                          formState.selectedCategoryId.value ??
+                          categoryName.toLowerCase(),
+                      size: Dimensions.r18.dynamicH,
                     ),
                     SizedBox(width: Dimensions.r6.dynamicW),
                     Text(
@@ -212,7 +207,10 @@ class PreviewSpotScreen extends StatelessWidget {
 
               // Details List
               PreviewSpotDetailRow(
-                icon: Icons.location_on_outlined,
+                leading: ActivityMetadataIcon.location(
+                  size: Dimensions.r20.dynamicH,
+                  fallbackColor: context.primaryColor,
+                ),
                 text: formState.selectedCity.value != null
                     ? '${formState.selectedCity.value!.name} • ${AppUtils.getDisplayLocation(context, formState.locationController.text)}'
                     : AppUtils.getDisplayLocation(
@@ -225,19 +223,27 @@ class PreviewSpotScreen extends StatelessWidget {
               ),
               SizedBox(height: Dimensions.r12.dynamicH),
               PreviewSpotDetailRow(
-                icon: Icons.calendar_today_outlined,
+                leading: ActivityMetadataIcon.calendar(
+                  size: Dimensions.r20.dynamicH,
+                  fallbackColor: context.primaryColor,
+                ),
                 text: formattedDate,
               ),
               SizedBox(height: Dimensions.r12.dynamicH),
               PreviewSpotDetailRow(
-                icon: Icons.group_outlined,
+                leading: ActivityMetadataIcon.participants(
+                  size: Dimensions.r20.dynamicH,
+                  fallbackColor: context.primaryColor,
+                ),
                 text: '1/${formState.maxParticipants.value} players',
               ),
               SizedBox(height: Dimensions.r12.dynamicH),
               PreviewSpotDetailRow(
-                icon: Icons.payments_outlined,
+                leading: ActivityMetadataIcon.priceTag(
+                  size: Dimensions.r20.dynamicH,
+                  fallbackColor: context.primaryColor,
+                ),
                 text: priceText,
-                iconColor: context.primaryColor,
                 textColor: context.primaryColor,
               ),
               SizedBox(height: Dimensions.r32.dynamicH),

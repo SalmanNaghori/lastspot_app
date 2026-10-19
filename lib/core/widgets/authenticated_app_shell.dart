@@ -12,6 +12,8 @@ import '../../features/auth/presentation/bloc/auth_bloc.dart';
 import '../../features/auth/presentation/bloc/auth_event.dart';
 import '../../features/auth/presentation/bloc/auth_state.dart';
 import '../services/in_app_feedback_manager.dart';
+import '../services/chat_visibility_tracker.dart';
+import '../services/foreground_chat_notification_coordinator.dart';
 
 class AuthenticatedAppShell extends StatefulWidget {
   final StatefulNavigationShell navigationShell;
@@ -37,6 +39,11 @@ class _AuthenticatedAppShellState extends State<AuthenticatedAppShell>
     _profileCubit = sl<ProfileCubit>();
     _conversationsCubit = sl<ConversationsCubit>();
     final userId = Supabase.instance.client.auth.currentUser?.id;
+    if (sl.isRegistered<ChatVisibilityTracker>()) {
+      sl<ChatVisibilityTracker>().setActiveTab(
+        widget.navigationShell.currentIndex,
+      );
+    }
     if (userId != null) {
       appFeedbackManager.setSessionActive(true);
       _notificationsCubit.initialize(userId);
@@ -51,35 +58,17 @@ class _AuthenticatedAppShellState extends State<AuthenticatedAppShell>
         ..putIfAbsent('type', () => notif.type);
       if (InAppFeedbackManager.isChatMessage(data, type: notif.type)) {
         _conversationsCubit.loadConversations(isRefresh: true);
-        final conversationId = InAppFeedbackManager.conversationIdFrom(data);
-        if (conversationId != null) {
-          feedback.showIncomingChatMessage(
-            data: data,
-            senderName:
-                InAppFeedbackManager.senderNameFrom(data) ?? notif.title,
-            activityName: InAppFeedbackManager.activityNameFrom(data),
-            preview: notif.body,
-            eventKeys: [
-              'notification:${notif.id}',
-              ..._notificationEventKeys(data),
-            ],
-            onTap: () {
-              if (!mounted) return;
-              context.push(
-                AppRoutes.conversationChatPath(
-                  conversationId,
-                  isDirect:
-                      data['is_direct']?.toString() == 'true' ||
-                      data['chat_type']?.toString().toLowerCase() == 'direct',
-                  name: InAppFeedbackManager.senderNameFrom(data),
-                  activityTitle: InAppFeedbackManager.activityNameFrom(data),
-                  requestId: data['request_id']?.toString(),
-                ),
+        if (sl.isRegistered<ForegroundChatNotificationCoordinator>()) {
+          final resolvedMsgId = data['message_id']?.toString() ?? notif.id;
+          sl<ForegroundChatNotificationCoordinator>()
+              .handleIncomingChatNotification(
+                data: data,
+                messageId: resolvedMsgId,
+                title: notif.title,
+                body: notif.body,
               );
-            },
-          );
-          return;
         }
+        return;
       }
 
       feedback.showNotification(
@@ -110,11 +99,11 @@ class _AuthenticatedAppShellState extends State<AuthenticatedAppShell>
     super.didChangeDependencies();
     if (!_precachedNavAssets) {
       _precachedNavAssets = true;
-      precacheImage(AppAssets.navHomeGen.provider(), context);
-      precacheImage(AppAssets.navExploreGen.provider(), context);
-      precacheImage(AppAssets.navCreateGen.provider(), context);
-      precacheImage(AppAssets.navActivitiesGen.provider(), context);
-      precacheImage(AppAssets.navChatsGen.provider(), context);
+      precacheImage(Assets.navigation.home3d.provider(), context);
+      precacheImage(Assets.navigation.explore3d.provider(), context);
+      precacheImage(Assets.navigation.create3d.provider(), context);
+      precacheImage(Assets.navigation.activities3d.provider(), context);
+      precacheImage(Assets.navigation.chats3d.provider(), context);
     }
   }
 
@@ -174,7 +163,11 @@ class _AuthenticatedAppShellState extends State<AuthenticatedAppShell>
     WidgetsBinding.instance.removeObserver(this);
     _newNotifSub?.cancel();
     _profileCubit.close();
-    _conversationsCubit.close();
+    if (sl.isRegistered<ConversationsCubit>()) {
+      sl.resetLazySingleton<ConversationsCubit>();
+    } else {
+      _conversationsCubit.close();
+    }
     super.dispose();
   }
 
@@ -185,6 +178,9 @@ class _AuthenticatedAppShellState extends State<AuthenticatedAppShell>
       return;
     }
     final branchIndex = index > 2 ? index - 1 : index;
+    if (sl.isRegistered<ChatVisibilityTracker>()) {
+      sl<ChatVisibilityTracker>().setActiveTab(branchIndex);
+    }
     widget.navigationShell.goBranch(
       branchIndex,
       initialLocation: branchIndex == widget.navigationShell.currentIndex,
@@ -219,7 +215,8 @@ class _AuthenticatedAppShellState extends State<AuthenticatedAppShell>
             }
 
             return Scaffold(
-              backgroundColor: context.backgroundColor,
+              backgroundColor: Colors.transparent,
+              extendBody: true,
               body: widget.navigationShell,
               bottomNavigationBar: LastSpotBottomNavigationBar(
                 selectedIndex: _getSelectedIndex(),

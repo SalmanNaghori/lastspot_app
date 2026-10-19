@@ -86,17 +86,30 @@ class CompactActivityCard extends StatelessWidget {
                     children: [
                       _buildInfoRow(
                         context,
-                        Icons.calendar_today_outlined,
+                        ActivityMetadataIcon.calendar(
+                          size: Dimensions.r16.dynamicH,
+                          fallbackColor: context.primaryColor,
+                        ),
                         date,
                       ),
                       SizedBox(height: Dimensions.r8.dynamicH),
                       _buildInfoRow(
                         context,
-                        Icons.location_on_outlined,
+                        ActivityMetadataIcon.location(
+                          size: Dimensions.r16.dynamicH,
+                          fallbackColor: context.primaryColor,
+                        ),
                         location,
                       ),
                       SizedBox(height: Dimensions.r8.dynamicH),
-                      _buildInfoRow(context, Icons.people_outline, stats),
+                      _buildInfoRow(
+                        context,
+                        ActivityMetadataIcon.participants(
+                          size: Dimensions.r16.dynamicH,
+                          fallbackColor: context.primaryColor,
+                        ),
+                        stats,
+                      ),
                     ],
                   ),
                 ),
@@ -125,10 +138,10 @@ class CompactActivityCard extends StatelessWidget {
     );
   }
 
-  Widget _buildInfoRow(BuildContext context, IconData icon, String text) {
+  Widget _buildInfoRow(BuildContext context, Widget leading, String text) {
     return Row(
       children: [
-        Icon(icon, size: Dimensions.r16.dynamicH, color: context.primaryColor),
+        leading,
         SizedBox(width: Dimensions.r8.dynamicW),
         Expanded(
           child: Text(

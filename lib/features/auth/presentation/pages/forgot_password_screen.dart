@@ -68,7 +68,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                       decoration: BoxDecoration(
                         color: context.isDarkMode
                             ? context.surfaceContainer
-                            : const Color(0xFFF0FDF4),
+                            : context.primaryContainer,
                         shape: BoxShape.circle,
                         boxShadow: [
                           BoxShadow(
@@ -116,17 +116,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                     prefixIcon: const Icon(Icons.email_outlined),
                     keyboardType: TextInputType.emailAddress,
                     textInputAction: TextInputAction.done,
-                    validator: (value) {
-                      if (value == null || value.trim().isEmpty) {
-                        return 'Email is required';
-                      }
-                      if (!RegExp(
-                        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+",
-                      ).hasMatch(value)) {
-                        return 'Enter a valid email';
-                      }
-                      return null;
-                    },
+                    validator: AppValidators.email(context.loc),
                   ),
                   SizedBox(height: Dimensions.r24.dynamicH),
                   BlocBuilder<AuthBloc, AuthState>(

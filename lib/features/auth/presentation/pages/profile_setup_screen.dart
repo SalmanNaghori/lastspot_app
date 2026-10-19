@@ -479,7 +479,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
           selectedAvatar: _selectedAvatar.value,
           existingProfile: existingProfile,
           isLoading: profileState is ProfileLoading,
-          onEnterLastSpot: () => _onSaveProfile(context),
+          onEnterApp: () => _onSaveProfile(context),
         );
     }
   }

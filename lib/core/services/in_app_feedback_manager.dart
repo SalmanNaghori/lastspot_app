@@ -298,6 +298,7 @@ class InAppFeedbackManager extends NavigatorObserver {
         .toLowerCase()
         .replaceAll('-', '_');
     return const {
+          'chat',
           'chat_message',
           'new_chat_message',
           'new_message',
@@ -313,8 +314,10 @@ class InAppFeedbackManager extends NavigatorObserver {
   static bool isSafeRouteIdentifier(String value) =>
       RegExp(r'^[A-Za-z0-9_-]{1,128}$').hasMatch(value);
 
-  static String? senderNameFrom(Map<String, dynamic> data) =>
-      _stringValue(data, const ['sender_name', 'senderName', 'sender']);
+  static String? senderNameFrom(Map<String, dynamic> data) => _stringValue(
+    data,
+    const ['sender_name', 'senderName', 'sender', 'title'],
+  );
 
   static String? activityNameFrom(Map<String, dynamic> data) => _stringValue(
     data,

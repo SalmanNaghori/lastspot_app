@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../domain/usecases/get_categories_usecase.dart';
+import '../../../../core/constants/app_assets.dart';
 import 'category_event.dart';
 import 'category_state.dart';
 
@@ -20,6 +21,7 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
     emit(CategoryLoading());
     try {
       final categories = await _getCategoriesUseCase();
+      AppAssets.registerCategories(categories);
       emit(CategoryLoaded(categories));
     } catch (e, st) {
       log(

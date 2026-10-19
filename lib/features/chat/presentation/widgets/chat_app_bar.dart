@@ -1,10 +1,13 @@
 import '../../../../core/base_import.dart';
+import 'chat_avatar.dart';
 
 /// WhatsApp-inspired chat app bar with avatar, title, and context subtitle.
 class ChatAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
   final String? subtitle;
   final bool isDirect;
+  final String? avatarUrl;
+  final String? category;
   final VoidCallback onBack;
   final VoidCallback? onGroupInfoTap;
 
@@ -13,6 +16,8 @@ class ChatAppBar extends StatelessWidget implements PreferredSizeWidget {
     required this.title,
     this.subtitle,
     required this.isDirect,
+    this.avatarUrl,
+    this.category,
     required this.onBack,
     this.onGroupInfoTap,
   });
@@ -23,17 +28,9 @@ class ChatAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     final colors = context.colorScheme;
-    final displayTitle = title.trim().isNotEmpty
+    final displayTitle = title.trim().isNotNullOrEmpty()
         ? title.trim()
         : (isDirect ? context.loc.navProfile : context.loc.groupChat);
-
-    final initial = displayTitle.isNotEmpty
-        ? displayTitle.characters.first.toUpperCase()
-        : '?';
-
-    final categoryIcon = isDirect
-        ? Icons.person
-        : AppUtils.getCategoryIcon(displayTitle);
 
     return AppBar(
       backgroundColor: context.backgroundColor,
@@ -56,24 +53,12 @@ class ChatAppBar extends StatelessWidget implements PreferredSizeWidget {
           ),
           child: Row(
             children: [
-              CircleAvatar(
-                radius: 20,
-                backgroundColor: isDirect
-                    ? colors.primaryContainer
-                    : colors.secondaryContainer,
-                child: isDirect
-                    ? Text(
-                        initial,
-                        style: context.titleMedium?.copyWith(
-                          color: colors.onPrimaryContainer,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      )
-                    : Icon(
-                        categoryIcon,
-                        size: 20,
-                        color: colors.onSecondaryContainer,
-                      ),
+              ChatAvatar(
+                isDirect: isDirect,
+                avatarUrl: avatarUrl,
+                displayName: displayTitle,
+                category: category ?? subtitle ?? displayTitle,
+                size: 40,
               ),
               const SizedBox(width: AppSpacing.smLg),
               Expanded(
@@ -89,15 +74,35 @@ class ChatAppBar extends StatelessWidget implements PreferredSizeWidget {
                         fontWeight: FontWeight.w700,
                       ),
                     ),
-                    if (subtitle != null && subtitle!.trim().isNotEmpty) ...[
-                      Text(
-                        subtitle!.trim(),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: context.labelSmall?.copyWith(
-                          color: colors.onSurfaceVariant,
-                          fontSize: 11,
-                        ),
+                    if (subtitle?.trim().isNotNullOrEmpty() == true) ...[
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          if (isDirect) ...[
+                            Icon(
+                              Icons.sports_soccer_outlined,
+                              size: Dimensions.r12.dynamicH,
+                              color: context.primaryColor,
+                            ),
+                            SizedBox(width: Dimensions.r4.dynamicW),
+                          ],
+                          Flexible(
+                            child: Text(
+                              subtitle!.trim(),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: context.labelSmall?.copyWith(
+                                color: isDirect
+                                    ? context.primaryColor
+                                    : colors.onSurfaceVariant,
+                                fontWeight: isDirect
+                                    ? FontWeight.w600
+                                    : FontWeight.normal,
+                                fontSize: 11,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ],

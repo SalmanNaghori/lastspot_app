@@ -3,6 +3,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:lastspot_app/core/network/router.dart';
 import 'package:lastspot_app/core/di/service_locator.dart';
 import 'package:lastspot_app/core/services/push_notification_service.dart';
+import 'package:lastspot_app/core/theme/app_color.dart';
 
 class LocalNotificationService {
   final FlutterLocalNotificationsPlugin _localNotificationsPlugin =
@@ -10,7 +11,7 @@ class LocalNotificationService {
 
   Future<void> initialize() async {
     const AndroidInitializationSettings initializationSettingsAndroid =
-        AndroidInitializationSettings('@mipmap/ic_launcher');
+        AndroidInitializationSettings('@drawable/ic_notification');
     const InitializationSettings initializationSettings =
         InitializationSettings(android: initializationSettingsAndroid);
 
@@ -42,10 +43,12 @@ class LocalNotificationService {
     const AndroidNotificationDetails androidPlatformChannelSpecifics =
         AndroidNotificationDetails(
           'lastspot_default',
-          'LastSpot Notifications',
+          'KhelBhai Notifications',
           importance: Importance.max,
           priority: Priority.high,
           showWhen: true,
+          icon: '@drawable/ic_notification',
+          color: AppColor.primaryColor,
         );
     const NotificationDetails platformChannelSpecifics = NotificationDetails(
       android: androidPlatformChannelSpecifics,

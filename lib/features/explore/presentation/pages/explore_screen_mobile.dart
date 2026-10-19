@@ -2,6 +2,12 @@ import 'dart:async';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:lastspot_app/core/base_import.dart';
 import 'package:lastspot_app/features/spot/domain/entities/request_entity.dart';
+import '../../../../core/services/explore_navigation_service.dart';
+import '../../../cities/domain/entities/city_entity.dart';
+import '../../../cities/domain/usecases/get_active_cities_usecase.dart';
+import '../../../cities/presentation/widgets/city_selection_bottom_sheet.dart';
+import '../../../auth/domain/usecases/update_user_city_usecase.dart';
+import '../../../auth/domain/repositories/auth_repository.dart';
 
 import '../../../auth/presentation/bloc/profile_cubit.dart';
 import '../../../categories/presentation/bloc/category_bloc.dart';
@@ -9,8 +15,6 @@ import '../../../categories/presentation/bloc/category_state.dart';
 
 import '../bloc/explore_bloc.dart';
 import '../bloc/explore_event.dart';
-import 'package:skeletonizer/skeletonizer.dart';
-import '../../../spot/presentation/widgets/activity_card.dart';
 import '../../../../core/widgets/sports_category_perspective_carousel.dart';
 import '../bloc/explore_state.dart';
 import '../widgets/explore_filter_bottom_sheet.dart';
@@ -29,25 +33,53 @@ class _ExploreScreenMobileState extends State<ExploreScreenMobile> {
   final FocusNode _searchFocusNode = FocusNode();
   Timer? _debounce;
   final ScrollController _scrollController = ScrollController();
+  late final ExploreNavigationService _exploreNavService;
 
   @override
   void initState() {
     super.initState();
     _scrollController.addListener(_onScroll);
+    _exploreNavService = sl<ExploreNavigationService>();
+    _exploreNavService.addListener(_onExploreNavChanged);
 
-    // Initial fetch triggers if we have profile
+    // Initial fetch triggers if we have profile or pending navigation
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
-      if (widget.initialCategoryId != null) {
-        context.read<ExploreBloc>().add(
-          CategorySelected(widget.initialCategoryId),
-        );
-      }
+      _checkPendingCategoryNavigation();
+      _checkPendingCityChange();
       final profileState = context.read<ProfileCubit>().state;
       if (profileState is ProfileLoaded) {
         _onProfileLoaded(profileState);
       }
     });
+  }
+
+  void _onExploreNavChanged() {
+    if (!mounted) return;
+    _checkPendingCategoryNavigation();
+    _checkPendingCityChange();
+  }
+
+  void _checkPendingCategoryNavigation() {
+    if (_exploreNavService.hasPendingNavigation) {
+      final pendingCat = _exploreNavService.pendingCategoryId;
+      _exploreNavService.consumePendingNavigation();
+      if (pendingCat == ExploreNavigationService.kSelectAll) {
+        context.read<ExploreBloc>().add(const CategorySelected(null));
+      } else if (pendingCat != null) {
+        context.read<ExploreBloc>().add(CategorySelected(pendingCat));
+      }
+    }
+  }
+
+  void _checkPendingCityChange() {
+    final newCityId = _exploreNavService.selectedCityId;
+    if (newCityId != null && newCityId.isNotEmpty) {
+      final exploreState = context.read<ExploreBloc>().state;
+      if (exploreState is! ExploreLoaded || exploreState.cityId != newCityId) {
+        context.read<ExploreBloc>().add(CitySelected(newCityId));
+      }
+    }
   }
 
   @override
@@ -61,20 +93,18 @@ class _ExploreScreenMobileState extends State<ExploreScreenMobile> {
   }
 
   void _onProfileLoaded(ProfileLoaded profileState) {
-    final cityId = profileState.profile.cityId ?? '';
+    final cityId =
+        _exploreNavService.selectedCityId ?? profileState.profile.cityId ?? '';
     final exploreState = context.read<ExploreBloc>().state;
     if (exploreState is! ExploreLoaded || exploreState.cityId != cityId) {
       context.read<ExploreBloc>().add(CitySelected(cityId));
     }
-    if (widget.initialCategoryId != null) {
-      context.read<ExploreBloc>().add(
-        CategorySelected(widget.initialCategoryId),
-      );
-    }
+    _checkPendingCategoryNavigation();
   }
 
   @override
   void dispose() {
+    _exploreNavService.removeListener(_onExploreNavChanged);
     _searchController.dispose();
     _searchFocusNode.dispose();
     _debounce?.cancel();
@@ -136,6 +166,41 @@ class _ExploreScreenMobileState extends State<ExploreScreenMobile> {
 
   void _onCategorySelected(String? id) {
     context.read<ExploreBloc>().add(CategorySelected(id));
+  }
+
+  Future<void> _onExploreCityHeaderTap() async {
+    final result = await sl<GetActiveCitiesUseCase>()();
+    if (!mounted) return;
+    if (result is Success<List<CityEntity>, Exception>) {
+      final cities = result.value;
+      final exploreState = context.read<ExploreBloc>().state;
+      final currentCityId = exploreState is ExploreLoaded
+          ? exploreState.cityId
+          : null;
+
+      if (!mounted) return;
+      CitySelectionBottomSheet.show(
+        context: context,
+        cities: cities,
+        selectedCityId: currentCityId,
+        onCitySelected: (city) {
+          context.read<ExploreBloc>().add(CitySelected(city.id));
+          _exploreNavService.updateSelectedCity(
+            cityId: city.id,
+            cityName: city.name,
+          );
+          final userId = sl<AuthRepository>().getCurrentUserId();
+          if (userId != null) {
+            sl<UpdateUserCityUseCase>()(
+              userId: userId,
+              cityId: city.id,
+              cityName: city.name,
+            );
+            context.read<ProfileCubit>().fetchProfile(userId);
+          }
+        },
+      );
+    }
   }
 
   void _onRetryTap() {
@@ -281,39 +346,22 @@ class _ExploreScreenMobileState extends State<ExploreScreenMobile> {
                     pinned: true,
                     floating: false,
                     backgroundColor: context.backgroundColor,
-                    surfaceTintColor: context.backgroundColor,
+                    surfaceTintColor: Colors.transparent,
                     elevation: 0,
-                    scrolledUnderElevation: 4,
-                    expandedHeight: Dimensions.r60,
-                    toolbarHeight: Dimensions.r60,
-                    title: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          loc.navExplore,
-                          style: TextStyle(
-                            fontSize: Dimensions.r24.dynamicSP,
-                            fontWeight: FontWeight.w800,
-                            color: context.textPrimary,
-                          ),
-                        ),
-                        Text(
-                          loc.findActivitiesNearYou,
-                          style: TextStyle(
-                            fontSize: Dimensions.r14.dynamicSP,
-                            color: context.textSecondary,
-                            fontWeight: FontWeight.normal,
-                          ),
-                        ),
-                      ],
-                    ),
+                    scrolledUnderElevation: 0,
+                    systemOverlayStyle: AppTheme.systemUiOverlayStyle(context),
+                    centerTitle: false,
+                    titleSpacing: Dimensions.r16.dynamicW,
+                    toolbarHeight: kToolbarHeight,
+                    title: const KhelBhaiLogo(),
                     actions: [
                       const UserProfileAvatar(),
-                      IconButton(
-                        onPressed: _onNotificationsTap,
-                        icon: const Icon(Icons.notifications_outlined),
+                      Padding(
+                        padding: EdgeInsets.only(right: Dimensions.r8.dynamicW),
+                        child: NotificationActionButton(
+                          onPressed: _onNotificationsTap,
+                        ),
                       ),
-                      SizedBox(width: Dimensions.r8.dynamicW),
                     ],
                     bottom: PreferredSize(
                       preferredSize: Size.fromHeight(120.0),
@@ -462,27 +510,58 @@ class _ExploreScreenMobileState extends State<ExploreScreenMobile> {
                             // City Header
                             BlocBuilder<ProfileCubit, ProfileState>(
                               builder: (context, state) {
-                                String cityName = loc.selectYourCity;
-                                if (state is ProfileLoaded) {
-                                  cityName =
-                                      state.profile.city ?? loc.selectYourCity;
+                                String cityName =
+                                    _exploreNavService.selectedCityName ??
+                                    loc.selectYourCity;
+                                if (state is ProfileLoaded &&
+                                    state.profile.city != null &&
+                                    _exploreNavService.selectedCityName ==
+                                        null) {
+                                  cityName = state.profile.city!;
                                 }
-                                return Row(
-                                  children: [
-                                    Icon(
-                                      Icons.location_on,
-                                      color: context.primaryColor,
-                                      size: Dimensions.r18.dynamicH,
+                                return Material(
+                                  color: Colors.transparent,
+                                  child: InkWell(
+                                    onTap: _onExploreCityHeaderTap,
+                                    borderRadius: BorderRadius.circular(
+                                      Dimensions.r8.dynamicR,
                                     ),
-                                    SizedBox(width: Dimensions.r4.dynamicW),
-                                    Text(
-                                      cityName,
-                                      style: TextStyle(
-                                        fontSize: Dimensions.r14.dynamicSP,
-                                        color: context.textSecondary,
+                                    child: Padding(
+                                      padding: EdgeInsets.symmetric(
+                                        vertical: Dimensions.r4.dynamicH,
+                                        horizontal: Dimensions.r2.dynamicW,
+                                      ),
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          ActivityMetadataIcon.location(
+                                            width: Dimensions.r18.dynamicW,
+                                            height: Dimensions.r18.dynamicH,
+                                          ),
+                                          SizedBox(
+                                            width: Dimensions.r6.dynamicW,
+                                          ),
+                                          Text(
+                                            cityName,
+                                            style: TextStyle(
+                                              fontSize:
+                                                  Dimensions.r14.dynamicSP,
+                                              color: context.textPrimary,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            width: Dimensions.r4.dynamicW,
+                                          ),
+                                          Icon(
+                                            Icons.keyboard_arrow_down_rounded,
+                                            size: Dimensions.r18.dynamicH,
+                                            color: context.textSecondary,
+                                          ),
+                                        ],
                                       ),
                                     ),
-                                  ],
+                                  ),
                                 );
                               },
                             ),
@@ -517,8 +596,7 @@ class _ExploreScreenMobileState extends State<ExploreScreenMobile> {
                               builder: (context, exploreState) {
                                 String? selectedCategoryId;
                                 if (exploreState is ExploreLoaded) {
-                                  selectedCategoryId =
-                                      exploreState.categoryId;
+                                  selectedCategoryId = exploreState.categoryId;
                                 }
                                 return SportsCategoryPerspectiveCarousel(
                                   key: const ValueKey(
@@ -583,45 +661,17 @@ class _ExploreScreenMobileState extends State<ExploreScreenMobile> {
                   BlocBuilder<ExploreBloc, ExploreState>(
                     builder: (context, state) {
                       if (state is ExploreLoading || state is ExploreInitial) {
-                        final dummySpot = RequestEntity(
-                          id: 'dummy',
-                          userId: 'dummy',
-                          categoryId: 'sports',
-                          title: 'Loading Activity Title',
-                          description:
-                              'Loading Activity Description which is a bit long to cover two lines of text typically in this view.',
-                          locationName: 'Loading Location',
-                          latitude: 0,
-                          longitude: 0,
-                          eventDateTime:
-                              DateTime.now().add(const Duration(days: 1)),
-                          maxParticipants: 10,
-                          currentParticipants: 5,
-                          pricePerPerson: 100,
-                          status: RequestStatus.open,
-                          createdAt: DateTime.now(),
-                          updatedAt: DateTime.now(),
-                        );
                         return SliverPadding(
                           padding: EdgeInsets.symmetric(
                             horizontal: Dimensions.r16.dynamicW,
                           ),
                           sliver: SliverList(
                             delegate: SliverChildBuilderDelegate(
-                              (context, index) => Skeletonizer(
-                                enabled: true,
-                                child: Skeleton.ignorePointer(
-                                  child: IgnorePointer(
-                                    ignoring: true,
-                                    child: ActivityCard(
-                                      spot: dummySpot,
-                                      categoryName: 'Category',
-                                      categoryIcon: '🎯',
-                                      heroTagPrefix: 'explore_shimmer',
-                                      onTap: () {},
-                                    ),
-                                  ),
+                              (context, index) => Padding(
+                                padding: EdgeInsets.only(
+                                  bottom: Dimensions.r16.dynamicH,
                                 ),
+                                child: const AppShimmerCardItem(),
                               ),
                               childCount: 4,
                             ),
@@ -633,36 +683,9 @@ class _ExploreScreenMobileState extends State<ExploreScreenMobile> {
                         return SliverFillRemaining(
                           hasScrollBody: false,
                           child: Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(
-                                  Icons.error_outline,
-                                  size: Dimensions.r48.dynamicH,
-                                  color: context.textSecondary,
-                                ),
-                                SizedBox(height: Dimensions.r16.dynamicH),
-                                Text(
-                                  loc.couldNotLoadActivities,
-                                  style: TextStyle(
-                                    fontSize: Dimensions.r16.dynamicSP,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                                SizedBox(height: Dimensions.r8.dynamicH),
-                                Text(
-                                  loc.checkConnectionRetry,
-                                  style: TextStyle(
-                                    fontSize: Dimensions.r14.dynamicSP,
-                                    color: context.textSecondary,
-                                  ),
-                                ),
-                                SizedBox(height: Dimensions.r16.dynamicH),
-                                ElevatedButton(
-                                  onPressed: _onRetryTap,
-                                  child: Text(loc.retry),
-                                ),
-                              ],
+                            child: AppErrorState(
+                              message: loc.couldNotLoadActivities,
+                              onRetry: _onRetryTap,
                             ),
                           ),
                         );
@@ -672,64 +695,32 @@ class _ExploreScreenMobileState extends State<ExploreScreenMobile> {
                         final displayedPosts = _getDisplayedRequests(state);
 
                         if (displayedPosts.isEmpty) {
-                          String emptyMessage = loc.noActivitiesFound;
-                          String emptySubMessage = loc.noActivitiesInArea;
-
-                          if (state.searchQuery != null &&
-                              state.searchQuery!.isNotEmpty) {
-                            emptyMessage = "No activities match your search";
-                            emptySubMessage = loc.tryDifferentKeyword;
-                          } else if (state.categoryId != null) {
-                            emptyMessage = loc.noActivitiesInCategory;
-                            emptySubMessage = loc.tryDifferentCategory;
-                          }
+                          final isSearch =
+                              state.searchQuery != null &&
+                              state.searchQuery!.isNotEmpty;
+                          final emptyTitle = isSearch
+                              ? loc.noActivitiesMatchSearch
+                              : (state.categoryId != null
+                                    ? loc.noActivitiesInCategory
+                                    : loc.noActivitiesFound);
+                          final emptyMessage = isSearch
+                              ? loc.tryDifferentKeyword
+                              : (state.categoryId != null
+                                    ? loc.tryDifferentCategory
+                                    : loc.noActivitiesInArea);
 
                           return SliverFillRemaining(
                             hasScrollBody: false,
                             child: Center(
-                              child: Padding(
-                                padding: EdgeInsets.all(
-                                  Dimensions.r24.dynamicW,
-                                ),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    AppAssets.emptySearchResultsGen.image(
-                                      width: Dimensions.r96.dynamicW * 1.5,
-                                      height: Dimensions.r96.dynamicH * 1.5,
-                                      cacheWidth: 400,
-                                      cacheHeight: 400,
-                                      fit: BoxFit.contain,
-                                      errorBuilder:
-                                          (context, error, stackTrace) {
-                                            return Icon(
-                                              Icons.search_off,
-                                              size: Dimensions.r48.dynamicH,
-                                              color: context.textSecondary,
-                                            );
-                                          },
+                              child: isSearch
+                                  ? AppEmptyState.search(
+                                      title: emptyTitle,
+                                      message: emptyMessage,
+                                    )
+                                  : AppEmptyState.activities(
+                                      title: emptyTitle,
+                                      message: emptyMessage,
                                     ),
-                                    SizedBox(height: Dimensions.r16.dynamicH),
-                                    Text(
-                                      emptyMessage,
-                                      style: TextStyle(
-                                        fontSize: Dimensions.r16.dynamicSP,
-                                        fontWeight: FontWeight.w700,
-                                        color: context.textPrimary,
-                                      ),
-                                    ),
-                                    SizedBox(height: Dimensions.r8.dynamicH),
-                                    Text(
-                                      emptySubMessage,
-                                      style: TextStyle(
-                                        fontSize: Dimensions.r14.dynamicSP,
-                                        color: context.textSecondary,
-                                      ),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                  ],
-                                ),
-                              ),
                             ),
                           );
                         }
@@ -742,26 +733,24 @@ class _ExploreScreenMobileState extends State<ExploreScreenMobile> {
                             delegate: SliverChildBuilderDelegate(
                               (context, index) {
                                 if (index >= displayedPosts.length) {
-                                  return Center(
-                                    child: Padding(
-                                      padding: EdgeInsets.symmetric(
-                                        vertical: Dimensions.r16.dynamicH,
-                                      ),
-                                      child: const CircularProgressIndicator(),
+                                  return Padding(
+                                    padding: EdgeInsets.symmetric(
+                                      vertical: Dimensions.r16.dynamicH,
+                                    ),
+                                    child: const Center(
+                                      child: AppLoading(size: 24),
                                     ),
                                   );
                                 }
                                 final spot = displayedPosts[index];
-                                final categoryState =
-                                    context.read<CategoryBloc>().state;
-                                final category =
-                                    categoryState is CategoryLoaded
-                                        ? categoryState.categories
-                                              .where(
-                                                (c) => c.id == spot.categoryId,
-                                              )
-                                              .firstOrNull
-                                        : null;
+                                final categoryState = context
+                                    .read<CategoryBloc>()
+                                    .state;
+                                final category = categoryState is CategoryLoaded
+                                    ? categoryState.categories
+                                          .where((c) => c.id == spot.categoryId)
+                                          .firstOrNull
+                                    : null;
                                 return AnimationConfiguration.staggeredList(
                                   position: index,
                                   duration: const Duration(milliseconds: 300),
@@ -785,7 +774,8 @@ class _ExploreScreenMobileState extends State<ExploreScreenMobile> {
                                   ),
                                 );
                               },
-                              childCount: (state.hasReachedMax ||
+                              childCount:
+                                  (state.hasReachedMax ||
                                       (state.searchQuery != null &&
                                           state.searchQuery!.isNotEmpty))
                                   ? displayedPosts.length

@@ -80,7 +80,7 @@ class _RequestsTabSectionState extends State<RequestsTabSection> {
             message: isReceived
                 ? context.loc.emptyReceivedRequestsDesc
                 : context.loc.emptySentRequestsDesc,
-            imageGen: AppAssets.emptyJoinRequestsGen,
+            imageGen: Assets.images.emptyStates.noJoinRequests,
           )
         else
           SliverPadding(

@@ -4,6 +4,7 @@ import 'package:lastspot_app/core/base_import.dart';
 class SpotDetailsInfoCard extends StatelessWidget {
   final IconData icon;
   final String? assetPath;
+  final Widget? leading;
   final String title;
   final String value;
   final String? subtitle;
@@ -14,6 +15,7 @@ class SpotDetailsInfoCard extends StatelessWidget {
     super.key,
     required this.icon,
     this.assetPath,
+    this.leading,
     required this.title,
     required this.value,
     this.subtitle,
@@ -34,7 +36,7 @@ class SpotDetailsInfoCard extends StatelessWidget {
             children: [
               Container(
                 padding: EdgeInsets.all(
-                  assetPath != null
+                  assetPath != null || leading != null
                       ? Dimensions.r8.dynamicH
                       : AppSpacing.smLg,
                 ),
@@ -42,16 +44,18 @@ class SpotDetailsInfoCard extends StatelessWidget {
                   color: colors.primaryContainer.withValues(alpha: 0.4),
                   borderRadius: AppRadius.lgBorderRadius,
                 ),
-                child: assetPath != null
-                    ? Image.asset(
-                        assetPath!,
-                        width: Dimensions.r24.dynamicW,
-                        height: Dimensions.r24.dynamicH,
-                        fit: BoxFit.contain,
-                        errorBuilder: (context, error, stackTrace) =>
-                            Icon(icon, color: colors.onPrimaryContainer),
-                      )
-                    : Icon(icon, color: colors.onPrimaryContainer),
+                child:
+                    leading ??
+                    (assetPath != null
+                        ? Image.asset(
+                            assetPath!,
+                            width: Dimensions.r24.dynamicW,
+                            height: Dimensions.r24.dynamicH,
+                            fit: BoxFit.contain,
+                            errorBuilder: (context, error, stackTrace) =>
+                                Icon(icon, color: colors.onPrimaryContainer),
+                          )
+                        : Icon(icon, color: colors.onPrimaryContainer)),
               ),
               const SizedBox(width: AppSpacing.md),
               Expanded(

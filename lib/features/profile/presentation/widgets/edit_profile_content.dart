@@ -39,6 +39,35 @@ class EditProfileContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final profile = state is ProfileLoaded
+        ? (state as ProfileLoaded).profile
+        : null;
+    final avatarUrl = profile?.avatarUrl?.trim();
+    final avatarName = nameController.text.trim().isNotEmpty
+        ? nameController.text.trim()
+        : profile?.fullName?.trim() ?? '';
+    final initial = avatarName.isNotEmpty
+        ? avatarName.characters.first.toUpperCase()
+        : 'P';
+    final avatarSize = Dimensions.r60.dynamicR * 2;
+    final avatarFallback = Container(
+      width: avatarSize,
+      height: avatarSize,
+      decoration: BoxDecoration(
+        color: context.primaryContainer,
+        shape: BoxShape.circle,
+      ),
+      alignment: Alignment.center,
+      child: Text(
+        initial,
+        style: TextStyle(
+          color: context.primaryColor,
+          fontWeight: FontWeight.w700,
+          fontSize: Dimensions.r36.dynamicSP,
+        ),
+      ),
+    );
+
     return Scaffold(
       backgroundColor: context.backgroundColor,
       appBar: AppBar(
@@ -65,45 +94,26 @@ class EditProfileContent extends StatelessWidget {
                           ValueListenableBuilder<File?>(
                             valueListenable: selectedAvatar,
                             builder: (context, avatar, _) {
-                              return CircleAvatar(
-                                radius: Dimensions.r60.dynamicR,
-                                backgroundColor: context.surfaceColor,
-                                backgroundImage: avatar != null
-                                    ? FileImage(avatar)
-                                    : (state is ProfileLoaded &&
-                                          (state as ProfileLoaded)
-                                                  .profile
-                                                  .avatarUrl !=
-                                              null &&
-                                          (state as ProfileLoaded)
-                                              .profile
-                                              .avatarUrl!
-                                              .isNotEmpty)
-                                    ? NetworkImage(
-                                            (state as ProfileLoaded)
-                                                .profile
-                                                .avatarUrl!
-                                                .replaceAll('/svg?', '/png?'),
-                                          )
-                                          as ImageProvider
-                                    : null,
-                                child:
-                                    avatar == null &&
-                                        (state is! ProfileLoaded ||
-                                            (state as ProfileLoaded)
-                                                    .profile
-                                                    .avatarUrl ==
-                                                null ||
-                                            (state as ProfileLoaded)
-                                                .profile
-                                                .avatarUrl!
-                                                .isEmpty)
-                                    ? Icon(
-                                        Icons.person,
-                                        size: Dimensions.r60.dynamicH,
-                                        color: context.textSecondary,
-                                      )
-                                    : null,
+                              return ClipOval(
+                                child: SizedBox(
+                                  width: avatarSize,
+                                  height: avatarSize,
+                                  child: avatar != null
+                                      ? Image.file(avatar, fit: BoxFit.cover)
+                                      : (avatarUrl?.isNotEmpty == true
+                                            ? AppCachedNetworkImage(
+                                                imageUrl: avatarUrl,
+                                                width: avatarSize,
+                                                height: avatarSize,
+                                                isCircle: true,
+                                                fit: BoxFit.cover,
+                                                memCacheWidth: 360,
+                                                memCacheHeight: 360,
+                                                placeholder: avatarFallback,
+                                                errorWidget: avatarFallback,
+                                              )
+                                            : avatarFallback),
+                                ),
                               );
                             },
                           ),
@@ -126,12 +136,7 @@ class EditProfileContent extends StatelessWidget {
                     labelText: context.loc.fullName,
                     prefixIcon: const Icon(Icons.person_outline_rounded),
                     textCapitalization: TextCapitalization.words,
-                    validator: (value) {
-                      if (value == null || value.trim().isEmpty) {
-                        return context.loc.fullNameRequired;
-                      }
-                      return null;
-                    },
+                    validator: AppValidators.fullName(context.loc),
                   ),
                   SizedBox(height: Dimensions.r16.dynamicH),
                   AppTextField(
@@ -160,7 +165,9 @@ class EditProfileContent extends StatelessWidget {
                           return AppTextField(
                             labelText: context.loc.cityLabel,
                             prefixIcon: const Icon(Icons.location_on_outlined),
-                            hintText: city?.name ?? context.loc.selectCityHint,
+                            hintText: city != null
+                                ? city.formattedLocation
+                                : context.loc.selectCityHint,
                             readOnly: true,
                             onTap: onCityTap,
                             errorText: showError && city == null

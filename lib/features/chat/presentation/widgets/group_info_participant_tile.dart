@@ -22,6 +22,22 @@ class GroupInfoParticipantTile extends StatelessWidget {
         : context.loc.player;
     final avatarUrl = profile?.avatarUrl;
     final initial = name.isNotEmpty ? name.characters.first.toUpperCase() : '?';
+    final avatarSize = Dimensions.r20.dynamicR * 2;
+    final avatarFallback = CircleAvatar(
+      radius: Dimensions.r20.dynamicR,
+      backgroundColor: isHost
+          ? colors.primaryContainer
+          : colors.secondaryContainer,
+      child: Text(
+        initial,
+        style: context.titleSmall?.copyWith(
+          color: isHost
+              ? colors.onPrimaryContainer
+              : colors.onSecondaryContainer,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+    );
 
     return Padding(
       padding: EdgeInsets.symmetric(
@@ -30,26 +46,19 @@ class GroupInfoParticipantTile extends StatelessWidget {
       ),
       child: Row(
         children: [
-          CircleAvatar(
-            radius: Dimensions.r20.dynamicR,
-            backgroundColor: isHost
-                ? colors.primaryContainer
-                : colors.secondaryContainer,
-            backgroundImage: avatarUrl != null && avatarUrl.isNotEmpty
-                ? NetworkImage(avatarUrl)
-                : null,
-            child: avatarUrl == null || avatarUrl.isEmpty
-                ? Text(
-                    initial,
-                    style: context.titleSmall?.copyWith(
-                      color: isHost
-                          ? colors.onPrimaryContainer
-                          : colors.onSecondaryContainer,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  )
-                : null,
-          ),
+          avatarUrl?.trim().isNotEmpty == true
+              ? AppCachedNetworkImage(
+                  imageUrl: avatarUrl,
+                  width: avatarSize,
+                  height: avatarSize,
+                  fit: BoxFit.cover,
+                  isCircle: true,
+                  memCacheWidth: 120,
+                  memCacheHeight: 120,
+                  placeholder: avatarFallback,
+                  errorWidget: avatarFallback,
+                )
+              : avatarFallback,
           SizedBox(width: Dimensions.r12.dynamicW),
           Expanded(
             child: Column(

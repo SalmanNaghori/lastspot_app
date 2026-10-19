@@ -92,7 +92,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                         ),
                         SizedBox(height: Dimensions.r8.dynamicH),
                         Text(
-                          'Choose a new password for your LastSpot account.',
+                          'Choose a new password for your ${AppString.appName} account.',
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: Dimensions.r15.dynamicSP,
@@ -109,15 +109,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                           onTogglePassword: () =>
                               setState(() => _showPassword = !_showPassword),
                           textInputAction: TextInputAction.next,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return context.loc.passwordRequired;
-                            }
-                            if (value.length < 6) {
-                              return context.loc.passwordLengthError;
-                            }
-                            return null;
-                          },
+                          validator: AppValidators.password(context.loc),
                         ),
                         SizedBox(height: Dimensions.r16.dynamicH),
                         AppTextField(
@@ -130,15 +122,10 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                             () => _showConfirmPassword = !_showConfirmPassword,
                           ),
                           textInputAction: TextInputAction.done,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return context.loc.passwordRequired;
-                            }
-                            if (value != _passwordController.text) {
-                              return context.loc.passwordsDoNotMatch;
-                            }
-                            return null;
-                          },
+                          validator: AppValidators.confirmPassword(
+                            context.loc,
+                            () => _passwordController.text,
+                          ),
                         ),
                         if (errorMessage != null) ...[
                           SizedBox(height: Dimensions.r16.dynamicH),

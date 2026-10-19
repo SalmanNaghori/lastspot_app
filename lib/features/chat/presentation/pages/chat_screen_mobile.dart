@@ -13,7 +13,10 @@ import '../widgets/chat_welcome_banner.dart';
 import '../widgets/jump_to_bottom_button.dart';
 
 class ChatScreenMobile extends StatefulWidget {
-  const ChatScreenMobile({super.key});
+  final String? avatarUrl;
+  final String? category;
+
+  const ChatScreenMobile({super.key, this.avatarUrl, this.category});
 
   @override
   State<ChatScreenMobile> createState() => _ChatScreenMobileState();
@@ -148,6 +151,8 @@ class _ChatScreenMobileState extends State<ChatScreenMobile> {
             title: title,
             subtitle: subtitle,
             isDirect: isDirect,
+            avatarUrl: widget.avatarUrl,
+            category: widget.category ?? subtitle ?? title,
             onBack: _onBack,
             onGroupInfoTap: (!isDirect && requestId != null)
                 ? () => context.push(AppRoutes.groupInfoPath(requestId))

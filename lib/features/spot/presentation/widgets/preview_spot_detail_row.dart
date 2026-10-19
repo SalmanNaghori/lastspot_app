@@ -1,7 +1,8 @@
 import 'package:lastspot_app/core/base_import.dart';
 
 class PreviewSpotDetailRow extends StatelessWidget {
-  final IconData icon;
+  final IconData? icon;
+  final Widget? leading;
   final String text;
   final Color? iconColor;
   final Color? textColor;
@@ -9,22 +10,27 @@ class PreviewSpotDetailRow extends StatelessWidget {
 
   const PreviewSpotDetailRow({
     super.key,
-    required this.icon,
+    this.icon,
+    this.leading,
     required this.text,
     this.iconColor,
     this.textColor,
     this.onTap,
-  });
+  }) : assert(
+         icon != null || leading != null,
+         'Either icon or leading must be provided',
+       );
 
   @override
   Widget build(BuildContext context) {
     final row = Row(
       children: [
-        Icon(
-          icon,
-          color: iconColor ?? context.textSecondary,
-          size: Dimensions.r20.dynamicW,
-        ),
+        leading ??
+            Icon(
+              icon,
+              color: iconColor ?? context.textSecondary,
+              size: Dimensions.r20.dynamicW,
+            ),
         SizedBox(width: Dimensions.r12.dynamicW),
         Expanded(
           child: Text(

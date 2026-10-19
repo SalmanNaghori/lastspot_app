@@ -76,29 +76,40 @@ class UserProfileAvatar extends StatelessWidget {
       ),
     );
 
-    if (photoUrl == null || photoUrl.isEmpty) {
-      return fallback;
-    }
+    final Widget avatarCore = (photoUrl == null || photoUrl.isEmpty)
+        ? fallback
+        : AppCachedNetworkImage(
+            imageUrl: photoUrl.replaceAll('/svg?', '/png?'),
+            width: size - 6,
+            height: size - 6,
+            isCircle: true,
+            memCacheWidth: 120,
+            memCacheHeight: 120,
+            placeholder: fallback,
+            errorWidget: fallback,
+          );
 
     return Container(
       width: size,
       height: size,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        border: Border.all(
-          color: context.colorScheme.outlineVariant.withValues(alpha: 0.5),
-          width: 1.2,
-        ),
+        border: Border.all(color: context.primaryColor, width: 1.8),
+        boxShadow: [
+          BoxShadow(
+            color: context.primaryColor.withValues(alpha: 0.16),
+            blurRadius: 6,
+            offset: const Offset(0, 2),
+          ),
+        ],
       ),
-      child: AppCachedNetworkImage(
-        imageUrl: photoUrl.replaceAll('/svg?', '/png?'),
-        width: size,
-        height: size,
-        isCircle: true,
-        memCacheWidth: 120,
-        memCacheHeight: 120,
-        placeholder: fallback,
-        errorWidget: fallback,
+      padding: const EdgeInsets.all(1.5),
+      child: Container(
+        decoration: BoxDecoration(
+          color: context.surfaceColor,
+          shape: BoxShape.circle,
+        ),
+        child: ClipOval(child: avatarCore),
       ),
     );
   }

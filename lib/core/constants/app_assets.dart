@@ -59,6 +59,8 @@ class AppAssets {
       Assets.images.categories.football;
   static AssetGenImage get sportsEquipmentCollectionGen =>
       Assets.images.onboarding.welcomeSportsCollection;
+  static AssetGenImage get sportsEquipment3dGen =>
+      Assets.images.onboarding.welcomeSportsCollection;
 
   // Backwards compatibility path getters
   static String get cricket => Assets.images.categories.cricket.path;
@@ -135,6 +137,40 @@ class AppAssets {
   static AssetGenImage get locationPin3dGen => Assets.icons.locationPin3d;
   static String get locationPin3d => Assets.icons.locationPin3d.path;
 
+  /// Pigment sampled from the shared pin for theme recoloring only.
+  static const locationPinSourceColor = Color.fromARGB(255, 13, 132, 82);
+
+  /// Recolors the green pigment while keeping neutral highlights and alpha.
+  static ColorFilter locationPinColorFilter(Color color) {
+    final source = locationPinSourceColor;
+    final pigment = source.g - source.r;
+    final redShift = (color.r - source.r) / pigment;
+    final greenShift = (color.g - source.g) / pigment;
+    final blueShift = (color.b - source.b) / pigment;
+    return ColorFilter.matrix([
+      1 - redShift,
+      redShift,
+      0,
+      0,
+      0,
+      -greenShift,
+      1 + greenShift,
+      0,
+      0,
+      0,
+      -blueShift,
+      blueShift,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+    ]);
+  }
+
   static AssetGenImage get participants3dGen => Assets.icons.participants3d;
   static String get participants3d => Assets.icons.participants3d.path;
 
@@ -147,17 +183,31 @@ class AppAssets {
   // ============================================================
   // 3D BOTTOM NAVIGATION ICONS (FROM lib/gen/assets.gen.dart)
   // ============================================================
-  static AssetGenImage get navHomeGen => Assets.images.nav.navHome;
-  static AssetGenImage get navExploreGen => Assets.images.nav.navExplore;
-  static AssetGenImage get navCreateGen => Assets.images.nav.navCreate;
-  static AssetGenImage get navActivitiesGen => Assets.images.nav.navActivities;
-  static AssetGenImage get navChatsGen => Assets.images.nav.navChats;
+  static AssetGenImage get navHomeGen => Assets.navigation.home3d;
+  static AssetGenImage get navExploreGen => Assets.navigation.explore3d;
+  static AssetGenImage get navCreateGen => Assets.navigation.create3d;
+  static AssetGenImage get navActivitiesGen => Assets.navigation.activities3d;
+  static AssetGenImage get navChatsGen => Assets.navigation.chats3d;
 
-  static String get navHome => Assets.images.nav.navHome.path;
-  static String get navExplore => Assets.images.nav.navExplore.path;
-  static String get navCreate => Assets.images.nav.navCreate.path;
-  static String get navActivities => Assets.images.nav.navActivities.path;
-  static String get navChats => Assets.images.nav.navChats.path;
+  static String get navHome => Assets.navigation.home3d.path;
+  static String get navExplore => Assets.navigation.explore3d.path;
+  static String get navCreate => Assets.navigation.create3d.path;
+  static String get navActivities => Assets.navigation.activities3d.path;
+  static String get navChats => Assets.navigation.chats3d.path;
+
+  // ============================================================
+  // BRANDING & SPLASH IDENTITY ASSETS (FROM lib/gen/assets.gen.dart)
+  // ============================================================
+  static AssetGenImage get khelbhaiLauncherMasterGen =>
+      Assets.branding.khelbhaiLauncherMaster;
+  static AssetGenImage get khelbhaiLogoGen => Assets.branding.khelbhaiLogo;
+  static AssetGenImage get khelbhaiLogoWhiteGen =>
+      Assets.branding.khelbhaiLogoWhite;
+
+  static String get khelbhaiLauncherMaster =>
+      Assets.branding.khelbhaiLauncherMaster.path;
+  static String get khelbhaiLogo => Assets.branding.khelbhaiLogo.path;
+  static String get khelbhaiLogoWhite => Assets.branding.khelbhaiLogoWhite.path;
 
   // ============================================================
   // CATEGORY STABLE SLUG MAPPING TO GENERATED ASSETS
@@ -225,15 +275,138 @@ class AppAssets {
     'other': Assets.images.categories.other,
   };
 
-  /// Returns the strongly-typed [AssetGenImage] from @directory:gen for a category slug.
-  static AssetGenImage getCategoryGen(String? slug) {
-    if (slug == null || slug.trim().isEmpty) {
+  static final Map<String, String> _idToSlug = {};
+  static final Map<String, String> _idToName = {};
+  static final Map<String, String> _slugToName = {};
+
+  /// Dynamically registers category models loaded from Supabase or memory
+  /// so that UUIDs map reliably to their 3D assets.
+  static void registerCategories(List<dynamic> categories) {
+    for (final cat in categories) {
+      try {
+        final id = (cat.id as String).trim().toLowerCase();
+        final slug = (cat.slug as String).trim().toLowerCase();
+        final name = (cat.name as String).trim();
+        _idToSlug[id] = slug;
+        _idToName[id] = name;
+        _slugToName[slug] = name;
+      } catch (_) {}
+    }
+  }
+
+  /// Returns the strongly-typed [AssetGenImage] from @directory:gen for a category ID, slug, or title.
+  static AssetGenImage getCategoryGen(String? identifierOrTitle) {
+    if (identifierOrTitle == null || identifierOrTitle.trim().isEmpty) {
       return Assets.images.categories.other;
     }
-    final normalized = slug.trim().toLowerCase().replaceAll('_', '-');
-    return _slugToGen[normalized] ??
-        _slugToGen[slug.trim().toLowerCase()] ??
-        Assets.images.categories.other;
+    final raw = identifierOrTitle.trim().toLowerCase();
+
+    // 1. Check if it's a registered UUID
+    if (_idToSlug.containsKey(raw)) {
+      final slug = _idToSlug[raw]!;
+      return _slugToGen[slug] ?? Assets.images.categories.other;
+    }
+
+    // 2. Direct slug lookup (with hyphens & underscores)
+    final normalized = raw.replaceAll('_', '-');
+    if (_slugToGen.containsKey(normalized)) {
+      return _slugToGen[normalized]!;
+    }
+    if (_slugToGen.containsKey(raw)) {
+      return _slugToGen[raw]!;
+    }
+
+    // 3. Smart keyword matching for activity titles & mixed inputs
+    final fromKeywords = _detectCategoryFromKeywords(raw);
+    if (fromKeywords != null) {
+      return fromKeywords;
+    }
+
+    return Assets.images.categories.other;
+  }
+
+  static AssetGenImage? _detectCategoryFromKeywords(String text) {
+    if (text.contains('cricket')) return Assets.images.categories.cricket;
+    if (text.contains('football') || text.contains('soccer')) {
+      return Assets.images.categories.football;
+    }
+    if (text.contains('badminton')) return Assets.images.categories.badminton;
+    if (text.contains('table tennis') ||
+        text.contains('table-tennis') ||
+        text.contains('ping pong') ||
+        text.contains('ping-pong')) {
+      return Assets.images.categories.tableTennis;
+    }
+    if (text.contains('tennis')) return Assets.images.categories.tennis;
+    if (text.contains('pickleball')) return Assets.images.categories.pickleball;
+    if (text.contains('volleyball')) return Assets.images.categories.volleyball;
+    if (text.contains('basketball')) return Assets.images.categories.basketball;
+    if (text.contains('hockey')) return Assets.images.categories.hockey;
+    if (text.contains('frisbee')) {
+      return Assets.images.categories.ultimateFrisbee;
+    }
+    if (text.contains('tug of war') || text.contains('tug-of-war')) {
+      return Assets.images.categories.tugOfWar;
+    }
+    if (text.contains('kabaddi')) return Assets.images.categories.kabaddi;
+    if (text.contains('kho kho') ||
+        text.contains('kho-kho') ||
+        text.contains('khokho')) {
+      return Assets.images.categories.khoKho;
+    }
+    if (text.contains('cycling') ||
+        text.contains('cycle') ||
+        text.contains('bike')) {
+      return Assets.images.categories.cycling;
+    }
+    if (text.contains('running') || text.contains('run')) {
+      return Assets.images.categories.running;
+    }
+    if (text.contains('skating') || text.contains('roller')) {
+      return Assets.images.categories.skating;
+    }
+    if (text.contains('swimming') || text.contains('swim')) {
+      return Assets.images.categories.swimming;
+    }
+    if (text.contains('hiking') || text.contains('trek')) {
+      return Assets.images.categories.hiking;
+    }
+    if (text.contains('yoga')) return Assets.images.categories.outdoorYoga;
+    if (text.contains('ride') || text.contains('carpool')) {
+      return Assets.images.categories.rideSharing;
+    }
+    if (text.contains('event')) return Assets.images.categories.events;
+    return null;
+  }
+
+  /// Resolves user-friendly display name from category ID, slug, or title.
+  static String resolveCategoryName(String? categoryIdOrName) {
+    if (categoryIdOrName == null || categoryIdOrName.trim().isEmpty) {
+      return 'Activity';
+    }
+    final raw = categoryIdOrName.trim();
+    final lower = raw.toLowerCase();
+
+    // Check registered UUID name
+    if (_idToName.containsKey(lower)) {
+      return _idToName[lower]!;
+    }
+
+    // Check registered slug name
+    if (_slugToName.containsKey(lower)) {
+      return _slugToName[lower]!;
+    }
+
+    // If it looks like a raw UUID (36 chars with hyphens), do not display it!
+    if (raw.length == 36 && raw.contains('-')) {
+      if (_idToSlug.containsKey(lower)) {
+        final slug = _idToSlug[lower]!;
+        return slug.replaceAll('-', ' ').replaceAll('_', ' ');
+      }
+      return 'Sport';
+    }
+
+    return raw;
   }
 
   /// Returns the asset path for a category slug, falling back to [otherSport].
@@ -318,10 +491,10 @@ class AppAssets {
     final normalized = slug?.trim().toLowerCase().replaceAll('_', '-');
     switch (normalized) {
       case 'cricket':
-        return const Color(0xFFE8F5E9); // Turf Green
+        return const Color(0xFFFFEADB); // Warm Peach
       case 'football':
       case 'soccer':
-        return const Color(0xFFEFF6FF); // Sky Blue
+        return const Color(0xFFE0F2FE); // Light Sky Blue
       case 'volleyball':
         return const Color(0xFFFEF3C7); // Warm Yellow
       case 'basketball':
@@ -335,7 +508,7 @@ class AppAssets {
       case 'tug-of-war':
         return const Color(0xFFFEF2F2); // Warm Red tint
       case 'badminton':
-        return const Color(0xFFFFF7ED); // Warm Orange
+        return const Color(0xFFF3E8FF); // Soft Lavender
       case 'tennis':
         return const Color(0xFFF5F3FF); // Violet
       case 'table-tennis':
@@ -375,10 +548,12 @@ class AppAssets {
         return const Color(0xFFF0FDFA); // Morning Teal
       case 'ride-sharing':
       case 'ridesharing':
-        return const Color(0xFFF3E8FF); // Purple Commute
+      case 'carpool':
+        return const Color(0xFFCCFBF1); // Muted Aqua
       case 'events':
       case 'event':
-        return const Color(0xFFFEF08A); // Gold Celebration
+      case 'tournament':
+        return const Color(0xFFFEF9C3); // Pale Yellow
       default:
         return const Color(0xFFF3EFE9); // Warm cream neutral
     }

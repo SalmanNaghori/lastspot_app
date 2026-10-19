@@ -1,5 +1,4 @@
 import 'package:lastspot_app/core/base_import.dart';
-import 'package:lastspot_app/gen/assets.gen.dart';
 
 /// Premium 3D perspective category card.
 ///
@@ -34,6 +33,8 @@ class SportsCategoryPerspectiveCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final displayName = isAll ? context.loc.allFilter : name;
+
     final Color baseBgColor;
     if (isAll) {
       baseBgColor = context.isDarkMode
@@ -41,23 +42,21 @@ class SportsCategoryPerspectiveCard extends StatelessWidget {
           : const Color(0xFFF1F5F9);
     } else {
       final softTint = AppAssets.getCategorySoftTint(slug);
-      baseBgColor = context.isDarkMode
-          ? context.surfaceContainer
-          : softTint;
+      baseBgColor = context.isDarkMode ? context.surfaceContainer : softTint;
     }
 
     final cardRadius = Dimensions.r20.dynamicR;
     final cardBorder = Border.all(
       color: isCenter
-          ? context.primaryColor
-          : context.borderColor.withValues(alpha: 0.6),
-      width: isCenter ? 2.0 : 1.0,
+          ? context.primaryColor.withValues(alpha: 0.45)
+          : context.borderColor.withValues(alpha: 0.5),
+      width: isCenter ? 1.5 : 1.0,
     );
 
     final cardShadows = isCenter
         ? [
             BoxShadow(
-              color: context.primaryColor.withValues(alpha: 0.16),
+              color: context.primaryColor.withValues(alpha: 0.10),
               blurRadius: Dimensions.r16.dynamicR,
               offset: Offset(0, Dimensions.r6.dynamicH),
             ),
@@ -77,10 +76,10 @@ class SportsCategoryPerspectiveCard extends StatelessWidget {
 
     return Semantics(
       button: true,
-      label: name,
+      label: displayName,
       selected: isSelected,
       child: Tooltip(
-        message: name,
+        message: displayName,
         child: SizedBox(
           width: width,
           height: height,
@@ -112,31 +111,40 @@ class SportsCategoryPerspectiveCard extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Expanded(
-                            child: Center(
-                              child: _buildArtwork(context),
-                            ),
+                            child: Center(child: _buildArtwork(context)),
                           ),
                           SizedBox(height: Dimensions.r6.dynamicH),
-                          Text(
-                            name,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontSize: isCenter
-                                  ? Dimensions.r13.dynamicSP
-                                  : Dimensions.r12.dynamicSP,
-                              fontWeight: isCenter
-                                  ? FontWeight.w800
-                                  : FontWeight.w700,
-                              color: isCenter
-                                  ? (context.isDarkMode
+                          if (isCenter)
+                            FittedBox(
+                              fit: BoxFit.scaleDown,
+                              child: Text(
+                                displayName,
+                                maxLines: 1,
+                                softWrap: false,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontSize: Dimensions.r13.dynamicSP,
+                                  fontWeight: FontWeight.w800,
+                                  color: context.isDarkMode
                                       ? AppColor.whiteColor
-                                      : context.textPrimary)
-                                  : context.textSecondary,
-                              letterSpacing: -0.2,
+                                      : context.textPrimary,
+                                  letterSpacing: -0.2,
+                                ),
+                              ),
+                            )
+                          else
+                            Text(
+                              displayName,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: Dimensions.r12.dynamicSP,
+                                fontWeight: FontWeight.w700,
+                                color: context.textSecondary,
+                                letterSpacing: -0.2,
+                              ),
                             ),
-                          ),
                         ],
                       ),
                     ),
@@ -162,12 +170,13 @@ class SportsCategoryPerspectiveCard extends StatelessWidget {
                         child: IgnorePointer(
                           child: Container(
                             decoration: BoxDecoration(
-                              color: (context.isDarkMode
-                                      ? AppColor.blackColor
-                                      : AppColor.whiteColor)
-                                  .withValues(
-                                alpha: opticalDepth.clamp(0.0, 0.25),
-                              ),
+                              color:
+                                  (context.isDarkMode
+                                          ? AppColor.blackColor
+                                          : AppColor.whiteColor)
+                                      .withValues(
+                                        alpha: opticalDepth.clamp(0.0, 0.12),
+                                      ),
                               borderRadius: BorderRadius.circular(cardRadius),
                             ),
                           ),

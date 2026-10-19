@@ -12,11 +12,9 @@ class ChatsScreenMobile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final loc = context.loc;
-
     return Scaffold(
       backgroundColor: context.backgroundColor,
-      appBar: CustomAppBar.dashboard(context: context, title: loc.navChats),
+      appBar: const KhelBhaiAppBar(),
       body: SafeArea(
         top: false,
         child: RefreshIndicator(

@@ -8,7 +8,7 @@ class AppConstants {
 
   // App Metadata
   static const String appVersion = '1.0.0';
-  static const String contactEmail = 'support@lastspot.com';
+  static const String contactEmail = 'support@khelbhai.com';
 
   // Platform Checkers
   static bool get isIOS => !kIsWeb && Platform.isIOS;

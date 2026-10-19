@@ -71,8 +71,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       title: context.loc.selectCity,
       searchHint: 'Search city...',
       items: cities,
-      itemText: (city) => city.name,
-      onSearch: (city, query) => city.name.toLowerCase().contains(query),
+      itemText: (city) => city.formattedLocation,
+      onSearch: (city, query) =>
+          city.name.toLowerCase().contains(query) ||
+          (city.state?.toLowerCase().contains(query) ?? false),
       selectedItem: _selectedCity.value,
       isLoading: isLoading,
       hasError: hasError,

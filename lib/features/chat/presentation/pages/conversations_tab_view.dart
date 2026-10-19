@@ -32,19 +32,26 @@ class _ConversationsTabViewState extends State<ConversationsTabView> {
   }
 
   void _onConversationTap(ChatConversationEntity conversation) {
-    final title = conversation.isDirect
-        ? (conversation.otherUserName ?? '')
-        : (conversation.activityTitle ?? '');
+    final title = conversation.displayTitle ?? '';
     final feedback = context.read<InAppFeedbackManager>();
     feedback.clearTransient();
     feedback.dismissConversation(conversation.conversationId);
+    context.read<ConversationsCubit>().markConversationReadLocally(
+      conversation.conversationId,
+    );
     context
         .push(
           AppRoutes.conversationChatPath(
             conversation.conversationId,
             isDirect: conversation.isDirect,
             name: title,
-            activityTitle: conversation.activityTitle,
+            avatarUrl: conversation.displayAvatarUrl,
+            category: conversation.categoryOrActivity,
+            activityTitle:
+                conversation.getDirectActivitySubtitle(
+                  fallbackActivityLabel: context.loc.activity,
+                ) ??
+                conversation.activityTitle,
             requestId: conversation.requestId,
           ),
         )
@@ -69,36 +76,15 @@ class _ConversationsTabViewState extends State<ConversationsTabView> {
     return BlocBuilder<ConversationsCubit, ConversationsState>(
       builder: (context, state) {
         if (state is ConversationsLoading) {
-          return const Center(
-            child: Padding(
-              padding: EdgeInsets.all(AppSpacing.xxl),
-              child: CircularProgressIndicator(),
-            ),
-          );
+          return const Center(child: AppLoading());
         }
 
         if (state is ConversationsError) {
           return Center(
-            child: Padding(
-              padding: const EdgeInsets.all(AppSpacing.xl),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(
-                    state.isNetworkError ? Icons.wifi_off : Icons.error_outline,
-                    size: Dimensions.r48.dynamicH,
-                    color: colors.error,
-                  ),
-                  SizedBox(height: Dimensions.r16.dynamicH),
-                  Text(
-                    loc.conversationLoadError,
-                    textAlign: TextAlign.center,
-                    style: context.bodyLarge,
-                  ),
-                  SizedBox(height: Dimensions.r16.dynamicH),
-                  FilledButton(onPressed: _onRetry, child: Text(loc.retry)),
-                ],
-              ),
+            child: AppErrorState(
+              message: loc.conversationLoadError,
+              isNetwork: state.isNetworkError,
+              onRetry: _onRetry,
             ),
           );
         }
@@ -122,14 +108,9 @@ class _ConversationsTabViewState extends State<ConversationsTabView> {
 
               final displayedList = searchQuery.isEmpty
                   ? filterTabList
-                  : filterTabList.where((c) {
-                      final name =
-                          (c.isDirect ? c.otherUserName : c.activityTitle) ??
-                          '';
-                      final msg = c.lastMessage ?? '';
-                      return name.toLowerCase().contains(searchQuery) ||
-                          msg.toLowerCase().contains(searchQuery);
-                    }).toList();
+                  : filterTabList
+                        .where((c) => c.matchesSearch(searchQuery))
+                        .toList();
 
               return Column(
                 mainAxisSize: MainAxisSize.min,
@@ -225,94 +206,24 @@ class _ConversationsTabViewState extends State<ConversationsTabView> {
 
                   if (displayedList.isEmpty && searchQuery.isNotEmpty)
                     Center(
-                      child: Padding(
-                        padding: const EdgeInsets.all(AppSpacing.xxl),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            AppAssets.emptySearchResultsGen.image(
-                              width: Dimensions.r96.dynamicW * 1.4,
-                              height: Dimensions.r96.dynamicH * 1.4,
-                              cacheWidth: 360,
-                              cacheHeight: 360,
-                              fit: BoxFit.contain,
-                              errorBuilder: (context, error, stackTrace) {
-                                return Icon(
-                                  Icons.search_off_outlined,
-                                  size: Dimensions.r48.dynamicH,
-                                  color: colors.onSurfaceVariant,
-                                );
-                              },
-                            ),
-                            SizedBox(height: Dimensions.r16.dynamicH),
-                            Text(
-                              loc.noConversationsFound,
-                              style: context.titleMedium?.copyWith(
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            SizedBox(height: Dimensions.r8.dynamicH),
-                            Text(
-                              loc.noConversationsFoundDesc,
-                              textAlign: TextAlign.center,
-                              style: context.bodyMedium?.copyWith(
-                                color: colors.onSurfaceVariant,
-                              ),
-                            ),
-                          ],
-                        ),
+                      child: AppEmptyState.search(
+                        title: loc.noConversationsFound,
+                        message: loc.noConversationsFoundDesc,
                       ),
                     )
                   else if (displayedList.isEmpty)
                     Center(
-                      child: Padding(
-                        padding: const EdgeInsets.all(AppSpacing.xxl),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            AppAssets.emptyChatsGen.image(
-                              width: Dimensions.r96.dynamicW * 1.4,
-                              height: Dimensions.r96.dynamicH * 1.4,
-                              cacheWidth: 360,
-                              cacheHeight: 360,
-                              fit: BoxFit.contain,
-                              errorBuilder: (context, error, stackTrace) {
-                                return Icon(
-                                  filterIndex == 1
-                                      ? Icons.chat_bubble_outline
-                                      : (filterIndex == 2
-                                            ? Icons.forum_outlined
-                                            : Icons.chat_outlined),
-                                  size: Dimensions.r48.dynamicH,
-                                  color: colors.onSurfaceVariant,
-                                );
-                              },
-                            ),
-                            SizedBox(height: Dimensions.r16.dynamicH),
-                            Text(
-                              filterIndex == 1
-                                  ? loc.noDirectConversations
-                                  : (filterIndex == 2
-                                        ? loc.noGroupConversations
-                                        : loc.noConversations),
-                              style: context.titleMedium?.copyWith(
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            SizedBox(height: Dimensions.r8.dynamicH),
-                            Text(
-                              filterIndex == 1
-                                  ? loc.noDirectConversationsDesc
-                                  : (filterIndex == 2
-                                        ? loc.noGroupConversationsDesc
-                                        : loc.noConversationsDesc),
-                              textAlign: TextAlign.center,
-                              style: context.bodyMedium?.copyWith(
-                                color: colors.onSurfaceVariant,
-                              ),
-                            ),
-                          ],
-                        ),
+                      child: AppEmptyState.chats(
+                        title: filterIndex == 1
+                            ? loc.noDirectConversations
+                            : (filterIndex == 2
+                                  ? loc.noGroupConversations
+                                  : loc.noConversations),
+                        message: filterIndex == 1
+                            ? loc.noDirectConversationsDesc
+                            : (filterIndex == 2
+                                  ? loc.noGroupConversationsDesc
+                                  : loc.noConversationsDesc),
                       ),
                     )
                   else
@@ -328,6 +239,7 @@ class _ConversationsTabViewState extends State<ConversationsTabView> {
                       itemBuilder: (context, index) {
                         final conversation = displayedList[index];
                         return ConversationTile(
+                          key: ValueKey(conversation.conversationId),
                           conversation: conversation,
                           onTap: () => _onConversationTap(conversation),
                         );

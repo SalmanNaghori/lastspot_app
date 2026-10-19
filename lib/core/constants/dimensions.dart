@@ -58,6 +58,7 @@ class Dimensions {
   static const double r160 = 160.0;
   static const double r180 = 180.0;
   static const double r200 = 200.0;
+  static const double r240 = 240.0;
   static const double r999 = 999.0;
 
   // ---------------------------------------------------------------------------

@@ -49,26 +49,43 @@ class HomeGreetingBanner extends StatelessWidget {
             SizedBox(height: Dimensions.r2.dynamicH),
             Align(
               alignment: AlignmentDirectional.centerStart,
-              child: TextButton.icon(
-                onPressed: onCityTap,
-                style: TextButton.styleFrom(
-                  padding: EdgeInsets.zero,
-                  visualDensity: VisualDensity.compact,
-                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                ),
-                icon: Icon(
-                  Icons.location_on_outlined,
-                  size: Dimensions.r16.dynamicH,
-                  color: context.primaryColor,
-                ),
-                label: Text(
-                  city ?? loc.selectCity,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    fontSize: Dimensions.r13.dynamicSP,
-                    fontWeight: FontWeight.w500,
-                    color: context.textSecondary,
+              child: Material(
+                color: Colors.transparent,
+                child: InkWell(
+                  onTap: onCityTap,
+                  borderRadius: BorderRadius.circular(Dimensions.r8.dynamicR),
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(
+                      vertical: Dimensions.r4.dynamicH,
+                      horizontal: Dimensions.r2.dynamicW,
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        ActivityMetadataIcon.location(
+                          width: Dimensions.r18.dynamicW,
+                          height: Dimensions.r18.dynamicH,
+                        ),
+                        SizedBox(width: Dimensions.r6.dynamicW),
+                        Text(
+                          city ?? loc.selectCity,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontSize: Dimensions.r13.dynamicSP,
+                            fontWeight: FontWeight.w600,
+                            color: context.textPrimary,
+                          ),
+                        ),
+                        SizedBox(width: Dimensions.r4.dynamicW),
+                        Icon(
+                          Icons.keyboard_arrow_down_rounded,
+                          size: Dimensions.r18.dynamicH,
+                          color: context.textSecondary,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),

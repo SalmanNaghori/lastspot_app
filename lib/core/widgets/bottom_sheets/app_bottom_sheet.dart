@@ -9,6 +9,7 @@ class AppBottomSheet {
     required BuildContext context,
     required WidgetBuilder builder,
     bool isScrollControlled = true,
+    bool showDragHandle = true,
   }) async {
     if (_isSheetOpen) return null;
     _isSheetOpen = true;
@@ -22,7 +23,7 @@ class AppBottomSheet {
         constraints: const BoxConstraints(
           maxWidth: Dimensions.detailsTabletBreakpoint,
         ),
-        showDragHandle: true,
+        showDragHandle: showDragHandle,
         sheetAnimationStyle: AnimationStyle(
           duration: AppMotion.duration(context, AppMotion.standard),
           reverseDuration: AppMotion.duration(context, AppMotion.quick),

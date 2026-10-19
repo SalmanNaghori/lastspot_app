@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:lastspot_app/core/base_import.dart';
-import '../../../../gen/assets.gen.dart';
 import '../../../cities/domain/entities/city_entity.dart';
 import '../../domain/entities/user_profile.dart';
 
@@ -11,7 +10,7 @@ class ProfileCompletionStep extends StatelessWidget {
   final File? selectedAvatar;
   final UserProfile? existingProfile;
   final bool isLoading;
-  final VoidCallback onEnterLastSpot;
+  final VoidCallback onEnterApp;
 
   const ProfileCompletionStep({
     super.key,
@@ -21,11 +20,36 @@ class ProfileCompletionStep extends StatelessWidget {
     required this.selectedAvatar,
     this.existingProfile,
     required this.isLoading,
-    required this.onEnterLastSpot,
+    required this.onEnterApp,
   });
 
   @override
   Widget build(BuildContext context) {
+    final fallbackName = fullName.trim().isNotEmpty
+        ? fullName.trim()
+        : existingProfile?.fullName?.trim() ?? '';
+    final initial = fallbackName.isNotEmpty
+        ? fallbackName.characters.first.toUpperCase()
+        : 'P';
+    final avatarSize = Dimensions.r48.dynamicH;
+    final avatarFallback = Container(
+      width: avatarSize,
+      height: avatarSize,
+      decoration: BoxDecoration(
+        color: context.primaryContainer,
+        shape: BoxShape.circle,
+      ),
+      alignment: Alignment.center,
+      child: Text(
+        initial,
+        style: TextStyle(
+          color: context.primaryColor,
+          fontWeight: FontWeight.w700,
+          fontSize: Dimensions.r18.dynamicSP,
+        ),
+      ),
+    );
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -111,26 +135,27 @@ class ProfileCompletionStep extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  CircleAvatar(
-                    radius: Dimensions.r24.dynamicR,
-                    backgroundColor: context.surfaceColor,
-                    backgroundImage: selectedAvatar != null
-                        ? FileImage(selectedAvatar!)
-                        : (existingProfile?.avatarUrl != null &&
-                              existingProfile!.avatarUrl!.isNotEmpty)
-                        ? NetworkImage(existingProfile!.avatarUrl!)
-                              as ImageProvider
-                        : null,
-                    child:
-                        selectedAvatar == null &&
-                            (existingProfile?.avatarUrl == null ||
-                                existingProfile!.avatarUrl!.isEmpty)
-                        ? Icon(
-                            Icons.person_rounded,
-                            size: Dimensions.r24.dynamicH,
-                            color: context.textSecondary,
+                  ClipOval(
+                    child: selectedAvatar != null
+                        ? Image.file(
+                            selectedAvatar!,
+                            width: avatarSize,
+                            height: avatarSize,
+                            fit: BoxFit.cover,
                           )
-                        : null,
+                        : (existingProfile?.avatarUrl?.trim().isNotEmpty == true
+                              ? AppCachedNetworkImage(
+                                  imageUrl: existingProfile!.avatarUrl,
+                                  width: avatarSize,
+                                  height: avatarSize,
+                                  isCircle: true,
+                                  fit: BoxFit.cover,
+                                  memCacheWidth: 144,
+                                  memCacheHeight: 144,
+                                  placeholder: avatarFallback,
+                                  errorWidget: avatarFallback,
+                                )
+                              : avatarFallback),
                   ),
                   SizedBox(width: Dimensions.r12.dynamicW),
                   Expanded(
@@ -187,7 +212,7 @@ class ProfileCompletionStep extends StatelessWidget {
                         vertical: Dimensions.r4.dynamicH,
                       ),
                       decoration: BoxDecoration(
-                        color: const Color(0xFFF0FDF4),
+                        color: AppAssets.getCategorySoftTint(normalizedSport),
                         borderRadius: BorderRadius.circular(
                           Dimensions.r999.dynamicR,
                         ),
@@ -233,7 +258,7 @@ class ProfileCompletionStep extends StatelessWidget {
           width: double.infinity,
           height: Dimensions.r48.dynamicH * 1.15,
           child: FilledButton(
-            onPressed: isLoading ? null : onEnterLastSpot,
+            onPressed: isLoading ? null : onEnterApp,
             style: FilledButton.styleFrom(
               backgroundColor: context.primaryColor,
               foregroundColor: AppColor.whiteColor,
@@ -252,7 +277,7 @@ class ProfileCompletionStep extends StatelessWidget {
                     ),
                   )
                 : Text(
-                    'Enter LastSpot',
+                    'Enter ${AppString.appName}',
                     style: TextStyle(
                       fontSize: Dimensions.r16.dynamicSP,
                       fontWeight: FontWeight.w700,

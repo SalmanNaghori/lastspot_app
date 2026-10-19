@@ -372,7 +372,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         emit(
           const AuthSessionCheckUnavailable(
             message:
-                'LastSpot could not confirm this device session. Check your connection and try again.',
+                'KhelBhai could not confirm this device session. Check your connection and try again.',
           ),
         );
     }
@@ -388,7 +388,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         emit(
           const AuthSessionNeedsSignIn(
             message:
-                'Supabase sign-in succeeded, but LastSpot did not confirm this device as active. Please try again.',
+                'Supabase sign-in succeeded, but KhelBhai did not confirm this device as active. Please try again.',
           ),
         );
         return false;
@@ -397,7 +397,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         emit(
           const AuthSessionNeedsSignIn(
             message:
-                'Your sign-in credentials expired before LastSpot could activate this device. Please try again.',
+                'Your sign-in credentials expired before KhelBhai could activate this device. Please try again.',
           ),
         );
         return false;
@@ -413,7 +413,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         emit(
           const AuthSessionCheckUnavailable(
             message:
-                'Sign-in completed, but LastSpot could not confirm this device session. Check your connection and try again.',
+                'Sign-in completed, but KhelBhai could not confirm this device session. Check your connection and try again.',
           ),
         );
         return false;
@@ -425,7 +425,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       AccountSessionStatus.credentialsExpired =>
         'Your sign-in credentials have expired. Please sign in again.',
       AccountSessionStatus.inactiveOrUninitialized =>
-        'Supabase sign-in succeeded, but LastSpot did not confirm this device as active. Please sign in again.',
+        'Supabase sign-in succeeded, but KhelBhai did not confirm this device as active. Please sign in again.',
       _ => 'Please sign in again to continue.',
     };
   }
@@ -638,7 +638,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           emit(
             const AuthSessionNeedsSignIn(
               message:
-                  'Could not register this device with LastSpot. Please check your connection and sign in again.',
+                  'Could not register this device with KhelBhai. Please check your connection and sign in again.',
             ),
           );
           return;

@@ -80,7 +80,7 @@ class SharedPrefsUtilImpl implements SharedPrefsUtil {
     if (index != null && index >= 0 && index < AppThemeColor.values.length) {
       return AppThemeColor.values[index];
     }
-    return AppThemeColor.sportsGreen;
+    return AppThemeColor.sunsetOrange;
   }
 
   @override

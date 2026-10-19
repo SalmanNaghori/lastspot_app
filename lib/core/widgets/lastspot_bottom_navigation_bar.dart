@@ -1,5 +1,4 @@
 import '../base_import.dart';
-import '../../gen/assets.gen.dart';
 
 /// Item descriptor for [LastSpotBottomNavigationBar].
 class LastSpotNavItem {
@@ -45,31 +44,39 @@ class LastSpotBottomNavigationBar extends StatelessWidget {
     final items = [
       LastSpotNavItem(
         label: loc.navHome,
-        iconGen: AppAssets.navHomeGen,
+        iconGen: Assets.navigation.home3d,
         fallbackIcon: Icons.home_rounded,
       ),
       LastSpotNavItem(
         label: loc.navExplore,
-        iconGen: AppAssets.navExploreGen,
+        iconGen: Assets.navigation.explore3d,
         fallbackIcon: Icons.explore_rounded,
       ),
       LastSpotNavItem(
         label: loc.navCreate,
-        iconGen: AppAssets.navCreateGen,
+        iconGen: Assets.navigation.create3d,
         fallbackIcon: Icons.add_rounded,
         isSpecialAction: true,
       ),
       LastSpotNavItem(
         label: loc.navActivities,
-        iconGen: AppAssets.navActivitiesGen,
+        iconGen: Assets.navigation.activities3d,
         fallbackIcon: Icons.sports_soccer_rounded,
       ),
       LastSpotNavItem(
         label: loc.navChats,
-        iconGen: AppAssets.navChatsGen,
+        iconGen: Assets.navigation.chats3d,
         fallbackIcon: Icons.chat_bubble_rounded,
       ),
     ];
+
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final navSurfaceColor = isDark
+        ? const Color(0xFF171D2A)
+        : context.surfaceColor;
+    final navBorderColor = isDark
+        ? const Color(0xFF2A3447)
+        : context.colorScheme.outlineVariant.withValues(alpha: 0.35);
 
     final bottomPadding = MediaQuery.of(context).padding.bottom;
     final effectiveBottomBuffer = bottomPadding > 0
@@ -89,23 +96,23 @@ class LastSpotBottomNavigationBar extends StatelessWidget {
       child: Container(
         height: navBarHeight,
         decoration: BoxDecoration(
-          color: context.surfaceColor,
+          color: navSurfaceColor,
           borderRadius: BorderRadius.circular(Dimensions.r28.dynamicR),
-          border: Border.all(
-            color: context.colorScheme.outlineVariant.withValues(alpha: 0.35),
-            width: 1.0,
-          ),
+          border: Border.all(color: navBorderColor, width: 1.0),
           boxShadow: [
             BoxShadow(
-              color: AppColor.blackColor.withValues(alpha: 0.06),
-              blurRadius: 18,
-              offset: const Offset(0, 4),
+              color: isDark
+                  ? AppColor.blackColor.withValues(alpha: 0.40)
+                  : AppColor.blackColor.withValues(alpha: 0.08),
+              blurRadius: 20,
+              offset: const Offset(0, 6),
             ),
-            BoxShadow(
-              color: context.primaryColor.withValues(alpha: 0.03),
-              blurRadius: 8,
-              offset: const Offset(0, 2),
-            ),
+            if (!isDark)
+              BoxShadow(
+                color: context.primaryColor.withValues(alpha: 0.04),
+                blurRadius: 10,
+                offset: const Offset(0, 2),
+              ),
           ],
         ),
         child: Row(
@@ -153,8 +160,11 @@ class LastSpotNavBarItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final activeColor = context.primaryColor;
-    final inactiveColor = context.textSecondary;
+    final inactiveColor = isDark
+        ? const Color(0xFF94A3B8)
+        : context.textSecondary;
     final reduceMotion =
         MediaQuery.maybeOf(context)?.disableAnimations ?? false;
     final animDuration = reduceMotion
@@ -212,8 +222,8 @@ class LastSpotNavBarItem extends StatelessWidget {
                             child: item.iconGen.image(
                               width: Dimensions.r32.dynamicW,
                               height: Dimensions.r32.dynamicH,
-                              cacheWidth: 256,
-                              cacheHeight: 256,
+                              cacheWidth: 128,
+                              cacheHeight: 128,
                               fit: BoxFit.contain,
                               errorBuilder: (context, error, stackTrace) {
                                 return Icon(

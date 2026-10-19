@@ -1,4 +1,3 @@
-import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:go_router/go_router.dart';
 import '../../features/notifications/presentation/pages/notifications_screen.dart';
 import '../../features/startup/presentation/pages/splash_screen.dart';
@@ -17,7 +16,6 @@ import '../../features/spot/presentation/bloc/home_cubit.dart';
 import '../../features/spot/presentation/pages/create_spot_screen.dart';
 import '../../features/spot/presentation/pages/create_spot_success_screen.dart';
 import '../../features/spot/presentation/pages/preview_spot_screen.dart';
-import '../../features/auth/presentation/bloc/profile_cubit.dart';
 import '../../features/spot/presentation/bloc/create_spot_bloc.dart';
 import '../../features/spot/presentation/pages/spot_details_screen.dart';
 import '../../features/spot/presentation/bloc/spot_details_bloc.dart';
@@ -55,13 +53,17 @@ import '../../features/legal/presentation/pages/terms_conditions_screen.dart';
 import '../di/service_locator.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../services/chat_visibility_tracker.dart';
 import 'app_routes.dart';
 
 export 'app_routes.dart';
 
 final GoRouter appRouter = GoRouter(
   initialLocation: AppRoutes.splash,
-  observers: [appFeedbackManager],
+  observers: [
+    appFeedbackManager,
+    if (sl.isRegistered<ChatVisibilityTracker>()) sl<ChatVisibilityTracker>(),
+  ],
   routes: [
     GoRoute(
       path: AppRoutes.splash,
@@ -127,19 +129,10 @@ final GoRouter appRouter = GoRouter(
           routes: [
             GoRoute(
               path: AppRoutes.home,
-              builder: (context, state) {
-                final userId = Supabase.instance.client.auth.currentUser!.id;
-                return MultiBlocProvider(
-                  providers: [
-                    BlocProvider(create: (context) => sl<HomeCubit>()),
-                    BlocProvider(
-                      create: (context) =>
-                          sl<ProfileCubit>()..fetchProfile(userId),
-                    ),
-                  ],
-                  child: const HomeScreen(),
-                );
-              },
+              builder: (context, state) => BlocProvider(
+                create: (context) => sl<HomeCubit>(),
+                child: const HomeScreen(),
+              ),
             ),
           ],
         ),
@@ -288,6 +281,8 @@ final GoRouter appRouter = GoRouter(
           isDirect: isDirect,
           recipientUserId: state.uri.queryParameters['recipient'],
           recipientName: state.uri.queryParameters['name'],
+          recipientAvatarUrl: state.uri.queryParameters['avatar_url'],
+          category: state.uri.queryParameters['category'],
           activityTitle: state.uri.queryParameters['activity_title'],
           requestId: state.uri.queryParameters['request_id'],
         );

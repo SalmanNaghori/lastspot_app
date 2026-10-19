@@ -6,6 +6,8 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/intl.dart' as intl;
 
 import 'app_localizations_en.dart';
+import 'app_localizations_gu.dart';
+import 'app_localizations_hi.dart';
 
 // ignore_for_file: type=lint
 
@@ -92,12 +94,16 @@ abstract class AppLocalizations {
       ];
 
   /// A list of this localizations delegate's supported locales.
-  static const List<Locale> supportedLocales = <Locale>[Locale('en')];
+  static const List<Locale> supportedLocales = <Locale>[
+    Locale('en'),
+    Locale('gu'),
+    Locale('hi'),
+  ];
 
   /// The name of the application
   ///
   /// In en, this message translates to:
-  /// **'LastSpot'**
+  /// **'KhelBhai'**
   String get appName;
 
   /// No description provided for @todayAt.
@@ -115,7 +121,7 @@ abstract class AppLocalizations {
   /// No description provided for @appDescription.
   ///
   /// In en, this message translates to:
-  /// **'On-Demand Sports & Activity Partner Finder'**
+  /// **'Bhai, Team Banao! Match Jamao!'**
   String get appDescription;
 
   /// No description provided for @updateNow.
@@ -394,6 +400,12 @@ abstract class AppLocalizations {
   /// **'Group chat'**
   String get groupChat;
 
+  /// No description provided for @activity.
+  ///
+  /// In en, this message translates to:
+  /// **'Activity'**
+  String get activity;
+
   /// No description provided for @messageHint.
   ///
   /// In en, this message translates to:
@@ -565,7 +577,7 @@ abstract class AppLocalizations {
   /// No description provided for @logoutDialogMessage.
   ///
   /// In en, this message translates to:
-  /// **'You\'ll need to sign in again to access your LastSpot account.'**
+  /// **'You\'ll need to sign in again to access your KhelBhai account.'**
   String get logoutDialogMessage;
 
   /// No description provided for @cancel.
@@ -711,6 +723,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Find your favorite sport and join the action'**
   String get popularSportsSubtitle;
+
+  /// No description provided for @sportsCarouselHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Swipe to explore sports · Tap to view activities'**
+  String get sportsCarouselHint;
+
+  /// No description provided for @searchCityHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search city or state...'**
+  String get searchCityHint;
 
   /// No description provided for @nearbyActivities.
   ///
@@ -1036,11 +1060,17 @@ abstract class AppLocalizations {
   /// **'English'**
   String get languageEnglish;
 
-  /// No description provided for @languageFrench.
+  /// No description provided for @languageHindi.
   ///
   /// In en, this message translates to:
-  /// **'French'**
-  String get languageFrench;
+  /// **'Hindi'**
+  String get languageHindi;
+
+  /// No description provided for @languageGujarati.
+  ///
+  /// In en, this message translates to:
+  /// **'Gujarati'**
+  String get languageGujarati;
 
   /// No description provided for @cityRequiredError.
   ///
@@ -2679,6 +2709,312 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Best Time to Play'**
   String get bestTimeToPlay;
+
+  /// No description provided for @mySportsSpaceTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'My Sports Space'**
+  String get mySportsSpaceTitle;
+
+  /// No description provided for @statHosted.
+  ///
+  /// In en, this message translates to:
+  /// **'Hosted'**
+  String get statHosted;
+
+  /// No description provided for @statUpcoming.
+  ///
+  /// In en, this message translates to:
+  /// **'Upcoming'**
+  String get statUpcoming;
+
+  /// No description provided for @sportsJourney.
+  ///
+  /// In en, this message translates to:
+  /// **'My Sports Journey'**
+  String get sportsJourney;
+
+  /// No description provided for @upcomingGames.
+  ///
+  /// In en, this message translates to:
+  /// **'Upcoming Games'**
+  String get upcomingGames;
+
+  /// No description provided for @pastActivities.
+  ///
+  /// In en, this message translates to:
+  /// **'Past Activities'**
+  String get pastActivities;
+
+  /// No description provided for @hostedMatches.
+  ///
+  /// In en, this message translates to:
+  /// **'Hosted Matches'**
+  String get hostedMatches;
+
+  /// No description provided for @joinedMatches.
+  ///
+  /// In en, this message translates to:
+  /// **'Joined Matches'**
+  String get joinedMatches;
+
+  /// No description provided for @sportsInterests.
+  ///
+  /// In en, this message translates to:
+  /// **'Sports Interests'**
+  String get sportsInterests;
+
+  /// No description provided for @editInterests.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Interests'**
+  String get editInterests;
+
+  /// No description provided for @noSportsInterests.
+  ///
+  /// In en, this message translates to:
+  /// **'No sports interests added yet.'**
+  String get noSportsInterests;
+
+  /// No description provided for @noJourneyActivities.
+  ///
+  /// In en, this message translates to:
+  /// **'No activities in this section.'**
+  String get noJourneyActivities;
+
+  /// No description provided for @achievementsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sports Achievements'**
+  String get achievementsTitle;
+
+  /// No description provided for @achievementFirstHost.
+  ///
+  /// In en, this message translates to:
+  /// **'First Host'**
+  String get achievementFirstHost;
+
+  /// No description provided for @achievementFirstHostDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Organized your first match'**
+  String get achievementFirstHostDesc;
+
+  /// No description provided for @achievementTeamPlayer.
+  ///
+  /// In en, this message translates to:
+  /// **'Team Player'**
+  String get achievementTeamPlayer;
+
+  /// No description provided for @achievementTeamPlayerDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Joined a sports activity'**
+  String get achievementTeamPlayerDesc;
+
+  /// No description provided for @achievementActiveAthlete.
+  ///
+  /// In en, this message translates to:
+  /// **'Active Athlete'**
+  String get achievementActiveAthlete;
+
+  /// No description provided for @achievementActiveAthleteDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed 5 sports activities'**
+  String get achievementActiveAthleteDesc;
+
+  /// No description provided for @achievementSportsLegend.
+  ///
+  /// In en, this message translates to:
+  /// **'Sports Legend'**
+  String get achievementSportsLegend;
+
+  /// No description provided for @achievementSportsLegendDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed 10 sports activities'**
+  String get achievementSportsLegendDesc;
+
+  /// No description provided for @quickActions.
+  ///
+  /// In en, this message translates to:
+  /// **'Quick Actions'**
+  String get quickActions;
+
+  /// No description provided for @quickActionFindGame.
+  ///
+  /// In en, this message translates to:
+  /// **'Find a Game'**
+  String get quickActionFindGame;
+
+  /// No description provided for @quickActionOrganize.
+  ///
+  /// In en, this message translates to:
+  /// **'Organize Match'**
+  String get quickActionOrganize;
+
+  /// No description provided for @quickActionMyMatches.
+  ///
+  /// In en, this message translates to:
+  /// **'My Matches'**
+  String get quickActionMyMatches;
+
+  /// No description provided for @quickActionChats.
+  ///
+  /// In en, this message translates to:
+  /// **'Team Chats'**
+  String get quickActionChats;
+
+  /// No description provided for @participantRoleHost.
+  ///
+  /// In en, this message translates to:
+  /// **'Host'**
+  String get participantRoleHost;
+
+  /// No description provided for @participantRolePlayer.
+  ///
+  /// In en, this message translates to:
+  /// **'Player'**
+  String get participantRolePlayer;
+
+  /// No description provided for @statusOpen.
+  ///
+  /// In en, this message translates to:
+  /// **'Open'**
+  String get statusOpen;
+
+  /// No description provided for @statusPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending'**
+  String get statusPending;
+
+  /// No description provided for @statusAccepted.
+  ///
+  /// In en, this message translates to:
+  /// **'Accepted'**
+  String get statusAccepted;
+
+  /// No description provided for @statusRejected.
+  ///
+  /// In en, this message translates to:
+  /// **'Rejected'**
+  String get statusRejected;
+
+  /// No description provided for @onboardingSkip.
+  ///
+  /// In en, this message translates to:
+  /// **'Skip'**
+  String get onboardingSkip;
+
+  /// No description provided for @onboardingBack.
+  ///
+  /// In en, this message translates to:
+  /// **'Back'**
+  String get onboardingBack;
+
+  /// No description provided for @onboardingGetStarted.
+  ///
+  /// In en, this message translates to:
+  /// **'Get Started'**
+  String get onboardingGetStarted;
+
+  /// No description provided for @onboardingContinue.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue'**
+  String get onboardingContinue;
+
+  /// No description provided for @onboardingLetsPlay.
+  ///
+  /// In en, this message translates to:
+  /// **'Let\'s Play'**
+  String get onboardingLetsPlay;
+
+  /// No description provided for @onboardingAlreadyHaveAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Already have an account? '**
+  String get onboardingAlreadyHaveAccount;
+
+  /// No description provided for @onboardingSignIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign In'**
+  String get onboardingSignIn;
+
+  /// No description provided for @onboardingSlide1Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Game. Your Gang.'**
+  String get onboardingSlide1Title;
+
+  /// No description provided for @onboardingSlide1Tagline.
+  ///
+  /// In en, this message translates to:
+  /// **'Bhai, Team Banao! Match Jamao!'**
+  String get onboardingSlide1Tagline;
+
+  /// No description provided for @onboardingSlide1Desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Find players, make teams, and turn plans into real games.'**
+  String get onboardingSlide1Desc;
+
+  /// No description provided for @onboardingSlide2Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Players Kam Hai? KhelBhai Hai Na!'**
+  String get onboardingSlide2Title;
+
+  /// No description provided for @onboardingSlide2Desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Find people nearby who are ready to join your next game.'**
+  String get onboardingSlide2Desc;
+
+  /// No description provided for @onboardingSlide3Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Game Banao. Gang Bulao.'**
+  String get onboardingSlide3Title;
+
+  /// No description provided for @onboardingSlide3Desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Host a match, discover activities, and join the action.'**
+  String get onboardingSlide3Desc;
+
+  /// No description provided for @onboardingSlide4Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Team Bani? Ab Game Jamao!'**
+  String get onboardingSlide4Title;
+
+  /// No description provided for @onboardingSlide4Desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Chat with teammates, coordinate plans, and get ready to play.'**
+  String get onboardingSlide4Desc;
+
+  /// No description provided for @onboardingReadyHeading.
+  ///
+  /// In en, this message translates to:
+  /// **'Ready, Bhai? Let\'s Play!'**
+  String get onboardingReadyHeading;
+
+  /// No description provided for @completedMatches.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed Matches'**
+  String get completedMatches;
+
+  /// No description provided for @verifiedEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Verified'**
+  String get verifiedEmail;
 }
 
 class _AppLocalizationsDelegate
@@ -2692,7 +3028,7 @@ class _AppLocalizationsDelegate
 
   @override
   bool isSupported(Locale locale) =>
-      <String>['en'].contains(locale.languageCode);
+      <String>['en', 'gu', 'hi'].contains(locale.languageCode);
 
   @override
   bool shouldReload(_AppLocalizationsDelegate old) => false;
@@ -2703,6 +3039,10 @@ AppLocalizations lookupAppLocalizations(Locale locale) {
   switch (locale.languageCode) {
     case 'en':
       return AppLocalizationsEn();
+    case 'gu':
+      return AppLocalizationsGu();
+    case 'hi':
+      return AppLocalizationsHi();
   }
 
   throw FlutterError(

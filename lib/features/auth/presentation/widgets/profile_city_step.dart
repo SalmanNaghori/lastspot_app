@@ -157,7 +157,7 @@ class _ProfileCityStepState extends State<ProfileCityStep> {
                         color: isSelected
                             ? (context.isDarkMode
                                   ? context.primaryColor.withValues(alpha: 0.18)
-                                  : const Color(0xFFF0FDF4))
+                                  : context.primaryContainer)
                             : (context.isDarkMode
                                   ? context.surfaceContainer
                                   : AppColor.surfaceContainerLight),

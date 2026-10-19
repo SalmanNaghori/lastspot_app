@@ -14,7 +14,6 @@ class ChatWelcomeBanner extends StatelessWidget {
     final cleanTitle = activityTitle.trim().isNotEmpty
         ? activityTitle.trim()
         : loc.groupChat;
-    final emoji = AppUtils.getCategoryEmoji(cleanTitle);
 
     return Padding(
       padding: EdgeInsets.symmetric(
@@ -45,10 +44,13 @@ class ChatWelcomeBanner extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text(emoji, style: const TextStyle(fontSize: 32)),
+              Category3DIcon(
+                category: cleanTitle,
+                size: Dimensions.r40.dynamicH,
+              ),
               SizedBox(height: Dimensions.r8.dynamicH),
               Text(
-                loc.welcomeToActivity(cleanTitle, emoji),
+                loc.welcomeToActivity(cleanTitle, '').trim(),
                 textAlign: TextAlign.center,
                 style: context.titleSmall?.copyWith(
                   fontWeight: FontWeight.bold,

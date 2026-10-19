@@ -51,6 +51,34 @@ class $AssetsAudioGen {
   List<String> get values => [activityCreatedVictory];
 }
 
+class $AssetsBrandingGen {
+  const $AssetsBrandingGen();
+
+  /// File path: assets/branding/khelbhai_launcher_master.png
+  AssetGenImage get khelbhaiLauncherMaster =>
+      const AssetGenImage('assets/branding/khelbhai_launcher_master.png');
+
+  /// File path: assets/branding/khelbhai_logo.png
+  AssetGenImage get khelbhaiLogo =>
+      const AssetGenImage('assets/branding/khelbhai_logo.png');
+
+  /// File path: assets/branding/khelbhai_logo_white.png
+  AssetGenImage get khelbhaiLogoWhite =>
+      const AssetGenImage('assets/branding/khelbhai_logo_white.png');
+
+  /// File path: assets/branding/khelbhai_splash_restored.png
+  AssetGenImage get khelbhaiSplashRestored =>
+      const AssetGenImage('assets/branding/khelbhai_splash_restored.png');
+
+  /// List of all assets
+  List<AssetGenImage> get values => [
+    khelbhaiLauncherMaster,
+    khelbhaiLogo,
+    khelbhaiLogoWhite,
+    khelbhaiSplashRestored,
+  ];
+}
+
 class $AssetsIconsGen {
   const $AssetsIconsGen();
 
@@ -100,12 +128,42 @@ class $AssetsImagesGen {
   $AssetsImagesEmptyStatesGen get emptyStates =>
       const $AssetsImagesEmptyStatesGen();
 
-  /// Directory path: assets/images/nav
-  $AssetsImagesNavGen get nav => const $AssetsImagesNavGen();
-
   /// Directory path: assets/images/onboarding
   $AssetsImagesOnboardingGen get onboarding =>
       const $AssetsImagesOnboardingGen();
+}
+
+class $AssetsNavigationGen {
+  const $AssetsNavigationGen();
+
+  /// File path: assets/navigation/activities_3d.png
+  AssetGenImage get activities3d =>
+      const AssetGenImage('assets/navigation/activities_3d.png');
+
+  /// File path: assets/navigation/chats_3d.png
+  AssetGenImage get chats3d =>
+      const AssetGenImage('assets/navigation/chats_3d.png');
+
+  /// File path: assets/navigation/create_3d.png
+  AssetGenImage get create3d =>
+      const AssetGenImage('assets/navigation/create_3d.png');
+
+  /// File path: assets/navigation/explore_3d.png
+  AssetGenImage get explore3d =>
+      const AssetGenImage('assets/navigation/explore_3d.png');
+
+  /// File path: assets/navigation/home_3d.png
+  AssetGenImage get home3d =>
+      const AssetGenImage('assets/navigation/home_3d.png');
+
+  /// List of all assets
+  List<AssetGenImage> get values => [
+    activities3d,
+    chats3d,
+    create3d,
+    explore3d,
+    home3d,
+  ];
 }
 
 class $AssetsImagesCategoriesGen {
@@ -118,11 +176,6 @@ class $AssetsImagesCategoriesGen {
   /// File path: assets/images/categories/basketball.png
   AssetGenImage get basketball =>
       const AssetGenImage('assets/images/categories/basketball.png');
-
-  /// File path: assets/images/categories/category_asset_review_sheet.png
-  AssetGenImage get categoryAssetReviewSheet => const AssetGenImage(
-    'assets/images/categories/category_asset_review_sheet.png',
-  );
 
   /// File path: assets/images/categories/cricket.png
   AssetGenImage get cricket =>
@@ -224,7 +277,6 @@ class $AssetsImagesCategoriesGen {
   List<AssetGenImage> get values => [
     badminton,
     basketball,
-    categoryAssetReviewSheet,
     cricket,
     cycling,
     events,
@@ -291,41 +343,26 @@ class $AssetsImagesEmptyStatesGen {
   ];
 }
 
-class $AssetsImagesNavGen {
-  const $AssetsImagesNavGen();
-
-  /// File path: assets/images/nav/nav_activities.png
-  AssetGenImage get navActivities =>
-      const AssetGenImage('assets/images/nav/nav_activities.png');
-
-  /// File path: assets/images/nav/nav_chats.png
-  AssetGenImage get navChats =>
-      const AssetGenImage('assets/images/nav/nav_chats.png');
-
-  /// File path: assets/images/nav/nav_create.png
-  AssetGenImage get navCreate =>
-      const AssetGenImage('assets/images/nav/nav_create.png');
-
-  /// File path: assets/images/nav/nav_explore.png
-  AssetGenImage get navExplore =>
-      const AssetGenImage('assets/images/nav/nav_explore.png');
-
-  /// File path: assets/images/nav/nav_home.png
-  AssetGenImage get navHome =>
-      const AssetGenImage('assets/images/nav/nav_home.png');
-
-  /// List of all assets
-  List<AssetGenImage> get values => [
-    navActivities,
-    navChats,
-    navCreate,
-    navExplore,
-    navHome,
-  ];
-}
-
 class $AssetsImagesOnboardingGen {
   const $AssetsImagesOnboardingGen();
+
+  /// File path: assets/images/onboarding/onboarding_create_join.png
+  AssetGenImage get onboardingCreateJoin => const AssetGenImage(
+    'assets/images/onboarding/onboarding_create_join.png',
+  );
+
+  /// File path: assets/images/onboarding/onboarding_find_players.png
+  AssetGenImage get onboardingFindPlayers => const AssetGenImage(
+    'assets/images/onboarding/onboarding_find_players.png',
+  );
+
+  /// File path: assets/images/onboarding/onboarding_team_chat.png
+  AssetGenImage get onboardingTeamChat =>
+      const AssetGenImage('assets/images/onboarding/onboarding_team_chat.png');
+
+  /// File path: assets/images/onboarding/onboarding_welcome.png
+  AssetGenImage get onboardingWelcome =>
+      const AssetGenImage('assets/images/onboarding/onboarding_welcome.png');
 
   /// File path: assets/images/onboarding/welcome_sports_collection.png
   AssetGenImage get welcomeSportsCollection => const AssetGenImage(
@@ -333,14 +370,22 @@ class $AssetsImagesOnboardingGen {
   );
 
   /// List of all assets
-  List<AssetGenImage> get values => [welcomeSportsCollection];
+  List<AssetGenImage> get values => [
+    onboardingCreateJoin,
+    onboardingFindPlayers,
+    onboardingTeamChat,
+    onboardingWelcome,
+    welcomeSportsCollection,
+  ];
 }
 
 abstract final class Assets {
   static const $AssetsAinGen ain = $AssetsAinGen();
   static const $AssetsAudioGen audio = $AssetsAudioGen();
+  static const $AssetsBrandingGen branding = $AssetsBrandingGen();
   static const $AssetsIconsGen icons = $AssetsIconsGen();
   static const $AssetsImagesGen images = $AssetsImagesGen();
+  static const $AssetsNavigationGen navigation = $AssetsNavigationGen();
 }
 
 class AssetGenImage {

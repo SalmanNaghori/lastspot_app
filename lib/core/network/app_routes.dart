@@ -48,6 +48,8 @@ class AppRoutes {
     String? name,
     String? activityTitle,
     String? requestId,
+    String? avatarUrl,
+    String? category,
   }) => Uri(
     path: chatPath(conversationId),
     queryParameters: {
@@ -57,6 +59,8 @@ class AppRoutes {
       if (activityTitle?.trim().isNotEmpty == true)
         'activity_title': activityTitle!.trim(),
       if (requestId?.trim().isNotEmpty == true) 'request_id': requestId!.trim(),
+      if (avatarUrl?.trim().isNotEmpty == true) 'avatar_url': avatarUrl!.trim(),
+      if (category?.trim().isNotEmpty == true) 'category': category!.trim(),
     },
   ).toString();
 

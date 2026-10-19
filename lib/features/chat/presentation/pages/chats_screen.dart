@@ -8,8 +8,8 @@ class ChatsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<ConversationsCubit>(
-      create: (context) => sl<ConversationsCubit>()..loadConversations(),
+    return BlocProvider<ConversationsCubit>.value(
+      value: sl<ConversationsCubit>()..loadConversations(),
       child: const ResponsiveLayout(
         mobile: ChatsScreenMobile(),
         tablet: ChatsScreenTablet(),

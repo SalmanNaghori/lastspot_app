@@ -1,0 +1,656 @@
+{
+  "@@locale": "gu",
+  "@appName": {
+    "description": "The name of the application"
+  },
+  "@todayAt": {
+    "placeholders": {
+      "time": {}
+    }
+  },
+  "@yesterdayAt": {
+    "placeholders": {
+      "time": {}
+    }
+  },
+  "@spotsNeeded": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "@spotNeeded": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "@hostPrefix": {
+    "placeholders": {
+      "name": {}
+    }
+  },
+  "@statusActiveNeeded": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "@hostedBy": {
+    "placeholders": {
+      "name": {}
+    }
+  },
+  "@confirmedPlayers": {
+    "placeholders": {
+      "current": {},
+      "total": {}
+    }
+  },
+  "@openSpotsRemaining": {
+    "placeholders": {
+      "current": {},
+      "total": {}
+    }
+  },
+  "@pendingRequests": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "@spotsLeft": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "@activitiesCount": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "@neededPlayers": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "@tabMyActivitiesCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "@tabJoinedCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "@tabRequestsCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "@tabChatsCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "@activityContext": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "@welcomeToActivity": {
+    "placeholders": {
+      "activityTitle": {
+        "type": "String"
+      },
+      "emoji": {
+        "type": "String"
+      }
+    }
+  },
+  "@statusLabel": {
+    "placeholders": {
+      "status": {}
+    }
+  },
+  "@activityCapacity": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "@detailsPhotoCount": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "@detailsAvailability": {
+    "placeholders": {
+      "available": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "@detailsPhotoLabel": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "@homeActivityHubPending": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "appName": "ખેલભાઈ",
+  "todayAt": "આજે {time} પર",
+  "yesterdayAt": "ગઈકાલે {time} પર",
+  "appDescription": "ભાઈ, રમવા આવ ને!",
+  "updateNow": "હમણાં અપડેટ કરો",
+  "maybeLater": "કદાચ પછીથી",
+  "maintenanceMode": "જાળવણી મોડ",
+  "requestToJoin": "મેચમાં જોડાવા વિનંતી",
+  "publishSpot": "ફીડ માટે સ્પોટ પ્રકાશિત કરો",
+  "searchHint": "ટર્ફ, રમતગમત, ખેલાડીઓ શોધો...",
+  "urgentMatches": "અર્જન્ટ મેચો (આજથી શરૂ થઈ રહી છે)",
+  "recentPosts": "તાજેતરની પોસ્ટ્સ",
+  "openGroundMap": "જમીનનો નકશો ખોલો ↗",
+  "mapLocation": "શેર કરેલ નકશાની લિંક",
+  "viewSpot": "સ્પોટ જુઓ",
+  "spotsNeeded": "{count} સ્પોટ્સ",
+  "spotNeeded": "{count} સ્પોટ",
+  "hostPrefix": "હોસ્ટ: {name}",
+  "homeTab": "હોમ",
+  "myMatchesTab": "મારા મેચ",
+  "profileTab": "પ્રોફાઇલ",
+  "hostMatchTitle": "એક મેચ હોસ્ટ કરો",
+  "selectSportCategory": "સ્પોર્ટ કેટેગરી પસંદ કરો*",
+  "playersNeeded": "ખેલાડીઓની જરૂર છે*",
+  "schedule": "સમયપત્રક*",
+  "datePrefix": "તારીખ:",
+  "timePrefix": "સમય:",
+  "venueDetails": "સ્થળની વિગતો*",
+  "venueNameHint": "સ્થળનું નામ: દા.ત. ડેકાથલોન સ્પોર્ટ્સ ટર્ફ",
+  "mapsLinkHint": "https://maps.app.goo.gl/... [પેસ્ટ કરો]",
+  "mapsGuidance": "વપરાશકર્તાઓ સીધા Google નકશામાં વારાફરતી દિશા નિર્દેશો મેળવવા માટે આને ટેપ કરશે.",
+  "additionalGuidelines": "વધારાની માર્ગદર્શિકા (વૈકલ્પિક)",
+  "matchOverviewTitle": "મેચ વિહંગાવલોકન",
+  "statusActiveNeeded": "સ્થિતિ: સક્રિય • જરૂરી: {count} ખેલાડીઓ",
+  "hostedBy": "{name} દ્વારા હોસ્ટ",
+  "locationAndDirections": "સ્થાન અને દિશાઓ",
+  "tapForNavigation": "લાઈવ નેવિગેશન માટે નીચે ટેપ કરો",
+  "openInMaps": "🧭 Google / Apple Maps માં ખોલો ↗",
+  "confirmedPlayers": "કન્ફર્મ્ડ પ્લેયર્સ ({current}/{total})",
+  "safetyAndConduct": "સલામતી અને આચાર",
+  "reportActivity": "🚩 આ પ્રવૃત્તિ અથવા હોસ્ટને જાણ કરો",
+  "manageMatchRequests": "મેચ વિનંતીઓ મેનેજ કરો",
+  "openSpotsRemaining": "ઓપન સ્પોટ્સ બાકી: {current} / {total}",
+  "pendingRequests": "બાકી વિનંતીઓ ({count})",
+  "reject": "અસ્વીકાર કરો",
+  "accept": "સ્વીકારો",
+  "openMatchChat": "મેચ ગ્રુપ ચેટ ખોલો",
+  "messageHost": "સંદેશ હોસ્ટ",
+  "directMessage": "સીધો સંદેશ",
+  "groupChat": "જૂથ ચેટ",
+  "activity": "પ્રવૃત્તિ",
+  "messageHint": "એક સંદેશ લખો",
+  "sendMessage": "સંદેશ મોકલો",
+  "signInToChat": "ચેટનો ઉપયોગ કરવા માટે સાઇન ઇન કરો",
+  "chatEmpty": "હજુ સુધી કોઈ સંદેશા નથી. વાતચીત શરૂ કરો.",
+  "messageSendFailed": "સંદેશ મોકલી શકાયો નથી. કૃપા કરીને ફરી પ્રયાસ કરો.",
+  "login": "લૉગિન કરો",
+  "signup": "સાઇન અપ કરો",
+  "email": "ઈમેલ",
+  "password": "પાસવર્ડ",
+  "fullName": "પૂરું નામ",
+  "yourName": "તમારું નામ",
+  "forgotPassword": "પાસવર્ડ ભૂલી ગયા છો?",
+  "createAccount": "એકાઉન્ટ બનાવો",
+  "joinCommunity": "સમુદાયમાં જોડાઓ અને રમો.",
+  "navHome": "હોમ",
+  "navExplore": "શોધો",
+  "navCreate": "બનાવો",
+  "navActivities": "પ્રવૃત્તિઓ",
+  "navChats": "ચેટ્સ",
+  "navProfile": "પ્રોફાઇલ",
+  "openProfile": "પ્રોફાઇલ ખોલો",
+  "searchConversations": "વાર્તાલાપ શોધો...",
+  "noConversationsFound": "કોઈ વાતચીત મળી નથી",
+  "noConversationsFoundDesc": "તમે જે શોધી રહ્યાં છો તે શોધવા માટે તમારી શોધ અથવા ફિલ્ટરને સમાયોજિત કરવાનો પ્રયાસ કરો.",
+  "explorePlaceholderText": "તમારી નજીકની પ્રવૃત્તિઓ શોધો",
+  "activitiesEmptyMessage": "તમારી પ્રવૃત્તિઓ અહીં દેખાશે.\nતમે બનાવો છો અથવા જોડાશો તે પ્રવૃત્તિઓ અહીં દેખાશે.",
+  "exploreActivitiesAction": "પ્રવૃત્તિઓનું અન્વેષણ કરો",
+  "logoutDialogTitle": "લૉગ આઉટ કરીએ?",
+  "logoutDialogMessage": "તમારા ખેલભાઈ એકાઉન્ટને ઍક્સેસ કરવા માટે તમારે ફરીથી સાઇન ઇન કરવાની જરૂર પડશે.",
+  "cancel": "રદ કરો",
+  "logout": "લોગ આઉટ કરો",
+  "editProfile": "પ્રોફાઇલ સંપાદિત કરો",
+  "profileSectionActivity": "મારી પ્રવૃત્તિ",
+  "profileSectionAccount": "એકાઉન્ટ",
+  "profileSectionLegal": "કાનૂની",
+  "myRequests": "મારી વિનંતીઓ",
+  "myActivities": "મારી પ્રવૃત્તિઓ",
+  "notifications": "સૂચનાઓ",
+  "settings": "સેટિંગ્સ",
+  "helpSupport": "મદદ અને આધાર",
+  "privacyPolicy": "ગોપનીયતા નીતિ",
+  "termsConditions": "નિયમો અને શરતો",
+  "statCreated": "બનાવ્યું",
+  "statJoined": "જોડાયા",
+  "statCompleted": "પૂર્ણ થયું",
+  "goodMorning": "શુભ સવાર",
+  "goodAfternoon": "શુભ બપોર",
+  "goodEvening": "શુભ સાંજ",
+  "whatAreYouUpTo": "તમે આજે શું માટે તૈયાર છો?",
+  "urgentMatchesSubtitle": "તેઓ ભરાય તે પહેલાં નજીકની પ્રવૃત્તિઓમાં જોડાઓ!",
+  "viewAll": "બધા જુઓ",
+  "popularSports": "લોકપ્રિય રમતો",
+  "popularSportsSubtitle": "તમારી મનપસંદ રમત શોધો અને ક્રિયામાં જોડાઓ",
+  "sportsCarouselHint": "રમતગમતનું અન્વેષણ કરવા માટે સ્વાઇપ કરો · પ્રવૃત્તિઓ જોવા માટે ટૅપ કરો",
+  "searchCityHint": "શહેર અથવા રાજ્ય શોધો...",
+  "nearbyActivities": "નજીકની પ્રવૃત્તિઓ",
+  "comingUp": "કમિંગ અપ",
+  "spotsLeft": "{count} સ્પોટ્સ ડાબે",
+  "oneSpotLeft": "1 સ્પોટ ડાબે",
+  "perPerson": "વ્યક્તિ દીઠ",
+  "filterCricket": "ક્રિકેટ",
+  "filterFootball": "ફૂટબૉલ",
+  "filterBadminton": "બેડમિન્ટન",
+  "filterTennis": "ટેનિસ",
+  "verifiedHost": "યજમાન",
+  "noSpotsFound": "કોઈ સક્રિય સ્થળો મળ્યાં નથી.\nએક બનાવનાર પ્રથમ બનો!",
+  "validationTitleLocationCategory": "શીર્ષક, સ્થાન અને શ્રેણી જરૂરી છે.",
+  "activityGeneratedSuccess": "પ્રવૃત્તિ બનાવી!",
+  "generateActivity": "પ્રવૃત્તિ બનાવો",
+  "activityImages": "પ્રવૃત્તિ છબીઓ",
+  "category": "શ્રેણી",
+  "selectCategory": "શ્રેણી પસંદ કરો",
+  "failedToLoadCategories": "શ્રેણીઓ લોડ કરવામાં નિષ્ફળ",
+  "activityTitle": "પ્રવૃત્તિ શીર્ષક",
+  "activityTitleHint": "દા.ત. સન્ડે મોર્નિંગ ફૂટબોલ",
+  "description": "વર્ણન",
+  "descriptionHint": "આ પ્રવૃત્તિ વિશે કેટલીક વિગતો શેર કરો...",
+  "location": "સ્થાન",
+  "locationHint": "દા.ત. સેન્ટ્રલ પાર્ક ટર્ફ",
+  "date": "તારીખ",
+  "time": "સમય",
+  "maxParticipants": "મહત્તમ સહભાગીઓ",
+  "pricePerPerson": "વ્યક્તિ દીઠ કિંમત",
+  "previewActivity": "પૂર્વાવલોકન પ્રવૃત્તિ",
+  "publishActivity": "પ્રવૃત્તિ પ્રકાશિત કરો",
+  "noCategoriesAvailable": "કોઈ શ્રેણીઓ ઉપલબ્ધ નથી",
+  "noCitiesFound": "કોઈ શહેરો મળ્યાં નથી",
+  "createAnother": "બીજું બનાવો",
+  "youAreParticipant1": "વર્તમાન સહભાગીઓ: 1 (તમે)",
+  "addPhotos": "ફોટા ઉમેરો",
+  "gallery": "ગેલેરી",
+  "camera": "કેમેરા",
+  "acceptTerms": "હું નિયમો અને શરતો સ્વીકારું છું",
+  "acceptTermsError": "કૃપા કરીને નિયમો અને શરતો સ્વીકારો",
+  "confirmPassword": "પાસવર્ડની પુષ્ટિ કરો",
+  "loginSubtitle": "તમારા પ્રવૃત્તિ ભાગીદારને તરત જ શોધો.",
+  "dontHaveAccount": "ખાતું નથી? સાઇન અપ કરો",
+  "sendResetLink": "રીસેટ લિંક મોકલો",
+  "passwordResetSent": "પાસવર્ડ રીસેટ લિંક તમારા ઇમેઇલ પર મોકલવામાં આવી છે!",
+  "resetPassword": "પાસવર્ડ રીસેટ કરો",
+  "resetPasswordDesc": "તમારું ઇમેઇલ સરનામું દાખલ કરો અને અમે તમને તમારો પાસવર્ડ રીસેટ કરવા માટે એક લિંક મોકલીશું.",
+  "settingsTitle": "સેટિંગ્સ",
+  "themeTitle": "થીમ",
+  "appColorTitle": "એપ્લિકેશન રંગ",
+  "themeSystem": "સિસ્ટમ ડિફૉલ્ટ",
+  "themeLight": "લાઇટ",
+  "themeDark": "ડાર્ક",
+  "languageTitle": "ભાષા",
+  "languageEnglish": "અંગ્રેજી",
+  "languageHindi": "હિન્દી",
+  "languageGujarati": "ગુજરાતી",
+  "cityRequiredError": "કૃપા કરીને એક શહેર પસંદ કરો",
+  "joinCommunitySubtitle": "સમુદાયમાં જોડાઓ અને તમારી નજીકની પ્રવૃત્તિઓ શોધો.",
+  "fullNameRequired": "પૂરું નામ જરૂરી છે",
+  "emailRequired": "ઇમેઇલ આવશ્યક છે",
+  "invalidEmail": "માન્ય ઇમેઇલ દાખલ કરો",
+  "passwordRequired": "પાસવર્ડ જરૂરી છે",
+  "passwordLengthError": "પાસવર્ડ ઓછામાં ઓછો 6 અક્ષરનો હોવો જોઈએ",
+  "passwordsDoNotMatch": "પાસવર્ડ મેળ ખાતા નથી",
+  "cityLabel": "શહેર*",
+  "selectCityHint": "તમારું શહેર પસંદ કરો",
+  "alreadyHaveAccount": "પહેલેથી એકાઉન્ટ છે?",
+  "noInternetError": "ઇન્ટરનેટ કનેક્શન નથી. કૃપા કરીને તમારું નેટવર્ક તપાસો અને ફરી પ્રયાસ કરો.",
+  "setupProfile": "સેટઅપ પ્રોફાઇલ",
+  "bioOptional": "બાયો (વૈકલ્પિક)",
+  "sportsPreferences": "રમતગમતની પસંદગીઓ",
+  "saveAndContinue": "સાચવો અને ચાલુ રાખો",
+  "saveChanges": "ફેરફારો સાચવો",
+  "cityIsRequired": "શહેર જરૂરી છે",
+  "findActivitiesNearYou": "તમારી નજીકની પ્રવૃત્તિઓ શોધો",
+  "searchActivitiesHint": "શોધ પ્રવૃત્તિઓ...",
+  "activitiesNearYou": "તમારી નજીકની પ્રવૃત્તિઓ",
+  "activitiesCount": "{count} પ્રવૃત્તિઓ",
+  "couldNotLoadActivities": "પ્રવૃત્તિઓ લોડ કરી શકાઈ નથી",
+  "checkConnectionRetry": "તમારું કનેક્શન તપાસો અને ફરી પ્રયાસ કરો.",
+  "noActivitiesFound": "કોઈ પ્રવૃત્તિઓ મળી નથી",
+  "noActivitiesInArea": "તમારા વિસ્તારમાં અત્યારે કોઈ આગામી પ્રવૃત્તિઓ નથી.",
+  "noActivitiesMatchSearch": "કોઈ પ્રવૃત્તિઓ તમારી શોધ સાથે મેળ ખાતી નથી",
+  "tryDifferentKeyword": "કોઈ અલગ કીવર્ડ સાથે શોધવાનો પ્રયાસ કરો.",
+  "noActivitiesInCategory": "આ શ્રેણીમાં કોઈ પ્રવૃત્તિઓ નથી",
+  "tryDifferentCategory": "'બધા' અથવા અલગ શ્રેણી પસંદ કરવાનો પ્રયાસ કરો.",
+  "retry": "ફરી પ્રયાસ કરો",
+  "allFilter": "બધા",
+  "selectYourCity": "તમારું શહેર પસંદ કરો",
+  "filters": "ફિલ્ટર્સ",
+  "anyDate": "કોઈપણ તારીખ",
+  "today": "આજે",
+  "tomorrow": "કાલે",
+  "thisWeekend": "આ સપ્તાહમાં",
+  "price": "કિંમત",
+  "any": "કોઈપણ",
+  "free": "મફત",
+  "paid": "ચૂકવેલ",
+  "participants": "સહભાગીઓ",
+  "spots1to2": "1-2 ફોલ્લીઓ",
+  "spots3to5": "3-5 ફોલ્લીઓ",
+  "spots5plus": "5+ સ્પોટ",
+  "reset": "રીસેટ કરો",
+  "applyFilters": "ફિલ્ટર્સ લાગુ કરો",
+  "loading": "લોડ કરી રહ્યું છે...",
+  "todaysMatches": "આજની મેચો",
+  "urgentMatchesTitle": "અર્જન્ટ મેચો",
+  "tryAgain": "ફરી પ્રયાસ કરો",
+  "recommendedForYou": "તમારા માટે ભલામણ કરેલ",
+  "newThisWeek": "આ અઠવાડિયે નવું",
+  "city": "શહેર",
+  "selectCity": "શહેર પસંદ કરો",
+  "edit": "સંપાદિત કરો",
+  "deleteImageNotSupported": "હાલની છબીઓ કાઢી નાખવાનું હજી સુધી સમર્થિત નથી.",
+  "howManyPeopleCanJoin": "કેટલા લોકો જોડાઈ શકે છે?",
+  "youAreIncluded": "તમે શામેલ છો (1)",
+  "morning": "સવાર",
+  "afternoon": "બપોર",
+  "evening": "સાંજ",
+  "night": "રાત્રિ",
+  "pleaseSelectFutureTime": "કૃપા કરીને ભાવિ સમય પસંદ કરો",
+  "supportContactComingSoon": "સપોર્ટ સંપર્ક સુવિધા ટૂંક સમયમાં આવી રહી છે.",
+  "contactSupport": "સપોર્ટનો સંપર્ક કરો",
+  "thisIsHowActivityAppears": "આ રીતે તમારી પ્રવૃત્તિ અન્ય લોકોને દેખાશે.",
+  "viewOnMap": "નકશા પર જુઓ",
+  "noPendingRequests": "કોઈ બાકી વિનંતીઓ નથી.",
+  "matchGroupChat": "ગ્રુપ ચેટ મેચ કરો",
+  "chatComingSoon": "ચેટ ટૂંક સમયમાં આવી રહી છે!",
+  "realtimeMessagingAvailableHere": "રીયલ ટાઇમ મેસેજિંગ અહીં ઉપલબ્ધ રહેશે.",
+  "pleaseEnterValidPrice": "કૃપા કરીને માન્ય કિંમત દાખલ કરો",
+  "statusActive": "સ્થિતિ: સક્રિય",
+  "neededPlayers": "• જરૂરી: {count} પ્લેયર્સ",
+  "openInGoogleMaps": "Google Maps માં ખોલો",
+  "player": "પ્લેયર",
+  "inviteAFriend": "મિત્રને આમંત્રણ આપો",
+  "reportThisActivityOrHost": "આ પ્રવૃત્તિ અથવા હોસ્ટની જાણ કરો",
+  "learnAboutSafetyGuidelines": "સલામતી દિશાનિર્દેશો વિશે જાણો",
+  "manageActivitiesDesc": "તમે હોસ્ટ કરો છો, જોડાયા છો અથવા સમીક્ષા કરવાની જરૂર છે તે પ્રવૃત્તિઓનું સંચાલન કરો.",
+  "tabMyActivitiesCount": "મારી પ્રવૃત્તિઓ {count}",
+  "tabJoinedCount": "{count} માં જોડાયા",
+  "tabRequestsCount": "{count} વિનંતી કરે છે",
+  "tabChats": "ચેટ્સ",
+  "tabChatsCount": "ચેટ્સ {count}",
+  "noConversations": "હજુ સુધી કોઈ વાતચીત નથી",
+  "noConversationsDesc": "અન્ય ખેલાડીઓ સાથે ચેટિંગ શરૂ કરવા માટે કોઈ પ્રવૃત્તિમાં જોડાઓ અથવા હોસ્ટ કરો.",
+  "conversationLoadError": "વાર્તાલાપ લોડ કરી શકાયા નથી. કૃપા કરીને ફરી પ્રયાસ કરો.",
+  "yesterday": "ગઈકાલે",
+  "messageCopied": "સંદેશ કૉપિ કર્યો",
+  "jumpToLatest": "નવીનતમ પર જાઓ",
+  "newMessage": "નવો સંદેશ",
+  "activityContext": "પ્રવૃત્તિ: {title}",
+  "filterAll": "બધા",
+  "filterDirect": "પ્રત્યક્ષ",
+  "filterGroups": "જૂથો",
+  "groupInfoTitle": "જૂથ માહિતી",
+  "groupInfoParticipants": "સહભાગીઓ",
+  "groupInfoHost": "યજમાન",
+  "groupInfoOrganizer": "આયોજક",
+  "groupInfoNoParticipants": "હજી સુધી કોઈ પુષ્ટિ થયેલ સહભાગીઓ નથી.",
+  "groupInfoActivityDetails": "પ્રવૃત્તિ વિગતો",
+  "welcomeToActivity": "{activityTitle} માં આપનું સ્વાગત છે! {emoji}",
+  "groupWelcomeSubtitle": "આ જૂથ પ્રવૃત્તિના સંકલન માટે છે. આદર બનો અને આનંદ કરો!",
+  "groupOnlyParticipantsCanChat": "માત્ર પુષ્ટિ થયેલ સહભાગીઓ અને હોસ્ટ સંદેશા મોકલી શકે છે.",
+  "noGroupConversations": "હજી સુધી કોઈ જૂથ ચેટ નથી",
+  "noGroupConversationsDesc": "સહભાગીઓ સાથે ચેટિંગ શરૂ કરવા માટે કોઈ પ્રવૃત્તિમાં જોડાઓ અથવા હોસ્ટ કરો.",
+  "noDirectConversations": "હજુ સુધી કોઈ સીધા સંદેશા નથી",
+  "noDirectConversationsDesc": "તમારી અને પ્રવૃત્તિ હોસ્ટ વચ્ચેના સીધા સંદેશા અહીં દેખાશે.",
+  "you": "તમે",
+  "mockGoldenGateTitle": "ગોલ્ડન ગેટ સનસેટ વોક",
+  "mockGoldenGateDate": "આજે · 6:00 PM",
+  "mockGoldenGateLoc": "ગોલ્ડન ગેટ પાર્ક",
+  "mockGoldenGateStats": "6/10 સહભાગીઓ · મફત",
+  "mockSunsetVolleyballTitle": "સૂર્યાસ્ત બીચ વોલીબોલ",
+  "mockSunsetVolleyballDate": "ગુરુ, જૂન 20 · સાંજે 6:30 વાગ્યે",
+  "mockSunsetVolleyballLoc": "મહાસાગર બીચ",
+  "mockRooftopCookingTitle": "છત પર રસોઈ વર્ગ",
+  "mockRooftopCookingDate": "શનિ, 22 જૂન · 6:30 PM",
+  "mockRooftopCookingLoc": "મિશન જિલ્લા છત",
+  "mockRooftopCookingStats": "8/8 સહભાગીઓ · $24",
+  "mockSalsaTitle": "પ્રારંભિક સાલસા વર્ગ",
+  "mockSalsaDate": "રવિ, જૂન 23 · સાંજે 5:00 PM",
+  "mockSalsaLoc": "મિશન ડાન્સ હોલ",
+  "mockSalsaStats": "2/10 સહભાગીઓ · $12",
+  "tabPreviewData": "ટેબ પૂર્વાવલોકન ડેટા",
+  "previewJoined": "જોડાયા · વીકએન્ડ પોટરી ક્લાસ · શનિવાર · 4 સહભાગીઓ",
+  "previewRequests": "વિનંતીઓ · 3 બાકી જોડાવાની વિનંતીઓ · હમણાં સમીક્ષા કરો",
+  "statusHosted": "યજમાન",
+  "statusFull": "સંપૂર્ણ",
+  "pendingRequest": "બાકી વિનંતી",
+  "joined": "જોડાયા",
+  "requestRejected": "વિનંતી નકારી",
+  "requestCancelled": "વિનંતી રદ કરી",
+  "share": "શેર કરો",
+  "cancelActivity": "પ્રવૃત્તિ રદ કરો",
+  "closeActivity": "પ્રવૃત્તિ બંધ કરો",
+  "reportActivityAction": "પ્રવૃત્તિની જાણ કરો",
+  "statusCompleted": "પૂર્ણ થયું",
+  "statusCancelled": "રદ કરેલ",
+  "statusExpired": "સમાપ્ત",
+  "emptyHostedTitle": "કોઈ હોસ્ટ કરેલી પ્રવૃત્તિઓ નથી",
+  "emptyHostedDesc": "તમે હજુ સુધી કોઈ પ્રવૃત્તિઓ બનાવી નથી.",
+  "emptyJoinedTitle": "કોઈ જોડાઈ પ્રવૃત્તિઓ",
+  "emptyJoinedDesc": "તમે હજુ સુધી કોઈપણ પ્રવૃત્તિઓમાં જોડાયા નથી.",
+  "emptyRequestsTitle": "કોઈ જોડાવા વિનંતીઓ નથી",
+  "emptyRequestsDesc": "જોડાવા વિનંતીઓ કાર્યક્ષમતા અહીં હશે.",
+  "aboutSection": "વિશે",
+  "scheduleSection": "શેડ્યૂલ",
+  "statusLabel": "સ્થિતિ: {status}",
+  "errorUnknownState": "ભૂલ અથવા અજાણી સ્થિતિ",
+  "reportReasonRequired": "કૃપા કરીને જાણ કરવા માટેનું કારણ પસંદ કરો.",
+  "reportSubmittedSuccess": "રિપોર્ટ સફળતાપૂર્વક સબમિટ કર્યો. અમે ટૂંક સમયમાં તેની સમીક્ષા કરીશું.",
+  "whyReporting": "તમે આની જાણ કેમ કરી રહ્યા છો?",
+  "additionalDetailsOptional": "વધારાની વિગતો (વૈકલ્પિક)",
+  "reportDescHint": "અમને સમજવામાં મદદ કરવા કૃપા કરીને વધુ વિગતો આપો...",
+  "submitReport": "રિપોર્ટ સબમિટ કરો",
+  "tabReceived": "પ્રાપ્ત",
+  "tabSent": "મોકલેલ",
+  "noReceivedRequests": "હજુ સુધી કોઈ વિનંતીઓ પ્રાપ્ત થઈ નથી",
+  "noSentRequests": "હજુ સુધી કોઈ મોકલેલ વિનંતીઓ નથી",
+  "emptyReceivedRequestsDesc": "જ્યારે કોઈ તમારી પ્રવૃત્તિઓમાં જોડાવાનું કહેશે, ત્યારે તેમની વિનંતી અહીં દેખાશે.",
+  "emptySentRequestsDesc": "જ્યારે તમે પ્રતિસાદની રાહ જુઓ ત્યારે તમે જોડાવા માટે કહો છો તે પ્રવૃત્તિઓ અહીં દેખાશે.",
+  "accountSuspendedTitle": "એકાઉન્ટ સસ્પેન્ડ કર્યું",
+  "accountSuspendedDesc": "અમારી સેવાની શરતોના ઉલ્લંઘનને કારણે તમારું એકાઉન્ટ અસ્થાયી રૂપે સસ્પેન્ડ કરવામાં આવ્યું છે.",
+  "accountBannedTitle": "એકાઉન્ટ પ્રતિબંધિત",
+  "accountBannedDesc": "અમારી નીતિઓના ગંભીર ઉલ્લંઘનને કારણે તમારું એકાઉન્ટ કાયમી ધોરણે પ્રતિબંધિત કરવામાં આવ્યું છે.",
+  "accountDeletedTitle": "એકાઉન્ટ કાઢી નાખ્યું",
+  "accountDeletedDesc": "આ એકાઉન્ટ કાઢી નાખવામાં આવ્યું છે. જો તમે માનતા હોવ કે આ એક ભૂલ છે, તો કૃપા કરીને સમર્થનનો સંપર્ક કરો.",
+  "signOut": "સાઇન આઉટ કરો",
+  "appeal": "અપીલ",
+  "sportSoccer": "સોકર",
+  "sportBasketball": "બાસ્કેટબૉલ",
+  "sportTennis": "ટેનિસ",
+  "sportVolleyball": "વોલીબૉલ",
+  "sportBadminton": "બેડમિન્ટન",
+  "sportTableTennis": "ટેબલ ટેનિસ",
+  "sportCricket": "ક્રિકેટ",
+  "sportSwimming": "સ્વિમિંગ",
+  "sportRunning": "ચાલી રહી છે",
+  "sportCycling": "સાયકલિંગ",
+  "sportKabaddi": "કબડ્ડી",
+  "sportKhoKho": "ખો-ખો",
+  "sportGilliDanda": "ગિલ્લી-દંડા",
+  "sportSatoliya": "સાતોલીયા/લગોરી",
+  "sportKiteFlying": "કાઈટ ફ્લાઈંગ",
+  "sportSkating": "સ્કેટિંગ",
+  "sportHockey": "ફીલ્ડ હોકી",
+  "sportUltimateFrisbee": "અલ્ટીમેટ ફ્રિસ્બી",
+  "sportPickleball": "પિકલબોલ",
+  "sportTugOfWar": "ટગ ઓફ વોર",
+  "sportHiking": "હાઇકિંગ / ટ્રેકિંગ",
+  "sportOutdoorYoga": "આઉટડોર યોગા",
+  "confirmAction": "પુષ્ટિ કરો",
+  "activityHost": "યજમાન",
+  "activityFull": "સંપૂર્ણ",
+  "activityCapacity": "{total} ના {current} જોડાયા",
+  "detailsTitle": "પ્રવૃત્તિ વિગતો",
+  "detailsAbout": "આ પ્રવૃત્તિ વિશે",
+  "detailsWhen": "જ્યારે આપણે રમીએ છીએ",
+  "detailsWhere": "અહીં મળો",
+  "detailsPlayers": "કોણ રમે છે",
+  "detailsNoPlayers": "લાઇનઅપ હમણાં જ શરૂ થઈ રહ્યું છે.",
+  "detailsNoPlayersHint": "એકવાર યજમાન તેમની વિનંતીઓ સ્વીકારે તે પછી પુષ્ટિ થયેલ ખેલાડીઓ અહીં દેખાશે.",
+  "detailsHostedBy": "તમારા યજમાન",
+  "detailsJoinHint": "વિનંતી મોકલો. હોસ્ટ તમારા સ્થળની પુષ્ટિ કરશે.",
+  "detailsPendingHint": "તમારી વિનંતી યજમાન પાસે છે. જ્યારે તેઓ જવાબ આપશે ત્યારે અમે તમને સૂચિત કરીશું.",
+  "detailsJoinedHint": "તમે લાઇનઅપ પર છો. તમે બહાર નીકળો તે પહેલાં સમય અને સ્થળ તપાસો.",
+  "detailsHostHint": "જોડાવાની વિનંતીઓની સમીક્ષા કરો અને તમારી લાઇનઅપ બનાવો.",
+  "detailsClosed": "જોડાવાનું બંધ",
+  "detailsDraft": "ડ્રાફ્ટ",
+  "detailsOpen": "ખેલાડીઓ માટે ખુલ્લું છે",
+  "detailsCopy": "પ્રવૃત્તિ વિગતો કૉપિ કરો",
+  "detailsCopied": "પ્રવૃત્તિ વિગતો કૉપિ કરી",
+  "detailsCopyFailed": "વિગતોની નકલ કરી શકાઈ નથી. કૃપા કરીને ફરી પ્રયાસ કરો.",
+  "detailsMenu": "પ્રવૃત્તિ વિકલ્પો",
+  "detailsSafety": "સારી રીતે રમો, સાથે",
+  "detailsSafetyNote": "તમારા હોસ્ટ સાથે મીટિંગ પોઈન્ટની પુષ્ટિ કરો, અન્ય ખેલાડીઓનો આદર કરો અને કોઈપણ ચિંતાની જાણ કરો.",
+  "detailsLoadError": "અમે આ પ્રવૃત્તિ લોડ કરી શક્યાં નથી.",
+  "detailsPrice": "વ્યક્તિ દીઠ",
+  "detailsJoin": "જોડાવા વિનંતી",
+  "detailsPhotoCount": "{current} / {total}",
+  "detailsAvailability": "{total} સ્પોટમાંથી {available} ઉપલબ્ધ છે",
+  "detailsPhotoLabel": "{total} નો {current} પ્રવૃત્તિ ફોટો",
+  "galleryOpen": "ફોટા જુઓ",
+  "galleryZoomHint": "ઝૂમ કરવા માટે પિંચ કરો · અન્વેષણ કરવા માટે સ્વાઇપ કરો",
+  "galleryPrevious": "અગાઉનો ફોટો",
+  "galleryNext": "આગળનો ફોટો",
+  "galleryZoomIn": "ઝૂમ ઇન કરો",
+  "galleryZoomOut": "ઝૂમ રીસેટ કરો",
+  "detailsSharedMapLink": "શેર કરેલ નકશાની લિંક",
+  "detailsMapLinkHint": "હોસ્ટ દ્વારા શેર કરેલ સ્થાન ખોલો.",
+  "detailsMapSearchHint": "નકશામાં આ સ્થળ શોધો; તમારા હોસ્ટ સાથે મીટિંગ પોઇન્ટની પુષ્ટિ કરો.",
+  "detailsOpenMapLink": "નકશાની લિંક ખોલો",
+  "detailsSearchMaps": "નકશામાં શોધો",
+  "homeComingUpSubtitle": "આગામી 7 દિવસમાં રમતો",
+  "homeLaterOn": "પાછળથી",
+  "homeLaterSubtitle": "આગામી સપ્તાહ પછીની પ્રવૃત્તિઓ",
+  "detailsMapOpenFailed": "નકશા ખોલી શકાયા નથી. કૃપા કરીને ફરી પ્રયાસ કરો.",
+  "activityNowLive": "તમારી પ્રવૃત્તિ હવે લાઇવ છે. લોકો જોડાવા માટે વિનંતી કરવાનું શરૂ કરી શકે છે.",
+  "nextGameStartsHere": "તમારી આગલી રમત અહીં શરૂ થાય છે",
+  "turnSoundOff": "અવાજ બંધ કરો",
+  "turnSoundOn": "અવાજ ચાલુ કરો",
+  "goToHome": "હોમ પર જાઓ",
+  "yourActivityHub": "તમારું પ્રવૃત્તિ હબ",
+  "homeActivityHubPending": "{count, plural, one{સમીક્ષા કરવા માટે તમારી પાસે 1 બાકી વિનંતી છે.} other{સમીક્ષા કરવા માટે તમારી પાસે {count} બાકી વિનંતીઓ છે.}}",
+  "homeActivityHubJoined": "તમારી આગામી જોડાવાની પ્રવૃત્તિ આવી રહી છે.",
+  "homeActivityHubHosted": "તમારી આગામી હોસ્ટ કરેલ પ્રવૃત્તિ આવી રહી છે.",
+  "homeActivityHubEmpty": "હજુ સુધી કોઈ આગામી પ્રવૃત્તિઓ નથી. પ્રારંભ કરવા માટે એક બનાવો.",
+  "homeActivityHubRecommendation": "તમારા પસંદ કરેલા શહેરમાં ભાવિ પ્રવૃત્તિ ઉપલબ્ધ છે.",
+  "homeActivityHubError": "તમારી પ્રવૃત્તિ વિગતો લોડ કરી શકાઈ નથી.",
+  "homeReviewRequests": "વિનંતીઓની સમીક્ષા કરો",
+  "homeViewActivity": "પ્રવૃત્તિ જુઓ",
+  "homeManageActivity": "પ્રવૃત્તિ મેનેજ કરો",
+  "homeCreateActivity": "પ્રવૃત્તિ બનાવો",
+  "homeGroupChat": "ગ્રુપ ચેટ",
+  "homeCityLoadError": "શહેરો લોડ કરી શકાયા નથી",
+  "homeRetryCategories": "શ્રેણીઓનો ફરી પ્રયાસ કરો",
+  "homeFeedNetworkError": "પ્રવૃત્તિઓ લોડ કરી શકાઈ નથી. તમારું કનેક્શન તપાસો અને ફરી પ્રયાસ કરો.",
+  "homeFeedLoadError": "પ્રવૃત્તિઓ લોડ કરતી વખતે કંઈક ખોટું થયું.",
+  "dismiss": "કાઢી નાખો",
+  "notificationPermissionTitle": "અપડેટ રહો",
+  "notificationPermissionBody": "જ્યારે કોઈ તમારા સ્પોટ પર જોડાવા માંગે છે અથવા જ્યારે તમને સ્પોટ પર સ્વીકારવામાં આવે છે ત્યારે તમને ચેતવણી આપવા માટે અમને સૂચના પરવાનગીઓની જરૂર છે.",
+  "allow": "પરવાનગી આપે છે",
+  "notNow": "હવે નહીં",
+  "full": "સંપૂર્ણ",
+  "host": "યજમાન",
+  "ofText": "ના",
+  "spots": "ફોલ્લીઓ",
+  "suggestedPlayingHours": "સુચવાયેલા રમવાના કલાકો",
+  "bestTimeToPlay": "રમવા માટેનો શ્રેષ્ઠ સમય",
+  "mySportsSpaceTitle": "માય સ્પોર્ટ્સ સ્પેસ",
+  "statHosted": "યજમાન",
+  "statUpcoming": "આગામી",
+  "sportsJourney": "મારી સ્પોર્ટ્સ જર્ની",
+  "upcomingGames": "આગામી રમતો",
+  "pastActivities": "ભૂતકાળની પ્રવૃત્તિઓ",
+  "hostedMatches": "હોસ્ટ કરેલ મેચ",
+  "joinedMatches": "મેચોમાં જોડાયા",
+  "sportsInterests": "રમતગમતની રુચિઓ",
+  "editInterests": "રુચિઓ સંપાદિત કરો",
+  "noSportsInterests": "હજુ સુધી કોઈ રમતગમતની રુચિઓ ઉમેરવામાં આવી નથી.",
+  "noJourneyActivities": "આ વિભાગમાં કોઈ પ્રવૃત્તિઓ નથી.",
+  "achievementsTitle": "રમતગમતની સિદ્ધિઓ",
+  "achievementFirstHost": "પ્રથમ યજમાન",
+  "achievementFirstHostDesc": "તમારી પ્રથમ મેચનું આયોજન કર્યું",
+  "achievementTeamPlayer": "ટીમ પ્લેયર",
+  "achievementTeamPlayerDesc": "રમતગમતની પ્રવૃત્તિમાં જોડાયા",
+  "achievementActiveAthlete": "સક્રિય રમતવીર",
+  "achievementActiveAthleteDesc": "5 રમતગમતની પ્રવૃત્તિઓ પૂર્ણ કરી",
+  "achievementSportsLegend": "સ્પોર્ટ્સ લિજેન્ડ",
+  "achievementSportsLegendDesc": "10 રમતગમતની પ્રવૃત્તિઓ પૂર્ણ કરી",
+  "quickActions": "ઝડપી ક્રિયાઓ",
+  "quickActionFindGame": "એક રમત શોધો",
+  "quickActionOrganize": "મેચ ગોઠવો",
+  "quickActionMyMatches": "મારા મેચ",
+  "quickActionChats": "ટીમ ચેટ્સ",
+  "participantRoleHost": "યજમાન",
+  "participantRolePlayer": "પ્લેયર",
+  "statusOpen": "ખોલો",
+  "statusPending": "બાકી છે",
+  "statusAccepted": "સ્વીકાર્યું",
+  "statusRejected": "ફગાવી દીધી",
+  "onboardingSkip": "છોડો",
+  "onboardingBack": "પાછળ",
+  "onboardingGetStarted": "શરૂ કરો",
+  "onboardingContinue": "આગળ વધો",
+  "onboardingLetsPlay": "ચાલો રમીએ",
+  "onboardingAlreadyHaveAccount": "પહેલેથી ખાતું છે? ",
+  "onboardingSignIn": "સાઇન ઇન",
+  "onboardingSlide1Title": "તમારી રમત. તમારી ટોળી.",
+  "onboardingSlide1Tagline": "ભાઈ, ટીમ બનાવીએ! મેચ જમાવીએ!",
+  "onboardingSlide1Desc": "ખેલાડીઓ શોધો, ટીમ બનાવો અને યોજનાઓને સાચી રમતમાં બદલો.",
+  "onboardingSlide2Title": "ખેલાડીઓ ઓછા છે? ખેલભાઈ છે ને!",
+  "onboardingSlide2Desc": "તમારી નજીકના એવા લોકોને શોધો જે તમારી આગામી રમતમાં જોડાવા માટે તૈયાર છે.",
+  "onboardingSlide3Title": "મેચ બનાવો. ટીમને બોલાવો.",
+  "onboardingSlide3Desc": "મેચ હોસ્ટ કરો, પ્રવૃત્તિઓ શોધો અને રમતના મેદાનમાં ઉતરો.",
+  "onboardingSlide4Title": "ટીમ બની? હવે મેચ જમાવો!",
+  "onboardingSlide4Desc": "સાથીઓ સાથે ચેટ કરો, પ્લાન બનાવો અને રમવા માટે તૈયાર થાઓ.",
+  "onboardingReadyHeading": "તૈયાર, ભાઈ? ચાલો રમીએ!",
+  "completedMatches": "પૂર્ણ થયેલ મેચ",
+  "verifiedEmail": "ચકાસાયેલ"
+}

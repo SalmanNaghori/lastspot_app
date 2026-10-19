@@ -108,10 +108,7 @@ class _AnimatedImagePlaceholder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = context.isDarkMode;
-    final baseColor = isDark
-        ? const Color(0xFF1E293B)
-        : const Color(0xFFE2E8F0);
+    final baseColor = context.surfaceContainerLow;
 
     return AppShimmer(
       child: Container(
@@ -161,17 +158,13 @@ class _AnimatedImageError extends StatelessWidget {
             height: height,
             decoration: BoxDecoration(
               shape: isCircle ? BoxShape.circle : BoxShape.rectangle,
-              color:
-                  backgroundColor ??
-                  (context.isDarkMode
-                      ? context.surfaceColor
-                      : const Color(0xFFF1F5F9)),
+              color: backgroundColor ?? context.surfaceContainerLow,
             ),
             child: Center(
               child: Icon(
-                Icons.sports_soccer_outlined,
+                Icons.image_outlined,
                 size: Dimensions.r24.dynamicH,
-                color: context.textSecondary.withValues(alpha: 0.45),
+                color: context.primaryColor.withValues(alpha: 0.55),
               ),
             ),
           ),

@@ -1,0 +1,656 @@
+{
+  "@@locale": "hi",
+  "@appName": {
+    "description": "The name of the application"
+  },
+  "@todayAt": {
+    "placeholders": {
+      "time": {}
+    }
+  },
+  "@yesterdayAt": {
+    "placeholders": {
+      "time": {}
+    }
+  },
+  "@spotsNeeded": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "@spotNeeded": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "@hostPrefix": {
+    "placeholders": {
+      "name": {}
+    }
+  },
+  "@statusActiveNeeded": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "@hostedBy": {
+    "placeholders": {
+      "name": {}
+    }
+  },
+  "@confirmedPlayers": {
+    "placeholders": {
+      "current": {},
+      "total": {}
+    }
+  },
+  "@openSpotsRemaining": {
+    "placeholders": {
+      "current": {},
+      "total": {}
+    }
+  },
+  "@pendingRequests": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "@spotsLeft": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "@activitiesCount": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "@neededPlayers": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "@tabMyActivitiesCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "@tabJoinedCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "@tabRequestsCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "@tabChatsCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "@activityContext": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "@welcomeToActivity": {
+    "placeholders": {
+      "activityTitle": {
+        "type": "String"
+      },
+      "emoji": {
+        "type": "String"
+      }
+    }
+  },
+  "@statusLabel": {
+    "placeholders": {
+      "status": {}
+    }
+  },
+  "@activityCapacity": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "@detailsPhotoCount": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "@detailsAvailability": {
+    "placeholders": {
+      "available": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "@detailsPhotoLabel": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "@homeActivityHubPending": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "appName": "खेलभाई",
+  "todayAt": "आज {time} पर",
+  "yesterdayAt": "कल {time} पर",
+  "appDescription": "भाई, टीम बनाओ! मैच जमाओ!",
+  "updateNow": "अभी अद्यतन करें",
+  "maybeLater": "शायद बाद में",
+  "maintenanceMode": "रखरखाव मोड",
+  "requestToJoin": "मैच में शामिल होने का अनुरोध",
+  "publishSpot": "फ़ीड करने के लिए स्थान प्रकाशित करें",
+  "searchHint": "मैदान, खेल, खिलाड़ी खोजें...",
+  "urgentMatches": "अत्यावश्यक मैच (आज से प्रारंभ)",
+  "recentPosts": "हाल के पोस्ट",
+  "openGroundMap": "खुला मैदान मानचित्र ↗",
+  "mapLocation": "साझा मानचित्र लिंक",
+  "viewSpot": "स्पॉट देखें",
+  "spotsNeeded": "{count} स्पॉट",
+  "spotNeeded": "{count} स्पॉट",
+  "hostPrefix": "होस्ट: {name}",
+  "homeTab": "होम",
+  "myMatchesTab": "मेरे मैच",
+  "profileTab": "प्रोफ़ाइल",
+  "hostMatchTitle": "एक मैच की मेजबानी करें",
+  "selectSportCategory": "खेल श्रेणी चुनें*",
+  "playersNeeded": "खिलाड़ियों की आवश्यकता*",
+  "schedule": "अनुसूची*",
+  "datePrefix": "तारीख:",
+  "timePrefix": "समय:",
+  "venueDetails": "स्थान विवरण*",
+  "venueNameHint": "स्थान का नाम: उदा. डेकाथलॉन स्पोर्ट्स टर्फ",
+  "mapsLinkHint": "https://maps.app.goo.gl/... [पेस्ट करें]",
+  "mapsGuidance": "उपयोगकर्ता सीधे Google मानचित्र में बारी-बारी दिशा-निर्देश प्राप्त करने के लिए इस पर टैप करेंगे।",
+  "additionalGuidelines": "अतिरिक्त दिशानिर्देश (वैकल्पिक)",
+  "matchOverviewTitle": "मैच का अवलोकन",
+  "statusActiveNeeded": "स्थिति: सक्रिय • आवश्यक: {count} खिलाड़ी",
+  "hostedBy": "{name} द्वारा होस्ट किया गया",
+  "locationAndDirections": "स्थान एवं दिशाएँ",
+  "tapForNavigation": "लाइव नेविगेशन के लिए नीचे टैप करें",
+  "openInMaps": "🧭 Google/Apple मैप्स में खोलें ↗",
+  "confirmedPlayers": "पुष्टि किए गए खिलाड़ी ({current}/{total})",
+  "safetyAndConduct": "सुरक्षा एवं आचरण",
+  "reportActivity": "🚩इस गतिविधि या होस्ट की रिपोर्ट करें",
+  "manageMatchRequests": "मिलान अनुरोध प्रबंधित करें",
+  "openSpotsRemaining": "शेष खुले स्थान: {current} / {total}",
+  "pendingRequests": "लंबित अनुरोध ({count})",
+  "reject": "अस्वीकार करना",
+  "accept": "स्वीकार करना",
+  "openMatchChat": "मैच ग्रुप चैट खोलें",
+  "messageHost": "संदेश होस्ट",
+  "directMessage": "सीधा संदेश",
+  "groupChat": "समूह बातचीत",
+  "activity": "गतिविधि",
+  "messageHint": "एक सन्देश लिखिए",
+  "sendMessage": "मेसेज भेजें",
+  "signInToChat": "चैट का उपयोग करने के लिए साइन इन करें",
+  "chatEmpty": "अभी तक कोई संदेश नहीं. बातचीत शुरू करें.",
+  "messageSendFailed": "संदेश नहीं भेजा जा सका. कृपया पुन: प्रयास करें।",
+  "login": "लॉग इन करें",
+  "signup": "साइन अप करें",
+  "email": "ईमेल",
+  "password": "पासवर्ड",
+  "fullName": "पूरा नाम",
+  "yourName": "आपका नाम",
+  "forgotPassword": "पासवर्ड भूल गए?",
+  "createAccount": "खाता बनाएं",
+  "joinCommunity": "समुदाय में शामिल हों और खेलें।",
+  "navHome": "होम",
+  "navExplore": "खोजें",
+  "navCreate": "बनाएं",
+  "navActivities": "गतिविधियां",
+  "navChats": "बातचीत",
+  "navProfile": "प्रोफ़ाइल",
+  "openProfile": "प्रोफ़ाइल खोलें",
+  "searchConversations": "वार्तालाप खोजें...",
+  "noConversationsFound": "कोई बातचीत नहीं मिली",
+  "noConversationsFoundDesc": "आप जो खोज रहे हैं उसे ढूंढने के लिए अपनी खोज या फ़िल्टर को समायोजित करने का प्रयास करें।",
+  "explorePlaceholderText": "अपने आस-पास की गतिविधियों की खोज करें",
+  "activitiesEmptyMessage": "आपकी गतिविधियां यहां दिखाई देंगी.\nआपके द्वारा बनाई गई या शामिल होने वाली गतिविधियाँ यहां दिखाई देंगी।",
+  "exploreActivitiesAction": "गतिविधियों का अन्वेषण करें",
+  "logoutDialogTitle": "लॉग आउट?",
+  "logoutDialogMessage": "आपको अपने खेलभाई खाते तक पहुंचने के लिए फिर से साइन इन करना होगा।",
+  "cancel": "रद्द करना",
+  "logout": "लॉग आउट",
+  "editProfile": "प्रोफ़ाइल संपादित करें",
+  "profileSectionActivity": "मेरी गतिविधि",
+  "profileSectionAccount": "खाता",
+  "profileSectionLegal": "कानूनी",
+  "myRequests": "मेरा अनुभव",
+  "myActivities": "मेरी गतिविधियाँ",
+  "notifications": "सूचनाएं",
+  "settings": "सेटिंग्स",
+  "helpSupport": "सहायता एवं सहायता",
+  "privacyPolicy": "गोपनीयता नीति",
+  "termsConditions": "नियम एवं शर्तें",
+  "statCreated": "बनाया था",
+  "statJoined": "सम्मिलित हुए",
+  "statCompleted": "पुरा होना।",
+  "goodMorning": "शुभ प्रभात",
+  "goodAfternoon": "शुभ दोपहर",
+  "goodEvening": "शुभ संध्या",
+  "whatAreYouUpTo": "आज आप किस लिए तैयार हैं?",
+  "urgentMatchesSubtitle": "उनके भरने से पहले आस-पास की गतिविधियों में शामिल हों!",
+  "viewAll": "सभी को देखें",
+  "popularSports": "लोकप्रिय खेल",
+  "popularSportsSubtitle": "अपना पसंदीदा खेल ढूंढें और कार्रवाई में शामिल हों",
+  "sportsCarouselHint": "खेल देखने के लिए स्वाइप करें · गतिविधियाँ देखने के लिए टैप करें",
+  "searchCityHint": "शहर या राज्य खोजें...",
+  "nearbyActivities": "आस-पास की गतिविधियाँ",
+  "comingUp": "आ रहा है",
+  "spotsLeft": "{count} स्पॉट बचे",
+  "oneSpotLeft": "1 स्थान शेष",
+  "perPerson": "प्रति व्यक्ति",
+  "filterCricket": "क्रिकेट",
+  "filterFootball": "फ़ुटबॉल",
+  "filterBadminton": "बैडमिंटन",
+  "filterTennis": "टेनिस",
+  "verifiedHost": "मेज़बान",
+  "noSpotsFound": "कोई सक्रिय स्थान नहीं मिला.\nइसे बनाने वाले पहले बनें!",
+  "validationTitleLocationCategory": "शीर्षक, स्थान और श्रेणी आवश्यक हैं.",
+  "activityGeneratedSuccess": "गतिविधि बनाई गई!",
+  "generateActivity": "गतिविधि बनाएँ",
+  "activityImages": "गतिविधि छवियाँ",
+  "category": "वर्ग",
+  "selectCategory": "एक श्रेणी चुनें",
+  "failedToLoadCategories": "श्रेणियां लोड करने में विफल",
+  "activityTitle": "गतिविधि शीर्षक",
+  "activityTitleHint": "जैसे रविवार की सुबह फुटबॉल",
+  "description": "विवरण",
+  "descriptionHint": "इस गतिविधि के बारे में कुछ विवरण साझा करें...",
+  "location": "जगह",
+  "locationHint": "जैसे सेंट्रल पार्क टर्फ",
+  "date": "तारीख",
+  "time": "समय",
+  "maxParticipants": "अधिकतम प्रतिभागी",
+  "pricePerPerson": "मूल्य प्रति व्यक्ति",
+  "previewActivity": "गतिविधि का पूर्वावलोकन करें",
+  "publishActivity": "गतिविधि प्रकाशित करें",
+  "noCategoriesAvailable": "कोई श्रेणियां उपलब्ध नहीं",
+  "noCitiesFound": "कोई शहर नहीं मिला",
+  "createAnother": "दूसरा बनाएं",
+  "youAreParticipant1": "वर्तमान प्रतिभागी: 1 (आप)",
+  "addPhotos": "तस्वीरें जोडो",
+  "gallery": "गैलरी",
+  "camera": "कैमरा",
+  "acceptTerms": "मैं नियम एवं शर्तें स्वीकार करता हूं",
+  "acceptTermsError": "कृपया नियम एवं शर्तें स्वीकार करें",
+  "confirmPassword": "पासवर्ड की पुष्टि कीजिये",
+  "loginSubtitle": "तुरंत अपना एक्टिविटी पार्टनर ढूंढें।",
+  "dontHaveAccount": "कोई खाता नहीं है? साइन अप करें",
+  "sendResetLink": "रीसेट लिंक भेजें",
+  "passwordResetSent": "पासवर्ड रीसेट लिंक आपके ईमेल पर भेजा गया!",
+  "resetPassword": "पासवर्ड रीसेट",
+  "resetPasswordDesc": "अपना ईमेल पता दर्ज करें और हम आपको अपना पासवर्ड रीसेट करने के लिए एक लिंक भेजेंगे।",
+  "settingsTitle": "सेटिंग्स",
+  "themeTitle": "थीम",
+  "appColorTitle": "ऐप का रंग",
+  "themeSystem": "सिस्टम डिफ़ॉल्ट",
+  "themeLight": "लाइट",
+  "themeDark": "डार्क",
+  "languageTitle": "भाषा",
+  "languageEnglish": "अंग्रेज़ी",
+  "languageHindi": "हिन्दी",
+  "languageGujarati": "गुजराती",
+  "cityRequiredError": "कृपया एक शहर चुनें",
+  "joinCommunitySubtitle": "समुदाय में शामिल हों और अपने आस-पास की गतिविधियाँ खोजें।",
+  "fullNameRequired": "पूरा नाम आवश्यक है",
+  "emailRequired": "ईमेल की जरूरत है",
+  "invalidEmail": "एक वैध ईमेल दर्ज करें",
+  "passwordRequired": "पासवर्ड आवश्यक है",
+  "passwordLengthError": "पासवर्ड कम से कम 6 अंकों का होना चाहिए",
+  "passwordsDoNotMatch": "सांकेतिक शब्द मेल नहीं खाते",
+  "cityLabel": "शहर *",
+  "selectCityHint": "अपना शहर चुनें",
+  "alreadyHaveAccount": "क्या आपके पास पहले से एक खाता मौजूद है?",
+  "noInternetError": "कोई इंटरनेट कनेक्शन नहीं। कृपया अपना नेटवर्क जांचें और पुनः प्रयास करें।",
+  "setupProfile": "सेटअप प्रोफ़ाइल",
+  "bioOptional": "जीवनी (वैकल्पिक)",
+  "sportsPreferences": "खेल प्राथमिकताएँ",
+  "saveAndContinue": "सहेजें जारी रखें",
+  "saveChanges": "परिवर्तनों को सुरक्षित करें",
+  "cityIsRequired": "शहर की आवश्यकता है",
+  "findActivitiesNearYou": "अपने आस-पास गतिविधियाँ खोजें",
+  "searchActivitiesHint": "गतिविधियाँ खोजें...",
+  "activitiesNearYou": "आपके आस-पास की गतिविधियाँ",
+  "activitiesCount": "{count} गतिविधियाँ",
+  "couldNotLoadActivities": "गतिविधियाँ लोड नहीं की जा सकीं",
+  "checkConnectionRetry": "अपना कनेक्शन जांचें और पुनः प्रयास करें।",
+  "noActivitiesFound": "कोई गतिविधि नहीं मिली",
+  "noActivitiesInArea": "आपके क्षेत्र में अभी कोई आगामी गतिविधियाँ नहीं हैं।",
+  "noActivitiesMatchSearch": "कोई भी गतिविधि आपकी खोज से मेल नहीं खाती",
+  "tryDifferentKeyword": "किसी भिन्न कीवर्ड से खोजने का प्रयास करें.",
+  "noActivitiesInCategory": "इस श्रेणी में कोई गतिविधि नहीं",
+  "tryDifferentCategory": "'सभी' या किसी भिन्न श्रेणी का चयन करने का प्रयास करें।",
+  "retry": "पुन: प्रयास करें",
+  "allFilter": "सभी",
+  "selectYourCity": "अपना शहर चुनें",
+  "filters": "फिल्टर",
+  "anyDate": "कोई दिन",
+  "today": "आज",
+  "tomorrow": "कल",
+  "thisWeekend": "इस सप्ताहांत",
+  "price": "कीमत",
+  "any": "कोई",
+  "free": "मुक्त",
+  "paid": "चुकाया गया",
+  "participants": "प्रतिभागियों",
+  "spots1to2": "1-2 स्थान",
+  "spots3to5": "3-5 स्थान",
+  "spots5plus": "5+ स्पॉट",
+  "reset": "रीसेट करें",
+  "applyFilters": "फ़िल्टर लागू करें",
+  "loading": "लोड हो रहा है...",
+  "todaysMatches": "आज के मैच",
+  "urgentMatchesTitle": "अत्यावश्यक मिलान",
+  "tryAgain": "पुनः प्रयास करें",
+  "recommendedForYou": "आप के लिए अनुशंसित",
+  "newThisWeek": "इस सप्ताह नया",
+  "city": "शहर",
+  "selectCity": "शहर चुनें",
+  "edit": "संपादन करना",
+  "deleteImageNotSupported": "मौजूदा छवियों को हटाना अभी समर्थित नहीं है.",
+  "howManyPeopleCanJoin": "कितने लोग शामिल हो सकते हैं?",
+  "youAreIncluded": "आप शामिल हैं (1)",
+  "morning": "सुबह",
+  "afternoon": "दोपहर",
+  "evening": "शाम",
+  "night": "रात",
+  "pleaseSelectFutureTime": "कृपया भविष्य का समय चुनें",
+  "supportContactComingSoon": "सहायता संपर्क सुविधा जल्द ही आ रही है.",
+  "contactSupport": "समर्थन से संपर्क करें",
+  "thisIsHowActivityAppears": "इस प्रकार आपकी गतिविधि दूसरों को दिखाई देगी.",
+  "viewOnMap": "मानचित्र पर देखें",
+  "noPendingRequests": "कोई लंबित अनुरोध नहीं.",
+  "matchGroupChat": "समूह चैट का मिलान करें",
+  "chatComingSoon": "चैट जल्द ही आ रही है!",
+  "realtimeMessagingAvailableHere": "यहां रियलटाइम मैसेजिंग उपलब्ध होगी.",
+  "pleaseEnterValidPrice": "कृपया एक वैध दाम की प्रविष्टि करें",
+  "statusActive": "स्थिति: सक्रिय",
+  "neededPlayers": "• आवश्यक: {count} खिलाड़ी",
+  "openInGoogleMaps": "Google मानचित्र में खोलें",
+  "player": "खिलाड़ी",
+  "inviteAFriend": "किसी मित्र को आमंत्रित करें",
+  "reportThisActivityOrHost": "इस गतिविधि या होस्ट की रिपोर्ट करें",
+  "learnAboutSafetyGuidelines": "सुरक्षा दिशानिर्देशों के बारे में जानें",
+  "manageActivitiesDesc": "उन गतिविधियों को प्रबंधित करें जिन्हें आप होस्ट करते हैं, शामिल हुए हैं, या जिनकी समीक्षा करने की आवश्यकता है।",
+  "tabMyActivitiesCount": "मेरी गतिविधियाँ {count}",
+  "tabJoinedCount": "{count} में शामिल हुए",
+  "tabRequestsCount": "अनुरोध {count}",
+  "tabChats": "बातचीत",
+  "tabChatsCount": "चैट {count}",
+  "noConversations": "अभी तक कोई बातचीत नहीं",
+  "noConversationsDesc": "अन्य खिलाड़ियों के साथ बातचीत शुरू करने के लिए किसी गतिविधि में शामिल हों या उसकी मेजबानी करें।",
+  "conversationLoadError": "बातचीत लोड नहीं की जा सकी. कृपया पुन: प्रयास करें।",
+  "yesterday": "कल",
+  "messageCopied": "संदेश कॉपी किया गया",
+  "jumpToLatest": "नवीनतम पर जाएं",
+  "newMessage": "नया सन्देश",
+  "activityContext": "गतिविधि: {title}",
+  "filterAll": "सभी",
+  "filterDirect": "प्रत्यक्ष",
+  "filterGroups": "समूह",
+  "groupInfoTitle": "समूह जानकारी",
+  "groupInfoParticipants": "प्रतिभागियों",
+  "groupInfoHost": "मेज़बान",
+  "groupInfoOrganizer": "व्यवस्था करनेवाला",
+  "groupInfoNoParticipants": "अभी तक कोई पुष्टिकृत प्रतिभागी नहीं है।",
+  "groupInfoActivityDetails": "गतिविधि विवरण",
+  "welcomeToActivity": "{activityTitle} में आपका स्वागत है! {emoji}",
+  "groupWelcomeSubtitle": "यह समूह गतिविधि के समन्वय के लिए है। सम्मानजनक बनें और आनंद लें!",
+  "groupOnlyParticipantsCanChat": "केवल पुष्टि किए गए प्रतिभागी और होस्ट ही संदेश भेज सकते हैं।",
+  "noGroupConversations": "अभी तक कोई समूह चैट नहीं",
+  "noGroupConversationsDesc": "प्रतिभागियों के साथ बातचीत शुरू करने के लिए किसी गतिविधि में शामिल हों या उसकी मेजबानी करें।",
+  "noDirectConversations": "अभी तक कोई सीधा संदेश नहीं",
+  "noDirectConversationsDesc": "आपके और गतिविधि होस्ट के बीच सीधे संदेश यहां दिखाई देंगे।",
+  "you": "आप",
+  "mockGoldenGateTitle": "गोल्डन गेट सनसेट वॉक",
+  "mockGoldenGateDate": "आज · शाम 6:00 बजे",
+  "mockGoldenGateLoc": "गोल्डन गेट पार्क",
+  "mockGoldenGateStats": "6/10 प्रतिभागी · मुफ़्त",
+  "mockSunsetVolleyballTitle": "सूर्यास्त बीच वॉलीबॉल",
+  "mockSunsetVolleyballDate": "गुरु, 20 जून · शाम 6:30 बजे",
+  "mockSunsetVolleyballLoc": "महासागर समुद्रतट",
+  "mockRooftopCookingTitle": "छत पर खाना पकाने की कक्षा",
+  "mockRooftopCookingDate": "शनिवार, 22 जून · शाम 6:30 बजे",
+  "mockRooftopCookingLoc": "मिशन जिला छत",
+  "mockRooftopCookingStats": "8/8 प्रतिभागी · $24",
+  "mockSalsaTitle": "शुरुआती साल्सा क्लास",
+  "mockSalsaDate": "रविवार, 23 जून · शाम 5:00 बजे",
+  "mockSalsaLoc": "मिशन डांस हॉल",
+  "mockSalsaStats": "2/10 प्रतिभागी · $12",
+  "tabPreviewData": "टैब पूर्वावलोकन डेटा",
+  "previewJoined": "शामिल हुए · सप्ताहांत मिट्टी के बर्तनों की कक्षा · शनिवार · 4 प्रतिभागी",
+  "previewRequests": "अनुरोध · 3 लंबित शामिल होने के अनुरोध · अभी समीक्षा करें",
+  "statusHosted": "की मेजबानी",
+  "statusFull": "भरा हुआ",
+  "pendingRequest": "लंबित अनुरोध",
+  "joined": "सम्मिलित हुए",
+  "requestRejected": "अनुरोध अस्वीकृत",
+  "requestCancelled": "अनुरोध रद्द किया गया",
+  "share": "शेयर करना",
+  "cancelActivity": "गतिविधि रद्द करें",
+  "closeActivity": "गतिविधि बंद करें",
+  "reportActivityAction": "गतिविधि रिपोर्ट करें",
+  "statusCompleted": "पुरा होना।",
+  "statusCancelled": "रद्द कर दिया गया",
+  "statusExpired": "खत्म हो चुका",
+  "emptyHostedTitle": "कोई होस्ट की गई गतिविधियाँ नहीं",
+  "emptyHostedDesc": "आपने अभी तक कोई गतिविधि नहीं बनाई है.",
+  "emptyJoinedTitle": "कोई सम्मिलित गतिविधियाँ नहीं",
+  "emptyJoinedDesc": "आप अभी तक किसी भी गतिविधि में शामिल नहीं हुए हैं.",
+  "emptyRequestsTitle": "कोई शामिल होने का अनुरोध नहीं",
+  "emptyRequestsDesc": "शामिल होने के अनुरोध की कार्यक्षमता यहां होगी.",
+  "aboutSection": "के बारे में",
+  "scheduleSection": "अनुसूची",
+  "statusLabel": "स्थिति: {status}",
+  "errorUnknownState": "त्रुटि या अज्ञात स्थिति",
+  "reportReasonRequired": "कृपया रिपोर्ट करने का कारण चुनें.",
+  "reportSubmittedSuccess": "रिपोर्ट सफलतापूर्वक प्रस्तुत की गई. हम शीघ्र ही इसकी समीक्षा करेंगे.",
+  "whyReporting": "आप इसकी सूचना क्यों दे रहे हैं?",
+  "additionalDetailsOptional": "अतिरिक्त विवरण (वैकल्पिक)",
+  "reportDescHint": "कृपया हमें समझने में सहायता के लिए अधिक विवरण प्रदान करें...",
+  "submitReport": "रिपोर्ट सबमिट करें",
+  "tabReceived": "प्राप्त",
+  "tabSent": "भेजा",
+  "noReceivedRequests": "अभी तक कोई अनुरोध प्राप्त नहीं हुआ",
+  "noSentRequests": "अभी तक कोई अनुरोध नहीं भेजा गया",
+  "emptyReceivedRequestsDesc": "जब कोई आपकी किसी गतिविधि में शामिल होने के लिए कहता है, तो उनका अनुरोध यहां दिखाई देगा।",
+  "emptySentRequestsDesc": "जिन गतिविधियों में आप शामिल होने के लिए कहेंगे वे प्रतिक्रिया की प्रतीक्षा करते समय यहां दिखाई देंगी।",
+  "accountSuspendedTitle": "खाता निलंबित कर दिया गया है",
+  "accountSuspendedDesc": "हमारी सेवा की शर्तों के उल्लंघन के कारण आपका खाता अस्थायी रूप से निलंबित कर दिया गया है।",
+  "accountBannedTitle": "खाता प्रतिबंधित",
+  "accountBannedDesc": "हमारी नीतियों के गंभीर उल्लंघन के कारण आपका खाता स्थायी रूप से प्रतिबंधित कर दिया गया है।",
+  "accountDeletedTitle": "खाता हटा दिया गया",
+  "accountDeletedDesc": "यह खाता हटा दिया गया है. यदि आपको लगता है कि यह एक गलती है, तो कृपया सहायता से संपर्क करें।",
+  "signOut": "साइन आउट",
+  "appeal": "निवेदन",
+  "sportSoccer": "फुटबॉल",
+  "sportBasketball": "बास्केटबॉल",
+  "sportTennis": "टेनिस",
+  "sportVolleyball": "वॉलीबॉल",
+  "sportBadminton": "बैडमिंटन",
+  "sportTableTennis": "टेबल टेनिस",
+  "sportCricket": "क्रिकेट",
+  "sportSwimming": "तैरना",
+  "sportRunning": "दौड़ना",
+  "sportCycling": "साइकिल चलाना",
+  "sportKabaddi": "कबडडी",
+  "sportKhoKho": "खो-खो",
+  "sportGilliDanda": "गिल्ली-डंडा",
+  "sportSatoliya": "सातोलिया/लागोरी",
+  "sportKiteFlying": "पतंग उड़ाना",
+  "sportSkating": "स्केटिंग",
+  "sportHockey": "फील्ड हॉकी",
+  "sportUltimateFrisbee": "अद्भुत फ़्रिस्बी",
+  "sportPickleball": "अचार का गोला",
+  "sportTugOfWar": "रस्साकशी",
+  "sportHiking": "पदयात्रा/ट्रेकिंग",
+  "sportOutdoorYoga": "आउटडोर योगा",
+  "confirmAction": "पुष्टि करना",
+  "activityHost": "मेज़बान",
+  "activityFull": "भरा हुआ",
+  "activityCapacity": "{total} के {current} शामिल हुए",
+  "detailsTitle": "गतिविधि विवरण",
+  "detailsAbout": "इस गतिविधि के बारे में",
+  "detailsWhen": "जब हम खेलते हैं",
+  "detailsWhere": "यहां मिलें",
+  "detailsPlayers": "कौन खेल रहा है",
+  "detailsNoPlayers": "लाइनअप अभी शुरू हो रहा है।",
+  "detailsNoPlayersHint": "मेजबान द्वारा उनके अनुरोध स्वीकार करने के बाद पुष्टि किए गए खिलाड़ी यहां दिखाई देंगे।",
+  "detailsHostedBy": "आपका मेज़बान",
+  "detailsJoinHint": "एक अनुरोध भेजें. मेज़बान आपके स्थान की पुष्टि करेगा।",
+  "detailsPendingHint": "आपका अनुरोध मेज़बान के पास है। जब वे जवाब देंगे तो हम आपको सूचित करेंगे।",
+  "detailsJoinedHint": "आप लाइनअप पर हैं. बाहर निकलने से पहले समय और स्थान की जांच कर लें।",
+  "detailsHostHint": "शामिल होने के अनुरोधों की समीक्षा करें और अपना लाइनअप बनाएं।",
+  "detailsClosed": "शामिल होना बंद",
+  "detailsDraft": "मसौदा",
+  "detailsOpen": "खिलाड़ियों के लिए खुला",
+  "detailsCopy": "गतिविधि विवरण कॉपी करें",
+  "detailsCopied": "गतिविधि विवरण कॉपी किया गया",
+  "detailsCopyFailed": "विवरण कॉपी नहीं किया जा सका. कृपया पुन: प्रयास करें।",
+  "detailsMenu": "गतिविधि विकल्प",
+  "detailsSafety": "साथ मिलकर अच्छा खेलें",
+  "detailsSafetyNote": "अपने मेजबान के साथ बैठक स्थल की पुष्टि करें, अन्य खिलाड़ियों का सम्मान करें और किसी भी चिंता की रिपोर्ट करें।",
+  "detailsLoadError": "हम इस गतिविधि को लोड नहीं कर सके.",
+  "detailsPrice": "प्रति व्यक्ति",
+  "detailsJoin": "शामिल होने का अनुरोध",
+  "detailsPhotoCount": "{current} / {total}",
+  "detailsAvailability": "{total} में से {available} स्पॉट उपलब्ध हैं",
+  "detailsPhotoLabel": "{total} की गतिविधि फ़ोटो {current}",
+  "galleryOpen": "तस्वीरें देखें",
+  "galleryZoomHint": "ज़ूम करने के लिए पिंच करें · एक्सप्लोर करने के लिए स्वाइप करें",
+  "galleryPrevious": "पिछला फ़ोटो",
+  "galleryNext": "अगली फोटो",
+  "galleryZoomIn": "ज़ूम इन",
+  "galleryZoomOut": "ज़ूम रीसेट करें",
+  "detailsSharedMapLink": "साझा मानचित्र लिंक",
+  "detailsMapLinkHint": "होस्ट द्वारा साझा किया गया स्थान खोलें.",
+  "detailsMapSearchHint": "मानचित्र में इस स्थल को खोजें; अपने मेज़बान के साथ बैठक स्थल की पुष्टि करें।",
+  "detailsOpenMapLink": "मानचित्र लिंक खोलें",
+  "detailsSearchMaps": "मानचित्र में खोजें",
+  "homeComingUpSubtitle": "अगले 7 दिनों में खेल",
+  "homeLaterOn": "बाद में",
+  "homeLaterSubtitle": "अगले सप्ताह के बाद की गतिविधियाँ",
+  "detailsMapOpenFailed": "मानचित्र नहीं खुल सके. कृपया पुन: प्रयास करें।",
+  "activityNowLive": "आपकी गतिविधि अब लाइव है. लोग शामिल होने का अनुरोध करना शुरू कर सकते हैं.",
+  "nextGameStartsHere": "आपका अगला गेम यहां शुरू होता है",
+  "turnSoundOff": "ध्वनि बंद करें",
+  "turnSoundOn": "ध्वनि चालू करें",
+  "goToHome": "घर जाओ",
+  "yourActivityHub": "आपका एक्टिविटी हब",
+  "homeActivityHubPending": "{count, plural, one{समीक्षा के लिए आपके पास 1 लंबित अनुरोध है।} other{समीक्षा के लिए आपके पास {count} लंबित अनुरोध हैं।}}",
+  "homeActivityHubJoined": "आपकी अगली सम्मिलित गतिविधि आ रही है.",
+  "homeActivityHubHosted": "आपकी अगली होस्ट की गई गतिविधि आ रही है.",
+  "homeActivityHubEmpty": "अभी तक कोई आगामी गतिविधियाँ नहीं. आरंभ करने के लिए एक बनाएं.",
+  "homeActivityHubRecommendation": "आपके चयनित शहर में भविष्य की गतिविधि उपलब्ध है।",
+  "homeActivityHubError": "आपकी गतिविधि का विवरण लोड नहीं किया जा सका.",
+  "homeReviewRequests": "अनुरोधों की समीक्षा करें",
+  "homeViewActivity": "गतिविधि देखें",
+  "homeManageActivity": "गतिविधि प्रबंधित करें",
+  "homeCreateActivity": "गतिविधि बनाएँ",
+  "homeGroupChat": "समूह बातचीत",
+  "homeCityLoadError": "शहरों को लोड नहीं किया जा सका",
+  "homeRetryCategories": "श्रेणियाँ पुनः प्रयास करें",
+  "homeFeedNetworkError": "गतिविधियाँ लोड नहीं की जा सकीं. अपना कनेक्शन जांचें और पुनः प्रयास करें।",
+  "homeFeedLoadError": "गतिविधियाँ लोड करते समय कुछ गलत हो गया।",
+  "dismiss": "नकार देना",
+  "notificationPermissionTitle": "अपडेट रहें",
+  "notificationPermissionBody": "जब कोई आपके स्थान पर शामिल होना चाहता है या जब आपको किसी स्थान पर स्वीकार किया जाता है तो हमें आपको सचेत करने के लिए अधिसूचना अनुमतियों की आवश्यकता होती है।",
+  "allow": "अनुमति दें",
+  "notNow": "अभी नहीं",
+  "full": "भरा हुआ",
+  "host": "मेज़बान",
+  "ofText": "का",
+  "spots": "स्पॉट",
+  "suggestedPlayingHours": "खेलने के सुझाए गए घंटे",
+  "bestTimeToPlay": "खेलने का सबसे अच्छा समय",
+  "mySportsSpaceTitle": "मेरा खेल स्थान",
+  "statHosted": "की मेजबानी",
+  "statUpcoming": "आगामी",
+  "sportsJourney": "मेरी खेल यात्रा",
+  "upcomingGames": "आगामी खेल",
+  "pastActivities": "पिछली गतिविधियां",
+  "hostedMatches": "आयोजित मैच",
+  "joinedMatches": "जुड़े हुए मैच",
+  "sportsInterests": "खेल रुचियां",
+  "editInterests": "रुचियाँ संपादित करें",
+  "noSportsInterests": "अभी तक कोई खेल रुचियां नहीं जोड़ी गईं.",
+  "noJourneyActivities": "इस अनुभाग में कोई गतिविधि नहीं.",
+  "achievementsTitle": "खेल उपलब्धियाँ",
+  "achievementFirstHost": "प्रथम मेज़बान",
+  "achievementFirstHostDesc": "अपना पहला मैच आयोजित किया",
+  "achievementTeamPlayer": "टीम के खिलाड़ी",
+  "achievementTeamPlayerDesc": "एक खेल गतिविधि में शामिल हुए",
+  "achievementActiveAthlete": "सक्रिय एथलीट",
+  "achievementActiveAthleteDesc": "5 खेल गतिविधियाँ पूरी कीं",
+  "achievementSportsLegend": "खेल किंवदंती",
+  "achievementSportsLegendDesc": "10 खेल गतिविधियाँ पूरी कीं",
+  "quickActions": "त्वरित कार्रवाई",
+  "quickActionFindGame": "एक खेल खोजें",
+  "quickActionOrganize": "मैच का आयोजन करें",
+  "quickActionMyMatches": "मेरे मैच",
+  "quickActionChats": "टीम चैट",
+  "participantRoleHost": "मेज़बान",
+  "participantRolePlayer": "खिलाड़ी",
+  "statusOpen": "खुला",
+  "statusPending": "लंबित",
+  "statusAccepted": "स्वीकृत",
+  "statusRejected": "अस्वीकार कर दिया",
+  "onboardingSkip": "छोड़ें",
+  "onboardingBack": "पीछे",
+  "onboardingGetStarted": "शुरू करें",
+  "onboardingContinue": "आगे बढ़ें",
+  "onboardingLetsPlay": "चलो खेलें",
+  "onboardingAlreadyHaveAccount": "क्या आपके पास पहले से खाता है? ",
+  "onboardingSignIn": "साइन इन करें",
+  "onboardingSlide1Title": "आपका खेल। आपकी टीम।",
+  "onboardingSlide1Tagline": "भाई, टीम बनाओ! मैच जमाओ!",
+  "onboardingSlide1Desc": "खिलाड़ी खोजें, टीम बनाएं और योजनाओं को असली मैच में बदलें।",
+  "onboardingSlide2Title": "खिलाड़ी कम हैं? खेलभाई है ना!",
+  "onboardingSlide2Desc": "अपने आस-पास ऐसे लोगों को खोजें जो आपके अगले खेल में शामिल होने के लिए तैयार हैं।",
+  "onboardingSlide3Title": "गेम बनाओ। टीम बुलाओ।",
+  "onboardingSlide3Desc": "मैच आयोजित करें, आस-पास की गतिविधियां खोजें और मैदान में उतरें।",
+  "onboardingSlide4Title": "टीम बनी? अब मैच जमाओ!",
+  "onboardingSlide4Desc": "साथियों के साथ चैट करें, योजना बनाएं और खेलने के लिए तैयार हो जाएं।",
+  "onboardingReadyHeading": "तैयार, भाई? चलो खेलते हैं!",
+  "completedMatches": "पूर्ण मैच",
+  "verifiedEmail": "सत्यापित"
+}

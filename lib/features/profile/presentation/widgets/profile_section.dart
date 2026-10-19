@@ -26,13 +26,11 @@ class ProfileSection extends StatelessWidget {
             ),
           ),
         ),
-        Container(
-          decoration: BoxDecoration(
-            color: context.surfaceColor,
+        Material(
+          color: context.surfaceColor,
+          shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(Dimensions.r16.dynamicR),
-            border: Border.all(
-              color: context.borderColor.withValues(alpha: 0.6),
-            ),
+            side: BorderSide(color: context.borderColor.withValues(alpha: 0.6)),
           ),
           clipBehavior: Clip.antiAlias,
           child: Column(children: items),

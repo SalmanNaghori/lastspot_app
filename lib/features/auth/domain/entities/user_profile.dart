@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import '../../../../core/extension/string_extension.dart';
 
 part 'user_profile.freezed.dart';
 part 'user_profile.g.dart';
@@ -32,4 +33,37 @@ abstract class UserProfile with _$UserProfile {
 
   factory UserProfile.fromJson(Map<String, dynamic> json) =>
       _$UserProfileFromJson(json);
+}
+
+extension UserProfileFormattingX on UserProfile {
+  /// City name with capitalized first characters (Title Case).
+  String? get formattedCity => city?.trim().toTitleCase();
+
+  /// Full name with capitalized first characters (Title Case).
+  String? get formattedFullName => fullName?.trim().toTitleCase();
+
+  /// Formatted display name with fallback support.
+  String displayName({String fallback = ''}) {
+    if (formattedFullName != null && formattedFullName!.isNotEmpty) {
+      return formattedFullName!;
+    }
+    return fallback;
+  }
+
+  /// Whether user has non-empty bio.
+  bool get hasBio => bio != null && bio!.trim().isNotEmpty;
+
+  /// Trimmed bio or empty string.
+  String get cleanBio => bio?.trim() ?? '';
+
+  /// Whether user has non-empty email.
+  bool get hasEmail => email != null && email!.trim().isNotEmpty;
+
+  /// Trimmed email or empty string.
+  String get cleanEmail => email?.trim() ?? '';
+
+  /// Whether user has a valid city or cityId.
+  bool get hasCity =>
+      (city != null && city!.trim().isNotEmpty) ||
+      (cityId != null && cityId!.isNotEmpty);
 }

@@ -1,0 +1,95 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "KhelBhai (Dev)",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main.dart",
+      "args": [
+        "--dart-define-from-file=env/dev.json"
+      ]
+    },
+    {
+      "name": "KhelBhai (Dev) + Banner",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main.dart",
+      "args": [
+        "--dart-define-from-file=env/dev.json",
+        "--dart-define=SHOW_BANNER=true"
+      ]
+    },
+    {
+      "name": "KhelBhai (Local)",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main.dart",
+      "args": [
+        "--dart-define-from-file=env/local.json"
+      ]
+    },
+    {
+      "name": "KhelBhai (Local) + Banner",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main.dart",
+      "args": [
+        "--dart-define-from-file=env/local.json",
+        "--dart-define=SHOW_BANNER=true"
+      ]
+    },
+    {
+      "name": "KhelBhai (Staging)",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main.dart",
+      "args": [
+        "--dart-define-from-file=env/staging.json"
+      ]
+    },
+    {
+      "name": "KhelBhai (Staging) + Banner",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main.dart",
+      "args": [
+        "--dart-define-from-file=env/staging.json",
+        "--dart-define=SHOW_BANNER=true"
+      ]
+    },
+    {
+      "name": "KhelBhai (Prod)",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main.dart",
+      "args": [
+        "--dart-define-from-file=env/prod.json"
+      ]
+    },
+    {
+      "name": "main.dart",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main.dart"
+    },
+    {
+      "name": "Release Mode Run APK",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "release",
+      "program": "lib/main.dart",
+      "args": [
+        "--dart-define-from-file=env/prod.json"
+      ]
+    }
+  ],
+  "compounds": [
+    {
+      "name": "All Configurations (Dev with Banner)",
+      "configurations": [
+        "KhelBhai (Dev) + Banner"
+      ]
+    }
+  ]
+}

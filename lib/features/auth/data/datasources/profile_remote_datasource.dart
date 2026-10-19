@@ -29,7 +29,19 @@ class SupabaseProfileDataSourceImpl implements ProfileRemoteDataSource {
         .maybeSingle();
 
     if (response == null) return null;
-    return UserProfile.fromJson(response);
+
+    final profileData = Map<String, dynamic>.from(response);
+    final authUser = _client.auth.currentUser;
+    if (authUser != null &&
+        authUser.id == userId &&
+        authUser.email != null &&
+        authUser.email!.isNotEmpty) {
+      final existingEmail = profileData['email']?.toString().trim();
+      if (existingEmail == null || existingEmail.isEmpty) {
+        profileData['email'] = authUser.email;
+      }
+    }
+    return UserProfile.fromJson(profileData);
   }
 
   @override

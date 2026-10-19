@@ -3,9 +3,7 @@ import 'package:lastspot_app/core/base_import.dart';
 import '../../../categories/domain/entities/category.dart';
 import '../../domain/entities/request_entity.dart';
 import '../bloc/home_state.dart';
-import 'activity_card.dart';
 import 'compact_spot_card.dart';
-import 'feed_skeleton_loading.dart';
 import 'home_section_header.dart';
 
 class HomeActivityFeed extends StatelessWidget {
@@ -29,16 +27,16 @@ class HomeActivityFeed extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (state is HomeInitial || state is HomeLoading) {
-      return const SliverToBoxAdapter(child: FeedSkeletonLoading());
+      return SliverToBoxAdapter(child: AppLoading.shimmerFeed());
     }
     if (state is HomeNetworkError || state is HomeServerError) {
       final isNetworkError = state is HomeNetworkError;
       return SliverToBoxAdapter(
-        child: HomeActivityFeedError(
+        child: AppErrorState(
           message: isNetworkError
               ? context.loc.homeFeedNetworkError
               : context.loc.homeFeedLoadError,
-          icon: isNetworkError ? Icons.wifi_off : Icons.error_outline,
+          isNetwork: isNetworkError,
           onRetry: onRetry,
         ),
       );
@@ -48,20 +46,24 @@ class HomeActivityFeed extends StatelessWidget {
     final home = state as HomeSuccess;
     if (home.hasFeedError) {
       return SliverToBoxAdapter(
-        child: HomeActivityFeedError(
+        child: AppErrorState(
           message: home.isFeedNetworkError
               ? context.loc.homeFeedNetworkError
               : context.loc.homeFeedLoadError,
-          icon: home.isFeedNetworkError ? Icons.wifi_off : Icons.error_outline,
+          isNetwork: home.isFeedNetworkError,
           onRetry: onRetry,
         ),
       );
     }
     if (home.isEmpty) {
       return SliverToBoxAdapter(
-        child: HomeActivityFeedEmptyState(
-          onCreateActivity: onCreateActivity,
-          onViewAll: onViewAll,
+        child: AppEmptyState.activities(
+          title: context.loc.noActivitiesFound,
+          message: context.loc.noActivitiesInArea,
+          actionLabel: context.loc.homeCreateActivity,
+          onActionPressed: onCreateActivity,
+          secondaryActionLabel: context.loc.navExplore,
+          onSecondaryActionPressed: onViewAll,
         ),
       );
     }
@@ -216,107 +218,4 @@ class HomeActivityFeedItem extends StatelessWidget {
       child: child,
     );
   }
-}
-
-class HomeActivityFeedError extends StatelessWidget {
-  final String message;
-  final IconData icon;
-  final VoidCallback onRetry;
-
-  const HomeActivityFeedError({
-    super.key,
-    required this.message,
-    required this.icon,
-    required this.onRetry,
-  });
-
-  @override
-  Widget build(BuildContext context) => Padding(
-    padding: const EdgeInsets.all(AppSpacing.xxl),
-    child: Column(
-      children: [
-        Icon(icon, size: Dimensions.r48, color: context.textSecondary),
-        const SizedBox(height: AppSpacing.md),
-        Text(
-          message,
-          textAlign: TextAlign.center,
-          style: context.bodyMedium?.copyWith(color: context.textSecondary),
-        ),
-        const SizedBox(height: AppSpacing.md),
-        FilledButton(onPressed: onRetry, child: Text(context.loc.retry)),
-      ],
-    ),
-  );
-}
-
-class HomeActivityFeedEmptyState extends StatelessWidget {
-  final VoidCallback onCreateActivity;
-  final VoidCallback onViewAll;
-
-  const HomeActivityFeedEmptyState({
-    super.key,
-    required this.onCreateActivity,
-    required this.onViewAll,
-  });
-
-  @override
-  Widget build(BuildContext context) => Padding(
-    padding: const EdgeInsets.symmetric(
-      horizontal: AppSpacing.xxl,
-      vertical: AppSpacing.xxxl,
-    ),
-    child: Column(
-      children: [
-        AppAssets.emptyActivitiesGen.image(
-          width: Dimensions.r96.dynamicW * 1.5,
-          height: Dimensions.r96.dynamicH * 1.5,
-          cacheWidth: 400,
-          cacheHeight: 400,
-          fit: BoxFit.contain,
-          errorBuilder: (context, error, stackTrace) {
-            return Container(
-              padding: const EdgeInsets.all(AppSpacing.lg),
-              decoration: BoxDecoration(
-                color: context.colorScheme.primaryContainer,
-                shape: BoxShape.circle,
-              ),
-              child: Icon(
-                Icons.explore_outlined,
-                size: Dimensions.r48,
-                color: context.colorScheme.onPrimaryContainer,
-              ),
-            );
-          },
-        ),
-        const SizedBox(height: AppSpacing.lg),
-        Text(
-          context.loc.noActivitiesFound,
-          textAlign: TextAlign.center,
-          style: context.titleMedium,
-        ),
-        const SizedBox(height: AppSpacing.sm),
-        Text(
-          context.loc.noActivitiesInArea,
-          textAlign: TextAlign.center,
-          style: context.bodyMedium?.copyWith(color: context.textSecondary),
-        ),
-        const SizedBox(height: AppSpacing.xxl),
-        SizedBox(
-          width: double.infinity,
-          child: FilledButton(
-            onPressed: onCreateActivity,
-            child: Text(context.loc.homeCreateActivity),
-          ),
-        ),
-        const SizedBox(height: AppSpacing.md),
-        SizedBox(
-          width: double.infinity,
-          child: OutlinedButton(
-            onPressed: onViewAll,
-            child: Text(context.loc.navExplore),
-          ),
-        ),
-      ],
-    ),
-  );
 }

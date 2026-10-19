@@ -33,7 +33,10 @@ class ChatRepositoryImpl extends BaseRepository implements ChatRepository {
   Future<Result<List<ChatConversationEntity>, Exception>> getMyConversations() {
     return executeApi<List<ChatConversationEntity>>(
       operationName: 'chat.getMyConversations',
-      operation: () => _remoteDataSource.getMyConversations(),
+      operation: () async {
+        final models = await _remoteDataSource.getMyConversations();
+        return models.map((m) => m.toEntity()).toList();
+      },
     );
   }
 
@@ -84,5 +87,10 @@ class ChatRepositoryImpl extends BaseRepository implements ChatRepository {
   @override
   Stream<ChatMessageEntity> streamMessages(String conversationId) {
     return _remoteDataSource.streamMessages(conversationId);
+  }
+
+  @override
+  Stream<ChatMessageEntity> streamUserMessages() {
+    return _remoteDataSource.streamUserMessages();
   }
 }

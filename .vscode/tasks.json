@@ -1,0 +1,122 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Build APK (Dev) + Banner",
+      "type": "shell",
+      "command": "bash tool/build_apk_with_banner.sh dev true",
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "Build APK (Dev)",
+      "type": "shell",
+      "command": "bash tool/build_apk_with_banner.sh dev false",
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "Build APK (Local) + Banner",
+      "type": "shell",
+      "command": "bash tool/build_apk_with_banner.sh local true",
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "Build APK (Staging)",
+      "type": "shell",
+      "command": "bash tool/build_apk_with_banner.sh staging false",
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "Build APK (Staging) + Banner",
+      "type": "shell",
+      "command": "bash tool/build_apk_with_banner.sh staging true",
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "Build APK (Prod)",
+      "type": "shell",
+      "command": "bash tool/build_apk_with_banner.sh prod false",
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "Build AAB (Prod)",
+      "type": "shell",
+      "command": "VERSION=$(grep '^version:' pubspec.yaml | awk '{print $2}') && fvm flutter build appbundle --release --dart-define-from-file=env/prod.json --build-name=$(echo $VERSION | cut -d+ -f1) --build-number=$(echo $VERSION | cut -d+ -f2)",
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "Build IPA (Dev)",
+      "type": "shell",
+      "command": "VERSION=$(grep '^version:' pubspec.yaml | awk '{print $2}') && fvm flutter build ipa --debug --dart-define-from-file=env/dev.json --build-name=$(echo $VERSION | cut -d+ -f1) --build-number=$(echo $VERSION | cut -d+ -f2)",
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "Build IPA (Dev) + Banner",
+      "type": "shell",
+      "command": "VERSION=$(grep '^version:' pubspec.yaml | awk '{print $2}') && fvm flutter build ipa --debug --dart-define-from-file=env/dev.json --dart-define=SHOW_BANNER=true --build-name=$(echo $VERSION | cut -d+ -f1) --build-number=$(echo $VERSION | cut -d+ -f2)",
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "Build IPA (Local) + Banner",
+      "type": "shell",
+      "command": "VERSION=$(grep '^version:' pubspec.yaml | awk '{print $2}') && fvm flutter build ipa --debug --dart-define-from-file=env/local.json --dart-define=SHOW_BANNER=true --build-name=$(echo $VERSION | cut -d+ -f1) --build-number=$(echo $VERSION | cut -d+ -f2)",
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "Build IPA (Staging)",
+      "type": "shell",
+      "command": "VERSION=$(grep '^version:' pubspec.yaml | awk '{print $2}') && fvm flutter build ipa --profile --dart-define-from-file=env/staging.json --build-name=$(echo $VERSION | cut -d+ -f1) --build-number=$(echo $VERSION | cut -d+ -f2)",
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "Build IPA (Staging) + Banner",
+      "type": "shell",
+      "command": "VERSION=$(grep '^version:' pubspec.yaml | awk '{print $2}') && fvm flutter build ipa --profile --dart-define-from-file=env/staging.json --dart-define=SHOW_BANNER=true --build-name=$(echo $VERSION | cut -d+ -f1) --build-number=$(echo $VERSION | cut -d+ -f2)",
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "Build IPA (Prod)",
+      "type": "shell",
+      "command": "VERSION=$(grep '^version:' pubspec.yaml | awk '{print $2}') && fvm flutter build ipa --release --dart-define-from-file=env/prod.json --build-name=$(echo $VERSION | cut -d+ -f1) --build-number=$(echo $VERSION | cut -d+ -f2)",
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "Release Mode Run APK",
+      "type": "shell",
+      "command": "fvm flutter run --release --dart-define-from-file=env/prod.json",
+      "problemMatcher": []
+    },
+    {
+      "label": "Clean and Pub Get",
+      "type": "shell",
+      "command": "fvm flutter clean && fvm flutter pub get",
+      "problemMatcher": []
+    },
+    {
+      "label": "Build APK",
+      "type": "shell",
+      "command": "fvm flutter build apk --release",
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "Build IPA",
+      "type": "shell",
+      "command": "fvm flutter build ipa --release",
+      "group": "build",
+      "problemMatcher": []
+    }
+  ]
+}

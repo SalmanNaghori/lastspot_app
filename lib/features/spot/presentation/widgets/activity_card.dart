@@ -87,11 +87,27 @@ class _ActivityCardState extends State<ActivityCard> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          '${widget.categoryIcon} ${widget.categoryName}',
-                          style: type.labelMedium?.copyWith(
-                            color: colors.primary,
-                          ),
+                        Row(
+                          children: [
+                            Category3DIcon(
+                              category: spot.categoryId,
+                              size: Dimensions.r16.dynamicH,
+                            ),
+                            SizedBox(width: Dimensions.r6.dynamicW),
+                            Text(
+                              AppAssets.resolveCategoryName(
+                                    spot.categoryId,
+                                  ).isNotEmpty
+                                  ? AppAssets.resolveCategoryName(
+                                      spot.categoryId,
+                                    ).capitalizeFirst()
+                                  : widget.categoryName,
+                              style: type.labelMedium?.copyWith(
+                                color: colors.primary,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                          ],
                         ),
                         const SizedBox(height: AppSpacing.sm),
                         Text(
@@ -111,10 +127,9 @@ class _ActivityCardState extends State<ActivityCard> {
                         const SizedBox(height: AppSpacing.md),
                         Row(
                           children: [
-                            Icon(
-                              Icons.schedule_rounded,
-                              size: AppSpacing.md,
-                              color: colors.onSurfaceVariant,
+                            ActivityMetadataIcon.calendar(
+                              size: Dimensions.r16.dynamicH,
+                              fallbackColor: colors.onSurfaceVariant,
                             ),
                             const SizedBox(width: AppSpacing.sm),
                             Expanded(
@@ -131,10 +146,9 @@ class _ActivityCardState extends State<ActivityCard> {
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Icon(
-                              Icons.location_on_outlined,
-                              size: AppSpacing.md,
-                              color: colors.onSurfaceVariant,
+                            ActivityMetadataIcon.location(
+                              size: Dimensions.r16.dynamicH,
+                              fallbackColor: colors.onSurfaceVariant,
                             ),
                             const SizedBox(width: AppSpacing.sm),
                             Expanded(

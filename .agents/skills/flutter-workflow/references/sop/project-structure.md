@@ -22,8 +22,8 @@ Directory layout for each architecture level, feature-first vs layer-first, brow
 
 | Situation | What to do |
 |-----------|------------|
-| Greenfield / no real app code; an unset Orientation alone is insufficient | Stop. Ask Feature First vs Layer First (`checklists/greenfield-kickoff.md`). Do not scaffold `lib/` until answered. |
-| Existing app, orientation already recorded | Follow `docs/project/flutter/project-rules.md` PR-A1 / PR-A2. Do not re-ask. |
+| Greenfield / empty `lib/` / Orientation `_TBD_` | Stop. Ask Feature First vs Layer First (`checklists/greenfield-kickoff.md`). Do not scaffold `lib/` until answered. |
+| Existing app, orientation already recorded | Follow `project/project-rules.md` PR-A1 / PR-A2. Do not re-ask. |
 | Existing app, no orientation recorded | Detect the current tree. Ask **Stay** vs **Strangler** once (below). Do not run the greenfield ask. |
 
 Feature First is RECOMMENDED for new L2+ apps. Layer First is a valid L3 variant when chosen in an ADR.
@@ -40,7 +40,68 @@ lib/
   services/
 ```
 
-### L2+ Feature First (RECOMMENDED for new projects)
+#### L2+ Feature First (RECOMMENDED for new projects)
+
+Each feature carries its own `data / domain / presentation` layers. Layer rules (ARCH-1) apply inside the feature exactly as they do in Layer First; only the nesting differs.
+
+```text
+lib/
+  main.dart
+  app/                            app widget, bootstrap, DI composition root
+  core/
+    network/  routing/  theme/  storage/  di/  errors/  utils/
+  shared/
+    widgets/                      design-system and 2+ feature widgets
+    models/                       models used by 2+ features
+  features/
+    <feature>/
+      data/
+        models/                   request/response models for this feature
+        data_sources/             remote/local data sources, API services
+        repositories/             <x>_repository_impl.dart
+      domain/
+        repositories/             <x>_repository.dart (abstract contract, imports models only)
+        usecases/                 OPTIONAL — only when FEAT-3 says so
+        entities/                 OPTIONAL — only when FEAT-3 says so
+        policies/                 OPTIONAL — only when FEAT-3 says so
+      presentation/
+        screens/                    routed screens only
+        widgets/                  feature-only widgets
+        controller/               state holders (Notifier / Cubit / Bloc; file name follows the state ADR)
+test/
+  features/<feature>/
+    data/ domain/ presentation/   mirrors lib/
+  core/...
+```
+
+Layer mapping (ARCH-1 still applies):
+
+| Layer | Feature First folders |
+|-------|------------------------|
+| presentation | `features/<x>/presentation/` (`screens/`, `widgets/`, `controller/`) |
+| domain | `features/<x>/domain/` (`repositories/` always; `usecases/`, `entities/`, `policies/` when added) |
+| data | `features/<x>/data/` (`models/`, `data_sources/`, `repositories/`) |
+| core | `lib/core/`, never imports a feature |
+
+Dependency direction: `presentation → domain ← data`. Screens and widgets never call HTTP or data sources. Controllers talk to domain contracts (repository interfaces or use cases), never to `data/` directly. `controller/` is the folder name regardless of Riverpod vs Bloc.
+
+Placement for a new feature `foo` (Feature First):
+
+| Artifact | Path |
+|----------|------|
+| Screen | `lib/features/foo/presentation/screens/foo_screen.dart` |
+| Screen widgets | `lib/features/foo/presentation/widgets/` |
+| Controller / notifier / cubit | `lib/features/foo/presentation/controller/foo_controller.dart` (or `foo_notifier.dart` / `foo_cubit.dart` per state ADR) |
+| Request / response models | `lib/features/foo/data/models/` |
+| Data sources / API services | `lib/features/foo/data/data_sources/foo_remote_data_source.dart` |
+| Repository impl | `lib/features/foo/data/repositories/foo_repository_impl.dart` |
+| Repository interface | `lib/features/foo/domain/repositories/foo_repository.dart` (imports models only) |
+| Use cases / entities / policies | `lib/features/foo/domain/{usecases,entities,policies}/` (only when FEAT-3 says so) |
+| Shared widget | `lib/shared/widgets/` |
+| Route | project's router (usually `lib/core/routing/` or `lib/core/navigation/`) |
+| Tests | `test/features/foo/{data,domain,presentation}/...` mirroring `lib/` |
+
+`domain/repositories/` is always present. Do **not** add `usecases/`, `entities/` or `policies/` by default.
 
 Junior-friendly type folders **inside** each feature. Layer rules still apply; only the folders change.
 
@@ -55,7 +116,7 @@ lib/
     models/                     models used by 2+ features
   features/
     <feature>/
-      views/                    routed screens only
+      screens/                    routed screens only
       widgets/                  feature-only widgets
       controller/               state holders (Notifier / Cubit / Bloc — file name follows the state ADR)
       models/                   request/response models for this feature
@@ -71,7 +132,7 @@ Layer mapping (ARCH-1 still applies):
 
 | Layer | Feature First folders |
 |-------|------------------------|
-| presentation | `views/` + `widgets/` + `controller/` |
+| presentation | `screens/` + `widgets/` + `controller/` |
 | domain | repository interface `services/<x>_repository.dart` + `domain/` (use cases, entities, policies) when added |
 | data | the rest of `services/` (repository impls, data sources) + `models/` |
 | core | `lib/core/` — never imports a feature |
@@ -82,7 +143,7 @@ Placement for a new feature `foo` (Feature First):
 
 | Artifact | Path |
 |----------|------|
-| Screen | `lib/features/foo/views/foo_screen.dart` |
+| Screen | `lib/features/foo/screens/foo_screen.dart` |
 | Screen widgets | `lib/features/foo/widgets/` |
 | Controller / notifier / cubit | `lib/features/foo/controller/foo_controller.dart` (or `foo_notifier.dart` / `foo_cubit.dart` per state ADR) |
 | Models | `lib/features/foo/models/` |
@@ -137,7 +198,7 @@ A full move (`lib/layers/` → `lib/features/`) is **not** the upgrade path. It 
 
 Strangler rules:
 
-1. Record in an ADR + `docs/project/flutter/project-rules.md`: `Orientation: mixed` — name the **legacy root** (e.g. `lib/layers/`) and the **new-feature root** (`lib/features/`). Keep a short feature→tree map, or "all legacy until listed".
+1. Record in an ADR + `project/project-rules.md`: `Orientation: mixed` — name the **legacy root** (e.g. `lib/layers/`) and the **new-feature root** (`lib/features/`). Keep a short feature→tree map, or "all legacy until listed".
 2. **One orientation per feature.** Never put a screen in `lib/features/foo` while its state holder stays in `lib/layers/presentation/cubit/foo`.
 3. Before creating a file, search which tree that **feature** already occupies; put the file there. Use `lib/features/` only when the feature does not exist yet.
 4. Relocate a feature only when it is already being rewritten (dedicated PR, tests in the same change, one feature at a time). No drive-by `git mv`.
@@ -168,7 +229,7 @@ melos.yaml | pubspec workspace
 
 ## Recommended implementation
 
-- Add a `tool/` or `.agents/skills/flutter-workflow/scripts/` folder for repeatable commands (`build_runner`, format, analyze) instead of documenting them only in README.
+- Add a `tool/` or `scripts/` folder for repeatable commands (`build_runner`, format, analyze) instead of documenting them only in README.
 - Keep `lib/layers/utils` (or `core/utils`) for pure Dart helpers only; anything importing Flutter widgets belongs in presentation (`views/` / `widgets/` / `controller/`, or `presentation/` in Layer First).
 
 ## Examples

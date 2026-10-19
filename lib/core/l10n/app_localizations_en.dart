@@ -9,7 +9,7 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
-  String get appName => 'LastSpot';
+  String get appName => 'KhelBhai';
 
   @override
   String todayAt(Object time) {
@@ -22,7 +22,7 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get appDescription => 'On-Demand Sports & Activity Partner Finder';
+  String get appDescription => 'Bhai, Team Banao! Match Jamao!';
 
   @override
   String get updateNow => 'Update Now';
@@ -180,6 +180,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get groupChat => 'Group chat';
 
   @override
+  String get activity => 'Activity';
+
+  @override
   String get messageHint => 'Write a message';
 
   @override
@@ -268,7 +271,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get logoutDialogMessage =>
-      'You\'ll need to sign in again to access your LastSpot account.';
+      'You\'ll need to sign in again to access your KhelBhai account.';
 
   @override
   String get cancel => 'Cancel';
@@ -343,6 +346,13 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get popularSportsSubtitle =>
       'Find your favorite sport and join the action';
+
+  @override
+  String get sportsCarouselHint =>
+      'Swipe to explore sports · Tap to view activities';
+
+  @override
+  String get searchCityHint => 'Search city or state...';
 
   @override
   String get nearbyActivities => 'Nearby Activities';
@@ -512,7 +522,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get languageEnglish => 'English';
 
   @override
-  String get languageFrench => 'French';
+  String get languageHindi => 'Hindi';
+
+  @override
+  String get languageGujarati => 'Gujarati';
 
   @override
   String get cityRequiredError => 'Please select a city';
@@ -1403,4 +1416,161 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get bestTimeToPlay => 'Best Time to Play';
+
+  @override
+  String get mySportsSpaceTitle => 'My Sports Space';
+
+  @override
+  String get statHosted => 'Hosted';
+
+  @override
+  String get statUpcoming => 'Upcoming';
+
+  @override
+  String get sportsJourney => 'My Sports Journey';
+
+  @override
+  String get upcomingGames => 'Upcoming Games';
+
+  @override
+  String get pastActivities => 'Past Activities';
+
+  @override
+  String get hostedMatches => 'Hosted Matches';
+
+  @override
+  String get joinedMatches => 'Joined Matches';
+
+  @override
+  String get sportsInterests => 'Sports Interests';
+
+  @override
+  String get editInterests => 'Edit Interests';
+
+  @override
+  String get noSportsInterests => 'No sports interests added yet.';
+
+  @override
+  String get noJourneyActivities => 'No activities in this section.';
+
+  @override
+  String get achievementsTitle => 'Sports Achievements';
+
+  @override
+  String get achievementFirstHost => 'First Host';
+
+  @override
+  String get achievementFirstHostDesc => 'Organized your first match';
+
+  @override
+  String get achievementTeamPlayer => 'Team Player';
+
+  @override
+  String get achievementTeamPlayerDesc => 'Joined a sports activity';
+
+  @override
+  String get achievementActiveAthlete => 'Active Athlete';
+
+  @override
+  String get achievementActiveAthleteDesc => 'Completed 5 sports activities';
+
+  @override
+  String get achievementSportsLegend => 'Sports Legend';
+
+  @override
+  String get achievementSportsLegendDesc => 'Completed 10 sports activities';
+
+  @override
+  String get quickActions => 'Quick Actions';
+
+  @override
+  String get quickActionFindGame => 'Find a Game';
+
+  @override
+  String get quickActionOrganize => 'Organize Match';
+
+  @override
+  String get quickActionMyMatches => 'My Matches';
+
+  @override
+  String get quickActionChats => 'Team Chats';
+
+  @override
+  String get participantRoleHost => 'Host';
+
+  @override
+  String get participantRolePlayer => 'Player';
+
+  @override
+  String get statusOpen => 'Open';
+
+  @override
+  String get statusPending => 'Pending';
+
+  @override
+  String get statusAccepted => 'Accepted';
+
+  @override
+  String get statusRejected => 'Rejected';
+
+  @override
+  String get onboardingSkip => 'Skip';
+
+  @override
+  String get onboardingBack => 'Back';
+
+  @override
+  String get onboardingGetStarted => 'Get Started';
+
+  @override
+  String get onboardingContinue => 'Continue';
+
+  @override
+  String get onboardingLetsPlay => 'Let\'s Play';
+
+  @override
+  String get onboardingAlreadyHaveAccount => 'Already have an account? ';
+
+  @override
+  String get onboardingSignIn => 'Sign In';
+
+  @override
+  String get onboardingSlide1Title => 'Your Game. Your Gang.';
+
+  @override
+  String get onboardingSlide1Tagline => 'Bhai, Team Banao! Match Jamao!';
+
+  @override
+  String get onboardingSlide1Desc =>
+      'Find players, make teams, and turn plans into real games.';
+
+  @override
+  String get onboardingSlide2Title => 'Players Kam Hai? KhelBhai Hai Na!';
+
+  @override
+  String get onboardingSlide2Desc =>
+      'Find people nearby who are ready to join your next game.';
+
+  @override
+  String get onboardingSlide3Title => 'Game Banao. Gang Bulao.';
+
+  @override
+  String get onboardingSlide3Desc =>
+      'Host a match, discover activities, and join the action.';
+
+  @override
+  String get onboardingSlide4Title => 'Team Bani? Ab Game Jamao!';
+
+  @override
+  String get onboardingSlide4Desc =>
+      'Chat with teammates, coordinate plans, and get ready to play.';
+
+  @override
+  String get onboardingReadyHeading => 'Ready, Bhai? Let\'s Play!';
+
+  @override
+  String get completedMatches => 'Completed Matches';
+
+  @override
+  String get verifiedEmail => 'Verified';
 }

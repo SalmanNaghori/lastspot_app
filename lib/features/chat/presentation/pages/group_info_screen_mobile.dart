@@ -22,8 +22,6 @@ class GroupInfoScreenMobile extends StatelessWidget {
   Widget build(BuildContext context) {
     final colors = context.colorScheme;
     final loc = context.loc;
-    final categoryEmoji = AppUtils.getCategoryEmoji(post.title);
-    final categoryIcon = AppUtils.getCategoryIcon(post.title);
     final totalCount = confirmedPlayers.length + 1; // +1 for host
 
     return Scaffold(
@@ -66,22 +64,16 @@ class GroupInfoScreenMobile extends StatelessWidget {
                     shape: BoxShape.circle,
                   ),
                   child: Center(
-                    child: AppAssets.getCategoryGen(post.title).image(
-                      width: Dimensions.r48.dynamicW,
-                      height: Dimensions.r48.dynamicH,
-                      fit: BoxFit.contain,
-                      errorBuilder: (context, error, stackTrace) => Icon(
-                        categoryIcon,
-                        size: Dimensions.r32.dynamicH,
-                        color: context.primaryColor,
-                      ),
+                    child: Category3DIcon(
+                      category: post.categoryId,
+                      size: Dimensions.r48.dynamicH,
                     ),
                   ),
                 ),
                 SizedBox(height: Dimensions.r12.dynamicH),
                 Text(
                   post.title.trim().isNotEmpty
-                      ? '${post.title.trim()} $categoryEmoji'
+                      ? post.title.trim()
                       : loc.groupChat,
                   style: context.titleLarge?.copyWith(
                     fontWeight: FontWeight.bold,
@@ -123,7 +115,10 @@ class GroupInfoScreenMobile extends StatelessWidget {
               children: [
                 _buildInfoRow(
                   context,
-                  Icons.calendar_today_outlined,
+                  ActivityMetadataIcon.calendar(
+                    size: Dimensions.r18.dynamicH,
+                    fallbackColor: colors.primary,
+                  ),
                   AppUtils.formatDateTime(post.eventDateTime.toLocal()),
                 ),
                 Divider(
@@ -132,7 +127,10 @@ class GroupInfoScreenMobile extends StatelessWidget {
                 ),
                 _buildInfoRow(
                   context,
-                  Icons.location_on_outlined,
+                  ActivityMetadataIcon.location(
+                    size: Dimensions.r18.dynamicH,
+                    fallbackColor: colors.primary,
+                  ),
                   post.locationName,
                 ),
                 Divider(
@@ -141,7 +139,10 @@ class GroupInfoScreenMobile extends StatelessWidget {
                 ),
                 _buildInfoRow(
                   context,
-                  Icons.people_outline,
+                  ActivityMetadataIcon.participants(
+                    size: Dimensions.r18.dynamicH,
+                    fallbackColor: colors.primary,
+                  ),
                   '${post.currentParticipants}/${post.maxParticipants} ${loc.joined}',
                 ),
                 Divider(
@@ -150,7 +151,10 @@ class GroupInfoScreenMobile extends StatelessWidget {
                 ),
                 _buildInfoRow(
                   context,
-                  Icons.payments_outlined,
+                  ActivityMetadataIcon.priceTag(
+                    size: Dimensions.r18.dynamicH,
+                    fallbackColor: colors.primary,
+                  ),
                   post.pricePerPerson > 0
                       ? '${AppUtils.formatCurrency(post.pricePerPerson)} ${loc.perPerson}'
                       : loc.free,
@@ -235,11 +239,11 @@ class GroupInfoScreenMobile extends StatelessWidget {
     );
   }
 
-  Widget _buildInfoRow(BuildContext context, IconData icon, String text) {
+  Widget _buildInfoRow(BuildContext context, Widget leading, String text) {
     final colors = context.colorScheme;
     return Row(
       children: [
-        Icon(icon, size: Dimensions.r18.dynamicH, color: colors.primary),
+        leading,
         SizedBox(width: Dimensions.r12.dynamicW),
         Expanded(
           child: Text(

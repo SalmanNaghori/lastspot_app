@@ -8,9 +8,11 @@ class AppString {
   AppString._();
 
   // App-wide branding & configuration
-  static const String appName = 'LastSpot';
-  static const String appNamePrefix = 'Last';
-  static const String appNameSuffix = 'Spot';
+  static const String appName = 'KhelBhai';
+  static const String appNamePrefix = 'Khel';
+  static const String appNameSuffix = 'Bhai';
+  static const String appTagline = 'Bhai, Team Banao! Match Jamao!';
+  static const String appTaglineGujarati = 'ભાઈ, રમવા આવ ને!';
 
   // Notifications (fallbacks for non-contextual background services)
   static const String notificationPermissionTitle = 'Stay Updated';
@@ -26,4 +28,12 @@ class AppString {
   static const String host = 'Host';
   static const String ofText = 'of';
   static const String spots = 'Spots';
+
+  // Environment Banner Tokens
+  static const String envBannerLocal = 'LOCAL';
+  static const String envBannerDev = 'DEV';
+  static const String envBannerStaging = 'STAGING';
+  static const String envBannerProd = 'PROD';
+  static const String envBannerDebug = 'DEBUG';
+  static const String envBannerProfile = 'PROFILE';
 }

@@ -42,22 +42,15 @@ class SpotDetailsOverview extends StatelessWidget {
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Image.asset(
-                    AppAssets.getCategoryAsset(post.categoryId),
-                    width: Dimensions.r18.dynamicW,
-                    height: Dimensions.r18.dynamicH,
-                    cacheWidth: 64,
-                    cacheHeight: 64,
-                    fit: BoxFit.contain,
-                    errorBuilder: (context, error, stackTrace) => Icon(
-                      AppAssets.getCategoryFallbackIcon(post.categoryId),
-                      size: Dimensions.r14.dynamicH,
-                      color: context.primaryColor,
-                    ),
+                  Category3DIcon(
+                    category: post.categoryId,
+                    size: Dimensions.r18.dynamicH,
                   ),
                   SizedBox(width: Dimensions.r6.dynamicW),
                   Text(
-                    post.categoryId.toTitleCase(),
+                    AppAssets.resolveCategoryName(
+                      post.categoryId,
+                    ).capitalizeFirst(),
                     style: TextStyle(
                       fontSize: Dimensions.r11.dynamicSP,
                       fontWeight: FontWeight.w700,

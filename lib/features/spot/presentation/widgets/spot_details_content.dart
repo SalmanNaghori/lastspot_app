@@ -39,7 +39,7 @@ class SpotDetailsContent extends StatelessWidget {
               const SizedBox(height: AppSpacing.lg),
               SpotDetailsInfoCard(
                 icon: Icons.calendar_month_outlined,
-                assetPath: AppAssets.calendar3d,
+                assetPath: Assets.icons.calendar3d.path,
                 title: loc.detailsWhen,
                 value: AppUtils.formatDate(post.eventDateTime.toLocal()),
                 subtitle: AppUtils.formatTime(post.eventDateTime.toLocal()),
@@ -47,7 +47,9 @@ class SpotDetailsContent extends StatelessWidget {
               const SizedBox(height: AppSpacing.smLg),
               SpotDetailsInfoCard(
                 icon: Icons.location_on_outlined,
-                assetPath: AppAssets.locationPin3d,
+                leading: ActivityMetadataIcon.location(
+                  size: Dimensions.r24.dynamicH,
+                ),
                 title: loc.detailsWhere,
                 value: isSharedMapLink
                     ? loc.detailsSharedMapLink
@@ -92,8 +94,7 @@ class SpotDetailsContent extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Image.asset(
-                        AppAssets.participants3d,
+                      Assets.icons.participants3d.image(
                         width: Dimensions.r32.dynamicW,
                         height: Dimensions.r32.dynamicH,
                         fit: BoxFit.contain,

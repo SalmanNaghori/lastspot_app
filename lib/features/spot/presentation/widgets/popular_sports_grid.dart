@@ -3,7 +3,7 @@ import 'package:lastspot_app/core/widgets/sports_category_perspective_carousel.d
 import '../../../categories/domain/entities/category.dart';
 
 /// 3D perspective-stack sports category section for Home screen.
-class PopularSportsGrid extends StatelessWidget {
+class PopularSportsGrid extends StatefulWidget {
   final List<CategoryEntity> categories;
   final ValueChanged<CategoryEntity> onCategoryTap;
   final VoidCallback? onViewAll;
@@ -14,6 +14,25 @@ class PopularSportsGrid extends StatelessWidget {
     required this.onCategoryTap,
     this.onViewAll,
   });
+
+  @override
+  State<PopularSportsGrid> createState() => _PopularSportsGridState();
+}
+
+class _PopularSportsGridState extends State<PopularSportsGrid> {
+  final ValueNotifier<bool> _showHint = ValueNotifier<bool>(true);
+
+  @override
+  void dispose() {
+    _showHint.dispose();
+    super.dispose();
+  }
+
+  void _onCarouselInteraction() {
+    if (_showHint.value) {
+      _showHint.value = false;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,9 +55,9 @@ class PopularSportsGrid extends StatelessWidget {
                   letterSpacing: -0.3,
                 ),
               ),
-              if (onViewAll != null)
+              if (widget.onViewAll != null)
                 GestureDetector(
-                  onTap: onViewAll,
+                  onTap: widget.onViewAll,
                   child: Text(
                     loc.viewAll,
                     style: TextStyle(
@@ -54,9 +73,9 @@ class PopularSportsGrid extends StatelessWidget {
         SizedBox(height: Dimensions.r10.dynamicH),
         Builder(
           builder: (context) {
-            final displayCategories = categories.length > 12
-                ? categories.sublist(0, 12)
-                : categories;
+            final displayCategories = widget.categories.length > 12
+                ? widget.categories.sublist(0, 12)
+                : widget.categories;
 
             if (displayCategories.isEmpty) {
               return SizedBox(
@@ -86,7 +105,43 @@ class PopularSportsGrid extends StatelessWidget {
               key: const ValueKey('home_sports_perspective_carousel'),
               categories: displayCategories,
               mode: SportsCarouselMode.home,
-              onCategoryTap: onCategoryTap,
+              onCategoryTap: widget.onCategoryTap,
+              onInteraction: _onCarouselInteraction,
+            );
+          },
+        ),
+        ValueListenableBuilder<bool>(
+          valueListenable: _showHint,
+          builder: (context, showHint, _) {
+            return AnimatedCrossFade(
+              duration: const Duration(milliseconds: 300),
+              crossFadeState: showHint
+                  ? CrossFadeState.showFirst
+                  : CrossFadeState.showSecond,
+              firstChild: Padding(
+                padding: EdgeInsets.only(top: Dimensions.r8.dynamicH),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.swipe_outlined,
+                      size: Dimensions.r14.dynamicH,
+                      color: context.textSecondary.withValues(alpha: 0.8),
+                    ),
+                    SizedBox(width: Dimensions.r6.dynamicW),
+                    Text(
+                      loc.sportsCarouselHint,
+                      style: TextStyle(
+                        fontSize: Dimensions.r11.dynamicSP,
+                        fontWeight: FontWeight.w500,
+                        color: context.textSecondary,
+                        letterSpacing: -0.1,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              secondChild: const SizedBox.shrink(),
             );
           },
         ),
@@ -94,4 +149,3 @@ class PopularSportsGrid extends StatelessWidget {
     );
   }
 }
-

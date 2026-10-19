@@ -36,7 +36,8 @@ class ProfileHeader extends StatelessWidget {
           style: context.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
           textAlign: TextAlign.center,
         ),
-        if (profile.city != null && profile.city!.isNotEmpty) ...[
+        if (profile.formattedCity != null &&
+            profile.formattedCity!.isNotEmpty) ...[
           SizedBox(height: Dimensions.r4.dynamicH),
           Row(
             mainAxisSize: MainAxisSize.min,
@@ -48,7 +49,7 @@ class ProfileHeader extends StatelessWidget {
               ),
               SizedBox(width: Dimensions.r4.dynamicW),
               Text(
-                profile.city!,
+                profile.formattedCity!,
                 style: context.titleMedium?.copyWith(
                   color: context.colorScheme.onSurfaceVariant,
                 ),

@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "generator": "reposeed@0.13.0",
-  "generatedAt": "2026-10-14T17:03:36.668207+00:00",
+  "generator": "reposeed@0.13.1",
+  "generatedAt": "2026-10-19T08:46:54.767646+00:00",
   "platforms": [
     "antigravity"
   ],
@@ -306,7 +306,7 @@
       "mode": "file"
     },
     ".agents/skills/flutter-workflow/references/sop/project-structure.md": {
-      "sha256": "8dbd829d705ef9a8bdbaafd1a0899d6832e4fa8e4b174d3df554fa1248391fa9",
+      "sha256": "db5cacb29237ba0c7215f0c5e012e7aba5413e29941a2f9aa9d03e057c37124b",
       "source": "Flutter workflow",
       "mode": "file"
     },

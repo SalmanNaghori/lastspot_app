@@ -51,8 +51,7 @@ class SpotDetailsBookingPanel extends StatelessWidget {
             runSpacing: Dimensions.r4.dynamicH,
             crossAxisAlignment: WrapCrossAlignment.center,
             children: [
-              Image.asset(
-                AppAssets.priceTag3d,
+              Assets.icons.priceTag3d.image(
                 width: Dimensions.r22.dynamicW,
                 height: Dimensions.r22.dynamicH,
                 fit: BoxFit.contain,
@@ -79,8 +78,7 @@ class SpotDetailsBookingPanel extends StatelessWidget {
           SizedBox(height: Dimensions.r8.dynamicH),
           Row(
             children: [
-              Image.asset(
-                AppAssets.participants3d,
+              Assets.icons.participants3d.image(
                 width: Dimensions.r16.dynamicW,
                 height: Dimensions.r16.dynamicH,
                 fit: BoxFit.contain,
@@ -120,8 +118,14 @@ class SpotDetailsBookingPanel extends StatelessWidget {
                 final uri = Uri(
                   path: AppRoutes.chatPath(post.id),
                   queryParameters: {
+                    'is_direct': 'true',
                     'recipient': post.userId,
                     'name': post.hostProfile?.fullName ?? loc.messageHost,
+                    'request_id': post.id,
+                    if (post.title.trim().isNotEmpty)
+                      'activity_title': post.title.trim(),
+                    if (post.categoryId.trim().isNotEmpty)
+                      'category': post.categoryId.trim(),
                   },
                 );
                 context.push(uri.toString());

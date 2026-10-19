@@ -15,6 +15,14 @@ This app is governed by [`.agents/skills/flutter-workflow/references/`](.agents/
 
 Always run Flutter and Dart commands through FVM (`fvm flutter ...`, `fvm dart ...`).
 
+### Launcher artwork exports
+
+The square source is `assets/branding/khelbhai_launcher_master.png`. After changing
+it, run `bash tool/export_launcher_icons.sh` on macOS to export Android densities
+and every iOS AppIcon size. Keep the master square and opaque; platform launchers
+apply their own masks. Android's native splash preserves its original raster artwork
+documented in [the feature catalogue](docs/project/flutter/features.md#native-splash-and-launcher-icons).
+
 ## 2. Where Things Go
 
 - **Architecture:** Feature-First Clean Architecture per `docs/project/flutter/project-rules.md` §A.

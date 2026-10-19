@@ -26,7 +26,38 @@ class ChatTextFormatter {
       codeBackground,
       onUrlTap,
       recognizerForUrl,
+      isForPreview: false,
     );
+  }
+
+  /// Builds lightweight formatted InlineSpans for conversation preview tiles,
+  /// rendering bold, italic, and strikethrough without tap recognizers or heavy widgets.
+  static List<InlineSpan> buildPreviewSpans({
+    required String text,
+    required TextStyle baseStyle,
+  }) {
+    if (text.isEmpty) return const [];
+    return _parse(
+      text,
+      baseStyle,
+      baseStyle.color ?? Colors.transparent,
+      Colors.transparent,
+      (_) {},
+      null,
+      isForPreview: true,
+    );
+  }
+
+  /// Strips formatting delimiter characters (*, _, ~, `) for plain-text notification
+  /// and system previews (e.g. *yess* -> yess).
+  static String cleanPreview(String text) {
+    if (text.isEmpty) return text;
+    var result = text.replaceAll('```', '');
+    result = result.replaceAllMapped(
+      RegExp(r'([*_~`])(.+?)\1'),
+      (match) => match.group(2) ?? '',
+    );
+    return result.trim();
   }
 
   static List<InlineSpan> _parse(
@@ -35,8 +66,9 @@ class ChatTextFormatter {
     Color linkColor,
     Color codeBackground,
     void Function(String url) onUrlTap,
-    TapGestureRecognizer Function(String url)? recognizerForUrl,
-  ) {
+    TapGestureRecognizer Function(String url)? recognizerForUrl, {
+    bool isForPreview = false,
+  }) {
     final spans = <InlineSpan>[];
     final plain = StringBuffer();
 
@@ -49,33 +81,35 @@ class ChatTextFormatter {
 
     var cursor = 0;
     while (cursor < text.length) {
-      final url = _urlStart.matchAsPrefix(text, cursor);
-      if (url != null) {
-        var end = cursor;
-        while (end < text.length && !_isWhitespace(text[end])) {
-          end++;
-        }
-        while (end > cursor &&
-            _urlTrailingPunctuation.contains(text[end - 1])) {
-          end--;
-        }
-        if (end > url.end) {
-          flushPlain();
-          final value = text.substring(cursor, end);
-          spans.add(
-            TextSpan(
-              text: value,
-              style: style.copyWith(
-                color: linkColor,
-                decoration: TextDecoration.underline,
+      if (!isForPreview) {
+        final url = _urlStart.matchAsPrefix(text, cursor);
+        if (url != null) {
+          var end = cursor;
+          while (end < text.length && !_isWhitespace(text[end])) {
+            end++;
+          }
+          while (end > cursor &&
+              _urlTrailingPunctuation.contains(text[end - 1])) {
+            end--;
+          }
+          if (end > url.end) {
+            flushPlain();
+            final value = text.substring(cursor, end);
+            spans.add(
+              TextSpan(
+                text: value,
+                style: style.copyWith(
+                  color: linkColor,
+                  decoration: TextDecoration.underline,
+                ),
+                recognizer:
+                    recognizerForUrl?.call(value) ??
+                    (TapGestureRecognizer()..onTap = () => onUrlTap(value)),
               ),
-              recognizer:
-                  recognizerForUrl?.call(value) ??
-                  (TapGestureRecognizer()..onTap = () => onUrlTap(value)),
-            ),
-          );
-          cursor = end;
-          continue;
+            );
+            cursor = end;
+            continue;
+          }
         }
       }
 
@@ -85,15 +119,38 @@ class ChatTextFormatter {
         final closing = text.indexOf(marker, cursor + markerLength);
         if (closing >= 0 && closing > cursor + markerLength) {
           flushPlain();
-          spans.add(
-            TextSpan(
-              text: text.substring(cursor + markerLength, closing),
-              style: style.copyWith(
-                fontFamily: 'monospace',
-                backgroundColor: codeBackground,
+          final codeText = text.substring(cursor + markerLength, closing);
+          if (markerLength == 3 && !isForPreview) {
+            spans.add(
+              WidgetSpan(
+                alignment: PlaceholderAlignment.middle,
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 6,
+                    vertical: 2,
+                  ),
+                  decoration: BoxDecoration(
+                    color: codeBackground,
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                  child: Text(
+                    codeText,
+                    style: style.copyWith(fontFamily: 'monospace'),
+                  ),
+                ),
               ),
-            ),
-          );
+            );
+          } else {
+            spans.add(
+              TextSpan(
+                text: codeText,
+                style: style.copyWith(
+                  fontFamily: 'monospace',
+                  backgroundColor: isForPreview ? null : codeBackground,
+                ),
+              ),
+            );
+          }
           cursor = closing + markerLength;
           continue;
         }

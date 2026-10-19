@@ -145,11 +145,11 @@ class ExploreCarouselCard extends StatelessWidget {
                                 fit: BoxFit.contain,
                                 errorBuilder: (context, error, stackTrace) =>
                                     Text(
-                                  catIcon.isNotEmpty ? catIcon : '🎯',
-                                  style: TextStyle(
-                                    fontSize: Dimensions.r12.dynamicSP,
-                                  ),
-                                ),
+                                      catIcon.isNotEmpty ? catIcon : '🎯',
+                                      style: TextStyle(
+                                        fontSize: Dimensions.r12.dynamicSP,
+                                      ),
+                                    ),
                               ),
                               SizedBox(width: Dimensions.r6.dynamicW),
                               Expanded(
@@ -196,10 +196,10 @@ class ExploreCarouselCard extends StatelessWidget {
                                 fit: BoxFit.contain,
                                 errorBuilder: (context, error, stackTrace) =>
                                     Icon(
-                                  Icons.schedule_rounded,
-                                  size: Dimensions.r14.dynamicH,
-                                  color: context.textSecondary,
-                                ),
+                                      Icons.schedule_rounded,
+                                      size: Dimensions.r14.dynamicH,
+                                      color: context.textSecondary,
+                                    ),
                               ),
                               SizedBox(width: Dimensions.r6.dynamicW),
                               Expanded(
@@ -219,17 +219,9 @@ class ExploreCarouselCard extends StatelessWidget {
                           SizedBox(height: Dimensions.r6.dynamicH),
                           Row(
                             children: [
-                              Image.asset(
-                                AppAssets.locationPin3d,
+                              ActivityMetadataIcon.location(
                                 width: Dimensions.r16.dynamicW,
                                 height: Dimensions.r16.dynamicH,
-                                fit: BoxFit.contain,
-                                errorBuilder: (context, error, stackTrace) =>
-                                    Icon(
-                                  Icons.location_on_outlined,
-                                  size: Dimensions.r14.dynamicH,
-                                  color: context.textSecondary,
-                                ),
                               ),
                               SizedBox(width: Dimensions.r6.dynamicW),
                               Expanded(
@@ -305,10 +297,10 @@ class ExploreCarouselCard extends StatelessWidget {
                                   fit: BoxFit.contain,
                                   errorBuilder: (context, error, stackTrace) =>
                                       Icon(
-                                    Icons.arrow_forward_rounded,
-                                    size: Dimensions.r14.dynamicH,
-                                    color: context.primaryColor,
-                                  ),
+                                        Icons.arrow_forward_rounded,
+                                        size: Dimensions.r14.dynamicH,
+                                        color: context.primaryColor,
+                                      ),
                                 ),
                               ],
                             ),

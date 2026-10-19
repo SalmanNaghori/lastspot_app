@@ -15,8 +15,8 @@ labeling, or deep-mode instructions later in this upstream skill.
 Use only the managed commands below for graph construction:
 
 ```bash
-uvx --from "reposeed==0.13.0" reposeed graphify extract INPUT_PATH --code-only
-uvx --from "reposeed==0.13.0" reposeed graphify update INPUT_PATH
+uvx --from "reposeed==0.13.1" reposeed graphify extract INPUT_PATH --code-only
+uvx --from "reposeed==0.13.1" reposeed graphify update INPUT_PATH
 ```
 
 The managed wrapper enforces `--code-only`, disables LLM community labels, and
@@ -91,9 +91,9 @@ upgrade Graphify with pip or a separate uv tool command. Resolve the exact
 RepoSeed environment through uvx:
 
 ```bash
-PYTHON=$(uvx --from "reposeed==0.13.0" reposeed _graphify-python 2>/dev/null)
+PYTHON=$(uvx --from "reposeed==0.13.1" reposeed _graphify-python 2>/dev/null)
 if [ -z "$PYTHON" ] || ! "$PYTHON" -c "import graphify" 2>/dev/null; then
-    echo "Managed Graphify runtime unavailable. Rerun: uvx reposeed@0.13.0 init"
+    echo "Managed Graphify runtime unavailable. Rerun: uvx reposeed@0.13.1 init"
     exit 1
 fi
 mkdir -p graphify-out

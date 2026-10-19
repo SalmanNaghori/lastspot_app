@@ -24,6 +24,31 @@ class ProfileDetailsStep extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final avatarName = nameController.text.trim().isNotEmpty
+        ? nameController.text.trim()
+        : existingProfile?.fullName?.trim() ?? '';
+    final initial = avatarName.isNotEmpty
+        ? avatarName.characters.first.toUpperCase()
+        : 'P';
+    final avatarSize = Dimensions.r96.dynamicH * 1.3;
+    final avatarFallback = Container(
+      width: avatarSize,
+      height: avatarSize,
+      decoration: BoxDecoration(
+        color: context.primaryContainer,
+        shape: BoxShape.circle,
+      ),
+      alignment: Alignment.center,
+      child: Text(
+        initial,
+        style: TextStyle(
+          color: context.primaryColor,
+          fontWeight: FontWeight.w700,
+          fontSize: Dimensions.r36.dynamicSP,
+        ),
+      ),
+    );
+
     return Form(
       key: formKey,
       child: Column(
@@ -88,27 +113,25 @@ class ProfileDetailsStep extends StatelessWidget {
                         ),
                         child: ClipOval(
                           child: avatarFile != null
-                              ? Image.file(avatarFile, fit: BoxFit.cover)
+                              ? Image.file(
+                                  avatarFile,
+                                  width: avatarSize,
+                                  height: avatarSize,
+                                  fit: BoxFit.cover,
+                                )
                               : (hasExistingAvatar
-                                    ? Image.network(
-                                        existingProfile!.avatarUrl!.replaceAll(
-                                          '/svg?',
-                                          '/png?',
-                                        ),
+                                    ? AppCachedNetworkImage(
+                                        imageUrl: existingProfile!.avatarUrl,
+                                        width: avatarSize,
+                                        height: avatarSize,
                                         fit: BoxFit.cover,
-                                        errorBuilder:
-                                            (context, error, stackTrace) =>
-                                                Icon(
-                                                  Icons.person_rounded,
-                                                  size: Dimensions.r60.dynamicH,
-                                                  color: context.textSecondary,
-                                                ),
+                                        isCircle: true,
+                                        memCacheWidth: 360,
+                                        memCacheHeight: 360,
+                                        placeholder: avatarFallback,
+                                        errorWidget: avatarFallback,
                                       )
-                                    : Icon(
-                                        Icons.person_rounded,
-                                        size: Dimensions.r60.dynamicH,
-                                        color: context.textSecondary,
-                                      )),
+                                    : avatarFallback),
                         ),
                       );
                     },
@@ -147,12 +170,7 @@ class ProfileDetailsStep extends StatelessWidget {
             labelText: context.loc.fullName,
             prefixIcon: const Icon(Icons.person_outline_rounded),
             textCapitalization: TextCapitalization.words,
-            validator: (value) {
-              if (value == null || value.trim().isEmpty) {
-                return context.loc.fullNameRequired;
-              }
-              return null;
-            },
+            validator: AppValidators.fullName(context.loc),
           ),
           SizedBox(height: Dimensions.r16.dynamicH),
           AppTextField(

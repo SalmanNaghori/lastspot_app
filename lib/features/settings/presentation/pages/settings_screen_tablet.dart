@@ -3,7 +3,6 @@ import '../bloc/settings_cubit.dart';
 import '../bloc/settings_state.dart';
 import '../widgets/settings_section_title.dart';
 import '../widgets/theme_selector_card.dart';
-import '../widgets/app_color_selector_card.dart';
 import '../widgets/language_selector_card.dart';
 
 class SettingsScreenTablet extends StatelessWidget {
@@ -45,9 +44,6 @@ class SettingsScreenTablet extends StatelessWidget {
                 children: [
                   SettingsSectionTitle(title: context.loc.themeTitle),
                   ThemeSelectorCard(state: state),
-                  SizedBox(height: Dimensions.r32.dynamicH),
-                  SettingsSectionTitle(title: context.loc.appColorTitle),
-                  AppColorSelectorCard(state: state),
                   SizedBox(height: Dimensions.r32.dynamicH),
                   SettingsSectionTitle(title: context.loc.languageTitle),
                   LanguageSelectorCard(state: state),

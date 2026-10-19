@@ -57,7 +57,7 @@ class TermsConditionsScreen extends StatelessWidget {
                 ),
                 SizedBox(height: Dimensions.r16.dynamicH),
                 Text(
-                  'Welcome to LastSpot! These terms and conditions outline the rules and regulations for the use of LastSpot\'s community platform.\n\nBy accessing this app we assume you accept these terms and conditions. Do not continue to use LastSpot if you do not agree to take all of the terms and conditions stated on this page.\n\nAll users agree to treat other players and activity hosts with courtesy and respect during all matches and community events.',
+                  'Welcome to ${AppString.appName}! These terms and conditions outline the rules and regulations for the use of ${AppString.appName}\'s community platform.\n\nBy accessing this app we assume you accept these terms and conditions. Do not continue to use ${AppString.appName} if you do not agree to take all of the terms and conditions stated on this page.\n\nAll users agree to treat other players and activity hosts with courtesy and respect during all matches and community events.',
                   style: TextStyle(
                     fontSize: Dimensions.r14.dynamicSP,
                     color: context.textSecondary,

@@ -82,97 +82,120 @@ class _ChatMessageBubbleState extends State<ChatMessageBubble> {
       ),
       child: Align(
         alignment: widget.isMine ? Alignment.centerRight : Alignment.centerLeft,
-        child: Container(
-          constraints: BoxConstraints(
-            maxWidth: MediaQuery.sizeOf(context).width * 0.78,
-          ),
-          padding: const EdgeInsets.symmetric(
-            horizontal: AppSpacing.md,
-            vertical: AppSpacing.sm,
-          ),
-          decoration: BoxDecoration(
-            color: bubbleColor,
+        child: Material(
+          color: Colors.transparent,
+          child: InkWell(
             borderRadius: borderRadius,
-            border: Border.all(
-              color: widget.isMine
-                  ? colors.primary.withValues(alpha: 0.12)
-                  : colors.outlineVariant.withValues(alpha: 0.4),
-              width: 0.5,
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: AppColor.blackColor.withValues(alpha: 0.03),
-                blurRadius: 3,
-                offset: const Offset(0, 1),
+            onTap: () {},
+            onLongPress: () => _copyMessage(context),
+            child: Container(
+              constraints: BoxConstraints(
+                maxWidth: MediaQuery.sizeOf(context).width * 0.78,
               ),
-            ],
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              if (showSenderName) ...[
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 3),
-                  child: Text(
-                    widget.message.senderName!.trim(),
-                    style: context.labelSmall?.copyWith(
-                      color: colors.primary,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
+              padding: const EdgeInsets.symmetric(
+                horizontal: AppSpacing.md,
+                vertical: AppSpacing.sm,
+              ),
+              decoration: BoxDecoration(
+                color: bubbleColor,
+                borderRadius: borderRadius,
+                border: Border.all(
+                  color: widget.isMine
+                      ? colors.primary.withValues(alpha: 0.12)
+                      : colors.outlineVariant.withValues(alpha: 0.4),
+                  width: 0.5,
                 ),
-              ],
-              SelectableText.rich(
-                TextSpan(
-                  children: ChatTextFormatter.buildSpans(
-                    text: widget.message.content,
-                    baseStyle: context.bodyMedium!.copyWith(
-                      color: foreground,
-                      height: 1.35,
-                    ),
-                    linkColor: linkColor,
-                    codeBackground: codeBackground,
-                    onUrlTap: _onUrlTap,
-                    recognizerForUrl: (url) => _urlRecognizers.putIfAbsent(
-                      url,
-                      () =>
-                          TapGestureRecognizer()..onTap = () => _onUrlTap(url),
-                    ),
+                boxShadow: [
+                  BoxShadow(
+                    color: AppColor.blackColor.withValues(alpha: 0.03),
+                    blurRadius: 3,
+                    offset: const Offset(0, 1),
                   ),
-                ),
-                contextMenuBuilder: (context, selectableTextState) {
-                  return AdaptiveTextSelectionToolbar.buttonItems(
-                    anchors: selectableTextState.contextMenuAnchors,
-                    buttonItems: [
-                      ContextMenuButtonItem(
-                        onPressed: () {
-                          Clipboard.setData(
-                            ClipboardData(text: widget.message.content),
-                          );
-                          selectableTextState.hideToolbar();
-                        },
-                        type: ContextMenuButtonType.copy,
+                ],
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  if (showSenderName) ...[
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 3),
+                      child: Text(
+                        widget.message.senderName!.trim(),
+                        style: context.labelSmall?.copyWith(
+                          color: colors.primary,
+                          fontWeight: FontWeight.w700,
+                        ),
                       ),
-                    ],
-                  );
-                },
-              ),
-              const SizedBox(height: 3),
-              Align(
-                alignment: Alignment.bottomRight,
-                child: Text(
-                  AppUtils.formatTime(widget.message.createdAt.toLocal()),
-                  style: context.labelSmall?.copyWith(
-                    color: timeColor,
-                    fontSize: 10,
-                    fontWeight: FontWeight.w500,
+                    ),
+                  ],
+                  IgnorePointer(
+                    child: SelectableText.rich(
+                      TextSpan(
+                        children: ChatTextFormatter.buildSpans(
+                          text: widget.message.content,
+                          baseStyle: context.bodyMedium!.copyWith(
+                            color: foreground,
+                            height: 1.35,
+                          ),
+                          linkColor: linkColor,
+                          codeBackground: codeBackground,
+                          onUrlTap: _onUrlTap,
+                          recognizerForUrl: (url) =>
+                              _urlRecognizers.putIfAbsent(
+                                url,
+                                () =>
+                                    TapGestureRecognizer()
+                                      ..onTap = () => _onUrlTap(url),
+                              ),
+                        ),
+                      ),
+                      contextMenuBuilder: (context, selectableTextState) {
+                        return AdaptiveTextSelectionToolbar.buttonItems(
+                          anchors: selectableTextState.contextMenuAnchors,
+                          buttonItems: [
+                            ContextMenuButtonItem(
+                              onPressed: () {
+                                Clipboard.setData(
+                                  ClipboardData(text: widget.message.content),
+                                );
+                                selectableTextState.hideToolbar();
+                              },
+                              type: ContextMenuButtonType.copy,
+                            ),
+                          ],
+                        );
+                      },
+                    ),
                   ),
-                ),
+                  const SizedBox(height: 3),
+                  Align(
+                    alignment: Alignment.bottomRight,
+                    child: Text(
+                      AppUtils.formatTime(widget.message.createdAt.toLocal()),
+                      style: context.labelSmall?.copyWith(
+                        color: timeColor,
+                        fontSize: 10,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
         ),
+      ),
+    );
+  }
+
+  void _copyMessage(BuildContext context) {
+    Clipboard.setData(ClipboardData(text: widget.message.content));
+    HapticFeedback.vibrate();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(context.loc.messageCopied),
+        duration: const Duration(seconds: 2),
       ),
     );
   }

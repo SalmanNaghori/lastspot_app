@@ -183,7 +183,7 @@ class HomeActivityHub extends StatelessWidget {
                     ),
                     child: Center(
                       child: requests.isNotEmpty
-                          ? AppAssets.joinRequest3dGen.image(
+                          ? Assets.icons.joinRequest3d.image(
                               width: Dimensions.r36.dynamicW,
                               height: Dimensions.r36.dynamicH,
                               fit: BoxFit.contain,
@@ -196,6 +196,36 @@ class HomeActivityHub extends StatelessWidget {
                                     color: hubAccent,
                                   ),
                             )
+                          : joined != null
+                          ? Category3DIcon(
+                              category: joined.categoryId,
+                              size: Dimensions.r32.dynamicH,
+                            )
+                          : hosted != null
+                          ? Category3DIcon(
+                              category: hosted.categoryId,
+                              size: Dimensions.r32.dynamicH,
+                            )
+                          : recommendation != null
+                          ? Category3DIcon(
+                              category: recommendation.categoryId,
+                              size: Dimensions.r32.dynamicH,
+                            )
+                          : !state.hasActivityHubError
+                          ? Assets.images.onboarding.welcomeSportsCollection
+                                .image(
+                                  width: Dimensions.r32.dynamicW,
+                                  height: Dimensions.r32.dynamicH,
+                                  fit: BoxFit.contain,
+                                  cacheWidth: 160,
+                                  cacheHeight: 160,
+                                  errorBuilder: (context, error, stackTrace) =>
+                                      Icon(
+                                        icon,
+                                        size: Dimensions.r20.dynamicH,
+                                        color: hubAccent,
+                                      ),
+                                )
                           : Icon(
                               icon,
                               size: Dimensions.r20.dynamicH,

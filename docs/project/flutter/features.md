@@ -23,6 +23,50 @@ Status values: `observed` · `planned` · `in-progress` · `live` · `flagged` �
 | **help_support** | Help center, FAQs, customer support email contact | live | Support | `lib/features/help_support/` | `/help-support` | Stateless / URL launcher | n/a | none | User Support | none | pre-adoption |
 | **legal** | Terms & Conditions, Privacy Policy legal viewer | live | Legal | `lib/features/legal/` | `/terms`, `/privacy` | Stateless | n/a | none | Legal Compliance | none | pre-adoption |
 
+## Startup splash artwork
+
+`SplashScreen` renders [`SplashBrandingView`](../../../lib/features/startup/presentation/widgets/splash_branding_view.dart),
+which uses [`khelbhai_splash_restored.png`](../../../assets/branding/khelbhai_splash_restored.png)
+through the generated asset accessor. The 852 × 1846 PNG is an AI-restored version
+of the existing artwork, retaining the 6:13 composition and brand wording while
+reconstructing fine detail. Earlier blurred source variants were removed during
+asset cleanup. Their 1080 × 2340 dimensions did not reflect the actual
+detail: both contained visibly enlarged, blurry edges. Flutter already used
+`FilterQuality.high` and no decode-size limit; increasing filtering or resizing
+the original cannot recover that missing detail. The existing fade, scale and
+animated progress indicator are retained.
+
+## Native splash and launcher icons
+
+- Android's native launch window retains the original sports artwork and orange
+  background. `drawable-*/native_splash_icon.png` keeps the previous padded
+  launcher image separate from future app-icon exports; the original source is
+  [`tool/branding/native_splash_original.png`](../../../tool/branding/native_splash_original.png).
+  Legacy launch backgrounds and Android 12+ settings reference that frozen image.
+- Launcher icons use the opaque, square 1254 × 1254
+  [`khelbhai_launcher_master.png`](../../../assets/branding/khelbhai_launcher_master.png).
+  The artwork has no baked-in corners or frame. Android adaptive resources fit it
+  to the visible 72dp region of a 108dp layer. Existing monochrome resources are
+  retained for themed icons. The manifest includes standard and round resources.
+- [`export_launcher_icons.sh`](../../../tool/export_launcher_icons.sh) exports
+  Android launcher PNGs and all iOS AppIcon sizes with macOS `sips`. iOS applies its
+  own icon corners. The Flutter splash composition remains in `SplashBrandingView`.
+- The illustration was repaired with the built-in imagegen tool using this
+  [edit prompt](../../../tool/launcher_artwork_prompt.txt).
+
+## Shared header branding and location markers
+
+`KhelBhaiLogo` and `BrandedScreenTitle` in
+[`brand_screen_title.dart`](../../../lib/core/widgets/brand_screen_title.dart)
+use the same centralized light/dark logo as Home. Dashboard and standard app bars,
+Explore, Profile, Settings, My Sports Space, and activity form/detail titles reuse
+that component. Long titles can truncate within the available app-bar width.
+
+`ActivityMetadataIcon.location` recolors the existing 3D pin with the active
+`ColorScheme.primary`, using `AppAssets.locationPinColorFilter` to preserve neutral
+highlights, shading and transparency. Home, Explore, city selection, activity
+cards and activity details use this shared rendering path.
+
 ## Retired
 
 | Feature | Removed in | Replaced by / notes |

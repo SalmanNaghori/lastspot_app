@@ -13,7 +13,10 @@ import '../widgets/chat_welcome_banner.dart';
 import '../widgets/jump_to_bottom_button.dart';
 
 class ChatScreenTablet extends StatefulWidget {
-  const ChatScreenTablet({super.key});
+  final String? avatarUrl;
+  final String? category;
+
+  const ChatScreenTablet({super.key, this.avatarUrl, this.category});
 
   @override
   State<ChatScreenTablet> createState() => _ChatScreenTabletState();
@@ -148,6 +151,8 @@ class _ChatScreenTabletState extends State<ChatScreenTablet> {
             title: title,
             subtitle: subtitle,
             isDirect: isDirect,
+            avatarUrl: widget.avatarUrl,
+            category: widget.category ?? subtitle ?? title,
             onBack: _onBack,
             onGroupInfoTap: (!isDirect && requestId != null)
                 ? () => context.push(AppRoutes.groupInfoPath(requestId))

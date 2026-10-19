@@ -1,0 +1,9 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Build APK (Local) + Banner" type="ShConfigurationType">
+    <option name="SCRIPT_TEXT" value="fvm flutter build apk --debug --dart-define-from-file=env/local.json --dart-define=SHOW_BANNER=true" />
+    <option name="INDEPENDENT_SCRIPT_TEXT" value="true" />
+    <option name="SCRIPT_WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+    <option name="EXECUTE_IN_TERMINAL" value="true" />
+    <method v="2" />
+  </configuration>
+</component>

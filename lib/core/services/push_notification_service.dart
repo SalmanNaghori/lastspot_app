@@ -9,13 +9,56 @@ import '../utils/fcm_token_util.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../features/auth/data/datasources/device_remote_datasource.dart';
 import 'package:lastspot_app/core/services/local_notification_service.dart';
+import 'foreground_chat_notification_coordinator.dart';
 import 'in_app_feedback_manager.dart';
+
+import 'dart:convert';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import '../../features/chat/presentation/utils/chat_text_formatter.dart';
 
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   // Ensure Firebase is initialized for background isolate
   await Firebase.initializeApp();
   debugPrint("Handling a background message: ${message.messageId}");
+
+  // If this is a data-only message (message.notification == null), the OS does not
+  // show a notification automatically. Display one so background/terminated delivery is guaranteed.
+  // If message.notification != null, the OS already displayed it; do not duplicate.
+  if (message.notification == null && message.data.isNotEmpty) {
+    try {
+      final data = message.data;
+      if (InAppFeedbackManager.isChatMessage(data)) {
+        final title = (data['title'] ?? data['sender_name'] ?? 'New message')
+            .toString();
+        final rawBody = (data['body'] ?? data['content'] ?? '').toString();
+        final body = ChatTextFormatter.cleanPreview(rawBody);
+        final conversationId = InAppFeedbackManager.conversationIdFrom(data);
+        if (conversationId != null) {
+          final plugin = FlutterLocalNotificationsPlugin();
+          const androidDetails = AndroidNotificationDetails(
+            'lastspot_default',
+            'KhelBhai Notifications',
+            importance: Importance.max,
+            priority: Priority.high,
+            showWhen: true,
+            icon: '@drawable/ic_notification',
+          );
+          await plugin.show(
+            id: conversationId.hashCode,
+            title: title,
+            body: body.isNotEmpty ? body : null,
+            notificationDetails: const NotificationDetails(
+              android: androidDetails,
+            ),
+            payload: jsonEncode(data),
+          );
+        }
+      }
+    } catch (e) {
+      debugPrint("Error showing background local notification: $e");
+    }
+  }
 }
 
 class PushNotificationService {
@@ -53,21 +96,16 @@ class PushNotificationService {
       final data = Map<String, dynamic>.from(message.data);
       final notification = message.notification;
       if (InAppFeedbackManager.isChatMessage(data)) {
-        if (InAppFeedbackManager.conversationIdFrom(data) != null) {
-          feedbackManager.showIncomingChatMessage(
-            data: data,
-            senderName:
-                InAppFeedbackManager.senderNameFrom(data) ??
-                notification?.title ??
-                feedbackManager.newMessageLabel,
-            activityName: InAppFeedbackManager.activityNameFrom(data),
-            eventKeys: [
-              if (message.messageId != null) 'fcm:${message.messageId}',
-            ],
-            onTap: () => handleNotificationTap(data),
-          );
-          return;
+        if (sl.isRegistered<ForegroundChatNotificationCoordinator>()) {
+          sl<ForegroundChatNotificationCoordinator>()
+              .handleIncomingChatNotification(
+                data: data,
+                notification: notification,
+                messageId: message.messageId,
+                isForegroundSource: true,
+              );
         }
+        return;
       }
 
       final title =

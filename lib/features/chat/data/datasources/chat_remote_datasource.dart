@@ -19,6 +19,7 @@ abstract class ChatRemoteDataSource {
   });
   Future<void> markAsRead(String conversationId);
   Stream<ChatMessageModel> streamMessages(String conversationId);
+  Stream<ChatMessageModel> streamUserMessages();
 }
 
 class SupabaseChatRemoteDataSourceImpl implements ChatRemoteDataSource {
@@ -59,12 +60,98 @@ class SupabaseChatRemoteDataSourceImpl implements ChatRemoteDataSource {
   Future<List<ChatConversationModel>> getMyConversations() async {
     final result = await _client.rpc('get_my_chat_conversations');
     final list = (result as List<dynamic>?) ?? [];
-    return list
+    if (list.isEmpty) return [];
+    final conversations = list
         .map(
           (item) =>
               ChatConversationModel.fromJson(item as Map<String, dynamic>),
         )
         .toList();
+
+    // Collect other_user_ids missing avatar for direct chats
+    final otherUserIds = conversations
+        .where(
+          (item) =>
+              item.isDirect &&
+              item.otherUserAvatarUrl?.trim().isNotEmpty != true,
+        )
+        .map((item) => item.otherUserId)
+        .whereType<String>()
+        .where((id) => id.isNotEmpty)
+        .toSet()
+        .toList();
+
+    final Map<String, String?> avatars = {};
+    if (otherUserIds.isNotEmpty) {
+      try {
+        final profiles = await _client
+            .from('profiles')
+            .select('id, avatar_url')
+            .inFilter('id', otherUserIds);
+        for (final p in profiles as List<dynamic>) {
+          final id = p['id']?.toString();
+          final avatar = p['avatar_url']?.toString();
+          if (id != null) avatars[id] = avatar;
+        }
+      } catch (_) {}
+    }
+
+    // Collect request_ids to enrich (missing activity_title or category details)
+    final requestIdsToEnrich = conversations
+        .where((item) {
+          if (item.requestId.isEmpty) return false;
+          final hasCategory =
+              item.categorySlug != null || item.categoryId != null;
+          return item.activityTitle?.trim().isNotEmpty != true ||
+              (!item.isDirect && !hasCategory);
+        })
+        .map((item) => item.requestId)
+        .toSet()
+        .toList();
+
+    final Map<
+      String,
+      ({String? title, String? categoryId, String? categorySlug})
+    >
+    requestDetails = {};
+    if (requestIdsToEnrich.isNotEmpty) {
+      try {
+        final reqs = await _client
+            .from('requests')
+            .select(
+              'id, title, category_id, categories:category_id(id, name, slug)',
+            )
+            .inFilter('id', requestIdsToEnrich);
+        for (final r in reqs as List<dynamic>) {
+          final id = r['id']?.toString();
+          final title = r['title']?.toString();
+          final catId = r['category_id']?.toString();
+          final cat = r['categories'] as Map<String, dynamic>?;
+          final slug = cat?['slug']?.toString() ?? cat?['name']?.toString();
+          if (id != null) {
+            requestDetails[id] = (
+              title: title,
+              categoryId: catId,
+              categorySlug: slug,
+            );
+          }
+        }
+      } catch (_) {}
+    }
+
+    return conversations.map((item) {
+      final details = requestDetails[item.requestId];
+      return item.copyWith(
+        activityTitle: item.activityTitle?.trim().isNotEmpty == true
+            ? item.activityTitle
+            : details?.title,
+        otherUserAvatarUrl: item.otherUserAvatarUrl?.trim().isNotEmpty == true
+            ? item.otherUserAvatarUrl
+            : avatars[item.otherUserId],
+        categoryId: item.categoryId ?? details?.categoryId,
+        categorySlug: item.categorySlug ?? details?.categorySlug,
+      );
+    }).toList();
   }
 
   @override
@@ -202,6 +289,45 @@ class SupabaseChatRemoteDataSourceImpl implements ChatRemoteDataSource {
                 if (!controller.isClosed) {
                   controller.add(model);
                 }
+              },
+            )
+            .subscribe();
+      },
+      onCancel: () {
+        if (channel != null) {
+          channel!.unsubscribe();
+          _client.removeChannel(channel!);
+        }
+      },
+    );
+
+    return controller.stream;
+  }
+
+  @override
+  Stream<ChatMessageModel> streamUserMessages() {
+    late final StreamController<ChatMessageModel> controller;
+    RealtimeChannel? channel;
+
+    controller = StreamController<ChatMessageModel>.broadcast(
+      onListen: () {
+        final channelName =
+            'realtime:all_user_messages:${DateTime.now().millisecondsSinceEpoch}';
+        channel = _client.channel(channelName);
+        channel!
+            .onPostgresChanges(
+              event: PostgresChangeEvent.insert,
+              schema: 'public',
+              table: 'chat_messages',
+              callback: (payload) async {
+                final record = payload.newRecord;
+                if (record.isEmpty || record['deleted_at'] != null) return;
+                try {
+                  final model = ChatMessageModel.fromJson(record);
+                  if (!controller.isClosed) {
+                    controller.add(model);
+                  }
+                } catch (_) {}
               },
             )
             .subscribe();

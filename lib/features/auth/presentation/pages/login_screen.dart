@@ -71,7 +71,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       decoration: BoxDecoration(
                         color: context.isDarkMode
                             ? context.surfaceContainer
-                            : const Color(0xFFF0FDF4),
+                            : context.primaryContainer,
                         shape: BoxShape.circle,
                         boxShadow: [
                           BoxShadow(
@@ -86,7 +86,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                       padding: EdgeInsets.all(Dimensions.r12.dynamicW),
-                      child: AppAssets.footballEquipmentGen.image(
+                      child: Assets.images.categories.football.image(
                         fit: BoxFit.contain,
                         cacheWidth: 200,
                         cacheHeight: 200,
@@ -130,17 +130,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     prefixIcon: const Icon(Icons.email_outlined),
                     keyboardType: TextInputType.emailAddress,
                     textInputAction: TextInputAction.next,
-                    validator: (value) {
-                      if (value == null || value.trim().isEmpty) {
-                        return 'Email is required';
-                      }
-                      if (!RegExp(
-                        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+",
-                      ).hasMatch(value)) {
-                        return 'Enter a valid email';
-                      }
-                      return null;
-                    },
+                    validator: AppValidators.email(context.loc),
                   ),
                   SizedBox(height: Dimensions.r16.dynamicH),
                   AppTextField(
@@ -155,12 +145,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       });
                     },
                     textInputAction: TextInputAction.done,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Password is required';
-                      }
-                      return null;
-                    },
+                    validator: AppValidators.password(context.loc),
                   ),
                   SizedBox(height: Dimensions.r8.dynamicH),
                   Align(

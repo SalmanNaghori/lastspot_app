@@ -39,7 +39,15 @@ class ProfileScreenTablet extends StatelessWidget {
     return Scaffold(
       backgroundColor: context.backgroundColor,
       appBar: AppBar(
-        title: Text(loc.navProfile),
+        title: Text(
+          loc.navProfile,
+          style: TextStyle(
+            fontSize: Dimensions.r20.dynamicSP,
+            fontWeight: FontWeight.w800,
+            letterSpacing: -0.3,
+            color: context.textPrimary,
+          ),
+        ),
         centerTitle: false,
         backgroundColor: context.backgroundColor,
         systemOverlayStyle: AppTheme.systemUiOverlayStyle(context),

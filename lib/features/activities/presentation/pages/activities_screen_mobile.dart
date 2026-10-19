@@ -53,10 +53,7 @@ class _ActivitiesScreenMobileState extends State<ActivitiesScreenMobile> {
 
     return Scaffold(
       backgroundColor: context.backgroundColor,
-      appBar: CustomAppBar.dashboard(
-        context: context,
-        title: loc.navActivities,
-      ),
+      appBar: const KhelBhaiAppBar(),
       body: SafeArea(
         top: false,
         child: RefreshIndicator(
@@ -140,7 +137,7 @@ class _ActivitiesScreenMobileState extends State<ActivitiesScreenMobile> {
                               message: loc.emptyHostedDesc,
                               actionText: loc.generateActivity,
                               onAction: _onCreateActivity,
-                              imageGen: AppAssets.emptyActivitiesGen,
+                              imageGen: Assets.images.emptyStates.noActivities,
                             )
                           else
                             ActivitiesListSection(
@@ -156,7 +153,7 @@ class _ActivitiesScreenMobileState extends State<ActivitiesScreenMobile> {
                               message: loc.emptyJoinedDesc,
                               actionText: loc.exploreActivitiesAction,
                               onAction: _onExploreActivities,
-                              imageGen: AppAssets.emptyActivitiesGen,
+                              imageGen: Assets.images.emptyStates.noActivities,
                             )
                           else
                             ActivitiesListSection(

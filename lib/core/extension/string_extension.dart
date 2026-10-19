@@ -30,22 +30,31 @@ extension StringExtension on String {
   }
 
   String toTitleCase() {
-    // Normalize to lowercase and replace underscores/dashes with spaces
+    if (trim().isEmpty) return this;
+
+    // Normalize to replace underscores/dashes with spaces
     String cleaned = replaceAllMapped(RegExp(r'[_\-]'), (match) => ' ');
+
+    // Insert space after comma if directly followed by a letter (e.g. "Ahmedabad,India" -> "Ahmedabad, India")
+    cleaned = cleaned.replaceAllMapped(
+      RegExp(r',([A-Za-z])'),
+      (match) => ', ${match.group(1)}',
+    );
 
     // Insert space before camelCase/PascalCase transitions
     cleaned = cleaned.replaceAllMapped(
       RegExp(r'(?<=[a-z])(?=[A-Z])'),
       (match) => ' ',
     );
+
     // Capitalize each word
     List<String> list = cleaned.split(RegExp(r'\s+'));
     return list
         .where((e) => e.isNotEmpty)
-        .map(
-          (element) =>
-              element[0].toUpperCase() + element.substring(1).toLowerCase(),
-        )
+        .map((element) {
+          if (element.isEmpty) return element;
+          return element[0].toUpperCase() + element.substring(1).toLowerCase();
+        })
         .join(' ');
   }
 
@@ -96,5 +105,29 @@ extension StringNullablity on String? {
   bool isEqualIgnoreCase(String? another) {
     if (isNullOrEmpty() || another.isNullOrEmpty()) return this == another;
     return this!.toLowerCase() == another!.toLowerCase();
+  }
+
+  /// Capitalizes first letter if non-null, else returns null or empty
+  String? capitalizeFirst() {
+    if (this == null || this!.isEmpty) return this;
+    return this!.capitalizeFirst();
+  }
+
+  /// Converts to title case if non-null, else returns null
+  String? toTitleCase() {
+    if (this == null || this!.isEmpty) return this;
+    return this!.toTitleCase();
+  }
+
+  /// Capitalizes first letter if present, or returns empty string
+  String capitalizeFirstOrEmpty() {
+    if (isNullOrEmpty()) return "";
+    return this!.capitalizeFirst();
+  }
+
+  /// Converts to title case if present, or returns empty string
+  String toTitleCaseOrEmpty() {
+    if (isNullOrEmpty()) return "";
+    return this!.toTitleCase();
   }
 }

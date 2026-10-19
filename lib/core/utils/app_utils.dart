@@ -1,8 +1,10 @@
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../base_import.dart';
+import 'package:lastspot_app/features/cities/domain/entities/city_entity.dart';
 import 'package:lastspot_app/features/cities/presentation/bloc/city_cubit.dart';
 import 'package:lastspot_app/features/cities/presentation/bloc/city_state.dart';
+import 'package:lastspot_app/features/auth/domain/entities/user_profile.dart';
 import '../services/in_app_feedback_manager.dart';
 
 /// App-wide utility methods as specified in project Rule 13.
@@ -89,13 +91,74 @@ class AppUtils {
       if (cityState is CityLoaded) {
         for (var c in cityState.cities) {
           if (c.id == cityId) {
-            return '${c.name} • $finalLocation';
+            return '${c.formattedName} • $finalLocation';
           }
         }
       }
     }
 
     return finalLocation;
+  }
+
+  /// Formats city and state/country for user profile display (e.g., "Ahmedabad, Gujarat")
+  static String formatCityAndState(
+    BuildContext context,
+    String? cityName, {
+    String? cityId,
+  }) {
+    String resolvedCity = cityName?.trim() ?? '';
+    String? resolvedState;
+
+    try {
+      final cityState = context.read<CityCubit>().state;
+      if (cityState is CityLoaded) {
+        CityEntity? matched;
+        if (cityId != null && cityId.isNotEmpty) {
+          for (final c in cityState.cities) {
+            if (c.id == cityId) {
+              matched = c;
+              break;
+            }
+          }
+        }
+        if (matched == null && resolvedCity.isNotEmpty) {
+          final lower = resolvedCity.toLowerCase();
+          for (final c in cityState.cities) {
+            if (c.name.toLowerCase() == lower) {
+              matched = c;
+              break;
+            }
+          }
+        }
+        if (matched != null) {
+          if (resolvedCity.isEmpty) {
+            resolvedCity = matched.name;
+          }
+          if (matched.state != null && matched.state!.trim().isNotEmpty) {
+            resolvedState = matched.state!.trim();
+          }
+        }
+      }
+    } catch (_) {}
+
+    if (resolvedCity.isEmpty) return '';
+
+    // Handle comma-separated location strings (e.g. "Ahmedabad, Gujarat" or "Ahmedabad, India")
+    if (resolvedCity.contains(',')) {
+      return resolvedCity
+          .split(',')
+          .map((part) => part.trim().toTitleCase())
+          .where((part) => part.isNotEmpty)
+          .join(', ');
+    }
+
+    final formattedCity = resolvedCity.toTitleCase();
+    if (resolvedState != null && resolvedState.isNotEmpty) {
+      final formattedState = resolvedState.toTitleCase();
+      return '$formattedCity, $formattedState';
+    }
+
+    return formattedCity;
   }
 
   /// Formats DateTime to readable time (e.g., "6:30 PM")
@@ -200,7 +263,52 @@ class AppUtils {
     if (lower.contains('event')) return Icons.event;
     return Icons.groups_rounded;
   }
+
+  /// Computes uppercase initials from a name (e.g. 'Salman Naghori' -> 'SN')
+  static String computeInitials(String? name, {String fallback = '?'}) {
+    if (name == null || name.trim().isEmpty) return fallback;
+    final parts = name
+        .trim()
+        .split(RegExp(r'\s+'))
+        .where((part) => part.isNotEmpty)
+        .toList();
+    if (parts.length >= 2) {
+      return '${parts.first[0]}${parts[1][0]}'.toUpperCase();
+    }
+    return parts.first[0].toUpperCase();
+  }
+
+  /// Returns localized time period (Morning, Afternoon, Evening, Night)
+  static String getTimeOfDayPeriod(BuildContext context, TimeOfDay time) {
+    if (time.hour >= 5 && time.hour < 12) {
+      return context.loc.morning;
+    } else if (time.hour >= 12 && time.hour < 17) {
+      return context.loc.afternoon;
+    } else if (time.hour >= 17 && time.hour < 21) {
+      return context.loc.evening;
+    } else {
+      return context.loc.night;
+    }
+  }
+
+  /// Formats weekday name from DateTime (e.g. "Monday")
+  static String formatWeekday(DateTime dateTime) {
+    return DateFormat('EEEE').format(dateTime);
+  }
 }
 
 /// Project rule alias: Utils = AppUtils
 typedef Utils = AppUtils;
+
+/// UI presentation location extension on [UserProfile].
+extension UserProfileLocationExtension on UserProfile {
+  /// Formats city and state/country display location using [AppUtils.formatCityAndState].
+  String displayLocation(BuildContext context) {
+    return AppUtils.formatCityAndState(context, formattedCity, cityId: cityId);
+  }
+
+  /// Whether user has a resolvable non-empty display location.
+  bool hasLocation(BuildContext context) {
+    return displayLocation(context).isNotEmpty;
+  }
+}

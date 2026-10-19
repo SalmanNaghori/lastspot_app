@@ -130,62 +130,22 @@ class _NotificationsScreenMobileState extends State<NotificationsScreenMobile> {
           if (state is NotificationsListInitial ||
               (state is NotificationsListLoading &&
                   state is! NotificationsListLoaded)) {
-            return const Center(child: CircularProgressIndicator());
+            return const Center(child: AppLoading());
           } else if (state is NotificationsListError) {
             return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.error_outline,
-                    size: Dimensions.r48.dynamicH,
-                    color: context.errorColor,
-                  ),
-                  SizedBox(height: Dimensions.r16.dynamicH),
-                  Text(state.message, style: context.bodyLarge),
-                  SizedBox(height: Dimensions.r16.dynamicH),
-                  FilledButton(
-                    onPressed: () => context
-                        .read<NotificationsListCubit>()
-                        .fetchNotifications(refresh: true),
-                    child: const Text('Try Again'),
-                  ),
-                ],
+              child: AppErrorState(
+                message: state.message,
+                onRetry: () => context
+                    .read<NotificationsListCubit>()
+                    .fetchNotifications(refresh: true),
               ),
             );
           } else if (state is NotificationsListLoaded) {
             if (state.notifications.isEmpty) {
               return Center(
-                child: Padding(
-                  padding: EdgeInsets.all(Dimensions.r24.dynamicW),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      AppAssets.emptyNotificationsGen.image(
-                        width: Dimensions.r96.dynamicW * 1.4,
-                        height: Dimensions.r96.dynamicH * 1.4,
-                        cacheWidth: 360,
-                        cacheHeight: 360,
-                        fit: BoxFit.contain,
-                        errorBuilder: (context, error, stackTrace) {
-                          return Icon(
-                            Icons.notifications_none,
-                            size: Dimensions.r64.dynamicH,
-                            color: context.textSecondary.withValues(alpha: 0.5),
-                          );
-                        },
-                      ),
-                      SizedBox(height: Dimensions.r16.dynamicH),
-                      Text(
-                        'No notifications yet',
-                        style: TextStyle(
-                          fontSize: Dimensions.r18.dynamicSP,
-                          fontWeight: FontWeight.w700,
-                          color: context.textPrimary,
-                        ),
-                      ),
-                    ],
-                  ),
+                child: AppEmptyState.notifications(
+                  title: context.loc.notifications,
+                  message: '',
                 ),
               );
             }
@@ -206,7 +166,7 @@ class _NotificationsScreenMobileState extends State<NotificationsScreenMobile> {
                   if (index >= state.notifications.length) {
                     return Padding(
                       padding: EdgeInsets.all(Dimensions.r16.dynamicH),
-                      child: const Center(child: CircularProgressIndicator()),
+                      child: const Center(child: AppLoading(size: 24)),
                     );
                   }
 

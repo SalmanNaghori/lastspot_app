@@ -8,6 +8,7 @@ import '../services/installation_id_service.dart';
 import '../services/account_session_service.dart';
 import '../services/password_recovery_link_monitor.dart';
 import '../services/in_app_feedback_manager.dart';
+import '../services/explore_navigation_service.dart';
 
 // Auth Data
 import '../../features/auth/data/datasources/auth_remote_datasource.dart';
@@ -57,6 +58,7 @@ import '../../features/auth/domain/usecases/upload_avatar_usecase.dart';
 import '../../features/auth/domain/usecases/register_device_usecase.dart';
 import '../../features/auth/domain/usecases/update_user_city_usecase.dart';
 import '../../features/auth/presentation/bloc/profile_cubit.dart';
+import '../../features/profile/presentation/bloc/my_sports_space_cubit.dart';
 
 // Spot Data
 import '../../features/spot/data/datasources/spot_remote_datasource.dart';
@@ -114,8 +116,11 @@ import '../../features/chat/domain/usecases/get_or_create_group_chat_usecase.dar
 import '../../features/chat/domain/usecases/mark_chat_read_usecase.dart';
 import '../../features/chat/domain/usecases/send_chat_message_usecase.dart';
 import '../../features/chat/domain/usecases/stream_chat_messages_usecase.dart';
+import '../../features/chat/domain/usecases/stream_user_messages_usecase.dart';
 import '../../features/chat/presentation/bloc/chat_cubit.dart';
 import '../../features/chat/presentation/bloc/conversations_cubit.dart';
+import '../services/chat_visibility_tracker.dart';
+import '../services/foreground_chat_notification_coordinator.dart';
 
 final sl = GetIt.instance;
 
@@ -144,6 +149,9 @@ Future<void> setupServiceLocator() async {
   );
 
   sl.registerLazySingleton<ImageService>(() => ImageService());
+  sl.registerLazySingleton<ExploreNavigationService>(
+    () => ExploreNavigationService(),
+  );
 
   // ── Blocs ─────────────────────────────────────────────
   sl.registerFactory<SettingsCubit>(
@@ -281,6 +289,13 @@ Future<void> setupServiceLocator() async {
       uploadAvatar: sl<UploadAvatarUseCase>(),
     ),
   );
+  sl.registerFactory<MySportsSpaceCubit>(
+    () => MySportsSpaceCubit(
+      getProfileUseCase: sl<GetProfileUseCase>(),
+      spotRepository: sl<SpotRepository>(),
+      authRepository: sl<AuthRepository>(),
+    ),
+  );
 
   sl.registerSingleton<RegisterDeviceUseCase>(
     RegisterDeviceUseCase(sl<DeviceRepository>()),
@@ -408,6 +423,20 @@ Future<void> setupServiceLocator() async {
   sl.registerSingleton<StreamChatMessagesUseCase>(
     StreamChatMessagesUseCase(sl<ChatRepository>()),
   );
+  sl.registerSingleton<StreamUserMessagesUseCase>(
+    StreamUserMessagesUseCase(sl<ChatRepository>()),
+  );
+  sl.registerLazySingleton<ChatVisibilityTracker>(
+    () => ChatVisibilityTracker(),
+  );
+  sl.registerLazySingleton<ForegroundChatNotificationCoordinator>(
+    () => ForegroundChatNotificationCoordinator(
+      visibilityTracker: sl<ChatVisibilityTracker>(),
+      localNotificationService: sl<LocalNotificationService>(),
+      markChatReadUseCase: sl<MarkChatReadUseCase>(),
+      supabaseClient: sl<SupabaseClient>(),
+    ),
+  );
   sl.registerFactory<ChatCubit>(
     () => ChatCubit(
       getOrCreateDirectChatUseCase: sl<GetOrCreateDirectChatUseCase>(),
@@ -418,9 +447,12 @@ Future<void> setupServiceLocator() async {
       streamChatMessagesUseCase: sl<StreamChatMessagesUseCase>(),
     ),
   );
-  sl.registerFactory<ConversationsCubit>(
+  sl.registerLazySingleton<ConversationsCubit>(
     () => ConversationsCubit(
       getMyConversationsUseCase: sl<GetMyConversationsUseCase>(),
+      streamUserMessagesUseCase: sl<StreamUserMessagesUseCase>(),
+      visibilityTracker: sl<ChatVisibilityTracker>(),
+      currentUserId: sl<AuthRepository>().getCurrentUserId(),
     ),
   );
 }

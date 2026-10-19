@@ -84,7 +84,14 @@ class SpotDetailsScreenMobile extends StatelessWidget {
               icon: const Icon(Icons.arrow_back_rounded),
               onPressed: onBack,
             ),
-            title: Text(loc.detailsTitle),
+            title: Text(
+              loc.detailsTitle,
+              style: TextStyle(
+                color: context.textPrimary,
+                fontSize: Dimensions.r18.dynamicSP,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
             actions: [
               if (loaded != null)
                 IconButton(

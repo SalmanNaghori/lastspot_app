@@ -1,6 +1,8 @@
 import 'package:intl/intl.dart';
 import '../../../../core/base_import.dart';
 import '../../domain/entities/chat_conversation_entity.dart';
+import '../utils/chat_text_formatter.dart';
+import 'chat_avatar.dart';
 
 class ConversationTile extends StatelessWidget {
   final ChatConversationEntity conversation;
@@ -16,17 +18,16 @@ class ConversationTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final colors = context.colorScheme;
     final isDirect = conversation.isDirect;
-    final title = isDirect
-        ? (conversation.otherUserName?.trim().isNotEmpty == true
-              ? conversation.otherUserName!.trim()
-              : context.loc.directMessage)
-        : (conversation.activityTitle?.trim().isNotEmpty == true
-              ? conversation.activityTitle!.trim()
-              : context.loc.groupChat);
-
-    final lastMessage = conversation.lastMessage?.trim().isNotEmpty == true
-        ? conversation.lastMessage!.trim()
-        : context.loc.chatEmpty;
+    final title = conversation.getTitle(
+      defaultDirect: context.loc.directMessage,
+      defaultGroup: context.loc.groupChat,
+    );
+    final activityContext = conversation.getDirectActivitySubtitle(
+      fallbackActivityLabel: context.loc.activity,
+    );
+    final lastMessage = conversation.getPreviewMessage(
+      defaultEmpty: context.loc.chatEmpty,
+    );
 
     String timeStr = '';
     if (conversation.lastMessageAt != null) {
@@ -56,54 +57,12 @@ class ConversationTile extends StatelessWidget {
           ),
           child: Row(
             children: [
-              Container(
-                width: Dimensions.r48.dynamicW,
-                height: Dimensions.r48.dynamicH,
-                decoration: BoxDecoration(
-                  color: isDirect
-                      ? context.primaryColor.withValues(alpha: 0.12)
-                      : (context.isDarkMode
-                            ? context.surfaceContainer
-                            : const Color(0xFFF0FDF4)),
-                  shape: BoxShape.circle,
-                  border: Border.all(
-                    color: isDirect
-                        ? context.primaryColor.withValues(alpha: 0.25)
-                        : context.borderColor.withValues(alpha: 0.6),
-                    width: 1.0,
-                  ),
-                ),
-                alignment: Alignment.center,
-                child: isDirect
-                    ? Text(
-                        (conversation.otherUserName?.isNotEmpty == true
-                                ? conversation.otherUserName![0]
-                                : 'U')
-                            .toUpperCase(),
-                        style: TextStyle(
-                          color: context.primaryColor,
-                          fontSize: Dimensions.r18.dynamicSP,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      )
-                    : Padding(
-                        padding: EdgeInsets.all(Dimensions.r6.dynamicW),
-                        child: Image.asset(
-                          AppAssets.getCategoryAsset(
-                            conversation.activityTitle,
-                          ),
-                          cacheWidth: 96,
-                          cacheHeight: 96,
-                          fit: BoxFit.contain,
-                          errorBuilder: (context, error, stackTrace) => Icon(
-                            AppUtils.getCategoryIcon(
-                              conversation.activityTitle,
-                            ),
-                            size: Dimensions.r22.dynamicH,
-                            color: context.primaryColor,
-                          ),
-                        ),
-                      ),
+              ChatAvatar(
+                isDirect: isDirect,
+                avatarUrl: conversation.displayAvatarUrl,
+                displayName: conversation.avatarDisplayName,
+                category: conversation.categoryOrActivity,
+                size: Dimensions.r48.dynamicH,
               ),
               SizedBox(width: Dimensions.r12.dynamicW),
               Expanded(
@@ -131,19 +90,51 @@ class ConversationTile extends StatelessWidget {
                           ),
                       ],
                     ),
+                    if (activityContext != null) ...[
+                      SizedBox(height: Dimensions.r2.dynamicH),
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.sports_soccer_outlined,
+                            size: Dimensions.r14.dynamicH,
+                            color: context.primaryColor,
+                          ),
+                          SizedBox(width: Dimensions.r4.dynamicW),
+                          Expanded(
+                            child: Text(
+                              activityContext,
+                              style: context.labelSmall?.copyWith(
+                                color: context.primaryColor,
+                                fontWeight: FontWeight.w600,
+                                fontSize: Dimensions.r12.dynamicSP,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
                     SizedBox(height: Dimensions.r4.dynamicH),
                     Row(
                       children: [
                         Expanded(
-                          child: Text(
-                            lastMessage,
-                            style: context.bodyMedium?.copyWith(
-                              color: conversation.unreadCount > 0
-                                  ? colors.onSurface
-                                  : colors.onSurfaceVariant,
-                              fontWeight: conversation.unreadCount > 0
-                                  ? FontWeight.w600
-                                  : FontWeight.normal,
+                          child: Text.rich(
+                            TextSpan(
+                              children: ChatTextFormatter.buildPreviewSpans(
+                                text: lastMessage,
+                                baseStyle:
+                                    (context.bodyMedium ?? const TextStyle())
+                                        .copyWith(
+                                          color: conversation.unreadCount > 0
+                                              ? colors.onSurface
+                                              : colors.onSurfaceVariant,
+                                          fontWeight:
+                                              conversation.unreadCount > 0
+                                              ? FontWeight.w600
+                                              : FontWeight.normal,
+                                        ),
+                              ),
                             ),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,

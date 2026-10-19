@@ -20,7 +20,7 @@ class SportsCarouselItem {
 
   const SportsCarouselItem({
     this.id,
-    required this.name,
+    this.name = '',
     this.slug,
     this.category,
     this.isAll = false,
@@ -35,12 +35,8 @@ class SportsCarouselItem {
         isAll: false,
       );
 
-  factory SportsCarouselItem.all(String label) => SportsCarouselItem(
-        id: null,
-        name: label,
-        slug: 'all',
-        isAll: true,
-      );
+  factory SportsCarouselItem.all() =>
+      const SportsCarouselItem(id: null, name: '', slug: 'all', isAll: true);
 }
 
 /// Unified 3D perspective-stack sports category carousel.
@@ -60,6 +56,7 @@ class SportsCategoryPerspectiveCarousel extends StatefulWidget {
   final SportsCarouselMode mode;
   final ValueChanged<CategoryEntity>? onCategoryTap;
   final ValueChanged<String?>? onCategorySelected;
+  final VoidCallback? onInteraction;
   final double? cardWidth;
   final double? cardHeight;
   final double? carouselHeight;
@@ -72,6 +69,7 @@ class SportsCategoryPerspectiveCarousel extends StatefulWidget {
     this.mode = SportsCarouselMode.home,
     this.onCategoryTap,
     this.onCategorySelected,
+    this.onInteraction,
     this.cardWidth,
     this.cardHeight,
     this.carouselHeight,
@@ -107,17 +105,11 @@ class _SportsCategoryPerspectiveCarouselState
   }
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    _buildItems();
-  }
-
-  @override
   void didUpdateWidget(SportsCategoryPerspectiveCarousel oldWidget) {
     super.didUpdateWidget(oldWidget);
     final categoriesChanged =
         widget.categories.length != oldWidget.categories.length ||
-            widget.includeAllOption != oldWidget.includeAllOption;
+        widget.includeAllOption != oldWidget.includeAllOption;
 
     if (categoriesChanged) {
       _buildItems();
@@ -138,7 +130,7 @@ class _SportsCategoryPerspectiveCarouselState
   void _buildItems() {
     final List<SportsCarouselItem> items = [];
     if (widget.includeAllOption) {
-      items.add(SportsCarouselItem.all(context.loc.allFilter));
+      items.add(SportsCarouselItem.all());
     }
     for (final cat in widget.categories) {
       items.add(SportsCarouselItem.fromCategory(cat));
@@ -173,13 +165,13 @@ class _SportsCategoryPerspectiveCarouselState
 
   void _onDragStart(DragStartDetails details) {
     _animController.stop();
+    widget.onInteraction?.call();
   }
 
   void _onDragUpdate(DragUpdateDetails details) {
     if (_items.isEmpty) return;
     final delta = details.primaryDelta ?? 0.0;
-    final effectiveCardWidth =
-        widget.cardWidth ?? Dimensions.r120.dynamicW;
+    final effectiveCardWidth = widget.cardWidth ?? Dimensions.r120.dynamicW;
     final dragStep = effectiveCardWidth * 0.92;
     double deltaPages = -delta / dragStep;
 
@@ -221,17 +213,23 @@ class _SportsCategoryPerspectiveCarouselState
       return;
     }
 
-    _snapAnimation = Tween<double>(begin: startPage, end: endPage).animate(
-      CurvedAnimation(parent: _animController, curve: Curves.easeOutCubic),
-    )..addListener(() {
-        setState(() {
-          _page = _snapAnimation!.value;
-        });
-      })..addStatusListener((status) {
-        if (status == AnimationStatus.completed) {
-          _onSettledAt(targetIndex);
-        }
-      });
+    _snapAnimation =
+        Tween<double>(begin: startPage, end: endPage).animate(
+            CurvedAnimation(
+              parent: _animController,
+              curve: Curves.easeOutCubic,
+            ),
+          )
+          ..addListener(() {
+            setState(() {
+              _page = _snapAnimation!.value;
+            });
+          })
+          ..addStatusListener((status) {
+            if (status == AnimationStatus.completed) {
+              _onSettledAt(targetIndex);
+            }
+          });
 
     _animController.forward(from: 0.0);
   }
@@ -248,6 +246,7 @@ class _SportsCategoryPerspectiveCarouselState
 
   void _handleCardTap(int index) {
     if (_items.isEmpty || index < 0 || index >= _items.length) return;
+    widget.onInteraction?.call();
 
     if (index == _currentIndex) {
       // Tap on centered card
@@ -255,10 +254,12 @@ class _SportsCategoryPerspectiveCarouselState
         final item = _items[index];
         if (item.category != null) {
           widget.onCategoryTap?.call(item.category!);
+        } else if (item.isAll) {
+          widget.onCategorySelected?.call(null);
         }
       }
     } else {
-      // Tap on side card: smoothly animate to center
+      // Tap on side card: smoothly animate to center without navigating
       _animateToPage(index);
     }
   }
@@ -270,15 +271,14 @@ class _SportsCategoryPerspectiveCarouselState
     }
 
     final screenWidth = MediaQuery.of(context).size.width;
-    final effectiveCardWidth =
-        widget.cardWidth ?? Dimensions.r120.dynamicW;
-    final effectiveCardHeight =
-        widget.cardHeight ?? Dimensions.r140.dynamicH;
-    final effectiveCarouselHeight = widget.carouselHeight ??
+    final effectiveCardWidth = widget.cardWidth ?? Dimensions.r120.dynamicW;
+    final effectiveCardHeight = widget.cardHeight ?? Dimensions.r140.dynamicH;
+    final effectiveCarouselHeight =
+        widget.carouselHeight ??
         (effectiveCardHeight + Dimensions.r20.dynamicH);
 
-    final step1 = (screenWidth * 0.19).clamp(68.0, 78.0);
-    final step2 = (screenWidth * 0.16).clamp(58.0, 66.0);
+    final step1 = (screenWidth * 0.22).clamp(76.0, 90.0);
+    final step2 = (screenWidth * 0.17).clamp(60.0, 72.0);
 
     // Visible cards within ~2.8 items distance from floating page
     final visibleIndices = <int>[];
@@ -332,7 +332,7 @@ class _SportsCategoryPerspectiveCarouselState
               }
 
               // Subtle perspective rotation around Y-axis
-              final rotationY = -d.clamp(-2.0, 2.0) * 0.08;
+              final rotationY = -d.clamp(-2.0, 2.0) * 0.06;
 
               final matrix = Matrix4.identity()
                 ..setEntry(3, 2, 0.001)
@@ -344,9 +344,9 @@ class _SportsCategoryPerspectiveCarouselState
               final item = _items[index];
               final isSelected = widget.mode == SportsCarouselMode.explore
                   ? (widget.selectedCategoryId == item.id)
-                  : isCenter;
+                  : false;
 
-              final opticalDepth = (0.08 * absD).clamp(0.0, 0.22);
+              final opticalDepth = (0.04 * absD).clamp(0.0, 0.12);
 
               return Transform(
                 key: ValueKey('perspective_cat_${item.id ?? "all"}_$index'),

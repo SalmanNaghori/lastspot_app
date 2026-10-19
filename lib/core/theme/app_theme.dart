@@ -14,7 +14,7 @@ class AppTheme {
   // ============================================================
 
   static ThemeData get lightTheme {
-    return lightThemeFor(AppThemeColor.sportsGreen);
+    return lightThemeFor(AppThemeColor.sunsetOrange);
   }
 
   static ThemeData lightThemeFor(AppThemeColor themeColor) {
@@ -36,7 +36,7 @@ class AppTheme {
   // ============================================================
 
   static ThemeData get darkTheme {
-    return darkThemeFor(AppThemeColor.sportsGreen);
+    return darkThemeFor(AppThemeColor.sunsetOrange);
   }
 
   static ThemeData darkThemeFor(AppThemeColor themeColor) {
@@ -402,21 +402,26 @@ class AppTheme {
 class CategoryColors {
   CategoryColors._();
 
-  static const Color cricketDark = AppColor.primaryDarkColor;
-  static const Color cricketLight = AppColor.primaryColor;
+  static const Color cricket = Color(0xFFFFEADB); // warm peach
+  static const Color football = Color(0xFFE0F2FE); // light sky blue
+  static const Color badminton = Color(0xFFF3E8FF); // soft lavender
+  static const Color rideSharing = Color(0xFFCCFBF1); // muted aqua
+  static const Color events = Color(0xFFFEF9C3); // pale yellow
 
+  static const Color cricketDark = Color(0xFF5C2D16);
   static const Color footballDark = Color(0xFF1E3A8A);
-  static const Color footballLight = Color(0xFF3B82F6);
+  static const Color badmintonDark = Color(0xFF4C1D95);
+  static const Color rideSharingDark = Color(0xFF134E4A);
+  static const Color eventsDark = Color(0xFF713F12);
 
+  // Backwards-compatible aliases
+  static const Color cricketLight = cricket;
+  static const Color footballLight = football;
   static const Color basketballDark = Color(0xFF7C2D12);
   static const Color basketballLight = Color(0xFFF97316);
-
   static const Color tennisDark = Color(0xFF4C1D95);
   static const Color tennisLight = Color(0xFF8B5CF6);
-
-  static const Color badmintonDark = Color(0xFF713F12);
-  static const Color badmintonLight = Color(0xFFF59E0B);
-
+  static const Color badmintonLight = badminton;
   static const Color defaultDark = Color(0xFF0F172A);
   static const Color defaultLight = Color(0xFF334155);
 }

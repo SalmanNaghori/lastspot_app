@@ -44,13 +44,7 @@ class CreateSpotScreenTablet extends StatelessWidget {
             }
           },
         ),
-        title: Text(
-          spotToEdit != null ? context.loc.edit : context.loc.generateActivity,
-          style: context.titleLarge?.copyWith(
-            fontWeight: FontWeight.bold,
-            color: context.textPrimary,
-          ),
-        ),
+        title: const KhelBhaiLogo(),
       ),
       body: SafeArea(
         child: Center(

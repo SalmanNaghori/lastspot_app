@@ -123,11 +123,9 @@ class _SplashScreenState extends State<SplashScreen>
         ),
         child: Scaffold(
           backgroundColor: AppColor.primaryColor,
-          body: SafeArea(
-            child: SplashBrandingView(
-              fadeAnimation: _fadeAnimation,
-              scaleAnimation: _scaleAnimation,
-            ),
+          body: SplashBrandingView(
+            fadeAnimation: _fadeAnimation,
+            scaleAnimation: _scaleAnimation,
           ),
         ),
       ),

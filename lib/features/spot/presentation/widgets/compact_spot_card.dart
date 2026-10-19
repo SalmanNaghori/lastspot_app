@@ -92,14 +92,31 @@ class _CompactSpotCardState extends State<CompactSpotCard> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            '${widget.categoryIcon} ${widget.categoryName}',
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: type.labelSmall?.copyWith(
-                              color: colors.primary,
-                              fontWeight: FontWeight.w700,
-                            ),
+                          Row(
+                            children: [
+                              Category3DIcon(
+                                category: spot.categoryId,
+                                size: Dimensions.r14.dynamicH,
+                              ),
+                              SizedBox(width: Dimensions.r6.dynamicW),
+                              Expanded(
+                                child: Text(
+                                  AppAssets.resolveCategoryName(
+                                        spot.categoryId,
+                                      ).isNotEmpty
+                                      ? AppAssets.resolveCategoryName(
+                                          spot.categoryId,
+                                        ).capitalizeFirst()
+                                      : widget.categoryName,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: type.labelSmall?.copyWith(
+                                    color: colors.primary,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                           const SizedBox(height: AppSpacing.xs),
                           Text(

@@ -90,7 +90,7 @@ class _SignupScreenState extends State<SignupScreen> {
                       decoration: BoxDecoration(
                         color: context.isDarkMode
                             ? context.surfaceContainer
-                            : const Color(0xFFF0FDF4),
+                            : context.primaryContainer,
                         shape: BoxShape.circle,
                         boxShadow: [
                           BoxShadow(
@@ -105,7 +105,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         ),
                       ),
                       padding: EdgeInsets.all(Dimensions.r12.dynamicW),
-                      child: AppAssets.cricketEquipmentGen.image(
+                      child: Assets.images.categories.cricket.image(
                         fit: BoxFit.contain,
                         cacheWidth: 200,
                         cacheHeight: 200,
@@ -140,12 +140,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     prefixIcon: const Icon(Icons.person_outline),
                     textCapitalization: TextCapitalization.words,
                     textInputAction: TextInputAction.next,
-                    validator: (value) {
-                      if (value == null || value.trim().isEmpty) {
-                        return context.loc.fullNameRequired;
-                      }
-                      return null;
-                    },
+                    validator: AppValidators.fullName(context.loc),
                   ),
                   SizedBox(height: Dimensions.r16.dynamicH),
                   // Email
@@ -155,17 +150,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     prefixIcon: const Icon(Icons.email_outlined),
                     keyboardType: TextInputType.emailAddress,
                     textInputAction: TextInputAction.next,
-                    validator: (value) {
-                      if (value == null || value.trim().isEmpty) {
-                        return context.loc.emailRequired;
-                      }
-                      if (!RegExp(
-                        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+",
-                      ).hasMatch(value)) {
-                        return context.loc.invalidEmail;
-                      }
-                      return null;
-                    },
+                    validator: AppValidators.email(context.loc),
                   ),
                   SizedBox(height: Dimensions.r16.dynamicH),
                   // Password
@@ -181,15 +166,7 @@ class _SignupScreenState extends State<SignupScreen> {
                       });
                     },
                     textInputAction: TextInputAction.next,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return context.loc.passwordRequired;
-                      }
-                      if (value.length < 6) {
-                        return context.loc.passwordLengthError;
-                      }
-                      return null;
-                    },
+                    validator: AppValidators.password(context.loc),
                   ),
                   SizedBox(height: Dimensions.r16.dynamicH),
                   // Confirm Password
@@ -205,12 +182,10 @@ class _SignupScreenState extends State<SignupScreen> {
                       });
                     },
                     textInputAction: TextInputAction.done,
-                    validator: (value) {
-                      if (value != _passwordController.text) {
-                        return context.loc.passwordsDoNotMatch;
-                      }
-                      return null;
-                    },
+                    validator: AppValidators.confirmPassword(
+                      context.loc,
+                      () => _passwordController.text,
+                    ),
                   ),
                   // Terms
                   CheckboxListTile(

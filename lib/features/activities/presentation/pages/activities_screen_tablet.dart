@@ -54,10 +54,7 @@ class _ActivitiesScreenTabletState extends State<ActivitiesScreenTablet> {
 
     return Scaffold(
       backgroundColor: context.backgroundColor,
-      appBar: CustomAppBar.dashboard(
-        context: context,
-        title: loc.navActivities,
-      ),
+      appBar: const KhelBhaiAppBar(),
       body: SafeArea(
         top: false,
         child: Center(

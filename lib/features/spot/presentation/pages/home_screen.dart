@@ -1,4 +1,5 @@
 import 'package:lastspot_app/core/base_import.dart';
+import '../../../../core/services/explore_navigation_service.dart';
 import '../bloc/home_cubit.dart';
 import '../bloc/home_state.dart';
 import '../../../auth/presentation/bloc/profile_cubit.dart';
@@ -6,6 +7,7 @@ import '../widgets/home_app_bar.dart';
 import '../widgets/home_greeting_banner.dart';
 import '../widgets/popular_sports_grid.dart';
 import '../../../cities/domain/entities/city_entity.dart';
+import '../../../cities/presentation/widgets/city_selection_bottom_sheet.dart';
 import '../../../categories/domain/entities/category.dart';
 import '../../domain/entities/request_entity.dart';
 import '../widgets/home_activity_hub.dart';
@@ -22,10 +24,13 @@ class _HomeScreenState extends State<HomeScreen> {
   String? _loadedProfileCityId;
   List<String> _loadedCategoryPreferences = const [];
   bool _hasLoadedProfile = false;
+  late final ExploreNavigationService _exploreNavService;
 
   @override
   void initState() {
     super.initState();
+    _exploreNavService = sl<ExploreNavigationService>();
+    _exploreNavService.addListener(_onExploreNavChanged);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
       final profileState = context.read<ProfileCubit>().state;
@@ -35,6 +40,28 @@ class _HomeScreenState extends State<HomeScreen> {
         _loadHomeWithoutProfile();
       }
     });
+  }
+
+  @override
+  void dispose() {
+    _exploreNavService.removeListener(_onExploreNavChanged);
+    super.dispose();
+  }
+
+  void _onExploreNavChanged() {
+    if (!mounted) return;
+    final cityId = _exploreNavService.selectedCityId;
+    if (cityId != null && cityId != _loadedProfileCityId) {
+      _loadedProfileCityId = cityId;
+      final profileState = context.read<ProfileCubit>().state;
+      final preferences = profileState is ProfileLoaded
+          ? profileState.profile.sportsInterests
+          : _loadedCategoryPreferences;
+      context.read<HomeCubit>().loadHomeData(
+        cityId: cityId,
+        categoryPreferences: preferences,
+      );
+    }
   }
 
   void _loadHomeForProfile(ProfileLoaded state) {
@@ -72,7 +99,15 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void _onNotificationTap() => context.push(AppRoutes.notifications);
 
-  void _onViewAllTap() => context.go(AppRoutes.explore);
+  void _onCategoryTap(CategoryEntity category) {
+    _exploreNavService.navigateToCategory(category.id);
+    context.go(AppRoutes.explore);
+  }
+
+  void _onViewAllTap() {
+    _exploreNavService.navigateToCategory(null);
+    context.go(AppRoutes.explore);
+  }
 
   void _onCreateActivityTap() => context.push(AppRoutes.create);
 
@@ -94,11 +129,13 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _onCitySelected(String cityId, String cityName) {
+    _loadedProfileCityId = cityId;
     final profileState = context.read<ProfileCubit>().state;
     final preferences = profileState is ProfileLoaded
         ? profileState.profile.sportsInterests
         : _loadedCategoryPreferences;
     context.read<HomeCubit>().updateSelectedCity(cityId, cityName, preferences);
+    _exploreNavService.updateSelectedCity(cityId: cityId, cityName: cityName);
   }
 
   void _showCityPicker(
@@ -106,59 +143,11 @@ class _HomeScreenState extends State<HomeScreen> {
     List<CityEntity> cities,
     String? selectedCityId,
   ) {
-    AppBottomSheet.show(
+    CitySelectionBottomSheet.show(
       context: context,
-      isScrollControlled: false,
-      builder: (context) {
-        return SafeArea(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Padding(
-                padding: EdgeInsets.all(Dimensions.r16.dynamicW),
-                child: Text(
-                  context.loc.selectCity,
-                  style: TextStyle(
-                    fontSize: Dimensions.r18.dynamicSP,
-                    fontWeight: FontWeight.bold,
-                    color: context.textPrimary,
-                  ),
-                ),
-              ),
-              Flexible(
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: cities.length,
-                  itemBuilder: (context, index) {
-                    final city = cities[index];
-                    final isSelected = city.id == selectedCityId;
-                    return ListTile(
-                      title: Text(
-                        city.name,
-                        style: TextStyle(
-                          color: isSelected
-                              ? context.primaryColor
-                              : context.textPrimary,
-                          fontWeight: isSelected
-                              ? FontWeight.bold
-                              : FontWeight.normal,
-                        ),
-                      ),
-                      trailing: isSelected
-                          ? Icon(Icons.check, color: context.primaryColor)
-                          : null,
-                      onTap: () {
-                        Navigator.pop(context);
-                        _onCitySelected(city.id, city.name);
-                      },
-                    );
-                  },
-                ),
-              ),
-            ],
-          ),
-        );
-      },
+      cities: cities,
+      selectedCityId: selectedCityId,
+      onCitySelected: (city) => _onCitySelected(city.id, city.name),
     );
   }
 
@@ -246,11 +235,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           else
                             PopularSportsGrid(
                               categories: categories,
-                              onCategoryTap: (category) {
-                                context.go(
-                                  AppRoutes.exploreCategoryPath(category.id),
-                                );
-                              },
+                              onCategoryTap: _onCategoryTap,
                               onViewAll: _onViewAllTap,
                             ),
                           if (successState != null) ...[
