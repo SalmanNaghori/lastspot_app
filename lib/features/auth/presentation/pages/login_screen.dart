@@ -19,6 +19,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void _onLogin() {
     if (_formKey.currentState?.validate() ?? false) {
+      AppUtils.hideKeyboard(context);
       context.read<AuthBloc>().add(
         AuthLoginRequested(
           email: _emailController.text.trim(),

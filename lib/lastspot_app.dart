@@ -9,6 +9,7 @@ import 'core/services/account_session_service.dart';
 import 'core/services/in_app_feedback_manager.dart';
 import 'core/services/password_recovery_link_monitor.dart';
 import 'core/widgets/env_banner.dart';
+import 'core/widgets/app_keyboard_dismissal.dart';
 import 'features/auth/domain/usecases/check_auth_status_usecase.dart';
 import 'features/auth/domain/usecases/get_profile_usecase.dart';
 import 'features/auth/domain/usecases/login_usecase.dart';
@@ -98,13 +99,14 @@ class LastSpotApp extends StatelessWidget {
                 theme: AppTheme.lightThemeFor(settingsState.appThemeColor),
                 darkTheme: AppTheme.darkThemeFor(settingsState.appThemeColor),
                 routerConfig: appRouter,
+                scrollBehavior: const MaterialScrollBehavior().copyWith(
+                  keyboardDismissBehavior:
+                      ScrollViewKeyboardDismissBehavior.onDrag,
+                ),
                 builder: (context, child) {
                   Dimensions.init(context);
                   return EnvBanner(
-                    child: GestureDetector(
-                      onTap: () {
-                        FocusManager.instance.primaryFocus?.unfocus();
-                      },
+                    child: AppKeyboardDismissal(
                       child: BlocListener<AuthBloc, AuthState>(
                         listener: (context, state) {
                           if (state is Unauthenticated) {

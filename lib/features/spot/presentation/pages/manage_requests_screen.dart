@@ -44,11 +44,7 @@ class _ManageRequestsScreenState extends State<ManageRequestsScreen> {
   Widget _buildScaffold(BuildContext context, ColorScheme colors) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          tooltip: MaterialLocalizations.of(context).backButtonTooltip,
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => context.pop(),
-        ),
+        leading: const KhelBhaiBackButton(),
         title: Text(
           context.loc.manageMatchRequests,
           style: TextStyle(

@@ -62,107 +62,110 @@ class _ChatComposerBarState extends State<ChatComposerBar> {
   Widget build(BuildContext context) {
     final colors = context.colorScheme;
 
-    return SafeArea(
-      top: false,
-      child: Container(
-        padding: const EdgeInsets.symmetric(
-          horizontal: AppSpacing.md,
-          vertical: AppSpacing.sm,
-        ),
-        decoration: BoxDecoration(
-          color: colors.surface,
-          border: Border(
-            top: BorderSide(
-              color: colors.outlineVariant.withValues(alpha: 0.5),
-              width: 0.5,
-            ),
+    return TextFieldTapRegion(
+      child: SafeArea(
+        top: false,
+        child: Container(
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppSpacing.md,
+            vertical: AppSpacing.sm,
           ),
-          boxShadow: [
-            BoxShadow(
-              color: AppColor.blackColor.withValues(alpha: 0.03),
-              blurRadius: 4,
-              offset: const Offset(0, -1),
+          decoration: BoxDecoration(
+            color: colors.surface,
+            border: Border(
+              top: BorderSide(
+                color: colors.outlineVariant.withValues(alpha: 0.5),
+                width: 0.5,
+              ),
             ),
-          ],
-        ),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            Expanded(
-              child: Container(
-                constraints: const BoxConstraints(maxHeight: 130),
-                decoration: BoxDecoration(
-                  color: colors.surfaceContainerLow,
-                  borderRadius: AppRadius.xxlBorderRadius,
-                  border: Border.all(
-                    color: colors.outlineVariant.withValues(alpha: 0.4),
-                    width: 0.5,
+            boxShadow: [
+              BoxShadow(
+                color: AppColor.blackColor.withValues(alpha: 0.03),
+                blurRadius: 4,
+                offset: const Offset(0, -1),
+              ),
+            ],
+          ),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Expanded(
+                child: Container(
+                  constraints: const BoxConstraints(maxHeight: 130),
+                  decoration: BoxDecoration(
+                    color: colors.surfaceContainerLow,
+                    borderRadius: AppRadius.xxlBorderRadius,
+                    border: Border.all(
+                      color: colors.outlineVariant.withValues(alpha: 0.4),
+                      width: 0.5,
+                    ),
                   ),
-                ),
-                child: TextField(
-                  controller: _controller,
-                  minLines: 1,
-                  maxLines: 5,
-                  keyboardType: TextInputType.multiline,
-                  textCapitalization: TextCapitalization.sentences,
-                  style: context.bodyMedium,
-                  decoration: InputDecoration(
-                    hintText: context.loc.messageHint,
-                    hintStyle: context.bodyMedium?.copyWith(
-                      color: colors.onSurfaceVariant.withValues(alpha: 0.7),
+                  child: TextField(
+                    controller: _controller,
+                    minLines: 1,
+                    maxLines: 5,
+                    keyboardType: TextInputType.multiline,
+                    textCapitalization: TextCapitalization.sentences,
+                    style: context.bodyMedium,
+                    decoration: InputDecoration(
+                      hintText: context.loc.messageHint,
+                      hintStyle: context.bodyMedium?.copyWith(
+                        color: colors.onSurfaceVariant.withValues(alpha: 0.7),
+                      ),
+                      isDense: true,
+                      contentPadding: const EdgeInsets.symmetric(
+                        horizontal: AppSpacing.md,
+                        vertical: AppSpacing.smLg,
+                      ),
+                      border: InputBorder.none,
+                      enabledBorder: InputBorder.none,
+                      focusedBorder: InputBorder.none,
                     ),
-                    isDense: true,
-                    contentPadding: const EdgeInsets.symmetric(
-                      horizontal: AppSpacing.md,
-                      vertical: AppSpacing.smLg,
-                    ),
-                    border: InputBorder.none,
-                    enabledBorder: InputBorder.none,
-                    focusedBorder: InputBorder.none,
                   ),
                 ),
               ),
-            ),
-            const SizedBox(width: AppSpacing.sm),
-            ValueListenableBuilder<bool>(
-              valueListenable: _canSend,
-              builder: (context, canSend, _) {
-                final isEnabled = canSend && !widget.isSending;
-                return Material(
-                  color: isEnabled
-                      ? colors.primary
-                      : colors.surfaceContainerHigh,
-                  shape: const CircleBorder(),
-                  child: InkWell(
-                    customBorder: const CircleBorder(),
-                    onTap: isEnabled ? _handleSend : null,
-                    child: Padding(
-                      padding: const EdgeInsets.all(AppSpacing.md),
-                      child: widget.isSending
-                          ? SizedBox.square(
-                              dimension: Dimensions.r20.dynamicH,
-                              child: CircularProgressIndicator(
-                                strokeWidth: 2,
-                                valueColor: AlwaysStoppedAnimation<Color>(
-                                  colors.onPrimary,
+              const SizedBox(width: AppSpacing.sm),
+              ValueListenableBuilder<bool>(
+                valueListenable: _canSend,
+                builder: (context, canSend, _) {
+                  final isEnabled = canSend && !widget.isSending;
+                  return Material(
+                    color: isEnabled
+                        ? colors.primary
+                        : colors.surfaceContainerHigh,
+                    shape: const CircleBorder(),
+                    child: InkWell(
+                      customBorder: const CircleBorder(),
+                      canRequestFocus: false,
+                      onTap: isEnabled ? _handleSend : null,
+                      child: Padding(
+                        padding: const EdgeInsets.all(AppSpacing.md),
+                        child: widget.isSending
+                            ? SizedBox.square(
+                                dimension: Dimensions.r20.dynamicH,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                  valueColor: AlwaysStoppedAnimation<Color>(
+                                    colors.onPrimary,
+                                  ),
                                 ),
+                              )
+                            : Icon(
+                                Icons.send_rounded,
+                                size: Dimensions.r20.dynamicH,
+                                color: isEnabled
+                                    ? colors.onPrimary
+                                    : colors.onSurfaceVariant.withValues(
+                                        alpha: 0.5,
+                                      ),
                               ),
-                            )
-                          : Icon(
-                              Icons.send_rounded,
-                              size: Dimensions.r20.dynamicH,
-                              color: isEnabled
-                                  ? colors.onPrimary
-                                  : colors.onSurfaceVariant.withValues(
-                                      alpha: 0.5,
-                                    ),
-                            ),
+                      ),
                     ),
-                  ),
-                );
-              },
-            ),
-          ],
+                  );
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );

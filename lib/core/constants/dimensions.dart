@@ -14,6 +14,10 @@ class Dimensions {
   static const double galleryMaxScale = 4;
   static const double dialogMaxWidth = 440;
 
+  // Back navigation stays at accessible logical sizes on phones and tablets.
+  static const double backButtonSurfaceSize = 44;
+  static const double backButtonEdgeDepth = 1;
+
   static double screenWidth = 375.0;
   static double screenHeight = 812.0;
 

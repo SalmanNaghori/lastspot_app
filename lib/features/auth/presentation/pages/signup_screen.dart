@@ -32,6 +32,7 @@ class _SignupScreenState extends State<SignupScreen> {
         );
         return;
       }
+      AppUtils.hideKeyboard(context);
       context.read<AuthBloc>().add(
         AuthSignupRequested(
           fullName: _nameController.text.trim(),
@@ -69,6 +70,8 @@ class _SignupScreenState extends State<SignupScreen> {
     return Scaffold(
       backgroundColor: context.backgroundColor,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
+        leading: KhelBhaiBackButton.leading(context),
         backgroundColor: context.backgroundColor,
         elevation: 0,
         iconTheme: IconThemeData(color: context.textPrimary),

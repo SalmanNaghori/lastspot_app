@@ -67,6 +67,24 @@ that component. Long titles can truncate within the available app-bar width.
 highlights, shading and transparency. Home, Explore, city selection, activity
 cards and activity details use this shared rendering path.
 
+## Shared back navigation and keyboard behavior
+
+[`KhelBhaiBackButton`](../../../lib/core/widgets/khelbhai_back_button.dart)
+provides the shared raised light/dark back control. Navigation delegates to
+`requestBack` in `context_extensions.dart`, using Flutter's guarded `maybePop`
+so the current route can reject a pop. Onboarding and profile setup retain their
+in-page previous-step callbacks. Root navigation tabs do not imply back controls.
+
+[`AppKeyboardDismissal`](../../../lib/core/widgets/app_keyboard_dismissal.dart)
+overrides the supported EditableText outside-tap action. Route changes use
+`NavigationFocusObserver`; tab changes explicitly clear focus. The shared
+Material scroll behavior dismisses on drag. `TextFieldTapRegion` keeps chat Send
+and profile sports-search controls with their editor; selection sheets reuse
+the inset-aware `AppBottomSheet` helper.
+
+See the [audit and verification record](navigation-keyboard-ux.md) for affected
+flows, test evidence, compliance, and device-testing limits.
+
 ## Retired
 
 | Feature | Removed in | Replaced by / notes |

@@ -85,6 +85,7 @@ export 'widgets/dialogs/app_dialog.dart';
 export 'widgets/inputs/app_datetime_field.dart';
 export 'widgets/inputs/app_text_field.dart';
 export 'widgets/khelbhai_app_bar.dart';
+export 'widgets/khelbhai_back_button.dart';
 export 'widgets/brand_screen_title.dart';
 export 'widgets/lastspot_bottom_navigation_bar.dart';
 export 'widgets/responsive_layout.dart';

@@ -137,7 +137,6 @@ class _ExploreScreenMobileState extends State<ExploreScreenMobile> {
   void _onClearSearchTap() {
     _searchController.clear();
     _onSearchChanged('');
-    _searchFocusNode.unfocus();
   }
 
   void _onFilterTap(
@@ -343,6 +342,7 @@ class _ExploreScreenMobileState extends State<ExploreScreenMobile> {
                 slivers: [
                   // Animated App Bar
                   SliverAppBar(
+                    automaticallyImplyLeading: false,
                     pinned: true,
                     floating: false,
                     backgroundColor: context.backgroundColor,

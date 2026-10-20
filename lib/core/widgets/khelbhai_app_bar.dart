@@ -17,6 +17,7 @@ class KhelBhaiAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      automaticallyImplyLeading: false,
       backgroundColor: context.backgroundColor,
       surfaceTintColor: Colors.transparent,
       elevation: 0,

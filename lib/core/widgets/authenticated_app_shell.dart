@@ -172,6 +172,7 @@ class _AuthenticatedAppShellState extends State<AuthenticatedAppShell>
   }
 
   void _goBranch(int index) {
+    FocusManager.instance.primaryFocus?.unfocus();
     appFeedbackManager.clearTransient();
     if (index == 2) {
       context.push(AppRoutes.create);

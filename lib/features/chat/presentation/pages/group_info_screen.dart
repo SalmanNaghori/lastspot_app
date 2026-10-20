@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import '../../../../core/base_import.dart';
 import '../../../spot/domain/entities/join_request_entity.dart';
 import '../../../spot/domain/entities/request_entity.dart';
@@ -66,7 +68,7 @@ class _GroupInfoScreenState extends State<GroupInfoScreen> {
   }
 
   void _onBack() {
-    context.pop();
+    unawaited(context.requestBack());
   }
 
   @override
@@ -79,11 +81,7 @@ class _GroupInfoScreenState extends State<GroupInfoScreen> {
           backgroundColor: context.backgroundColor,
           elevation: 0,
           title: Text(context.loc.groupInfoTitle),
-          leading: IconButton(
-            tooltip: MaterialLocalizations.of(context).backButtonTooltip,
-            icon: const Icon(Icons.arrow_back),
-            onPressed: _onBack,
-          ),
+          leading: KhelBhaiBackButton(onPressed: _onBack),
         ),
         body: const Center(child: CircularProgressIndicator()),
       );
@@ -96,11 +94,7 @@ class _GroupInfoScreenState extends State<GroupInfoScreen> {
           backgroundColor: context.backgroundColor,
           elevation: 0,
           title: Text(context.loc.groupInfoTitle),
-          leading: IconButton(
-            tooltip: MaterialLocalizations.of(context).backButtonTooltip,
-            icon: const Icon(Icons.arrow_back),
-            onPressed: _onBack,
-          ),
+          leading: KhelBhaiBackButton(onPressed: _onBack),
         ),
         body: Center(
           child: Padding(

@@ -39,6 +39,8 @@ class ProfileScreenTablet extends StatelessWidget {
     return Scaffold(
       backgroundColor: context.backgroundColor,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
+        leading: KhelBhaiBackButton.leading(context),
         title: Text(
           loc.navProfile,
           style: TextStyle(

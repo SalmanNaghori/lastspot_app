@@ -23,16 +23,7 @@ class SettingsScreenMobile extends StatelessWidget {
             color: context.textPrimary,
           ),
         ),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            if (context.canPop()) {
-              context.pop();
-            } else {
-              context.go(AppRoutes.profile);
-            }
-          },
-        ),
+        leading: const KhelBhaiBackButton(),
       ),
       body: BlocBuilder<SettingsCubit, SettingsState>(
         builder: (context, state) {

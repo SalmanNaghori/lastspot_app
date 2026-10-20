@@ -11,6 +11,12 @@ extension LocalizationExtension on BuildContext {
 extension GoRouterNavigationExtension on BuildContext {
   static DateTime? _lastPushTime;
 
+  /// Requests back through Flutter's route guards; a root route simply stays put.
+  Future<bool> requestBack() {
+    FocusManager.instance.primaryFocus?.unfocus();
+    return Navigator.of(this).maybePop();
+  }
+
   /// Pushes a location with a 300ms debounce to prevent double-taps causing duplicate page exceptions.
   Future<T?> safePush<T extends Object?>(
     String location, {

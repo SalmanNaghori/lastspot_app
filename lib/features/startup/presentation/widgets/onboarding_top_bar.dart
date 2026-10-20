@@ -21,21 +21,12 @@ class OnboardingTopBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      automaticallyImplyLeading: false,
       backgroundColor: context.backgroundColor,
       elevation: 0,
       scrolledUnderElevation: 0,
       systemOverlayStyle: AppTheme.systemUiOverlayStyle(context),
-      leading: canGoBack
-          ? IconButton(
-              icon: Icon(
-                Icons.arrow_back_ios_new_rounded,
-                size: Dimensions.r20.dynamicH,
-                color: context.textPrimary,
-              ),
-              onPressed: onBack,
-              tooltip: context.loc.onboardingBack,
-            )
-          : null,
+      leading: canGoBack ? KhelBhaiBackButton(onPressed: onBack) : null,
       centerTitle: true,
       title: RichText(
         text: TextSpan(

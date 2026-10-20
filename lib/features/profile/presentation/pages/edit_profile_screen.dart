@@ -96,6 +96,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     }
 
     if (isValid && _selectedCity.value != null) {
+      AppUtils.hideKeyboard(context);
       final currentState = context.read<ProfileCubit>().state;
       String? existingAvatarUrl;
       String? existingEmail;

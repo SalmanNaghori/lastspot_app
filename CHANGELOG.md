@@ -5,6 +5,7 @@ All notable user-facing changes. Format: Keep a Changelog. Versioning: `sop/rele
 ## [Unreleased]
 
 ### Added
+- Shared premium 3D back button with light/dark raised surfaces, glossy orange depth, accessible touch targets, and reduced-motion-aware press feedback.
 - Home now shows a personalized Activity Hub for pending requests, the next joined or hosted activity, and city/category-matched recommendations; Home category chips open filtered Explore results.
 - API debug responses now use pretty JSON with sensitive fields redacted, and listed chat, activity, request, category, and city models use generated Freezed serialization.
 - Activity hosts and accepted participants can open their group chat from activity details, activity cards, and the Chats filters; older message history now loads in pages.
@@ -14,6 +15,7 @@ All notable user-facing changes. Format: Keep a Changelog. Versioning: `sop/rele
 - Graphify AST knowledge graph tooling and automated community map.
 
 ### Fixed
+- Back controls dismiss the keyboard and respect route/form guards; tapping outside inputs, changing routes/tabs, submitting valid forms, and dragging scroll views now clear unnecessary focus. Chat Send retains the keyboard, clearing search keeps focus, and selection sheets avoid the keyboard.
 - Android and iOS launcher icons use the selected square sports artwork with platform masking; the original Android native splash artwork is retained independently of launcher exports.
 - Screen titles reuse the Home logo in light and dark mode, and location markers follow the active theme color while retaining their 3D shading.
 - Screens now extend behind the floating bottom navigation, removing the separate peach background around the pill while preserving its safe-area spacing.

@@ -120,6 +120,8 @@ class _MySportsSpaceScreenTabletState extends State<MySportsSpaceScreenTablet> {
     return Scaffold(
       backgroundColor: context.backgroundColor,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
+        leading: KhelBhaiBackButton.leading(context),
         title: Text(
           loc.mySportsSpaceTitle,
           style: TextStyle(

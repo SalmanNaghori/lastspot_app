@@ -116,54 +116,56 @@ class _ProfileSportsStepState extends State<ProfileSportsStep> {
         SizedBox(height: Dimensions.r16.dynamicH),
 
         // Search Bar
-        Container(
-          height: Dimensions.r48.dynamicH,
-          decoration: BoxDecoration(
-            color: context.surfaceColor,
-            borderRadius: BorderRadius.circular(Dimensions.r14.dynamicR),
-            border: Border.all(
-              color: context.borderColor.withValues(alpha: 0.8),
-              width: 1.0,
+        TextFieldTapRegion(
+          child: Container(
+            height: Dimensions.r48.dynamicH,
+            decoration: BoxDecoration(
+              color: context.surfaceColor,
+              borderRadius: BorderRadius.circular(Dimensions.r14.dynamicR),
+              border: Border.all(
+                color: context.borderColor.withValues(alpha: 0.8),
+                width: 1.0,
+              ),
             ),
-          ),
-          padding: EdgeInsets.symmetric(horizontal: Dimensions.r12.dynamicW),
-          child: Row(
-            children: [
-              Icon(
-                Icons.search_rounded,
-                size: Dimensions.r20.dynamicH,
-                color: context.textSecondary,
-              ),
-              SizedBox(width: Dimensions.r8.dynamicW),
-              Expanded(
-                child: TextField(
-                  controller: _searchController,
-                  style: TextStyle(
-                    fontSize: Dimensions.r14.dynamicSP,
-                    color: context.textPrimary,
-                  ),
-                  decoration: InputDecoration(
-                    hintText: 'Search sports, kabaddi, satoliya...',
-                    hintStyle: TextStyle(
-                      fontSize: Dimensions.r13.dynamicSP,
-                      color: context.textSecondary.withValues(alpha: 0.7),
+            padding: EdgeInsets.symmetric(horizontal: Dimensions.r12.dynamicW),
+            child: Row(
+              children: [
+                Icon(
+                  Icons.search_rounded,
+                  size: Dimensions.r20.dynamicH,
+                  color: context.textSecondary,
+                ),
+                SizedBox(width: Dimensions.r8.dynamicW),
+                Expanded(
+                  child: TextField(
+                    controller: _searchController,
+                    style: TextStyle(
+                      fontSize: Dimensions.r14.dynamicSP,
+                      color: context.textPrimary,
                     ),
-                    border: InputBorder.none,
-                    isDense: true,
-                    contentPadding: EdgeInsets.zero,
+                    decoration: InputDecoration(
+                      hintText: 'Search sports, kabaddi, satoliya...',
+                      hintStyle: TextStyle(
+                        fontSize: Dimensions.r13.dynamicSP,
+                        color: context.textSecondary.withValues(alpha: 0.7),
+                      ),
+                      border: InputBorder.none,
+                      isDense: true,
+                      contentPadding: EdgeInsets.zero,
+                    ),
                   ),
                 ),
-              ),
-              if (_searchQuery.isNotEmpty)
-                GestureDetector(
-                  onTap: _onClearSearch,
-                  child: Icon(
-                    Icons.close_rounded,
-                    size: Dimensions.r18.dynamicH,
-                    color: context.textSecondary,
+                if (_searchQuery.isNotEmpty)
+                  GestureDetector(
+                    onTap: _onClearSearch,
+                    child: Icon(
+                      Icons.close_rounded,
+                      size: Dimensions.r18.dynamicH,
+                      color: context.textSecondary,
+                    ),
                   ),
-                ),
-            ],
+              ],
+            ),
           ),
         ),
         SizedBox(height: Dimensions.r12.dynamicH),

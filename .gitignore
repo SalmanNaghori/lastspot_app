@@ -96,7 +96,12 @@ design_references/
 # ------------------------------------------------------------------------------
 # Tests
 # ------------------------------------------------------------------------------
-test/
+# Retain the local test baseline; include navigation and keyboard regression tests.
+test/**
+!test/**/
+!test/core/widgets/khelbhai_back_button_test.dart
+!test/core/widgets/app_keyboard_dismissal_test.dart
+!test/features/startup/presentation/pages/onboarding_screen_test.dart
 
 
 <!-- reposeed:begin -->

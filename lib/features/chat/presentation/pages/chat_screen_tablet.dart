@@ -61,7 +61,7 @@ class _ChatScreenTabletState extends State<ChatScreenTablet> {
   }
 
   void _onBack() {
-    context.pop();
+    unawaited(context.requestBack());
   }
 
   void _onRetry() {

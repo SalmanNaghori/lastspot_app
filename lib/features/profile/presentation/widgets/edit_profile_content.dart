@@ -71,6 +71,8 @@ class EditProfileContent extends StatelessWidget {
     return Scaffold(
       backgroundColor: context.backgroundColor,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
+        leading: KhelBhaiBackButton.leading(context),
         title: Text(context.loc.editProfile),
         backgroundColor: context.backgroundColor,
         elevation: 0,

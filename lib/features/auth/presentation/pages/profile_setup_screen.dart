@@ -93,6 +93,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
       }
     }
 
+    AppUtils.hideKeyboard(context);
     if (_currentStep < 3) {
       setState(() => _currentStep++);
     }
@@ -107,6 +108,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
   }
 
   void _onSaveProfile(BuildContext context) {
+    AppUtils.hideKeyboard(context);
     final currentState = context.read<ProfileCubit>().state;
     String? existingAvatarUrl;
     String? existingEmail;
@@ -210,15 +212,13 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
     return Scaffold(
       backgroundColor: context.backgroundColor,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: context.backgroundColor,
         elevation: 0,
         scrolledUnderElevation: 0,
         systemOverlayStyle: AppTheme.systemUiOverlayStyle(context),
         leading: _currentStep > 0
-            ? IconButton(
-                icon: const Icon(Icons.arrow_back_rounded),
-                onPressed: _goToPreviousStep,
-              )
+            ? KhelBhaiBackButton(onPressed: _goToPreviousStep)
             : null,
         title: Text(
           _currentStep == 0

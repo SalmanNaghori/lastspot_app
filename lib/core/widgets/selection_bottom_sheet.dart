@@ -50,15 +50,9 @@ class SelectionBottomSheet<T> extends StatefulWidget {
     if (_isSheetOpen) return null;
     _isSheetOpen = true;
     try {
-      return await showModalBottomSheet<T>(
+      return await AppBottomSheet.show<T>(
         context: context,
-        isScrollControlled: true,
-        backgroundColor: context.surfaceColor,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(
-            top: Radius.circular(Dimensions.r24),
-          ),
-        ),
+        showDragHandle: false,
         builder: (context) => SelectionBottomSheet<T>(
           title: title,
           searchHint: searchHint,
@@ -97,7 +91,11 @@ class _SelectionBottomSheetState<T> extends State<SelectionBottomSheet<T>> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.height * 0.7,
+      height:
+          (MediaQuery.sizeOf(context).height -
+                  MediaQuery.viewInsetsOf(context).bottom -
+                  MediaQuery.paddingOf(context).vertical)
+              .clamp(0.0, MediaQuery.sizeOf(context).height * 0.7),
       padding: EdgeInsets.all(Dimensions.r16.dynamicW),
       child: Column(
         children: [
@@ -250,6 +248,7 @@ class _SelectionBottomSheetState<T> extends State<SelectionBottomSheet<T>> {
                 borderRadius: BorderRadius.circular(Dimensions.r8.dynamicR),
               ),
               onTap: () {
+                FocusManager.instance.primaryFocus?.unfocus();
                 Navigator.of(context).pop(item);
               },
             ),

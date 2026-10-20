@@ -70,6 +70,7 @@ class _CitySelectionBottomSheetState extends State<CitySelectionBottomSheet> {
   }
 
   void _handleCityTap(CityEntity city) {
+    FocusManager.instance.primaryFocus?.unfocus();
     Navigator.of(context).pop();
     widget.onCitySelected(city);
   }

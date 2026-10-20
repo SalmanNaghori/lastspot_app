@@ -13,10 +13,7 @@ class AppUtils {
 
   /// Hides the soft keyboard
   static void hideKeyboard(BuildContext context) {
-    FocusScopeNode currentFocus = FocusScope.of(context);
-    if (!currentFocus.hasPrimaryFocus && currentFocus.focusedChild != null) {
-      FocusManager.instance.primaryFocus?.unfocus();
-    }
+    FocusManager.instance.primaryFocus?.unfocus();
   }
 
   /// Shows a styled SnackBar with consistent theme

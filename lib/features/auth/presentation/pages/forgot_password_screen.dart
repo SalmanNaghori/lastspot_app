@@ -17,6 +17,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
 
   void _onResetPassword() {
     if (_formKey.currentState?.validate() ?? false) {
+      AppUtils.hideKeyboard(context);
       context.read<AuthBloc>().add(
         ForgotPasswordRequested(email: _emailController.text.trim()),
       );
@@ -46,6 +47,8 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     return Scaffold(
       backgroundColor: context.backgroundColor,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
+        leading: KhelBhaiBackButton.leading(context),
         backgroundColor: context.backgroundColor,
         elevation: 0,
         scrolledUnderElevation: 0,

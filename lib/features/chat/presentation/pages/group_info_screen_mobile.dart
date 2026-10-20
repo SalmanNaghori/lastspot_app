@@ -31,11 +31,7 @@ class GroupInfoScreenMobile extends StatelessWidget {
         elevation: 0,
         scrolledUnderElevation: 1,
         title: Text(loc.groupInfoTitle),
-        leading: IconButton(
-          tooltip: MaterialLocalizations.of(context).backButtonTooltip,
-          icon: const Icon(Icons.arrow_back),
-          onPressed: onBack,
-        ),
+        leading: KhelBhaiBackButton(onPressed: onBack),
       ),
       body: ListView(
         padding: EdgeInsets.symmetric(

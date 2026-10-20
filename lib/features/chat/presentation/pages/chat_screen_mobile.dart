@@ -61,7 +61,7 @@ class _ChatScreenMobileState extends State<ChatScreenMobile> {
   }
 
   void _onBack() {
-    context.pop();
+    unawaited(context.requestBack());
   }
 
   void _onRetry() {

@@ -20,6 +20,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
 
   void _submit() {
     if (!(_formKey.currentState?.validate() ?? false)) return;
+    AppUtils.hideKeyboard(context);
     context.read<AuthBloc>().add(
       PasswordRecoveryUpdateRequested(password: _passwordController.text),
     );
@@ -30,6 +31,8 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
     return Scaffold(
       backgroundColor: context.backgroundColor,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
+        leading: KhelBhaiBackButton.leading(context),
         backgroundColor: context.backgroundColor,
         elevation: 0,
         iconTheme: IconThemeData(color: context.textPrimary),

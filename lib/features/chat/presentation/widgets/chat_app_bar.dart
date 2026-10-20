@@ -36,12 +36,8 @@ class ChatAppBar extends StatelessWidget implements PreferredSizeWidget {
       backgroundColor: context.backgroundColor,
       elevation: 0,
       scrolledUnderElevation: 1,
-      leadingWidth: 40,
-      leading: IconButton(
-        tooltip: MaterialLocalizations.of(context).backButtonTooltip,
-        onPressed: onBack,
-        icon: const Icon(Icons.arrow_back),
-      ),
+      leadingWidth: kToolbarHeight,
+      leading: KhelBhaiBackButton(onPressed: onBack),
       titleSpacing: 0,
       title: InkWell(
         onTap: isDirect ? null : onGroupInfoTap,

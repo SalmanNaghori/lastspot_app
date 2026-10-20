@@ -37,6 +37,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     if (isDashboard) {
       return AppBar(
+        automaticallyImplyLeading: false,
         title: const KhelBhaiLogo(),
         backgroundColor: context.backgroundColor,
         surfaceTintColor: Colors.transparent,
@@ -60,6 +61,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     }
 
     return AppBar(
+      automaticallyImplyLeading: false,
+      leading: KhelBhaiBackButton.leading(context),
       title: Text(
         titleText ?? '',
         style: TextStyle(

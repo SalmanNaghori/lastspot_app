@@ -12,6 +12,7 @@ class AppBottomSheet {
     bool showDragHandle = true,
   }) async {
     if (_isSheetOpen) return null;
+    FocusManager.instance.primaryFocus?.unfocus();
     _isSheetOpen = true;
 
     try {

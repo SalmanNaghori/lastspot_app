@@ -148,6 +148,7 @@ class _CreateSpotScreenState extends State<CreateSpotScreen> {
       return;
     }
 
+    AppUtils.hideKeyboard(context);
     final bloc = context.read<CreateSpotBloc>();
 
     context.push(

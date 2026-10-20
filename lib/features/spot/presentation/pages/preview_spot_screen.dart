@@ -96,10 +96,7 @@ class PreviewSpotScreen extends StatelessWidget {
         systemOverlayStyle: AppTheme.systemUiOverlayStyle(context),
         iconTheme: IconThemeData(color: context.textPrimary),
         elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => context.pop(),
-        ),
+        leading: const KhelBhaiBackButton(),
         title: Text(
           context.loc.previewActivity,
           style: context.titleLarge?.copyWith(

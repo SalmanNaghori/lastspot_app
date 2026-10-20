@@ -54,6 +54,7 @@ import '../di/service_locator.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../services/chat_visibility_tracker.dart';
+import '../services/navigation_focus_observer.dart';
 import 'app_routes.dart';
 
 export 'app_routes.dart';
@@ -61,6 +62,7 @@ export 'app_routes.dart';
 final GoRouter appRouter = GoRouter(
   initialLocation: AppRoutes.splash,
   observers: [
+    NavigationFocusObserver(),
     appFeedbackManager,
     if (sl.isRegistered<ChatVisibilityTracker>()) sl<ChatVisibilityTracker>(),
   ],

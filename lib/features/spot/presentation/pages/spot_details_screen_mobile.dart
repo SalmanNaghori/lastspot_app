@@ -79,11 +79,7 @@ class SpotDetailsScreenMobile extends StatelessWidget {
         return Scaffold(
           backgroundColor: context.backgroundColor,
           appBar: AppBar(
-            leading: IconButton(
-              tooltip: MaterialLocalizations.of(context).backButtonTooltip,
-              icon: const Icon(Icons.arrow_back_rounded),
-              onPressed: onBack,
-            ),
+            leading: KhelBhaiBackButton(onPressed: onBack),
             title: Text(
               loc.detailsTitle,
               style: TextStyle(

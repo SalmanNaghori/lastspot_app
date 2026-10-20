@@ -118,16 +118,7 @@ class CreateSpotScreenMobile extends StatelessWidget {
               systemOverlayStyle: AppTheme.systemUiOverlayStyle(context),
               iconTheme: IconThemeData(color: context.textPrimary),
               elevation: 0,
-              leading: IconButton(
-                icon: const Icon(Icons.arrow_back),
-                onPressed: () {
-                  if (context.canPop()) {
-                    context.pop();
-                  } else {
-                    context.go(AppRoutes.home);
-                  }
-                },
-              ),
+              leading: const KhelBhaiBackButton(),
               title: const KhelBhaiLogo(),
             )
           : null,
