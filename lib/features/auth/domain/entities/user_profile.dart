@@ -29,10 +29,53 @@ abstract class UserProfile with _$UserProfile {
     @Default([])
     List<String> sportsInterests,
     @JsonKey(defaultValue: 0.0) @Default(0.0) double rating,
+    @JsonKey(name: 'status_reason') String? statusReason,
+    @JsonKey(name: 'status_message') String? statusMessage,
+    @JsonKey(name: 'status_expires_at') DateTime? statusExpiresAt,
   }) = _UserProfile;
 
-  factory UserProfile.fromJson(Map<String, dynamic> json) =>
-      _$UserProfileFromJson(json);
+  factory UserProfile.fromJson(Map<String, dynamic> json) {
+    final sanitized = Map<String, dynamic>.from(json);
+    final rawCreatedAt = sanitized['created_at'];
+    if (rawCreatedAt == null || rawCreatedAt.toString().trim().isEmpty) {
+      sanitized['created_at'] = DateTime.now().toUtc().toIso8601String();
+    } else if (rawCreatedAt is! String) {
+      sanitized['created_at'] = rawCreatedAt.toString();
+    }
+
+    final rawId = sanitized['id'];
+    if (rawId != null && rawId is! String) {
+      sanitized['id'] = rawId.toString();
+    }
+
+    final rawSports = sanitized['sports_interests'];
+    if (rawSports is List) {
+      sanitized['sports_interests'] = rawSports
+          .map((e) => e.toString())
+          .toList();
+    }
+
+    return _$UserProfileFromJson(sanitized);
+  }
+}
+
+extension UserProfileStatusX on UserProfile {
+  /// Whether an account suspension has expired based on status_expires_at.
+  bool get isSuspensionExpired {
+    if (status != AccountStatus.suspended) return false;
+    if (statusExpiresAt == null) return false;
+    return statusExpiresAt!.isBefore(DateTime.now());
+  }
+
+  /// Whether the user account is active, taking soft delete, bans, and suspension expiries into account.
+  bool get isAccountActive {
+    if (deletedAt != null) return false;
+    if (status == AccountStatus.banned) return false;
+    if (status == AccountStatus.suspended) {
+      return isSuspensionExpired;
+    }
+    return status == AccountStatus.active;
+  }
 }
 
 extension UserProfileFormattingX on UserProfile {

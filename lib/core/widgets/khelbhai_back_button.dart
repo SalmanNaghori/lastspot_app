@@ -32,9 +32,9 @@ class _KhelBhaiBackButtonState extends State<KhelBhaiBackButton> {
   bool _pressed = false;
 
   void _activate() {
-    FocusManager.instance.primaryFocus?.unfocus();
     final action = widget.onPressed;
     if (action != null) {
+      FocusManager.instance.primaryFocus?.unfocus();
       action();
     } else {
       unawaited(context.requestBack());
@@ -46,87 +46,81 @@ class _KhelBhaiBackButtonState extends State<KhelBhaiBackButton> {
     final dark = Theme.of(context).brightness == Brightness.dark;
     final label = MaterialLocalizations.of(context).backButtonTooltip;
     final radius = AppRadius.mdBorderRadius;
-    return Center(
-      widthFactor: 1,
-      heightFactor: 1,
-      child: Tooltip(
-        message: label,
-        excludeFromSemantics: true,
-        child: Semantics(
-          container: true,
-          label: label,
-          button: true,
-          onTap: _activate,
-          child: Material(
-            color: AppColor.transparentColor,
-            child: InkWell(
-              onTap: _activate,
-              onHighlightChanged: (value) => setState(() => _pressed = value),
-              borderRadius: radius,
-              excludeFromSemantics: true,
-              child: SizedBox.square(
-                dimension: Dimensions.r48,
-                child: Center(
-                  child: AnimatedScale(
-                    scale: _pressed ? AppMotion.dialogStartScale : 1,
+    return Tooltip(
+      message: label,
+      excludeFromSemantics: true,
+      child: Semantics(
+        container: true,
+        label: label,
+        button: true,
+        onTap: _activate,
+        child: Material(
+          color: AppColor.transparentColor,
+          child: InkWell(
+            onTap: _activate,
+            onHighlightChanged: (value) => setState(() => _pressed = value),
+            borderRadius: radius,
+            excludeFromSemantics: true,
+            child: SizedBox.square(
+              dimension: Dimensions.r48,
+              child: Center(
+                child: AnimatedScale(
+                  scale: _pressed ? AppMotion.dialogStartScale : 1,
+                  duration: AppMotion.duration(context, AppMotion.quick),
+                  curve: AppMotion.curve,
+                  child: AnimatedContainer(
                     duration: AppMotion.duration(context, AppMotion.quick),
-                    curve: AppMotion.curve,
-                    child: AnimatedContainer(
-                      duration: AppMotion.duration(context, AppMotion.quick),
-                      width: Dimensions.backButtonSurfaceSize,
-                      height: Dimensions.backButtonSurfaceSize,
-                      decoration: BoxDecoration(
-                        borderRadius: radius,
-                        gradient: LinearGradient(
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                          colors: dark
-                              ? [
-                                  AppColor.surfaceContainerHighDark,
-                                  AppColor.surfaceDark,
-                                ]
-                              : [
-                                  AppColor.surfaceLight,
-                                  AppColor.surfaceContainerHighLight,
-                                ],
-                        ),
-                        border: Border.all(
-                          color: dark
-                              ? AppColor.cardBorderDark
-                              : AppColor.surfaceLight,
-                        ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: AppColor.blackColor.withValues(
-                              alpha: dark ? 0.3 : 0.12,
-                            ),
-                            blurRadius: _pressed
-                                ? Dimensions.r2
-                                : Dimensions.r6,
-                            offset: Offset(
-                              0,
-                              _pressed
-                                  ? Dimensions.backButtonEdgeDepth
-                                  : Dimensions.r4,
-                            ),
-                          ),
-                          BoxShadow(
-                            color: AppColor.whiteColor.withValues(
-                              alpha: dark ? 0.04 : 0.8,
-                            ),
-                            blurRadius: Dimensions.r2,
-                            offset: const Offset(
-                              -Dimensions.backButtonEdgeDepth,
-                              -Dimensions.backButtonEdgeDepth,
-                            ),
-                          ),
-                        ],
+                    width: Dimensions.backButtonSurfaceSize,
+                    height: Dimensions.backButtonSurfaceSize,
+                    decoration: BoxDecoration(
+                      borderRadius: radius,
+                      gradient: LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: dark
+                            ? [
+                                AppColor.surfaceContainerHighDark,
+                                AppColor.surfaceDark,
+                              ]
+                            : [
+                                AppColor.surfaceLight,
+                                AppColor.surfaceContainerHighLight,
+                              ],
                       ),
-                      child: Center(
-                        child: CustomPaint(
-                          size: const Size.square(Dimensions.r28),
-                          painter: const KhelBhaiBackArrowPainter(),
+                      border: Border.all(
+                        color: dark
+                            ? AppColor.cardBorderDark
+                            : AppColor.surfaceLight,
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: AppColor.blackColor.withValues(
+                            alpha: dark ? 0.3 : 0.12,
+                          ),
+                          blurRadius: _pressed ? Dimensions.r2 : Dimensions.r6,
+                          offset: Offset(
+                            0,
+                            _pressed
+                                ? Dimensions.backButtonEdgeDepth
+                                : Dimensions.r4,
+                          ),
                         ),
+                        BoxShadow(
+                          color: AppColor.whiteColor.withValues(
+                            alpha: dark ? 0.04 : 0.8,
+                          ),
+                          blurRadius: Dimensions.r2,
+                          offset: const Offset(
+                            -Dimensions.backButtonEdgeDepth,
+                            -Dimensions.backButtonEdgeDepth,
+                          ),
+                        ),
+                      ],
+                    ),
+                    child: Center(
+                      child: CustomPaint(
+                        size: const Size.square(Dimensions.r28),
+                        painter: const KhelBhaiBackArrowPainter(),
                       ),
                     ),
                   ),

@@ -78,7 +78,7 @@ class PushNotificationService {
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
     await _fcm.setForegroundNotificationPresentationOptions(
-      alert: false,
+      alert: true,
       badge: true,
       sound: true,
     );
@@ -108,19 +108,30 @@ class PushNotificationService {
         return;
       }
 
-      final title =
-          notification?.title ??
-          (InAppFeedbackManager.isChatMessage(data)
-              ? feedbackManager.newMessageLabel
-              : null);
+      final title = notification?.title ?? data['title']?.toString();
       if (title == null || title.trim().isEmpty) return;
-      feedbackManager.showNotification(
-        title: title,
-        subtitle: notification?.body,
-        data: data,
-        eventKeys: [if (message.messageId != null) 'fcm:${message.messageId}'],
-        onTap: () => handleNotificationTap(data),
-      );
+      final body = notification?.body ?? data['body']?.toString();
+
+      if (sl.isRegistered<LocalNotificationService>()) {
+        final targetId =
+            data['request_id'] ??
+            data['activity_id'] ??
+            data['spot_id'] ??
+            data['requestId'] ??
+            data['activityId'] ??
+            data['spotId'];
+        sl<LocalNotificationService>().showNotification(
+          id: (message.messageId ?? title).hashCode,
+          title: title,
+          body: body,
+          payload: {
+            ...data,
+            'title': title,
+            if (body != null) 'body': body,
+            if (targetId != null) 'request_id': targetId.toString(),
+          },
+        );
+      }
     });
 
     // Background messages opened by user
@@ -157,12 +168,24 @@ class PushNotificationService {
       sound: true,
     );
     debugPrint('User granted permission: ${settings.authorizationStatus}');
+
+    if (sl.isRegistered<LocalNotificationService>()) {
+      await sl<LocalNotificationService>().requestPermission();
+    }
   }
 
   void handleNotificationTap(Map<String, dynamic> data) {
     if (Supabase.instance.client.auth.currentSession == null) return;
     final type = data['type']?.toString();
-    final requestId = data['request_id']?.toString().trim();
+    final requestId =
+        (data['request_id'] ??
+                data['requestId'] ??
+                data['spot_id'] ??
+                data['spotId'] ??
+                data['activity_id'] ??
+                data['activityId'])
+            ?.toString()
+            .trim();
     final conversationId = InAppFeedbackManager.conversationIdFrom(data);
 
     if (conversationId != null) {
@@ -175,13 +198,13 @@ class PushNotificationService {
               data['chat_type']?.toString().toLowerCase() == 'direct',
           name: InAppFeedbackManager.senderNameFrom(data),
           activityTitle: InAppFeedbackManager.activityNameFrom(data),
-          requestId: _safeRequestId(requestId ?? data['requestId']?.toString()),
+          requestId: _safeRequestId(requestId),
         ),
       );
       return;
     }
 
-    if (type == null || requestId == null || requestId.isEmpty) {
+    if (requestId == null || requestId.isEmpty) {
       appRouter.push(AppRoutes.notifications);
       return;
     }
@@ -189,7 +212,17 @@ class PushNotificationService {
     if (type == 'join_request') {
       if (!InAppFeedbackManager.isSafeRouteIdentifier(requestId)) return;
       appRouter.push(AppRoutes.manageRequestsPath(requestId));
-    } else if (['join_accepted', 'join_rejected', 'broadcast'].contains(type)) {
+    } else if ([
+          'join_accepted',
+          'join_rejected',
+          'broadcast',
+          'spot_updated',
+          'spot_cancelled',
+        ].contains(type) ||
+        type == null) {
+      if (!InAppFeedbackManager.isSafeRouteIdentifier(requestId)) return;
+      appRouter.push(AppRoutes.spotDetailsPath(requestId));
+    } else {
       if (!InAppFeedbackManager.isSafeRouteIdentifier(requestId)) return;
       appRouter.push(AppRoutes.spotDetailsPath(requestId));
     }

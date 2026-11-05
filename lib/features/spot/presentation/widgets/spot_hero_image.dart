@@ -94,24 +94,12 @@ class SpotHeroImage extends StatelessWidget {
                           ),
                         ),
                       if (perPersonLabel.isNotEmpty || spot.pricePerPerson > 0)
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: AppSpacing.smLg,
-                            vertical: AppSpacing.sm,
-                          ),
-                          decoration: BoxDecoration(
-                            color: colors.surface,
-                            borderRadius: AppRadius.pillBorderRadius,
-                          ),
-                          child: Text(
-                            spot.pricePerPerson > 0
-                                ? '${AppUtils.formatCurrency(spot.pricePerPerson)} $perPersonLabel'
-                                      .trim()
-                                : context.loc.free,
-                            style: type.labelMedium?.copyWith(
-                              color: colors.onSurface,
-                            ),
-                          ),
+                        ActivityPriceBadge(
+                          pricePerPerson: spot.pricePerPerson,
+                          customText: spot.pricePerPerson > 0
+                              ? '${AppUtils.formatCurrency(spot.pricePerPerson)} $perPersonLabel'
+                                    .trim()
+                              : context.loc.free,
                         ),
                     ],
                   ),

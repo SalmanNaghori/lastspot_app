@@ -28,6 +28,7 @@ class ForegroundChatNotificationCoordinator {
   /// Evaluates whether an incoming chat notification should be presented in foreground.
   bool shouldShowForegroundNotification({
     required String? conversationId,
+    String? requestId,
     required String? messageId,
     required String? senderId,
     bool isForegroundSource = false,
@@ -54,10 +55,15 @@ class ForegroundChatNotificationCoordinator {
       return false;
     }
 
-    // 4. RULE A: Current open conversation
-    if (conversationId != null &&
-        visibilityTracker.isConversationCurrentlyVisible(conversationId)) {
-      unawaited(markChatReadUseCase(conversationId));
+    // 4. RULE A: Current open conversation (same chat between user A and B or same group)
+    if (visibilityTracker.isConversationCurrentlyVisible(
+      conversationId: conversationId,
+      requestId: requestId,
+      senderId: senderId,
+    )) {
+      if (conversationId != null) {
+        unawaited(markChatReadUseCase(conversationId));
+      }
       return false; // Suppress foreground notification completely
     }
 
@@ -66,7 +72,7 @@ class ForegroundChatNotificationCoordinator {
       return false; // Suppress notification; real-time list provides sufficient feedback
     }
 
-    // 6. RULE B & D: User is on Home, Explore, Activities, Profile, or in a different conversation
+    // 6. User is on Home, Explore, Activities, Profile, or in a DIFFERENT conversation / from another user/group -> Show Push!
     return true;
   }
 
@@ -83,6 +89,13 @@ class ForegroundChatNotificationCoordinator {
         (data['conversation_id'] ?? data['conversationId'] ?? data['id'])
             ?.toString()
             .trim();
+    final requestId =
+        (data['request_id'] ??
+                data['requestId'] ??
+                data['spot_id'] ??
+                data['spotId'])
+            ?.toString()
+            .trim();
     final senderId = (data['sender_id'] ?? data['senderId'] ?? data['sender'])
         ?.toString()
         .trim();
@@ -93,6 +106,7 @@ class ForegroundChatNotificationCoordinator {
 
     final shouldShow = shouldShowForegroundNotification(
       conversationId: conversationId,
+      requestId: requestId,
       messageId: resolvedMessageId,
       senderId: senderId,
       isForegroundSource: isForegroundSource,
@@ -123,6 +137,8 @@ class ForegroundChatNotificationCoordinator {
         ...data,
         'conversation_id': conversationId,
         'type': 'chat_message',
+        if (requestId != null) 'request_id': requestId,
+        if (senderId != null) 'sender_id': senderId,
       },
     );
   }

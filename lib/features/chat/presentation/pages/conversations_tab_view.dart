@@ -1,5 +1,6 @@
 import '../../../../core/base_import.dart';
 import '../../domain/entities/chat_conversation_entity.dart';
+import '../../../../core/widgets/shell_bottom_spacer.dart';
 import '../bloc/conversations_cubit.dart';
 import '../bloc/conversations_state.dart';
 import '../widgets/conversation_tile.dart';
@@ -112,124 +113,132 @@ class _ConversationsTabViewState extends State<ConversationsTabView> {
                         .where((c) => c.matchesSearch(searchQuery))
                         .toList();
 
-              return Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Search Bar
-                  Padding(
-                    padding: EdgeInsets.fromLTRB(
-                      Dimensions.r16.dynamicW,
-                      Dimensions.r8.dynamicH,
-                      Dimensions.r16.dynamicW,
-                      Dimensions.r4.dynamicH,
-                    ),
-                    child: TextField(
-                      controller: _searchController,
-                      decoration: InputDecoration(
-                        hintText: loc.searchConversations,
-                        prefixIcon: const Icon(Icons.search, size: 20),
-                        suffixIcon: searchQuery.isNotEmpty
-                            ? IconButton(
-                                icon: const Icon(Icons.clear, size: 18),
-                                onPressed: () {
-                                  _searchController.clear();
-                                  _searchNotifier.value = '';
-                                },
-                              )
-                            : null,
-                        contentPadding: EdgeInsets.symmetric(
-                          horizontal: Dimensions.r16.dynamicW,
-                          vertical: Dimensions.r8.dynamicH,
-                        ),
-                        filled: true,
-                        fillColor: colors.surfaceContainerHighest.withValues(
-                          alpha: 0.4,
-                        ),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(
-                            Dimensions.r12.dynamicR,
-                          ),
-                          borderSide: BorderSide.none,
-                        ),
-                      ),
-                      onChanged: (val) => _searchNotifier.value = val,
-                    ),
-                  ),
-
-                  // Filter Chips
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    padding: EdgeInsets.symmetric(
-                      horizontal: Dimensions.r16.dynamicW,
-                      vertical: Dimensions.r8.dynamicH,
-                    ),
-                    child: Row(
+              return CustomScrollView(
+                physics: const AlwaysScrollableScrollPhysics(),
+                slivers: [
+                  // Search Bar & Filter Chips Header
+                  SliverToBoxAdapter(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        FilterChip(
-                          label: Text(
-                            all.isNotEmpty
-                                ? '${loc.filterAll} (${all.length})'
-                                : loc.filterAll,
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(
+                            Dimensions.r16.dynamicW,
+                            Dimensions.r8.dynamicH,
+                            Dimensions.r16.dynamicW,
+                            Dimensions.r4.dynamicH,
                           ),
-                          selected: filterIndex == 0,
-                          onSelected: (_) => _filterNotifier.value = 0,
+                          child: TextField(
+                            controller: _searchController,
+                            decoration: InputDecoration(
+                              hintText: loc.searchConversations,
+                              prefixIcon: const Icon(Icons.search, size: 20),
+                              suffixIcon: searchQuery.isNotEmpty
+                                  ? IconButton(
+                                      icon: const Icon(Icons.clear, size: 18),
+                                      onPressed: () {
+                                        _searchController.clear();
+                                        _searchNotifier.value = '';
+                                      },
+                                    )
+                                  : null,
+                              contentPadding: EdgeInsets.symmetric(
+                                horizontal: Dimensions.r16.dynamicW,
+                                vertical: Dimensions.r8.dynamicH,
+                              ),
+                              filled: true,
+                              fillColor: colors.surfaceContainerHighest
+                                  .withValues(alpha: 0.4),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(
+                                  Dimensions.r12.dynamicR,
+                                ),
+                                borderSide: BorderSide.none,
+                              ),
+                            ),
+                            onChanged: (val) => _searchNotifier.value = val,
+                          ),
                         ),
-                        SizedBox(width: Dimensions.r8.dynamicW),
-                        FilterChip(
-                          label: Text(
-                            direct.isNotEmpty
-                                ? '${loc.filterDirect} (${direct.length})'
-                                : loc.filterDirect,
+                        SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          padding: EdgeInsets.symmetric(
+                            horizontal: Dimensions.r16.dynamicW,
+                            vertical: Dimensions.r8.dynamicH,
                           ),
-                          selected: filterIndex == 1,
-                          onSelected: (_) => _filterNotifier.value = 1,
+                          child: Row(
+                            children: [
+                              FilterChip(
+                                label: Text(
+                                  all.isNotEmpty
+                                      ? '${loc.filterAll} (${all.length})'
+                                      : loc.filterAll,
+                                ),
+                                selected: filterIndex == 0,
+                                onSelected: (_) => _filterNotifier.value = 0,
+                              ),
+                              SizedBox(width: Dimensions.r8.dynamicW),
+                              FilterChip(
+                                label: Text(
+                                  direct.isNotEmpty
+                                      ? '${loc.filterDirect} (${direct.length})'
+                                      : loc.filterDirect,
+                                ),
+                                selected: filterIndex == 1,
+                                onSelected: (_) => _filterNotifier.value = 1,
+                              ),
+                              SizedBox(width: Dimensions.r8.dynamicW),
+                              FilterChip(
+                                label: Text(
+                                  groups.isNotEmpty
+                                      ? '${loc.filterGroups} (${groups.length})'
+                                      : loc.filterGroups,
+                                ),
+                                selected: filterIndex == 2,
+                                onSelected: (_) => _filterNotifier.value = 2,
+                              ),
+                            ],
+                          ),
                         ),
-                        SizedBox(width: Dimensions.r8.dynamicW),
-                        FilterChip(
-                          label: Text(
-                            groups.isNotEmpty
-                                ? '${loc.filterGroups} (${groups.length})'
-                                : loc.filterGroups,
-                          ),
-                          selected: filterIndex == 2,
-                          onSelected: (_) => _filterNotifier.value = 2,
+                        Divider(
+                          height: 1,
+                          thickness: 0.5,
+                          color: colors.outlineVariant.withValues(alpha: 0.3),
                         ),
                       ],
                     ),
                   ),
-                  Divider(
-                    height: 1,
-                    thickness: 0.5,
-                    color: colors.outlineVariant.withValues(alpha: 0.3),
-                  ),
 
+                  // Results / Empty State
                   if (displayedList.isEmpty && searchQuery.isNotEmpty)
-                    Center(
-                      child: AppEmptyState.search(
-                        title: loc.noConversationsFound,
-                        message: loc.noConversationsFoundDesc,
+                    SliverFillRemaining(
+                      hasScrollBody: false,
+                      child: Center(
+                        child: AppEmptyState.search(
+                          title: loc.noConversationsFound,
+                          message: loc.noConversationsFoundDesc,
+                        ),
                       ),
                     )
                   else if (displayedList.isEmpty)
-                    Center(
-                      child: AppEmptyState.chats(
-                        title: filterIndex == 1
-                            ? loc.noDirectConversations
-                            : (filterIndex == 2
-                                  ? loc.noGroupConversations
-                                  : loc.noConversations),
-                        message: filterIndex == 1
-                            ? loc.noDirectConversationsDesc
-                            : (filterIndex == 2
-                                  ? loc.noGroupConversationsDesc
-                                  : loc.noConversationsDesc),
+                    SliverFillRemaining(
+                      hasScrollBody: false,
+                      child: Center(
+                        child: AppEmptyState.chats(
+                          title: filterIndex == 1
+                              ? loc.noDirectConversations
+                              : (filterIndex == 2
+                                    ? loc.noGroupConversations
+                                    : loc.noConversations),
+                          message: filterIndex == 1
+                              ? loc.noDirectConversationsDesc
+                              : (filterIndex == 2
+                                    ? loc.noGroupConversationsDesc
+                                    : loc.noConversationsDesc),
+                        ),
                       ),
                     )
                   else
-                    ListView.separated(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
+                    SliverList.separated(
                       itemCount: displayedList.length,
                       separatorBuilder: (_, _) => Divider(
                         height: 1,
@@ -245,6 +254,8 @@ class _ConversationsTabViewState extends State<ConversationsTabView> {
                         );
                       },
                     ),
+
+                  const SliverShellBottomSpacer(),
                 ],
               );
             },

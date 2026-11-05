@@ -64,7 +64,7 @@ final GoRouter appRouter = GoRouter(
   observers: [
     NavigationFocusObserver(),
     appFeedbackManager,
-    if (sl.isRegistered<ChatVisibilityTracker>()) sl<ChatVisibilityTracker>(),
+    chatVisibilityTracker,
   ],
   routes: [
     GoRoute(

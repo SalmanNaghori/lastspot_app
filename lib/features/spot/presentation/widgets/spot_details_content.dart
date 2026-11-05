@@ -10,12 +10,18 @@ class SpotDetailsContent extends StatelessWidget {
   final SpotDetailsLoaded state;
   final String? heroTag;
   final VoidCallback onMap;
+  final VoidCallback? onBack;
+  final VoidCallback? onReport;
+  final VoidCallback? onMenu;
 
   const SpotDetailsContent({
     super.key,
     required this.state,
     this.heroTag,
     required this.onMap,
+    this.onBack,
+    this.onReport,
+    this.onMenu,
   });
 
   @override
@@ -29,6 +35,44 @@ class SpotDetailsContent extends StatelessWidget {
     return CustomScrollView(
       key: PageStorageKey('details_${post.id}'),
       slivers: [
+        if (onBack != null)
+          SliverAppBar(
+            pinned: true,
+            expandedHeight: kToolbarHeight + Dimensions.r72.dynamicH,
+            backgroundColor: context.backgroundColor,
+            surfaceTintColor: context.backgroundColor,
+            systemOverlayStyle: AppTheme.systemUiOverlayStyle(context),
+            leading: KhelBhaiBackButton(onPressed: onBack),
+            flexibleSpace: FlexibleSpaceBar(
+              titlePadding: EdgeInsetsDirectional.only(
+                start: Dimensions.r72.dynamicW,
+                bottom: Dimensions.r16.dynamicH,
+                end: Dimensions.r96.dynamicW,
+              ),
+              title: Text(
+                post.title,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: context.titleMedium?.copyWith(
+                  color: colors.onSurface,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            ),
+            actions: [
+              IconButton(
+                tooltip: loc.reportActivityAction,
+                icon: const Icon(Icons.flag_outlined),
+                onPressed: onReport,
+              ),
+              IconButton(
+                tooltip: loc.detailsMenu,
+                icon: const Icon(Icons.more_horiz_rounded),
+                onPressed: onMenu,
+              ),
+              const SizedBox(width: AppSpacing.sm),
+            ],
+          ),
         SliverPadding(
           padding: const EdgeInsets.all(AppSpacing.md),
           sliver: SliverList.list(
@@ -152,7 +196,7 @@ class SpotDetailsContent extends StatelessWidget {
             ),
           ),
         ),
-        const SliverToBoxAdapter(child: SizedBox(height: AppSpacing.lg)),
+        SliverToBoxAdapter(child: SizedBox(height: Dimensions.r32.dynamicH)),
       ],
     );
   }

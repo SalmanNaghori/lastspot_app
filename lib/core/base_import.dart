@@ -62,6 +62,7 @@ export 'utils/result.dart';
 // ========================================================
 export 'widgets/activity_card.dart';
 export 'widgets/activity_metadata_icon.dart';
+export 'widgets/activity_price_badge.dart';
 export 'widgets/app_asset_image.dart';
 export 'widgets/app_bottom_navigation.dart';
 export 'widgets/app_cached_network_image.dart';

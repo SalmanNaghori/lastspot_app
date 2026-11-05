@@ -214,7 +214,11 @@ class HomeActivityFeedItem extends StatelessWidget {
             onTap: () => onTap(activity, prefix),
           );
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
+      padding: const EdgeInsets.only(
+        left: AppSpacing.md,
+        right: AppSpacing.md,
+        bottom: AppSpacing.md,
+      ),
       child: child,
     );
   }

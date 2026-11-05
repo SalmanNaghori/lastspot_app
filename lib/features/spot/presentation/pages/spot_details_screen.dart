@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:lastspot_app/core/base_import.dart';
 import '../bloc/spot_details_bloc.dart';
 import 'spot_details_screen_mobile.dart';
@@ -62,13 +60,13 @@ class _SpotDetailsScreenState extends State<SpotDetailsScreen> {
               ? SpotDetailsScreenTablet(
                   state: state,
                   heroTag: widget.heroTag,
-                  onBack: () => unawaited(context.requestBack()),
+                  onBack: () => context.requestBack(),
                   onRetry: reload,
                 )
               : SpotDetailsScreenMobile(
                   state: state,
                   heroTag: widget.heroTag,
-                  onBack: () => unawaited(context.requestBack()),
+                  onBack: () => context.requestBack(),
                   onRetry: reload,
                 ),
         );

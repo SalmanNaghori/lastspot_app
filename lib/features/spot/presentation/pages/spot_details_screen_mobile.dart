@@ -78,34 +78,36 @@ class SpotDetailsScreenMobile extends StatelessWidget {
         final wide = constraints.maxWidth >= Dimensions.detailsWideBreakpoint;
         return Scaffold(
           backgroundColor: context.backgroundColor,
-          appBar: AppBar(
-            leading: KhelBhaiBackButton(onPressed: onBack),
-            title: Text(
-              loc.detailsTitle,
-              style: TextStyle(
-                color: context.textPrimary,
-                fontSize: Dimensions.r18.dynamicSP,
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-            actions: [
-              if (loaded != null)
-                IconButton(
-                  tooltip: loc.reportActivityAction,
-                  icon: const Icon(Icons.flag_outlined),
-                  onPressed: () => context.push(
-                    AppRoutes.reportActivityPath(loaded.post.id),
+          appBar: loaded != null && !wide
+              ? null
+              : AppBar(
+                  leading: KhelBhaiBackButton(onPressed: onBack),
+                  title: Text(
+                    loc.detailsTitle,
+                    style: TextStyle(
+                      color: context.textPrimary,
+                      fontSize: Dimensions.r18.dynamicSP,
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
+                  actions: [
+                    if (loaded != null)
+                      IconButton(
+                        tooltip: loc.reportActivityAction,
+                        icon: const Icon(Icons.flag_outlined),
+                        onPressed: () => context.push(
+                          AppRoutes.reportActivityPath(loaded.post.id),
+                        ),
+                      ),
+                    if (loaded != null)
+                      IconButton(
+                        tooltip: loc.detailsMenu,
+                        icon: const Icon(Icons.more_horiz_rounded),
+                        onPressed: () => _showMenu(context, loaded),
+                      ),
+                    const SizedBox(width: AppSpacing.sm),
+                  ],
                 ),
-              if (loaded != null)
-                IconButton(
-                  tooltip: loc.detailsMenu,
-                  icon: const Icon(Icons.more_horiz_rounded),
-                  onPressed: () => _showMenu(context, loaded),
-                ),
-              const SizedBox(width: AppSpacing.sm),
-            ],
-          ),
           body: SafeArea(
             top: false,
             child: loaded == null
@@ -128,6 +130,15 @@ class SpotDetailsScreenMobile extends StatelessWidget {
                         child: SpotDetailsContent(
                           state: loaded,
                           heroTag: heroTag,
+                          onBack: wide ? null : onBack,
+                          onReport: wide
+                              ? null
+                              : () => context.push(
+                                  AppRoutes.reportActivityPath(loaded.post.id),
+                                ),
+                          onMenu: wide
+                              ? null
+                              : () => _showMenu(context, loaded),
                           onMap: () async {
                             final opened = await AppUtils.launchMap(
                               loaded.post.locationName,

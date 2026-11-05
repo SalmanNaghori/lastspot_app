@@ -141,7 +141,15 @@ class _NotificationsScreenMobileState extends State<NotificationsScreenMobile> {
               ),
             );
           } else if (state is NotificationsListLoaded) {
-            if (state.notifications.isEmpty) {
+            final visibleNotifications = state.notifications
+                .where(
+                  (n) =>
+                      n.type != 'chat_message' &&
+                      n.type != 'chat' &&
+                      !InAppFeedbackManager.isChatMessage(n.data, type: n.type),
+                )
+                .toList();
+            if (visibleNotifications.isEmpty) {
               return Center(
                 child: AppEmptyState.notifications(
                   title: context.loc.notifications,
@@ -158,19 +166,24 @@ class _NotificationsScreenMobileState extends State<NotificationsScreenMobile> {
               child: ListView.separated(
                 controller: _scrollController,
                 physics: const AlwaysScrollableScrollPhysics(),
+                padding: EdgeInsets.only(
+                  bottom:
+                      MediaQuery.paddingOf(context).bottom +
+                      Dimensions.r16.dynamicH,
+                ),
                 itemCount:
-                    state.notifications.length + (state.hasReachedMax ? 0 : 1),
+                    visibleNotifications.length + (state.hasReachedMax ? 0 : 1),
                 separatorBuilder: (context, index) =>
                     Divider(height: 1, color: context.borderColor),
                 itemBuilder: (context, index) {
-                  if (index >= state.notifications.length) {
+                  if (index >= visibleNotifications.length) {
                     return Padding(
                       padding: EdgeInsets.all(Dimensions.r16.dynamicH),
                       child: const Center(child: AppLoading(size: 24)),
                     );
                   }
 
-                  final notification = state.notifications[index];
+                  final notification = visibleNotifications[index];
                   return NotificationItem(
                     notification: notification,
                     onTap: () => _onNotificationTap(notification),

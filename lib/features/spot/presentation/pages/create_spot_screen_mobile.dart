@@ -110,6 +110,7 @@ class CreateSpotScreenMobile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final keyboardOpen = MediaQuery.viewInsetsOf(context).bottom > 0;
     return Scaffold(
       backgroundColor: context.backgroundColor,
       appBar: showAppBar
@@ -540,35 +541,35 @@ class CreateSpotScreenMobile extends StatelessWidget {
           ),
           child: Row(
             children: [
-              Expanded(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'READY WHEN YOU ARE',
-                      style: context.labelSmall?.copyWith(
-                        color: context.textSecondary,
-                        letterSpacing: 0.7,
-                        fontWeight: FontWeight.w700,
+              if (!keyboardOpen)
+                Expanded(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'READY WHEN YOU ARE',
+                        style: context.labelSmall?.copyWith(
+                          color: context.textSecondary,
+                          letterSpacing: 0.7,
+                          fontWeight: FontWeight.w700,
+                        ),
                       ),
-                    ),
-                    SizedBox(height: Dimensions.r4.dynamicH),
-                    Text(
-                      'Preview before publishing',
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: context.bodySmall?.copyWith(
-                        color: context.textPrimary,
-                        fontWeight: FontWeight.w600,
+                      SizedBox(height: Dimensions.r4.dynamicH),
+                      Text(
+                        'Preview before publishing',
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: context.bodySmall?.copyWith(
+                          color: context.textPrimary,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-              SizedBox(width: Dimensions.r12.dynamicW),
-              SizedBox(
-                width: Dimensions.w(176),
+              if (!keyboardOpen) SizedBox(width: Dimensions.r12.dynamicW),
+              Expanded(
                 child: FilledButton.icon(
                   style: FilledButton.styleFrom(
                     minimumSize: Size(0, Dimensions.h52),

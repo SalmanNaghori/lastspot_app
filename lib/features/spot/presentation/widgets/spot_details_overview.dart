@@ -22,7 +22,9 @@ class SpotDetailsOverview extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
+        Wrap(
+          spacing: Dimensions.r8.dynamicW,
+          runSpacing: Dimensions.r8.dynamicH,
           children: [
             Container(
               padding: EdgeInsets.symmetric(
@@ -61,7 +63,6 @@ class SpotDetailsOverview extends StatelessWidget {
                 ],
               ),
             ),
-            SizedBox(width: Dimensions.r8.dynamicW),
             Container(
               padding: EdgeInsets.symmetric(
                 horizontal: Dimensions.r12.dynamicW,

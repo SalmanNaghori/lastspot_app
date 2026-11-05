@@ -14,6 +14,7 @@ import '../../features/auth/presentation/bloc/auth_state.dart';
 import '../services/in_app_feedback_manager.dart';
 import '../services/chat_visibility_tracker.dart';
 import '../services/foreground_chat_notification_coordinator.dart';
+import '../services/local_notification_service.dart';
 
 class AuthenticatedAppShell extends StatefulWidget {
   final StatefulNavigationShell navigationShell;
@@ -71,18 +72,28 @@ class _AuthenticatedAppShellState extends State<AuthenticatedAppShell>
         return;
       }
 
-      feedback.showNotification(
-        title: notif.title,
-        subtitle: notif.body,
-        data: data,
-        eventKeys: [
-          'notification:${notif.id}',
-          ..._notificationEventKeys(data),
-        ],
-        onTap: () {
-          if (mounted) context.push(AppRoutes.notifications);
-        },
-      );
+      if (sl.isRegistered<LocalNotificationService>()) {
+        final targetId =
+            data['request_id'] ??
+            data['activity_id'] ??
+            data['spot_id'] ??
+            data['requestId'] ??
+            data['activityId'] ??
+            data['spotId'];
+        sl<LocalNotificationService>().showNotification(
+          id: notif.id.hashCode,
+          title: notif.title,
+          body: notif.body,
+          payload: {
+            ...data,
+            'title': notif.title,
+            'body': notif.body,
+            'id': notif.id,
+            'type': notif.type,
+            if (targetId != null) 'request_id': targetId.toString(),
+          },
+        );
+      }
     });
 
     WidgetsBinding.instance.addPostFrameCallback((_) {

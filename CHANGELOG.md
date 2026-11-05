@@ -15,6 +15,7 @@ All notable user-facing changes. Format: Keep a Changelog. Versioning: `sop/rele
 - Graphify AST knowledge graph tooling and automated community map.
 
 ### Fixed
+- Activity details and mobile profile now keep their back controls visible while headers collapse; detail badges wrap beside the tablet booking sidebar, the create activity preview action remains reachable above the keyboard on small screens, and Home restores its feed scroll position across tab switches.
 - Back controls dismiss the keyboard and respect route/form guards; tapping outside inputs, changing routes/tabs, submitting valid forms, and dragging scroll views now clear unnecessary focus. Chat Send retains the keyboard, clearing search keeps focus, and selection sheets avoid the keyboard.
 - Android and iOS launcher icons use the selected square sports artwork with platform masking; the original Android native splash artwork is retained independently of launcher exports.
 - Screen titles reuse the Home logo in light and dark mode, and location markers follow the active theme color while retaining their 3D shading.

@@ -118,7 +118,7 @@ class ActivityMetadataIcon extends StatelessWidget {
       ),
       ActivityMetadataType.price => (
         Assets.icons.priceTag3d,
-        Icons.payments_outlined,
+        Icons.currency_rupee_rounded,
       ),
       ActivityMetadataType.arrowForward => (
         Assets.icons.arrowForward3d,
@@ -150,7 +150,8 @@ class ActivityMetadataIcon extends StatelessWidget {
         size: effectiveHeight * 0.9,
         color:
             fallbackColor ??
-            (type == ActivityMetadataType.location
+            (type == ActivityMetadataType.location ||
+                    type == ActivityMetadataType.price
                 ? context.primaryColor
                 : context.textSecondary),
       ),

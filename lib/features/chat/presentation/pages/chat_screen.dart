@@ -47,15 +47,17 @@ class _ChatScreenState extends State<ChatScreen> {
     _feedbackManager?.dismissConversation(widget.id);
     final requestId =
         widget.requestId ?? (widget.isConversationId ? null : widget.id);
+    final isDirect = widget.isDirect == true || widget.recipientUserId != null;
+    if (sl.isRegistered<ChatVisibilityTracker>()) {
+      sl<ChatVisibilityTracker>().enterConversation(
+        conversationId: widget.id,
+        chatType: isDirect ? 'direct' : 'group',
+        requestId: requestId,
+        recipientUserId: widget.recipientUserId,
+      );
+    }
     if (widget.isConversationId) {
       _feedbackManager?.openConversation(widget.id, requestId: requestId);
-      if (sl.isRegistered<ChatVisibilityTracker>()) {
-        sl<ChatVisibilityTracker>().enterConversation(
-          conversationId: widget.id,
-          chatType: widget.isDirect == true ? 'direct' : 'group',
-          requestId: requestId,
-        );
-      }
     } else {
       _feedbackManager?.openConversationRequest(requestId!);
     }
@@ -64,8 +66,13 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   void dispose() {
     final convId = _openedConversationId ?? widget.id;
+    final requestId =
+        widget.requestId ?? (widget.isConversationId ? null : widget.id);
     if (sl.isRegistered<ChatVisibilityTracker>()) {
-      sl<ChatVisibilityTracker>().leaveConversation(convId);
+      sl<ChatVisibilityTracker>().leaveConversation(
+        conversationId: convId,
+        requestId: requestId,
+      );
     }
     _feedbackManager?.closeConversation(
       _openedConversationId ?? '',
@@ -109,6 +116,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 conversationId: state.conversationId,
                 chatType: state.isDirect ? 'direct' : 'group',
                 requestId: state.requestId,
+                recipientUserId: widget.recipientUserId,
               );
             }
             _feedbackManager?.openConversation(

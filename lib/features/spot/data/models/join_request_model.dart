@@ -1,3 +1,4 @@
+import 'dart:developer' as developer;
 import 'package:equatable/equatable.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -29,27 +30,103 @@ abstract class JoinRequestModel extends Equatable
   }) = _JoinRequestModel;
 
   factory JoinRequestModel.fromJson(Map<String, dynamic> json) {
+    final rawId = json['id']?.toString();
+    if (rawId == null || rawId.trim().isEmpty) {
+      throw const FormatException('Missing mandatory "id" in JoinRequestModel');
+    }
+    final rawRequestId =
+        json['request_id']?.toString() ?? json['requestId']?.toString();
+    if (rawRequestId == null || rawRequestId.trim().isEmpty) {
+      throw const FormatException(
+        'Missing mandatory "request_id" in JoinRequestModel',
+      );
+    }
+    final rawUserId = json['user_id']?.toString() ?? json['userId']?.toString();
+    if (rawUserId == null || rawUserId.trim().isEmpty) {
+      throw const FormatException(
+        'Missing mandatory "user_id" in JoinRequestModel',
+      );
+    }
+
     final status = switch ((json['status'] as String?)?.toLowerCase()) {
       'accepted' => JoinRequestStatus.accepted,
       'rejected' => JoinRequestStatus.rejected,
       'cancelled' => JoinRequestStatus.cancelled,
       _ => JoinRequestStatus.pending,
     };
+
+    UserProfile? userProfile;
+    final rawProfile =
+        json['profiles'] ?? json['profile'] ?? json['user_profile'];
+    if (rawProfile is Map<String, dynamic>) {
+      try {
+        userProfile = UserProfile.fromJson(rawProfile);
+      } catch (e, st) {
+        developer.log(
+          'Failed to parse user profile for join request $rawId: $e',
+          name: 'JoinRequestModel',
+          error: e,
+          stackTrace: st,
+        );
+      }
+    } else if (rawProfile is List &&
+        rawProfile.isNotEmpty &&
+        rawProfile.first is Map<String, dynamic>) {
+      try {
+        userProfile = UserProfile.fromJson(
+          rawProfile.first as Map<String, dynamic>,
+        );
+      } catch (e, st) {
+        developer.log(
+          'Failed to parse list user profile for join request $rawId: $e',
+          name: 'JoinRequestModel',
+          error: e,
+          stackTrace: st,
+        );
+      }
+    }
+
+    RequestEntity? request;
+    final rawRequest = json['requests'] ?? json['request'];
+    if (rawRequest is Map<String, dynamic>) {
+      try {
+        request = RequestModel.fromJson(rawRequest);
+      } catch (e, st) {
+        developer.log(
+          'Failed to parse request entity for join request $rawId: $e',
+          name: 'JoinRequestModel',
+          error: e,
+          stackTrace: st,
+        );
+      }
+    } else if (rawRequest is List &&
+        rawRequest.isNotEmpty &&
+        rawRequest.first is Map<String, dynamic>) {
+      try {
+        request = RequestModel.fromJson(
+          rawRequest.first as Map<String, dynamic>,
+        );
+      } catch (e, st) {
+        developer.log(
+          'Failed to parse list request entity for join request $rawId: $e',
+          name: 'JoinRequestModel',
+          error: e,
+          stackTrace: st,
+        );
+      }
+    }
+
     return JoinRequestModel(
-      id: json['id'] as String,
-      requestId: json['request_id'] as String,
-      userId: json['user_id'] as String,
+      id: rawId,
+      requestId: rawRequestId,
+      userId: rawUserId,
       status: status,
       message: json['message'] as String?,
       createdAt:
           DateTime.tryParse(json['created_at']?.toString() ?? '')?.toUtc() ??
           DateTime.now().toUtc(),
-      userProfile: json['profiles'] == null
-          ? null
-          : UserProfile.fromJson(json['profiles'] as Map<String, dynamic>),
-      request: json['requests'] == null
-          ? null
-          : RequestModel.fromJson(json['requests'] as Map<String, dynamic>),
+      userProfile: userProfile,
+      request: request,
     );
   }
 

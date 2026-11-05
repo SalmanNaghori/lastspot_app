@@ -6,6 +6,7 @@ import '../../domain/usecases/mark_all_notifications_read_usecase.dart';
 import '../../domain/usecases/mark_notification_read_usecase.dart';
 import '../../domain/usecases/delete_notification_usecase.dart';
 import '../../domain/entities/notification_entity.dart';
+import '../../../../core/services/in_app_feedback_manager.dart';
 import 'notifications_cubit.dart';
 
 class NotificationsListCubit extends Cubit<NotificationsListState> {
@@ -26,6 +27,14 @@ class NotificationsListCubit extends Cubit<NotificationsListState> {
     required this.notificationsCubit,
   }) : super(NotificationsListInitial()) {
     _newNotifSub = notificationsCubit.onNewNotification.listen((newNotif) {
+      if (newNotif.type == 'chat_message' ||
+          newNotif.type == 'chat' ||
+          InAppFeedbackManager.isChatMessage(
+            newNotif.data,
+            type: newNotif.type,
+          )) {
+        return;
+      }
       if (state is NotificationsListLoaded) {
         final currentState = state as NotificationsListLoaded;
         if (!currentState.notifications.any((e) => e.id == newNotif.id)) {

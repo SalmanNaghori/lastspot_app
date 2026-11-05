@@ -34,9 +34,11 @@ class GroupInfoScreenMobile extends StatelessWidget {
         leading: KhelBhaiBackButton(onPressed: onBack),
       ),
       body: ListView(
-        padding: EdgeInsets.symmetric(
-          horizontal: Dimensions.r16.dynamicW,
-          vertical: Dimensions.r12.dynamicH,
+        padding: EdgeInsets.fromLTRB(
+          Dimensions.r16.dynamicW,
+          Dimensions.r12.dynamicH,
+          Dimensions.r16.dynamicW,
+          MediaQuery.paddingOf(context).bottom + Dimensions.r24.dynamicH,
         ),
         children: [
           // 1. Group Header Card

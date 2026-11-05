@@ -26,10 +26,14 @@ Thumbs.db
 .swiftpm/
 migrate_working_dir/
 
-# IntelliJ related
+# IntelliJ & VS Code related
 *.iml
 *.ipr
 *.iws
+.idea/caches/
+.idea/shelf/
+.idea/workspace.xml
+.vscode/
 
 # FVM (Flutter Version Management)
 # Keep fvm_config.json to ensure team consistency; ignore cached SDKs
@@ -92,6 +96,28 @@ devtools_options.yaml
 *.tmp
 *.bak
 design_references/
+web_landing/
+
+# ------------------------------------------------------------------------------
+# Generated AI, Agent & Design Artifacts
+# ------------------------------------------------------------------------------
+.codex/
+design-system/
+PRODUCT.md
+.github/agents/
+.github/hooks/
+.github/skills/
+
+# Local custom agent skills
+.gemini/
+.agents/skills/banner-design/
+.agents/skills/brand/
+.agents/skills/design-system/
+.agents/skills/design/
+.agents/skills/impeccable/
+.agents/skills/slides/
+.agents/skills/ui-styling/
+.agents/skills/ui-ux-pro-max/
 
 # ------------------------------------------------------------------------------
 # Tests
@@ -102,6 +128,8 @@ test/**
 !test/core/widgets/khelbhai_back_button_test.dart
 !test/core/widgets/app_keyboard_dismissal_test.dart
 !test/features/startup/presentation/pages/onboarding_screen_test.dart
+!test/features/spot/presentation/pages/spot_details_scroll_test.dart
+!test/features/spot/presentation/pages/create_spot_insets_test.dart
 
 
 <!-- reposeed:begin -->

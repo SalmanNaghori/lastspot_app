@@ -1,4 +1,5 @@
 import 'package:lastspot_app/core/base_import.dart';
+import '../../domain/entities/user_profile.dart';
 import '../bloc/auth_bloc.dart';
 import '../bloc/auth_event.dart';
 import '../bloc/auth_state.dart';
@@ -40,17 +41,35 @@ class AccountStatusContent extends StatelessWidget {
     String message = 'There is an issue with your account.';
     IconData iconData = Icons.info_outline_rounded;
     Color iconColor = context.primaryColor;
+    String? reason;
+    String? expiryText;
 
     if (state is AuthSuspended) {
       title = context.loc.accountSuspendedTitle;
       message = context.loc.accountSuspendedDesc;
       iconData = Icons.warning_amber_rounded;
       iconColor = context.warningColor;
+      final profile = (state as AuthSuspended).profile;
+      if (profile is UserProfile) {
+        if (profile.statusReason != null && profile.statusReason!.isNotEmpty) {
+          reason = profile.statusReason;
+        }
+        if (profile.statusExpiresAt != null) {
+          expiryText =
+              'Suspension active until: ${profile.statusExpiresAt!.toLocal().toString().split('.').first}';
+        }
+      }
     } else if (state is AuthBanned) {
       title = context.loc.accountBannedTitle;
       message = context.loc.accountBannedDesc;
       iconData = Icons.block_rounded;
       iconColor = context.errorColor;
+      final profile = (state as AuthBanned).profile;
+      if (profile is UserProfile) {
+        if (profile.statusReason != null && profile.statusReason!.isNotEmpty) {
+          reason = profile.statusReason;
+        }
+      }
     } else if (state is AuthDeleted) {
       title = context.loc.accountDeletedTitle;
       message = context.loc.accountDeletedDesc;
@@ -105,6 +124,48 @@ class AccountStatusContent extends StatelessWidget {
                       height: 1.4,
                     ),
                   ),
+                  if (reason != null || expiryText != null) ...[
+                    SizedBox(height: Dimensions.r16.dynamicH),
+                    Container(
+                      padding: EdgeInsets.all(Dimensions.r16.dynamicW),
+                      decoration: BoxDecoration(
+                        color: iconColor.withValues(alpha: 0.08),
+                        borderRadius: BorderRadius.circular(
+                          Dimensions.r12.dynamicR,
+                        ),
+                        border: Border.all(
+                          color: iconColor.withValues(alpha: 0.25),
+                        ),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          if (reason != null) ...[
+                            Text(
+                              reason,
+                              style: TextStyle(
+                                fontSize: Dimensions.r14.dynamicSP,
+                                color: context.textPrimary,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ],
+                          if (expiryText != null) ...[
+                            if (reason != null)
+                              SizedBox(height: Dimensions.r8.dynamicH),
+                            Text(
+                              expiryText,
+                              style: TextStyle(
+                                fontSize: Dimensions.r12.dynamicSP,
+                                color: context.textSecondary,
+                                fontStyle: FontStyle.italic,
+                              ),
+                            ),
+                          ],
+                        ],
+                      ),
+                    ),
+                  ],
                   SizedBox(height: Dimensions.r40.dynamicH),
                   SizedBox(
                     height: Dimensions.r56.dynamicH,

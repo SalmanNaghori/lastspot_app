@@ -247,10 +247,7 @@ class _SelectionBottomSheetState<T> extends State<SelectionBottomSheet<T>> {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(Dimensions.r8.dynamicR),
               ),
-              onTap: () {
-                FocusManager.instance.primaryFocus?.unfocus();
-                Navigator.of(context).pop(item);
-              },
+              onTap: () => Navigator.of(context).pop(item),
             ),
           ),
         );

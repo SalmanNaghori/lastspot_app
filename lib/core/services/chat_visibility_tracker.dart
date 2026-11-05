@@ -13,6 +13,7 @@ class ChatVisibilityTracker extends NavigatorObserver
   String? _activeConversationId;
   String? _activeChatType;
   String? _activeRequestId;
+  String? _activeRecipientUserId;
   int _activeTabIndex = 0; // 0: Home, 1: Explore, 2: Activities, 3: Chats
   bool _isConversationRouteActive = false;
   bool _isRouteCoveringShell = false;
@@ -21,6 +22,7 @@ class ChatVisibilityTracker extends NavigatorObserver
   String? get activeConversationId => _activeConversationId;
   String? get activeChatType => _activeChatType;
   String? get activeRequestId => _activeRequestId;
+  String? get activeRecipientUserId => _activeRecipientUserId;
   int get activeTabIndex => _activeTabIndex;
   AppLifecycleState get appLifecycleState => _appLifecycleState;
   bool get isRouteCoveringShell => _isRouteCoveringShell;
@@ -51,26 +53,72 @@ class ChatVisibilityTracker extends NavigatorObserver
     required String conversationId,
     String? chatType,
     String? requestId,
+    String? recipientUserId,
   }) {
     _activeConversationId = conversationId;
     _activeChatType = chatType;
     _activeRequestId = requestId;
+    _activeRecipientUserId = recipientUserId;
     _isConversationRouteActive = true;
   }
 
-  void leaveConversation(String conversationId) {
-    if (_activeConversationId == conversationId) {
+  void leaveConversation({String? conversationId, String? requestId}) {
+    if (conversationId != null && _activeConversationId == conversationId) {
       _activeConversationId = null;
       _activeChatType = null;
       _activeRequestId = null;
+      _activeRecipientUserId = null;
+      _isConversationRouteActive = false;
+    } else if (requestId != null && _activeRequestId == requestId) {
+      _activeConversationId = null;
+      _activeChatType = null;
+      _activeRequestId = null;
+      _activeRecipientUserId = null;
+      _isConversationRouteActive = false;
+    } else if (conversationId == null && requestId == null) {
+      _activeConversationId = null;
+      _activeChatType = null;
+      _activeRequestId = null;
+      _activeRecipientUserId = null;
       _isConversationRouteActive = false;
     }
   }
 
-  bool isConversationCurrentlyVisible(String conversationId) {
+  /// Checks if the user is currently looking at this exact chat.
+  /// Matches by conversationId, requestId (for group/activity chats),
+  /// or recipientUserId (for direct 1-on-1 chats).
+  bool isConversationCurrentlyVisible({
+    String? conversationId,
+    String? requestId,
+    String? senderId,
+  }) {
     if (!isAppForeground) return false;
     if (!_isConversationRouteActive) return false;
-    return _activeConversationId == conversationId;
+
+    // 1. Match by conversation ID
+    if (conversationId != null &&
+        _activeConversationId != null &&
+        _activeConversationId == conversationId) {
+      return true;
+    }
+
+    // 2. Match by request / activity ID
+    if (requestId != null &&
+        _activeRequestId != null &&
+        _activeRequestId == requestId) {
+      return true;
+    }
+
+    // 3. Match direct chat: User A is chatting with User B (_activeRecipientUserId),
+    // and incoming message is from User B (senderId == _activeRecipientUserId)
+    if (_activeChatType == 'direct' &&
+        _activeRecipientUserId != null &&
+        senderId != null &&
+        _activeRecipientUserId == senderId) {
+      return true;
+    }
+
+    return false;
   }
 
   bool isUserOnChatsList() => isChatsListVisible;
@@ -91,10 +139,6 @@ class ChatVisibilityTracker extends NavigatorObserver
     super.didPop(route, previousRoute);
     if (previousRoute != null) {
       _onRouteChanged(previousRoute);
-    } else {
-      _isConversationRouteActive = false;
-      _activeConversationId = null;
-      _isRouteCoveringShell = false;
     }
   }
 
@@ -114,14 +158,13 @@ class ChatVisibilityTracker extends NavigatorObserver
           name == '/explore' ||
           name == '/activities' ||
           name == '/chats' ||
+          name == '/profile' ||
           name == '/') {
         _isConversationRouteActive = false;
         _activeConversationId = null;
+        _activeRequestId = null;
+        _activeRecipientUserId = null;
         _isRouteCoveringShell = false;
-      } else {
-        _isConversationRouteActive = false;
-        _activeConversationId = null;
-        _isRouteCoveringShell = true;
       }
     }
   }
@@ -134,3 +177,5 @@ class ChatVisibilityTracker extends NavigatorObserver
     WidgetsBinding.instance.removeObserver(this);
   }
 }
+
+final chatVisibilityTracker = ChatVisibilityTracker();

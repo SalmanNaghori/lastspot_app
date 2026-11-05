@@ -13,7 +13,10 @@ class AppEnv {
   AppEnv._();
 
   /// The active environment name (e.g., 'dev', 'local', 'staging', 'prod').
-  static const String environment = String.fromEnvironment('APP_ENV', defaultValue: 'dev');
+  static const String environment = String.fromEnvironment(
+    'APP_ENV',
+    defaultValue: 'dev',
+  );
 
   /// Active environment as strongly-typed enum.
   static EnvironmentType get currentType {
@@ -31,7 +34,10 @@ class AppEnv {
   }
 
   /// Application title/display name for the active environment.
-  static const String appName = String.fromEnvironment('APP_NAME', defaultValue: 'KhelBhai');
+  static const String appName = String.fromEnvironment(
+    'APP_NAME',
+    defaultValue: 'KhelBhai',
+  );
 
   /// Supabase backend project URL.
   static const String supabaseUrl = String.fromEnvironment(
@@ -47,10 +53,16 @@ class AppEnv {
   );
 
   /// Flag to display an environment watermark banner in the app.
-  static const bool showBanner = bool.fromEnvironment('SHOW_BANNER', defaultValue: false);
+  static const bool showBanner = bool.fromEnvironment(
+    'SHOW_BANNER',
+    defaultValue: false,
+  );
 
   /// Optional custom API base URL if an intermediate gateway is used.
-  static const String apiBaseUrl = String.fromEnvironment('API_BASE_URL', defaultValue: '');
+  static const String apiBaseUrl = String.fromEnvironment(
+    'API_BASE_URL',
+    defaultValue: '',
+  );
 
   // Environment checks
   static bool get isDev => environment.toLowerCase() == 'dev';

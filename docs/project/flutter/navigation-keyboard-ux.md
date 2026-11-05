@@ -1,5 +1,32 @@
 # Back navigation and keyboard UX
 
+## Scroll and inset follow-up (2026-11-04)
+
+- [`SpotDetailsContent`](../../../lib/features/spot/presentation/widgets/spot_details_content.dart)
+  uses a pinned `SliverAppBar` with a `FlexibleSpaceBar` on narrow detail
+  screens. The existing lazy participant `SliverList` and fixed booking panel
+  remain in place. Wide detail layouts retain their toolbar and sidebar;
+  [`SpotDetailsOverview`](../../../lib/features/spot/presentation/widgets/spot_details_overview.dart)
+  wraps its badges when the sidebar reduces the available content width.
+- [`ProfileScreenMobile`](../../../lib/features/profile/presentation/pages/profile_screen_mobile.dart)
+  uses `SliverAppBar.medium` above its scrollable profile sections. The header,
+  Edit Profile action, refresh control, and bottom spacing stay in the same
+  scroll view.
+- [`HomeScreen`](../../../lib/features/spot/presentation/pages/home_screen.dart)
+  keeps its branded toolbar, existing lazy feed sliver, and refresh behavior;
+  a `PageStorageKey` retains the feed offset when switching tabs.
+- [`CreateSpotScreenMobile`](../../../lib/features/spot/presentation/pages/create_spot_screen_mobile.dart)
+  keeps its form scrollable and its SafeArea bottom action in the Scaffold.
+  When the keyboard is open, the supporting caption is omitted so the preview
+  action has the full available width. Loading and disabled behavior are unchanged.
+- [`spot_details_scroll_test.dart`](../../../test/features/spot/presentation/pages/spot_details_scroll_test.dart)
+  exercises collapse and hit testing of the fixed join action at 320×640,
+  then checks the wide sidebar layout at 900×1024 without a RenderFlex overflow.
+  [`create_spot_insets_test.dart`](../../../test/features/spot/presentation/pages/create_spot_insets_test.dart)
+  checks the preview action at 320×640 with a simulated 300 dp keyboard and
+  24 dp bottom system inset. These widget checks do not establish real Android
+  gesture/three-button or iOS home-indicator behavior; device QA remains needed.
+
 Reviewed on 2026-10-19. Scope: presentation, navigation controls, and focus only.
 The existing Feature First architecture, go_router routes, domain/data code,
 Supabase, Firebase, and notification behavior are preserved.

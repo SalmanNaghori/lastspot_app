@@ -51,12 +51,9 @@ class SpotDetailsBookingPanel extends StatelessWidget {
             runSpacing: Dimensions.r4.dynamicH,
             crossAxisAlignment: WrapCrossAlignment.center,
             children: [
-              Assets.icons.priceTag3d.image(
-                width: Dimensions.r22.dynamicW,
-                height: Dimensions.r22.dynamicH,
-                fit: BoxFit.contain,
-                errorBuilder: (context, error, stackTrace) =>
-                    const SizedBox.shrink(),
+              ActivityMetadataIcon.priceTag(
+                size: Dimensions.r22.dynamicH,
+                fallbackColor: context.primaryColor,
               ),
               Text(
                 post.pricePerPerson > 0
@@ -64,6 +61,9 @@ class SpotDetailsBookingPanel extends StatelessWidget {
                     : loc.free,
                 style: context.headlineSmall?.copyWith(
                   fontWeight: FontWeight.w800,
+                  color: post.pricePerPerson > 0
+                      ? context.textPrimary
+                      : context.primaryColor,
                 ),
               ),
               if (post.pricePerPerson > 0)
@@ -71,6 +71,7 @@ class SpotDetailsBookingPanel extends StatelessWidget {
                   loc.perPerson,
                   style: context.bodySmall?.copyWith(
                     color: colors.onSurfaceVariant,
+                    fontWeight: FontWeight.w500,
                   ),
                 ),
             ],

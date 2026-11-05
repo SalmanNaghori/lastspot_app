@@ -1,4 +1,5 @@
 import '../../../../core/base_import.dart';
+import '../../../../core/widgets/shell_bottom_spacer.dart';
 import '../../../auth/presentation/bloc/auth_bloc.dart';
 import '../../../auth/presentation/bloc/auth_event.dart';
 import 'package:lastspot_app/features/cities/presentation/bloc/city_cubit.dart';
@@ -127,174 +128,177 @@ class _MySportsSpaceScreenMobileState extends State<MySportsSpaceScreenMobile> {
 
     return Scaffold(
       backgroundColor: context.backgroundColor,
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        leading: KhelBhaiBackButton.leading(context),
-        title: Text(
-          loc.mySportsSpaceTitle,
-          style: TextStyle(
-            fontSize: Dimensions.r18.dynamicSP,
-            fontWeight: FontWeight.w800,
-            letterSpacing: -0.3,
-            color: context.textPrimary,
-          ),
-        ),
-        centerTitle: false,
-        backgroundColor: context.backgroundColor,
-        systemOverlayStyle: AppTheme.systemUiOverlayStyle(context),
-        actions: [
-          IconButton(
-            onPressed: _onNotifications,
-            icon: Icon(
-              Icons.notifications_outlined,
-              size: Dimensions.r22.dynamicH,
-              color: context.textPrimary,
-            ),
-            tooltip: loc.notifications,
-          ),
-          SizedBox(width: Dimensions.r8.dynamicW),
-        ],
-      ),
       body: RefreshIndicator(
         onRefresh: widget.onRefresh,
         color: context.primaryColor,
-        child: SingleChildScrollView(
+        child: CustomScrollView(
+          key: const PageStorageKey('my_sports_space_scroll'),
           physics: const AlwaysScrollableScrollPhysics(),
-          padding: EdgeInsets.symmetric(horizontal: Dimensions.r16.dynamicW),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              if (state is MySportsSpaceLoading ||
-                  state is MySportsSpaceInitial)
-                const ProfileSkeleton()
-              else if (state is MySportsSpaceError)
-                Padding(
-                  padding: EdgeInsets.only(top: Dimensions.r48.dynamicH),
-                  child: ErrorState(
-                    message: state.message,
-                    onRetry: widget.onRefresh,
+          slivers: [
+            SliverAppBar.medium(
+              pinned: true,
+              automaticallyImplyLeading: false,
+              leading: KhelBhaiBackButton.leading(context),
+              title: Text(loc.mySportsSpaceTitle),
+              backgroundColor: context.backgroundColor,
+              surfaceTintColor: context.backgroundColor,
+              systemOverlayStyle: AppTheme.systemUiOverlayStyle(context),
+              actions: [
+                IconButton(
+                  onPressed: _onNotifications,
+                  icon: Icon(
+                    Icons.notifications_outlined,
+                    size: Dimensions.r22.dynamicH,
+                    color: context.textPrimary,
                   ),
-                )
-              else if (state is MySportsSpaceLoaded) ...[
-                SizedBox(height: Dimensions.r12.dynamicH),
-
-                // 1. Profile Header
-                SportsProfileHeader(
-                  profile: state.data.profile,
-                  onEditProfile: _onEditProfile,
+                  tooltip: loc.notifications,
                 ),
-                SizedBox(height: Dimensions.r16.dynamicH),
-
-                // 2. Personal Activity Summary (4 Real Metric Cards)
-                ValueListenableBuilder<int>(
-                  valueListenable: _journeyTabNotifier,
-                  builder: (context, activeIndex, _) {
-                    return SportsActivitySummary(
-                      hostedCount: state.data.hostedCount,
-                      joinedCount: state.data.joinedCount,
-                      upcomingCount: state.data.upcomingCount,
-                      completedCount: state.data.completedCount,
-                      selectedIndex: activeIndex,
-                      onCardTap: _onSummaryCardTap,
-                    );
-                  },
-                ),
-                SizedBox(height: Dimensions.r16.dynamicH),
-
-                // 3. Quick Actions
-                SportsQuickActions(
-                  onFindGame: _onFindGame,
-                  onOrganizeMatch: _onOrganizeMatch,
-                  onMyMatches: _onMyMatches,
-                  onTeamChats: _onTeamChats,
-                ),
-                SizedBox(height: Dimensions.r16.dynamicH),
-
-                // 4. Sports Journey Timeline
-                SportsJourneySection(
-                  upcomingActivities: state.data.upcomingActivities,
-                  joinedActivities: state.data.joinedActivities,
-                  hostedActivities: state.data.hostedActivities,
-                  pastActivities: state.data.completedActivities,
-                  currentUserId: state.data.profile.id,
-                  activeTabNotifier: _journeyTabNotifier,
-                  onFindGame: _onFindGame,
-                  onHostGame: _onOrganizeMatch,
-                  onViewAllActivities: _onMyMatches,
-                ),
-                SizedBox(height: Dimensions.r16.dynamicH),
-
-                // 5. Sports Interests
-                SportsInterestsSection(
-                  interests: state.data.profile.sportsInterests,
-                  onEditInterests: _onEditProfile,
-                ),
-                SizedBox(height: Dimensions.r16.dynamicH),
-
-                // 6. My Requests Overview
-                SportsRequestsSection(
-                  sentRequests: state.data.sentRequests,
-                  onViewAll: _onMyMatches,
-                ),
-                SizedBox(height: Dimensions.r16.dynamicH),
-
-                // 7. Verified Personal Achievements
-                SportsAchievementsSection(
-                  hostedCount: state.data.hostedCount,
-                  joinedCount: state.data.joinedCount,
-                  completedCount: state.data.completedCount,
-                ),
-                SizedBox(height: Dimensions.r20.dynamicH),
-
-                // 8. Account & Support Section
-                ProfileSection(
-                  title: loc.profileSectionAccount,
-                  items: [
-                    ProfileListTile(
-                      icon: Icons.settings_outlined,
-                      title: loc.settings,
-                      onTap: _onOpenSettings,
-                    ),
-                    ProfileListTile(
-                      icon: Icons.help_outline_rounded,
-                      title: loc.helpSupport,
-                      onTap: _onHelpSupport,
-                    ),
-                  ],
-                ),
-                SizedBox(height: Dimensions.r12.dynamicH),
-
-                // 9. Legal Section
-                ProfileSection(
-                  title: loc.profileSectionLegal,
-                  items: [
-                    ProfileListTile(
-                      icon: Icons.privacy_tip_outlined,
-                      title: loc.privacyPolicy,
-                      onTap: _onPrivacyPolicy,
-                    ),
-                    ProfileListTile(
-                      icon: Icons.article_outlined,
-                      title: loc.termsConditions,
-                      onTap: _onTermsConditions,
-                    ),
-                  ],
-                ),
-
-                // 9. Logout CTA
-                SizedBox(height: Dimensions.r12.dynamicH),
-                TextButton(
-                  onPressed: () => _onLogout(context, loc),
-                  style: TextButton.styleFrom(
-                    foregroundColor: context.colorScheme.error,
-                    minimumSize: Size.fromHeight(Dimensions.r48.dynamicH),
-                  ),
-                  child: Text(loc.logout),
-                ),
-                SizedBox(height: Dimensions.r48.dynamicH),
+                SizedBox(width: Dimensions.r8.dynamicW),
               ],
-            ],
-          ),
+            ),
+            SliverPadding(
+              padding: EdgeInsets.symmetric(
+                horizontal: Dimensions.r16.dynamicW,
+              ),
+              sliver: SliverToBoxAdapter(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    if (state is MySportsSpaceLoading ||
+                        state is MySportsSpaceInitial)
+                      const ProfileSkeleton()
+                    else if (state is MySportsSpaceError)
+                      Padding(
+                        padding: EdgeInsets.only(top: Dimensions.r48.dynamicH),
+                        child: ErrorState(
+                          message: state.message,
+                          onRetry: widget.onRefresh,
+                        ),
+                      )
+                    else if (state is MySportsSpaceLoaded) ...[
+                      SizedBox(height: Dimensions.r12.dynamicH),
+
+                      // 1. Profile Header
+                      SportsProfileHeader(
+                        profile: state.data.profile,
+                        onEditProfile: _onEditProfile,
+                      ),
+                      SizedBox(height: Dimensions.r16.dynamicH),
+
+                      // 2. Personal Activity Summary (4 Real Metric Cards)
+                      ValueListenableBuilder<int>(
+                        valueListenable: _journeyTabNotifier,
+                        builder: (context, activeIndex, _) {
+                          return SportsActivitySummary(
+                            hostedCount: state.data.hostedCount,
+                            joinedCount: state.data.joinedCount,
+                            upcomingCount: state.data.upcomingCount,
+                            completedCount: state.data.completedCount,
+                            selectedIndex: activeIndex,
+                            onCardTap: _onSummaryCardTap,
+                          );
+                        },
+                      ),
+                      SizedBox(height: Dimensions.r16.dynamicH),
+
+                      // 3. Quick Actions
+                      SportsQuickActions(
+                        onFindGame: _onFindGame,
+                        onOrganizeMatch: _onOrganizeMatch,
+                        onMyMatches: _onMyMatches,
+                        onTeamChats: _onTeamChats,
+                      ),
+                      SizedBox(height: Dimensions.r16.dynamicH),
+
+                      // 4. Sports Journey Timeline
+                      SportsJourneySection(
+                        upcomingActivities: state.data.upcomingActivities,
+                        joinedActivities: state.data.joinedActivities,
+                        hostedActivities: state.data.hostedActivities,
+                        pastActivities: state.data.completedActivities,
+                        currentUserId: state.data.profile.id,
+                        activeTabNotifier: _journeyTabNotifier,
+                        onFindGame: _onFindGame,
+                        onHostGame: _onOrganizeMatch,
+                        onViewAllActivities: _onMyMatches,
+                      ),
+                      SizedBox(height: Dimensions.r16.dynamicH),
+
+                      // 5. Sports Interests
+                      SportsInterestsSection(
+                        interests: state.data.profile.sportsInterests,
+                        onEditInterests: _onEditProfile,
+                      ),
+                      SizedBox(height: Dimensions.r16.dynamicH),
+
+                      // 6. My Requests Overview
+                      SportsRequestsSection(
+                        sentRequests: state.data.sentRequests,
+                        onViewAll: _onMyMatches,
+                      ),
+                      SizedBox(height: Dimensions.r16.dynamicH),
+
+                      // 7. Verified Personal Achievements
+                      SportsAchievementsSection(
+                        hostedCount: state.data.hostedCount,
+                        joinedCount: state.data.joinedCount,
+                        completedCount: state.data.completedCount,
+                      ),
+                      SizedBox(height: Dimensions.r20.dynamicH),
+
+                      // 8. Account & Support Section
+                      ProfileSection(
+                        title: loc.profileSectionAccount,
+                        items: [
+                          ProfileListTile(
+                            icon: Icons.settings_outlined,
+                            title: loc.settings,
+                            onTap: _onOpenSettings,
+                          ),
+                          ProfileListTile(
+                            icon: Icons.help_outline_rounded,
+                            title: loc.helpSupport,
+                            onTap: _onHelpSupport,
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: Dimensions.r12.dynamicH),
+
+                      // 9. Legal Section
+                      ProfileSection(
+                        title: loc.profileSectionLegal,
+                        items: [
+                          ProfileListTile(
+                            icon: Icons.privacy_tip_outlined,
+                            title: loc.privacyPolicy,
+                            onTap: _onPrivacyPolicy,
+                          ),
+                          ProfileListTile(
+                            icon: Icons.article_outlined,
+                            title: loc.termsConditions,
+                            onTap: _onTermsConditions,
+                          ),
+                        ],
+                      ),
+
+                      // 9. Logout CTA
+                      SizedBox(height: Dimensions.r12.dynamicH),
+                      TextButton(
+                        onPressed: () => _onLogout(context, loc),
+                        style: TextButton.styleFrom(
+                          foregroundColor: context.colorScheme.error,
+                          minimumSize: Size.fromHeight(Dimensions.r48.dynamicH),
+                        ),
+                        child: Text(loc.logout),
+                      ),
+                      SizedBox(height: Dimensions.r24.dynamicH),
+                    ],
+                  ],
+                ),
+              ),
+            ),
+            const SliverShellBottomSpacer(),
+          ],
         ),
       ),
     );

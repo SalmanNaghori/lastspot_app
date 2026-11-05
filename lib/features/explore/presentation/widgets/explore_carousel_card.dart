@@ -290,17 +290,10 @@ class ExploreCarouselCard extends StatelessWidget {
                                   ),
                                 ),
                                 SizedBox(width: Dimensions.r4.dynamicW),
-                                Image.asset(
-                                  AppAssets.arrowForward3d,
-                                  width: Dimensions.r14.dynamicW,
-                                  height: Dimensions.r14.dynamicH,
-                                  fit: BoxFit.contain,
-                                  errorBuilder: (context, error, stackTrace) =>
-                                      Icon(
-                                        Icons.arrow_forward_rounded,
-                                        size: Dimensions.r14.dynamicH,
-                                        color: context.primaryColor,
-                                      ),
+                                Icon(
+                                  Icons.arrow_forward_rounded,
+                                  size: Dimensions.r14.dynamicH,
+                                  color: context.primaryColor,
                                 ),
                               ],
                             ),
@@ -430,53 +423,9 @@ class ExploreCarouselCard extends StatelessWidget {
                 ),
 
                 // Price badge
-                Container(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: Dimensions.r10.dynamicW,
-                    vertical: Dimensions.r4.dynamicH,
-                  ),
-                  decoration: BoxDecoration(
-                    color: context.surfaceColor.withValues(alpha: 0.95),
-                    borderRadius: BorderRadius.circular(
-                      Dimensions.r20.dynamicR,
-                    ),
-                    border: Border.all(
-                      color: context.borderColor.withValues(alpha: 0.5),
-                      width: Dimensions.w1,
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: AppColor.blackColor.withValues(alpha: 0.1),
-                        blurRadius: Dimensions.r4.dynamicR,
-                        offset: Offset(0, Dimensions.r2.dynamicH),
-                      ),
-                    ],
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Image.asset(
-                        AppAssets.priceTag3d,
-                        width: Dimensions.r14.dynamicW,
-                        height: Dimensions.r14.dynamicH,
-                        fit: BoxFit.contain,
-                        errorBuilder: (context, error, stackTrace) => Icon(
-                          Icons.currency_rupee_rounded,
-                          size: Dimensions.r12.dynamicH,
-                          color: context.textPrimary,
-                        ),
-                      ),
-                      SizedBox(width: Dimensions.r4.dynamicW),
-                      Text(
-                        priceText,
-                        style: TextStyle(
-                          color: context.textPrimary,
-                          fontSize: Dimensions.r11.dynamicSP,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                    ],
-                  ),
+                ActivityPriceBadge(
+                  pricePerPerson: spot.pricePerPerson,
+                  customText: priceText,
                 ),
               ],
             ),

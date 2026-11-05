@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:lastspot_app/core/di/service_locator.dart';
 import 'package:lastspot_app/core/l10n/app_localizations.dart';
+import 'package:lastspot_app/core/services/local_notification_service.dart';
 
 class InAppFeedbackManager extends NavigatorObserver {
   InAppFeedbackManager({GlobalKey<ScaffoldMessengerState>? messengerKey})
@@ -41,8 +43,7 @@ class InAppFeedbackManager extends NavigatorObserver {
   void openConversation(String conversationId, {String? requestId}) {
     _activeConversationId = conversationId;
     _activeRequestId = requestId;
-    if (_activeMessageConversationId == conversationId ||
-        (requestId != null && _activeMessageRequestId == requestId)) {
+    if (_activeMessageConversationId == conversationId || (requestId != null && _activeMessageRequestId == requestId)) {
       _removeCurrentMessage();
     }
   }
@@ -64,8 +65,7 @@ class InAppFeedbackManager extends NavigatorObserver {
   }
 
   void dismissConversation(String conversationId) {
-    if (_activeMessageConversationId == conversationId ||
-        _activeMessageRequestId == conversationId) {
+    if (_activeMessageConversationId == conversationId || _activeMessageRequestId == conversationId) {
       _removeCurrentMessage();
     }
   }
@@ -96,8 +96,7 @@ class InAppFeedbackManager extends NavigatorObserver {
     messenger.removeCurrentSnackBar();
     messenger.clearSnackBars();
     final action = snackBar.action ?? (preserve ? _dismissAction() : null);
-    final selectedDuration =
-        duration ?? (preserve ? _persistentDuration : _transientDuration);
+    final selectedDuration = duration ?? (preserve ? _persistentDuration : _transientDuration);
     final controller = messenger.showSnackBar(
       SnackBar(
         key: snackBar.key,
@@ -141,68 +140,22 @@ class InAppFeedbackManager extends NavigatorObserver {
     if (!_sessionActive) return false;
     if (_isConversationOpen(conversationId, data)) {
       dismissConversation(
-        conversationId ??
-            conversationIdFrom(data) ??
-            _stringValue(data, const ['request_id', 'requestId'])!,
+        conversationId ?? conversationIdFrom(data) ?? _stringValue(data, const ['request_id', 'requestId'])!,
       );
       return false;
     }
 
-    final generation = _messageGeneration + 1;
-    final localizations = _localizations;
-    final content = Builder(
-      builder: (context) {
-        final foreground = Theme.of(context).colorScheme.onInverseSurface;
-        return InkWell(
-          onTap: () => _tapNotification(generation, onTap),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 2),
-            child: Row(
-              children: [
-                Icon(Icons.notifications_outlined, color: foreground),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        title,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(color: foreground),
-                      ),
-                      if (subtitle?.trim().isNotEmpty == true)
-                        Text(
-                          subtitle!,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(fontSize: 12, color: foreground),
-                        ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
+    final keys = _notificationEventKeys(data, eventKeys).where((key) => key.trim().isNotEmpty).toSet();
+    if (_wasRecentlyShown(keys)) return false;
 
-    return showFeedback(
-      SnackBar(
-        content: content,
-        behavior: SnackBarBehavior.floating,
-        action: SnackBarAction(
-          label: localizations?.dismiss ?? 'Dismiss',
-          onPressed: () => _removeMessage(generation),
-        ),
-      ),
-      eventKeys: _notificationEventKeys(data, eventKeys),
-      conversationId: conversationId,
-      requestId: _stringValue(data, const ['request_id', 'requestId']),
-      duration: _notificationDuration,
-    );
+    if (sl.isRegistered<LocalNotificationService>()) {
+      final notifId = (data['id'] ?? data['notification_id'] ?? title).hashCode;
+      sl<LocalNotificationService>().showNotification(id: notifId, title: title, body: subtitle, payload: data);
+      _recordEventKeys(keys);
+      return true;
+    }
+
+    return false;
   }
 
   bool showIncomingChatMessage({
@@ -213,13 +166,8 @@ class InAppFeedbackManager extends NavigatorObserver {
     required Iterable<String> eventKeys,
     required VoidCallback onTap,
   }) {
-    final conversationId = _stringValue(data, const [
-      'conversation_id',
-      'conversationId',
-    ]);
-    if (conversationId == null ||
-        !isSafeRouteIdentifier(conversationId) ||
-        !_sessionActive) {
+    final conversationId = _stringValue(data, const ['conversation_id', 'conversationId']);
+    if (conversationId == null || !isSafeRouteIdentifier(conversationId) || !_sessionActive) {
       return false;
     }
     if (_isConversationOpen(conversationId, data)) {
@@ -280,10 +228,7 @@ class InAppFeedbackManager extends NavigatorObserver {
       SnackBar(
         content: content,
         behavior: SnackBarBehavior.floating,
-        action: SnackBarAction(
-          label: localizations?.dismiss ?? 'Dismiss',
-          onPressed: () => _removeMessage(generation),
-        ),
+        action: SnackBarAction(label: localizations?.dismiss ?? 'Dismiss', onPressed: () => _removeMessage(generation)),
       ),
       eventKeys: _notificationEventKeys(data, eventKeys),
       conversationId: conversationId,
@@ -293,48 +238,32 @@ class InAppFeedbackManager extends NavigatorObserver {
   }
 
   static bool isChatMessage(Map<String, dynamic> data, {String? type}) {
-    final normalized = (type ?? data['type'] ?? data['notification_type'])
-        ?.toString()
-        .toLowerCase()
-        .replaceAll('-', '_');
-    return const {
-          'chat',
-          'chat_message',
-          'new_chat_message',
-          'new_message',
-          'message',
-        }.contains(normalized) ||
-        (conversationIdFrom(data) != null &&
-            _stringValue(data, const ['message_id', 'messageId']) != null);
+    final normalized = (type ?? data['type'] ?? data['notification_type'])?.toString().toLowerCase().replaceAll(
+      '-',
+      '_',
+    );
+    return const {'chat', 'chat_message', 'new_chat_message', 'new_message', 'message'}.contains(normalized) ||
+        (conversationIdFrom(data) != null && _stringValue(data, const ['message_id', 'messageId']) != null);
   }
 
   static String? conversationIdFrom(Map<String, dynamic> data) =>
       _stringValue(data, const ['conversation_id', 'conversationId']);
 
-  static bool isSafeRouteIdentifier(String value) =>
-      RegExp(r'^[A-Za-z0-9_-]{1,128}$').hasMatch(value);
+  static bool isSafeRouteIdentifier(String value) => RegExp(r'^[A-Za-z0-9_-]{1,128}$').hasMatch(value);
 
-  static String? senderNameFrom(Map<String, dynamic> data) => _stringValue(
-    data,
-    const ['sender_name', 'senderName', 'sender', 'title'],
-  );
+  static String? senderNameFrom(Map<String, dynamic> data) =>
+      _stringValue(data, const ['sender_name', 'senderName', 'sender', 'title']);
 
-  static String? activityNameFrom(Map<String, dynamic> data) => _stringValue(
-    data,
-    const ['activity_title', 'activity_name', 'request_title'],
-  );
+  static String? activityNameFrom(Map<String, dynamic> data) =>
+      _stringValue(data, const ['activity_title', 'activity_name', 'request_title']);
 
   bool _isConversationOpen(String? conversationId, Map<String, dynamic> data) {
     final requestId = _stringValue(data, const ['request_id', 'requestId']);
-    return (conversationId != null &&
-            _activeConversationId == conversationId) ||
+    return (conversationId != null && _activeConversationId == conversationId) ||
         (requestId != null && _activeRequestId == requestId);
   }
 
-  static List<String> _notificationEventKeys(
-    Map<String, dynamic> data,
-    Iterable<String> eventKeys,
-  ) => [
+  static List<String> _notificationEventKeys(Map<String, dynamic> data, Iterable<String> eventKeys) => [
     ...eventKeys,
     for (final key in const ['event_id', 'notification_id', 'message_id', 'id'])
       ...[
@@ -353,9 +282,7 @@ class InAppFeedbackManager extends NavigatorObserver {
   bool _wasRecentlyShown(Set<String> eventKeys) {
     if (eventKeys.isEmpty) return false;
     final now = DateTime.now();
-    _seenEvents.removeWhere(
-      (_, seenAt) => now.difference(seenAt) > _eventRetention,
-    );
+    _seenEvents.removeWhere((_, seenAt) => now.difference(seenAt) > _eventRetention);
     if (eventKeys.any(_seenEvents.containsKey)) return true;
     for (final key in eventKeys) {
       _seenEvents[key] = now;
@@ -363,10 +290,15 @@ class InAppFeedbackManager extends NavigatorObserver {
     return false;
   }
 
-  SnackBarAction _dismissAction() => SnackBarAction(
-    label: _localizations?.dismiss ?? 'Dismiss',
-    onPressed: _removeCurrentMessage,
-  );
+  void _recordEventKeys(Iterable<String> keys) {
+    final now = DateTime.now();
+    for (final key in keys) {
+      _seenEvents[key] = now;
+    }
+  }
+
+  SnackBarAction _dismissAction() =>
+      SnackBarAction(label: _localizations?.dismiss ?? 'Dismiss', onPressed: _removeCurrentMessage);
 
   void _tapNotification(int generation, VoidCallback onTap) {
     if (_activeMessageGeneration != generation || !_sessionActive) return;

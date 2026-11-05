@@ -43,24 +43,13 @@ class ConversationsCubit extends Cubit<ConversationsState> {
     if (isClosed) return;
     switch (result) {
       case Success(value: final conversations):
-        emit(
-          ConversationsLoaded(
-            conversations: _orderedConversations(conversations),
-          ),
-        );
+        emit(ConversationsLoaded(conversations: _orderedConversations(conversations)));
       case Failure(exception: final ex):
-        emit(
-          ConversationsError(
-            message: ex.toString(),
-            isNetworkError: ex is NoInternetException,
-          ),
-        );
+        emit(ConversationsError(message: ex.toString(), isNetworkError: ex is NoInternetException));
     }
   }
 
-  List<ChatConversationEntity> _orderedConversations(
-    List<ChatConversationEntity> conversations,
-  ) {
+  List<ChatConversationEntity> _orderedConversations(List<ChatConversationEntity> conversations) {
     final ordered = List<ChatConversationEntity>.of(conversations)
       ..sort((a, b) {
         final aTime = a.lastMessageAt ?? DateTime.fromMillisecondsSinceEpoch(0);
@@ -68,9 +57,7 @@ class ConversationsCubit extends Cubit<ConversationsState> {
         return bTime.compareTo(aTime);
       });
     final seen = <String>{};
-    return List.unmodifiable(
-      ordered.where((conversation) => seen.add(conversation.conversationId)),
-    );
+    return List.unmodifiable(ordered.where((conversation) => seen.add(conversation.conversationId)));
   }
 
   void _startMessageSubscription() {
@@ -86,8 +73,7 @@ class ConversationsCubit extends Cubit<ConversationsState> {
   }
 
   @visibleForTesting
-  void onIncomingMessageForTesting(ChatMessageEntity message) =>
-      _onIncomingMessage(message);
+  void onIncomingMessageForTesting(ChatMessageEntity message) => _onIncomingMessage(message);
 
   void _onIncomingMessage(ChatMessageEntity message) {
     if (state is! ConversationsLoaded) {
@@ -98,9 +84,7 @@ class ConversationsCubit extends Cubit<ConversationsState> {
     final currentState = state as ConversationsLoaded;
     final currentList = currentState.conversations;
 
-    final matchingIndex = currentList.indexWhere(
-      (c) => c.conversationId == message.conversationId,
-    );
+    final matchingIndex = currentList.indexWhere((c) => c.conversationId == message.conversationId);
 
     if (matchingIndex == -1) {
       // New conversation created or discovered; load fresh list
@@ -111,7 +95,8 @@ class ConversationsCubit extends Cubit<ConversationsState> {
     final existing = currentList[matchingIndex];
     final isVisible =
         _visibilityTracker?.isConversationCurrentlyVisible(
-          message.conversationId,
+          conversationId: message.conversationId,
+          senderId: message.senderId,
         ) ??
         false;
     final isMine = _currentUserId != null && message.senderId == _currentUserId;
@@ -119,9 +104,7 @@ class ConversationsCubit extends Cubit<ConversationsState> {
     final updated = existing.copyWith(
       lastMessage: message.content,
       lastMessageAt: message.createdAt,
-      unreadCount: (isVisible || isMine)
-          ? existing.unreadCount
-          : (existing.unreadCount + 1),
+      unreadCount: (isVisible || isMine) ? existing.unreadCount : (existing.unreadCount + 1),
     );
 
     final newList = List<ChatConversationEntity>.from(currentList);

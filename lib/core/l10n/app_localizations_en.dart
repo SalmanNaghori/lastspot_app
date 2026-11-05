@@ -1326,6 +1326,32 @@ class AppLocalizationsEn extends AppLocalizations {
   String get yourActivityHub => 'Your Activity Hub';
 
   @override
+  String get homeHeroTagline => 'What are you playing today?';
+
+  @override
+  String homeActivityHubRequestsBadge(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count requests need attention',
+      one: '1 request needs attention',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get homeActivityHubJoinedBadge => 'Joined activity';
+
+  @override
+  String get homeActivityHubHostedBadge => 'Hosting match';
+
+  @override
+  String get homeActivityHubSuggestedBadge => 'Suggested for you';
+
+  @override
+  String get homeCityRetryHint => 'Tap to retry';
+
+  @override
   String homeActivityHubPending(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,

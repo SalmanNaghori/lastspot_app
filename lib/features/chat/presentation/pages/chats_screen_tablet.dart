@@ -40,10 +40,7 @@ class ChatsScreenTablet extends StatelessWidget {
               borderRadius: BorderRadius.circular(Dimensions.r20.dynamicR),
               child: RefreshIndicator(
                 onRefresh: () => _onRefresh(context),
-                child: const SingleChildScrollView(
-                  physics: AlwaysScrollableScrollPhysics(),
-                  child: ConversationsTabView(),
-                ),
+                child: const ConversationsTabView(),
               ),
             ),
           ),

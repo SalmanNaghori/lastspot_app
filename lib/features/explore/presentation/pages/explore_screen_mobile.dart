@@ -16,6 +16,7 @@ import '../../../categories/presentation/bloc/category_state.dart';
 import '../bloc/explore_bloc.dart';
 import '../bloc/explore_event.dart';
 import '../../../../core/widgets/sports_category_perspective_carousel.dart';
+import '../../../../core/widgets/shell_bottom_spacer.dart';
 import '../bloc/explore_state.dart';
 import '../widgets/explore_filter_bottom_sheet.dart';
 
@@ -47,6 +48,7 @@ class _ExploreScreenMobileState extends State<ExploreScreenMobile> {
       if (!mounted) return;
       _checkPendingCategoryNavigation();
       _checkPendingCityChange();
+      _checkPendingSearchFocus();
       final profileState = context.read<ProfileCubit>().state;
       if (profileState is ProfileLoaded) {
         _onProfileLoaded(profileState);
@@ -58,6 +60,17 @@ class _ExploreScreenMobileState extends State<ExploreScreenMobile> {
     if (!mounted) return;
     _checkPendingCategoryNavigation();
     _checkPendingCityChange();
+    _checkPendingSearchFocus();
+  }
+
+  void _checkPendingSearchFocus() {
+    if (_exploreNavService.pendingSearchFocus) {
+      _exploreNavService.consumePendingSearchFocus();
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!mounted) return;
+        _searchFocusNode.requestFocus();
+      });
+    }
   }
 
   void _checkPendingCategoryNavigation() {
@@ -364,7 +377,7 @@ class _ExploreScreenMobileState extends State<ExploreScreenMobile> {
                       ),
                     ],
                     bottom: PreferredSize(
-                      preferredSize: Size.fromHeight(120.0),
+                      preferredSize: Size.fromHeight(Dimensions.r120.dynamicH),
                       child: Padding(
                         padding: EdgeInsets.symmetric(
                           horizontal: Dimensions.r16.dynamicW,
@@ -789,9 +802,7 @@ class _ExploreScreenMobileState extends State<ExploreScreenMobile> {
                     },
                   ),
 
-                  SliverToBoxAdapter(
-                    child: SizedBox(height: Dimensions.r32.dynamicH),
-                  ),
+                  const SliverShellBottomSpacer(),
                 ],
               ),
             ),

@@ -1,5 +1,7 @@
 import 'package:lastspot_app/core/base_import.dart';
 
+/// Standard app bar for secondary screens with back navigation.
+/// For authenticated dashboard screens, delegates to [KhelBhaiAppBar].
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Widget? titleWidget;
   final String? titleText;
@@ -8,9 +10,25 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final bool isDashboard;
   final bool showProfileAvatar;
 
+  const CustomAppBar({
+    super.key,
+    this.titleText,
+    this.titleWidget,
+    this.actions,
+  }) : isDashboard = false,
+       showProfileAvatar = false,
+       onNotificationTap = null;
+
+  const CustomAppBar.defaultAppBar({
+    Key? key,
+    BuildContext? context,
+    required String title,
+    List<Widget>? actions,
+  }) : this(key: key, titleText: title, actions: actions);
+
   const CustomAppBar.dashboard({
     super.key,
-    required BuildContext context,
+    BuildContext? context,
     String? title,
     this.onNotificationTap,
     this.showProfileAvatar = true,
@@ -19,58 +37,28 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
        actions = null,
        isDashboard = true;
 
-  const CustomAppBar.defaultAppBar({
-    super.key,
-    required BuildContext context,
-    required String title,
-    this.actions,
-  }) : titleText = title,
-       titleWidget = null,
-       onNotificationTap = null,
-       isDashboard = false,
-       showProfileAvatar = false;
-
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 
   @override
   Widget build(BuildContext context) {
     if (isDashboard) {
-      return AppBar(
-        automaticallyImplyLeading: false,
-        title: const KhelBhaiLogo(),
-        backgroundColor: context.backgroundColor,
-        surfaceTintColor: Colors.transparent,
-        elevation: 0,
-        scrolledUnderElevation: 0,
-        systemOverlayStyle: AppTheme.systemUiOverlayStyle(context),
-        centerTitle: false,
-        titleSpacing: Dimensions.r16.dynamicW,
-        actions: [
-          if (showProfileAvatar) const UserProfileAvatar(),
-          Padding(
-            padding: EdgeInsets.only(right: Dimensions.r8.dynamicW),
-            child: NotificationActionButton(
-              onPressed:
-                  onNotificationTap ??
-                  () => context.push(AppRoutes.notifications),
-            ),
-          ),
-        ],
-      );
+      return KhelBhaiAppBar(onNotificationTap: onNotificationTap);
     }
 
     return AppBar(
       automaticallyImplyLeading: false,
       leading: KhelBhaiBackButton.leading(context),
-      title: Text(
-        titleText ?? '',
-        style: TextStyle(
-          color: context.textPrimary,
-          fontSize: Dimensions.r18.dynamicSP,
-          fontWeight: FontWeight.w700,
-        ),
-      ),
+      title:
+          titleWidget ??
+          Text(
+            titleText ?? '',
+            style: TextStyle(
+              color: context.textPrimary,
+              fontSize: Dimensions.r18.dynamicSP,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
       backgroundColor: context.backgroundColor,
       surfaceTintColor: Colors.transparent,
       systemOverlayStyle: AppTheme.systemUiOverlayStyle(context),

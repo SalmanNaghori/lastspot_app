@@ -3,7 +3,8 @@ import '../../../../core/services/explore_navigation_service.dart';
 import '../bloc/home_cubit.dart';
 import '../bloc/home_state.dart';
 import '../../../auth/presentation/bloc/profile_cubit.dart';
-import '../widgets/home_app_bar.dart';
+import '../../../../core/widgets/khelbhai_app_bar.dart';
+import '../../../../core/widgets/shell_bottom_spacer.dart';
 import '../widgets/home_greeting_banner.dart';
 import '../widgets/popular_sports_grid.dart';
 import '../../../cities/domain/entities/city_entity.dart';
@@ -13,6 +14,9 @@ import '../../domain/entities/request_entity.dart';
 import '../widgets/home_activity_hub.dart';
 import '../widgets/home_activity_feed.dart';
 
+/// Primary Home screen for KhelBhai.
+///
+/// shortcut: Mobile phone optimized layout. Tablet/iPad responsive layout deferred per user mandate.
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -109,6 +113,11 @@ class _HomeScreenState extends State<HomeScreen> {
     context.go(AppRoutes.explore);
   }
 
+  void _onSearchTap() {
+    _exploreNavService.navigateToSearch();
+    context.go(AppRoutes.explore);
+  }
+
   void _onCreateActivityTap() => context.push(AppRoutes.create);
 
   Future<void> _onRefresh() async {
@@ -126,6 +135,19 @@ class _HomeScreenState extends State<HomeScreen> {
       cityId: cityId,
       categoryPreferences: preferences,
     );
+  }
+
+  void _onCityHeaderTap(
+    bool isLoading,
+    bool hasCitiesError,
+    List<CityEntity> cities,
+    String? selectedCityId,
+  ) {
+    if (isLoading || hasCitiesError) {
+      _onRefresh();
+    } else {
+      _showCityPicker(context, cities, selectedCityId);
+    }
   }
 
   void _onCitySelected(String cityId, String cityName) {
@@ -166,7 +188,6 @@ class _HomeScreenState extends State<HomeScreen> {
         value: AppTheme.systemUiOverlayStyle(context),
         child: Scaffold(
           backgroundColor: context.backgroundColor,
-          appBar: HomeAppBar(onNotificationTap: _onNotificationTap),
           body: BlocBuilder<HomeCubit, HomeState>(
             builder: (context, state) {
               final bool isLoading =
@@ -195,8 +216,13 @@ class _HomeScreenState extends State<HomeScreen> {
                 onRefresh: _onRefresh,
                 color: context.primaryColor,
                 child: CustomScrollView(
+                  key: const PageStorageKey('home_feed'),
                   physics: const AlwaysScrollableScrollPhysics(),
                   slivers: [
+                    SliverKhelBhaiAppBar(
+                      onNotificationTap: _onNotificationTap,
+                      pinned: true,
+                    ),
                     // --- PERMANENT STRUCTURE ---
                     SliverToBoxAdapter(
                       child: Column(
@@ -211,17 +237,95 @@ class _HomeScreenState extends State<HomeScreen> {
                               return HomeGreetingBanner(
                                 userName: userName,
                                 city: userCityName,
-                                onCityTap: (isLoading || hasCitiesError)
-                                    ? () => _onRefresh()
-                                    : () => _showCityPicker(
-                                        context,
-                                        cities,
-                                        selectedCityId,
-                                      ),
+                                isCityError: hasCitiesError,
+                                onCityTap: () => _onCityHeaderTap(
+                                  isLoading,
+                                  hasCitiesError,
+                                  cities,
+                                  selectedCityId,
+                                ),
                               );
                             },
                           ),
-                          SizedBox(height: Dimensions.r20.dynamicH),
+                          SizedBox(height: Dimensions.r14.dynamicH),
+                          // --- HOME SEARCH TRIGGER ---
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: Dimensions.r16.dynamicW,
+                            ),
+                            child: Material(
+                              color: Colors.transparent,
+                              child: InkWell(
+                                onTap: _onSearchTap,
+                                borderRadius: BorderRadius.circular(
+                                  Dimensions.r16.dynamicR,
+                                ),
+                                child: Container(
+                                  height: Dimensions.r48.dynamicH,
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: Dimensions.r14.dynamicW,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: context.isDarkMode
+                                        ? context.surfaceContainer
+                                        : AppColor.surfaceContainerLight,
+                                    borderRadius: BorderRadius.circular(
+                                      Dimensions.r16.dynamicR,
+                                    ),
+                                    border: Border.all(
+                                      color: context.borderColor.withValues(
+                                        alpha: 0.6,
+                                      ),
+                                      width: 1,
+                                    ),
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      Icon(
+                                        Icons.search_rounded,
+                                        size: Dimensions.r20.dynamicH,
+                                        color: context.primaryColor,
+                                      ),
+                                      SizedBox(width: Dimensions.r10.dynamicW),
+                                      Expanded(
+                                        child: Text(
+                                          loc.searchActivitiesHint,
+                                          style: TextStyle(
+                                            fontSize: Dimensions.r14.dynamicSP,
+                                            color: context.textSecondary,
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ),
+                                      ),
+                                      Container(
+                                        padding: EdgeInsets.symmetric(
+                                          horizontal: Dimensions.r8.dynamicW,
+                                          vertical: Dimensions.r4.dynamicH,
+                                        ),
+                                        decoration: BoxDecoration(
+                                          color: context.primaryColor
+                                              .withValues(alpha: 0.1),
+                                          borderRadius: BorderRadius.circular(
+                                            Dimensions.r8.dynamicR,
+                                          ),
+                                        ),
+                                        child: Text(
+                                          loc.navExplore,
+                                          style: TextStyle(
+                                            fontSize: Dimensions.r11.dynamicSP,
+                                            fontWeight: FontWeight.w700,
+                                            color: context.primaryColor,
+                                            letterSpacing: 0.2,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: Dimensions.r18.dynamicH),
                           if (hasCategoriesError)
                             Padding(
                               padding: EdgeInsets.symmetric(
@@ -272,9 +376,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       onCreateActivity: _onCreateActivityTap,
                       onActivityTap: _onSpotTap,
                     ),
-                    SliverToBoxAdapter(
-                      child: SizedBox(height: Dimensions.r32.dynamicH),
-                    ),
+                    const SliverShellBottomSpacer(),
                   ],
                 ),
               );

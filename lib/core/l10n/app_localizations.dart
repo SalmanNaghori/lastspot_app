@@ -2554,6 +2554,42 @@ abstract class AppLocalizations {
   /// **'Your Activity Hub'**
   String get yourActivityHub;
 
+  /// No description provided for @homeHeroTagline.
+  ///
+  /// In en, this message translates to:
+  /// **'What are you playing today?'**
+  String get homeHeroTagline;
+
+  /// No description provided for @homeActivityHubRequestsBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{1 request needs attention} other{{count} requests need attention}}'**
+  String homeActivityHubRequestsBadge(int count);
+
+  /// No description provided for @homeActivityHubJoinedBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'Joined activity'**
+  String get homeActivityHubJoinedBadge;
+
+  /// No description provided for @homeActivityHubHostedBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'Hosting match'**
+  String get homeActivityHubHostedBadge;
+
+  /// No description provided for @homeActivityHubSuggestedBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'Suggested for you'**
+  String get homeActivityHubSuggestedBadge;
+
+  /// No description provided for @homeCityRetryHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to retry'**
+  String get homeCityRetryHint;
+
   /// No description provided for @homeActivityHubPending.
   ///
   /// In en, this message translates to:

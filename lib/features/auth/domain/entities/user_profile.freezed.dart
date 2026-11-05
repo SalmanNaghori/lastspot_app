@@ -16,7 +16,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$UserProfile {
 
- String get id;@JsonKey(name: 'full_name') String? get fullName;@JsonKey(name: 'avatar_url') String? get avatarUrl; String? get phone; String? get email;@JsonKey(unknownEnumValue: AccountStatus.active) AccountStatus get status;@JsonKey(name: 'is_profile_completed', defaultValue: false) bool get isProfileCompleted;@JsonKey(name: 'created_at') DateTime get createdAt;@JsonKey(name: 'deleted_at') DateTime? get deletedAt; String? get bio; String? get city;@JsonKey(name: 'city_id') String? get cityId;@JsonKey(name: 'sports_interests', defaultValue: []) List<String> get sportsInterests;@JsonKey(defaultValue: 0.0) double get rating;
+ String get id;@JsonKey(name: 'full_name') String? get fullName;@JsonKey(name: 'avatar_url') String? get avatarUrl; String? get phone; String? get email;@JsonKey(unknownEnumValue: AccountStatus.active) AccountStatus get status;@JsonKey(name: 'is_profile_completed', defaultValue: false) bool get isProfileCompleted;@JsonKey(name: 'created_at') DateTime get createdAt;@JsonKey(name: 'deleted_at') DateTime? get deletedAt; String? get bio; String? get city;@JsonKey(name: 'city_id') String? get cityId;@JsonKey(name: 'sports_interests', defaultValue: []) List<String> get sportsInterests;@JsonKey(defaultValue: 0.0) double get rating;@JsonKey(name: 'status_reason') String? get statusReason;@JsonKey(name: 'status_message') String? get statusMessage;@JsonKey(name: 'status_expires_at') DateTime? get statusExpiresAt;
 /// Create a copy of UserProfile
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -30,20 +30,20 @@ $UserProfileCopyWith<UserProfile> get copyWith => _$UserProfileCopyWithImpl<User
 @override
 bool operator ==(Object other) {
   final _this = this as UserProfile;
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is UserProfile&&(identical(other.id, _this.id) || other.id == _this.id)&&(identical(other.fullName, _this.fullName) || other.fullName == _this.fullName)&&(identical(other.avatarUrl, _this.avatarUrl) || other.avatarUrl == _this.avatarUrl)&&(identical(other.phone, _this.phone) || other.phone == _this.phone)&&(identical(other.email, _this.email) || other.email == _this.email)&&(identical(other.status, _this.status) || other.status == _this.status)&&(identical(other.isProfileCompleted, _this.isProfileCompleted) || other.isProfileCompleted == _this.isProfileCompleted)&&(identical(other.createdAt, _this.createdAt) || other.createdAt == _this.createdAt)&&(identical(other.deletedAt, _this.deletedAt) || other.deletedAt == _this.deletedAt)&&(identical(other.bio, _this.bio) || other.bio == _this.bio)&&(identical(other.city, _this.city) || other.city == _this.city)&&(identical(other.cityId, _this.cityId) || other.cityId == _this.cityId)&&const DeepCollectionEquality().equals(other.sportsInterests, _this.sportsInterests)&&(identical(other.rating, _this.rating) || other.rating == _this.rating));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is UserProfile&&(identical(other.id, _this.id) || other.id == _this.id)&&(identical(other.fullName, _this.fullName) || other.fullName == _this.fullName)&&(identical(other.avatarUrl, _this.avatarUrl) || other.avatarUrl == _this.avatarUrl)&&(identical(other.phone, _this.phone) || other.phone == _this.phone)&&(identical(other.email, _this.email) || other.email == _this.email)&&(identical(other.status, _this.status) || other.status == _this.status)&&(identical(other.isProfileCompleted, _this.isProfileCompleted) || other.isProfileCompleted == _this.isProfileCompleted)&&(identical(other.createdAt, _this.createdAt) || other.createdAt == _this.createdAt)&&(identical(other.deletedAt, _this.deletedAt) || other.deletedAt == _this.deletedAt)&&(identical(other.bio, _this.bio) || other.bio == _this.bio)&&(identical(other.city, _this.city) || other.city == _this.city)&&(identical(other.cityId, _this.cityId) || other.cityId == _this.cityId)&&const DeepCollectionEquality().equals(other.sportsInterests, _this.sportsInterests)&&(identical(other.rating, _this.rating) || other.rating == _this.rating)&&(identical(other.statusReason, _this.statusReason) || other.statusReason == _this.statusReason)&&(identical(other.statusMessage, _this.statusMessage) || other.statusMessage == _this.statusMessage)&&(identical(other.statusExpiresAt, _this.statusExpiresAt) || other.statusExpiresAt == _this.statusExpiresAt));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode {
   final _this = this as UserProfile;
-  return Object.hash(runtimeType,_this.id,_this.fullName,_this.avatarUrl,_this.phone,_this.email,_this.status,_this.isProfileCompleted,_this.createdAt,_this.deletedAt,_this.bio,_this.city,_this.cityId,const DeepCollectionEquality().hash(_this.sportsInterests),_this.rating);
+  return Object.hash(runtimeType,_this.id,_this.fullName,_this.avatarUrl,_this.phone,_this.email,_this.status,_this.isProfileCompleted,_this.createdAt,_this.deletedAt,_this.bio,_this.city,_this.cityId,const DeepCollectionEquality().hash(_this.sportsInterests),_this.rating,_this.statusReason,_this.statusMessage,_this.statusExpiresAt);
 }
 
 @override
 String toString() {
   final _this = this as UserProfile;
-  return 'UserProfile(id: ${_this.id}, fullName: ${_this.fullName}, avatarUrl: ${_this.avatarUrl}, phone: ${_this.phone}, email: ${_this.email}, status: ${_this.status}, isProfileCompleted: ${_this.isProfileCompleted}, createdAt: ${_this.createdAt}, deletedAt: ${_this.deletedAt}, bio: ${_this.bio}, city: ${_this.city}, cityId: ${_this.cityId}, sportsInterests: ${_this.sportsInterests}, rating: ${_this.rating})';
+  return 'UserProfile(id: ${_this.id}, fullName: ${_this.fullName}, avatarUrl: ${_this.avatarUrl}, phone: ${_this.phone}, email: ${_this.email}, status: ${_this.status}, isProfileCompleted: ${_this.isProfileCompleted}, createdAt: ${_this.createdAt}, deletedAt: ${_this.deletedAt}, bio: ${_this.bio}, city: ${_this.city}, cityId: ${_this.cityId}, sportsInterests: ${_this.sportsInterests}, rating: ${_this.rating}, statusReason: ${_this.statusReason}, statusMessage: ${_this.statusMessage}, statusExpiresAt: ${_this.statusExpiresAt})';
 }
 
 
@@ -54,7 +54,7 @@ abstract mixin class $UserProfileCopyWith<$Res>  {
   factory $UserProfileCopyWith(UserProfile value, $Res Function(UserProfile) _then) = _$UserProfileCopyWithImpl;
 @useResult
 $Res call({
- String id,@JsonKey(name: 'full_name') String? fullName,@JsonKey(name: 'avatar_url') String? avatarUrl, String? phone, String? email,@JsonKey(unknownEnumValue: AccountStatus.active) AccountStatus status,@JsonKey(name: 'is_profile_completed', defaultValue: false) bool isProfileCompleted,@JsonKey(name: 'created_at') DateTime createdAt,@JsonKey(name: 'deleted_at') DateTime? deletedAt, String? bio, String? city,@JsonKey(name: 'city_id') String? cityId,@JsonKey(name: 'sports_interests', defaultValue: []) List<String> sportsInterests,@JsonKey(defaultValue: 0.0) double rating
+ String id,@JsonKey(name: 'full_name') String? fullName,@JsonKey(name: 'avatar_url') String? avatarUrl, String? phone, String? email,@JsonKey(unknownEnumValue: AccountStatus.active) AccountStatus status,@JsonKey(name: 'is_profile_completed', defaultValue: false) bool isProfileCompleted,@JsonKey(name: 'created_at') DateTime createdAt,@JsonKey(name: 'deleted_at') DateTime? deletedAt, String? bio, String? city,@JsonKey(name: 'city_id') String? cityId,@JsonKey(name: 'sports_interests', defaultValue: []) List<String> sportsInterests,@JsonKey(defaultValue: 0.0) double rating,@JsonKey(name: 'status_reason') String? statusReason,@JsonKey(name: 'status_message') String? statusMessage,@JsonKey(name: 'status_expires_at') DateTime? statusExpiresAt
 });
 
 
@@ -71,7 +71,7 @@ class _$UserProfileCopyWithImpl<$Res>
 
 /// Create a copy of UserProfile
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? fullName = freezed,Object? avatarUrl = freezed,Object? phone = freezed,Object? email = freezed,Object? status = null,Object? isProfileCompleted = null,Object? createdAt = null,Object? deletedAt = freezed,Object? bio = freezed,Object? city = freezed,Object? cityId = freezed,Object? sportsInterests = null,Object? rating = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? fullName = freezed,Object? avatarUrl = freezed,Object? phone = freezed,Object? email = freezed,Object? status = null,Object? isProfileCompleted = null,Object? createdAt = null,Object? deletedAt = freezed,Object? bio = freezed,Object? city = freezed,Object? cityId = freezed,Object? sportsInterests = null,Object? rating = null,Object? statusReason = freezed,Object? statusMessage = freezed,Object? statusExpiresAt = freezed,}) {
   return _then(UserProfile(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,fullName: freezed == fullName ? _self.fullName : fullName // ignore: cast_nullable_to_non_nullable
@@ -87,7 +87,10 @@ as String?,city: freezed == city ? _self.city : city // ignore: cast_nullable_to
 as String?,cityId: freezed == cityId ? _self.cityId : cityId // ignore: cast_nullable_to_non_nullable
 as String?,sportsInterests: null == sportsInterests ? _self.sportsInterests : sportsInterests // ignore: cast_nullable_to_non_nullable
 as List<String>,rating: null == rating ? _self.rating : rating // ignore: cast_nullable_to_non_nullable
-as double,
+as double,statusReason: freezed == statusReason ? _self.statusReason : statusReason // ignore: cast_nullable_to_non_nullable
+as String?,statusMessage: freezed == statusMessage ? _self.statusMessage : statusMessage // ignore: cast_nullable_to_non_nullable
+as String?,statusExpiresAt: freezed == statusExpiresAt ? _self.statusExpiresAt : statusExpiresAt // ignore: cast_nullable_to_non_nullable
+as DateTime?,
   ));
 }
 
@@ -172,10 +175,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id, @JsonKey(name: 'full_name')  String? fullName, @JsonKey(name: 'avatar_url')  String? avatarUrl,  String? phone,  String? email, @JsonKey(unknownEnumValue: AccountStatus.active)  AccountStatus status, @JsonKey(name: 'is_profile_completed', defaultValue: false)  bool isProfileCompleted, @JsonKey(name: 'created_at')  DateTime createdAt, @JsonKey(name: 'deleted_at')  DateTime? deletedAt,  String? bio,  String? city, @JsonKey(name: 'city_id')  String? cityId, @JsonKey(name: 'sports_interests', defaultValue: [])  List<String> sportsInterests, @JsonKey(defaultValue: 0.0)  double rating)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id, @JsonKey(name: 'full_name')  String? fullName, @JsonKey(name: 'avatar_url')  String? avatarUrl,  String? phone,  String? email, @JsonKey(unknownEnumValue: AccountStatus.active)  AccountStatus status, @JsonKey(name: 'is_profile_completed', defaultValue: false)  bool isProfileCompleted, @JsonKey(name: 'created_at')  DateTime createdAt, @JsonKey(name: 'deleted_at')  DateTime? deletedAt,  String? bio,  String? city, @JsonKey(name: 'city_id')  String? cityId, @JsonKey(name: 'sports_interests', defaultValue: [])  List<String> sportsInterests, @JsonKey(defaultValue: 0.0)  double rating, @JsonKey(name: 'status_reason')  String? statusReason, @JsonKey(name: 'status_message')  String? statusMessage, @JsonKey(name: 'status_expires_at')  DateTime? statusExpiresAt)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _UserProfile() when $default != null:
-return $default(_that.id,_that.fullName,_that.avatarUrl,_that.phone,_that.email,_that.status,_that.isProfileCompleted,_that.createdAt,_that.deletedAt,_that.bio,_that.city,_that.cityId,_that.sportsInterests,_that.rating);case _:
+return $default(_that.id,_that.fullName,_that.avatarUrl,_that.phone,_that.email,_that.status,_that.isProfileCompleted,_that.createdAt,_that.deletedAt,_that.bio,_that.city,_that.cityId,_that.sportsInterests,_that.rating,_that.statusReason,_that.statusMessage,_that.statusExpiresAt);case _:
   return orElse();
 
 }
@@ -193,10 +196,10 @@ return $default(_that.id,_that.fullName,_that.avatarUrl,_that.phone,_that.email,
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id, @JsonKey(name: 'full_name')  String? fullName, @JsonKey(name: 'avatar_url')  String? avatarUrl,  String? phone,  String? email, @JsonKey(unknownEnumValue: AccountStatus.active)  AccountStatus status, @JsonKey(name: 'is_profile_completed', defaultValue: false)  bool isProfileCompleted, @JsonKey(name: 'created_at')  DateTime createdAt, @JsonKey(name: 'deleted_at')  DateTime? deletedAt,  String? bio,  String? city, @JsonKey(name: 'city_id')  String? cityId, @JsonKey(name: 'sports_interests', defaultValue: [])  List<String> sportsInterests, @JsonKey(defaultValue: 0.0)  double rating)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id, @JsonKey(name: 'full_name')  String? fullName, @JsonKey(name: 'avatar_url')  String? avatarUrl,  String? phone,  String? email, @JsonKey(unknownEnumValue: AccountStatus.active)  AccountStatus status, @JsonKey(name: 'is_profile_completed', defaultValue: false)  bool isProfileCompleted, @JsonKey(name: 'created_at')  DateTime createdAt, @JsonKey(name: 'deleted_at')  DateTime? deletedAt,  String? bio,  String? city, @JsonKey(name: 'city_id')  String? cityId, @JsonKey(name: 'sports_interests', defaultValue: [])  List<String> sportsInterests, @JsonKey(defaultValue: 0.0)  double rating, @JsonKey(name: 'status_reason')  String? statusReason, @JsonKey(name: 'status_message')  String? statusMessage, @JsonKey(name: 'status_expires_at')  DateTime? statusExpiresAt)  $default,) {final _that = this;
 switch (_that) {
 case _UserProfile():
-return $default(_that.id,_that.fullName,_that.avatarUrl,_that.phone,_that.email,_that.status,_that.isProfileCompleted,_that.createdAt,_that.deletedAt,_that.bio,_that.city,_that.cityId,_that.sportsInterests,_that.rating);case _:
+return $default(_that.id,_that.fullName,_that.avatarUrl,_that.phone,_that.email,_that.status,_that.isProfileCompleted,_that.createdAt,_that.deletedAt,_that.bio,_that.city,_that.cityId,_that.sportsInterests,_that.rating,_that.statusReason,_that.statusMessage,_that.statusExpiresAt);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -213,10 +216,10 @@ return $default(_that.id,_that.fullName,_that.avatarUrl,_that.phone,_that.email,
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id, @JsonKey(name: 'full_name')  String? fullName, @JsonKey(name: 'avatar_url')  String? avatarUrl,  String? phone,  String? email, @JsonKey(unknownEnumValue: AccountStatus.active)  AccountStatus status, @JsonKey(name: 'is_profile_completed', defaultValue: false)  bool isProfileCompleted, @JsonKey(name: 'created_at')  DateTime createdAt, @JsonKey(name: 'deleted_at')  DateTime? deletedAt,  String? bio,  String? city, @JsonKey(name: 'city_id')  String? cityId, @JsonKey(name: 'sports_interests', defaultValue: [])  List<String> sportsInterests, @JsonKey(defaultValue: 0.0)  double rating)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id, @JsonKey(name: 'full_name')  String? fullName, @JsonKey(name: 'avatar_url')  String? avatarUrl,  String? phone,  String? email, @JsonKey(unknownEnumValue: AccountStatus.active)  AccountStatus status, @JsonKey(name: 'is_profile_completed', defaultValue: false)  bool isProfileCompleted, @JsonKey(name: 'created_at')  DateTime createdAt, @JsonKey(name: 'deleted_at')  DateTime? deletedAt,  String? bio,  String? city, @JsonKey(name: 'city_id')  String? cityId, @JsonKey(name: 'sports_interests', defaultValue: [])  List<String> sportsInterests, @JsonKey(defaultValue: 0.0)  double rating, @JsonKey(name: 'status_reason')  String? statusReason, @JsonKey(name: 'status_message')  String? statusMessage, @JsonKey(name: 'status_expires_at')  DateTime? statusExpiresAt)?  $default,) {final _that = this;
 switch (_that) {
 case _UserProfile() when $default != null:
-return $default(_that.id,_that.fullName,_that.avatarUrl,_that.phone,_that.email,_that.status,_that.isProfileCompleted,_that.createdAt,_that.deletedAt,_that.bio,_that.city,_that.cityId,_that.sportsInterests,_that.rating);case _:
+return $default(_that.id,_that.fullName,_that.avatarUrl,_that.phone,_that.email,_that.status,_that.isProfileCompleted,_that.createdAt,_that.deletedAt,_that.bio,_that.city,_that.cityId,_that.sportsInterests,_that.rating,_that.statusReason,_that.statusMessage,_that.statusExpiresAt);case _:
   return null;
 
 }
@@ -228,7 +231,7 @@ return $default(_that.id,_that.fullName,_that.avatarUrl,_that.phone,_that.email,
 @JsonSerializable()
 
 class _UserProfile implements UserProfile {
-  const _UserProfile({required this.id, @JsonKey(name: 'full_name') this.fullName, @JsonKey(name: 'avatar_url') this.avatarUrl, this.phone, this.email, @JsonKey(unknownEnumValue: AccountStatus.active) this.status = AccountStatus.active, @JsonKey(name: 'is_profile_completed', defaultValue: false) this.isProfileCompleted = false, @JsonKey(name: 'created_at') required this.createdAt, @JsonKey(name: 'deleted_at') this.deletedAt, this.bio, this.city, @JsonKey(name: 'city_id') this.cityId, @JsonKey(name: 'sports_interests', defaultValue: [])  List<String> sportsInterests = const [], @JsonKey(defaultValue: 0.0) this.rating = 0.0}): _sportsInterests = sportsInterests;
+  const _UserProfile({required this.id, @JsonKey(name: 'full_name') this.fullName, @JsonKey(name: 'avatar_url') this.avatarUrl, this.phone, this.email, @JsonKey(unknownEnumValue: AccountStatus.active) this.status = AccountStatus.active, @JsonKey(name: 'is_profile_completed', defaultValue: false) this.isProfileCompleted = false, @JsonKey(name: 'created_at') required this.createdAt, @JsonKey(name: 'deleted_at') this.deletedAt, this.bio, this.city, @JsonKey(name: 'city_id') this.cityId, @JsonKey(name: 'sports_interests', defaultValue: [])  List<String> sportsInterests = const [], @JsonKey(defaultValue: 0.0) this.rating = 0.0, @JsonKey(name: 'status_reason') this.statusReason, @JsonKey(name: 'status_message') this.statusMessage, @JsonKey(name: 'status_expires_at') this.statusExpiresAt}): _sportsInterests = sportsInterests;
   factory _UserProfile.fromJson(Map<String, dynamic> json) => _$UserProfileFromJson(json);
 
 @override final  String id;
@@ -251,6 +254,9 @@ class _UserProfile implements UserProfile {
 }
 
 @override@JsonKey(defaultValue: 0.0) final  double rating;
+@override@JsonKey(name: 'status_reason') final  String? statusReason;
+@override@JsonKey(name: 'status_message') final  String? statusMessage;
+@override@JsonKey(name: 'status_expires_at') final  DateTime? statusExpiresAt;
 
 /// Create a copy of UserProfile
 /// with the given fields replaced by the non-null parameter values.
@@ -265,18 +271,18 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-    return identical(this, other) || (other.runtimeType == runtimeType&&other is _UserProfile&&(identical(other.id, id) || other.id == id)&&(identical(other.fullName, fullName) || other.fullName == fullName)&&(identical(other.avatarUrl, avatarUrl) || other.avatarUrl == avatarUrl)&&(identical(other.phone, phone) || other.phone == phone)&&(identical(other.email, email) || other.email == email)&&(identical(other.status, status) || other.status == status)&&(identical(other.isProfileCompleted, isProfileCompleted) || other.isProfileCompleted == isProfileCompleted)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.deletedAt, deletedAt) || other.deletedAt == deletedAt)&&(identical(other.bio, bio) || other.bio == bio)&&(identical(other.city, city) || other.city == city)&&(identical(other.cityId, cityId) || other.cityId == cityId)&&const DeepCollectionEquality().equals(other.sportsInterests, _sportsInterests)&&(identical(other.rating, rating) || other.rating == rating));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _UserProfile&&(identical(other.id, id) || other.id == id)&&(identical(other.fullName, fullName) || other.fullName == fullName)&&(identical(other.avatarUrl, avatarUrl) || other.avatarUrl == avatarUrl)&&(identical(other.phone, phone) || other.phone == phone)&&(identical(other.email, email) || other.email == email)&&(identical(other.status, status) || other.status == status)&&(identical(other.isProfileCompleted, isProfileCompleted) || other.isProfileCompleted == isProfileCompleted)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.deletedAt, deletedAt) || other.deletedAt == deletedAt)&&(identical(other.bio, bio) || other.bio == bio)&&(identical(other.city, city) || other.city == city)&&(identical(other.cityId, cityId) || other.cityId == cityId)&&const DeepCollectionEquality().equals(other.sportsInterests, _sportsInterests)&&(identical(other.rating, rating) || other.rating == rating)&&(identical(other.statusReason, statusReason) || other.statusReason == statusReason)&&(identical(other.statusMessage, statusMessage) || other.statusMessage == statusMessage)&&(identical(other.statusExpiresAt, statusExpiresAt) || other.statusExpiresAt == statusExpiresAt));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode {
-    return Object.hash(runtimeType,id,fullName,avatarUrl,phone,email,status,isProfileCompleted,createdAt,deletedAt,bio,city,cityId,const DeepCollectionEquality().hash(_sportsInterests),rating);
+    return Object.hash(runtimeType,id,fullName,avatarUrl,phone,email,status,isProfileCompleted,createdAt,deletedAt,bio,city,cityId,const DeepCollectionEquality().hash(_sportsInterests),rating,statusReason,statusMessage,statusExpiresAt);
 }
 
 @override
 String toString() {
-    return 'UserProfile(id: $id, fullName: $fullName, avatarUrl: $avatarUrl, phone: $phone, email: $email, status: $status, isProfileCompleted: $isProfileCompleted, createdAt: $createdAt, deletedAt: $deletedAt, bio: $bio, city: $city, cityId: $cityId, sportsInterests: $sportsInterests, rating: $rating)';
+    return 'UserProfile(id: $id, fullName: $fullName, avatarUrl: $avatarUrl, phone: $phone, email: $email, status: $status, isProfileCompleted: $isProfileCompleted, createdAt: $createdAt, deletedAt: $deletedAt, bio: $bio, city: $city, cityId: $cityId, sportsInterests: $sportsInterests, rating: $rating, statusReason: $statusReason, statusMessage: $statusMessage, statusExpiresAt: $statusExpiresAt)';
 }
 
 
@@ -287,7 +293,7 @@ abstract mixin class _$UserProfileCopyWith<$Res> implements $UserProfileCopyWith
   factory _$UserProfileCopyWith(_UserProfile value, $Res Function(_UserProfile) _then) = __$UserProfileCopyWithImpl;
 @override @useResult
 $Res call({
- String id,@JsonKey(name: 'full_name') String? fullName,@JsonKey(name: 'avatar_url') String? avatarUrl, String? phone, String? email,@JsonKey(unknownEnumValue: AccountStatus.active) AccountStatus status,@JsonKey(name: 'is_profile_completed', defaultValue: false) bool isProfileCompleted,@JsonKey(name: 'created_at') DateTime createdAt,@JsonKey(name: 'deleted_at') DateTime? deletedAt, String? bio, String? city,@JsonKey(name: 'city_id') String? cityId,@JsonKey(name: 'sports_interests', defaultValue: []) List<String> sportsInterests,@JsonKey(defaultValue: 0.0) double rating
+ String id,@JsonKey(name: 'full_name') String? fullName,@JsonKey(name: 'avatar_url') String? avatarUrl, String? phone, String? email,@JsonKey(unknownEnumValue: AccountStatus.active) AccountStatus status,@JsonKey(name: 'is_profile_completed', defaultValue: false) bool isProfileCompleted,@JsonKey(name: 'created_at') DateTime createdAt,@JsonKey(name: 'deleted_at') DateTime? deletedAt, String? bio, String? city,@JsonKey(name: 'city_id') String? cityId,@JsonKey(name: 'sports_interests', defaultValue: []) List<String> sportsInterests,@JsonKey(defaultValue: 0.0) double rating,@JsonKey(name: 'status_reason') String? statusReason,@JsonKey(name: 'status_message') String? statusMessage,@JsonKey(name: 'status_expires_at') DateTime? statusExpiresAt
 });
 
 
@@ -304,7 +310,7 @@ class __$UserProfileCopyWithImpl<$Res>
 
 /// Create a copy of UserProfile
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? fullName = freezed,Object? avatarUrl = freezed,Object? phone = freezed,Object? email = freezed,Object? status = null,Object? isProfileCompleted = null,Object? createdAt = null,Object? deletedAt = freezed,Object? bio = freezed,Object? city = freezed,Object? cityId = freezed,Object? sportsInterests = null,Object? rating = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? fullName = freezed,Object? avatarUrl = freezed,Object? phone = freezed,Object? email = freezed,Object? status = null,Object? isProfileCompleted = null,Object? createdAt = null,Object? deletedAt = freezed,Object? bio = freezed,Object? city = freezed,Object? cityId = freezed,Object? sportsInterests = null,Object? rating = null,Object? statusReason = freezed,Object? statusMessage = freezed,Object? statusExpiresAt = freezed,}) {
   return _then(_UserProfile(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,fullName: freezed == fullName ? _self.fullName : fullName // ignore: cast_nullable_to_non_nullable
@@ -320,7 +326,10 @@ as String?,city: freezed == city ? _self.city : city // ignore: cast_nullable_to
 as String?,cityId: freezed == cityId ? _self.cityId : cityId // ignore: cast_nullable_to_non_nullable
 as String?,sportsInterests: null == sportsInterests ? _self._sportsInterests : sportsInterests // ignore: cast_nullable_to_non_nullable
 as List<String>,rating: null == rating ? _self.rating : rating // ignore: cast_nullable_to_non_nullable
-as double,
+as double,statusReason: freezed == statusReason ? _self.statusReason : statusReason // ignore: cast_nullable_to_non_nullable
+as String?,statusMessage: freezed == statusMessage ? _self.statusMessage : statusMessage // ignore: cast_nullable_to_non_nullable
+as String?,statusExpiresAt: freezed == statusExpiresAt ? _self.statusExpiresAt : statusExpiresAt // ignore: cast_nullable_to_non_nullable
+as DateTime?,
   ));
 }
 

@@ -1,11 +1,13 @@
 import 'dart:async';
+import 'dart:developer' as developer;
+import 'dart:io';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../domain/entities/join_request_entity.dart';
-import '../../domain/usecases/stream_spot_join_requests_usecase.dart';
-import '../../domain/usecases/manage_join_request_usecase.dart';
-import '../../domain/usecases/get_spot_details_usecase.dart';
-import '../../domain/entities/request_entity.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import '../../domain/entities/join_request_entity.dart';
+import '../../domain/entities/request_entity.dart';
+import '../../domain/usecases/get_spot_details_usecase.dart';
+import '../../domain/usecases/manage_join_request_usecase.dart';
+import '../../domain/usecases/stream_spot_join_requests_usecase.dart';
 
 abstract class ManageRequestsEvent {}
 
@@ -47,6 +49,15 @@ class ManageRequestsError extends ManageRequestsState {
   ManageRequestsError({required this.message});
 }
 
+class ManageRequestsActionError extends ManageRequestsState {
+  final String message;
+  final ManageRequestsLoaded previousState;
+  ManageRequestsActionError({
+    required this.message,
+    required this.previousState,
+  });
+}
+
 class ManageRequestsBloc
     extends Bloc<ManageRequestsEvent, ManageRequestsState> {
   final StreamSpotJoinRequestsUseCase _streamRequestsUseCase;
@@ -76,22 +87,36 @@ class ManageRequestsBloc
     emit(ManageRequestsLoading());
     try {
       _currentSpot = await _getSpotDetailsUseCase(event.spotId);
-    } catch (e) {
-      emit(ManageRequestsError(message: 'Failed to load spot details.'));
+    } catch (e, st) {
+      developer.log(
+        'Failed to load spot details: $e',
+        name: 'ManageRequestsBloc',
+        error: e,
+        stackTrace: st,
+      );
+      emit(
+        ManageRequestsError(
+          message: _resolveErrorMessage(
+            e,
+            fallback: 'Failed to load spot details.',
+          ),
+        ),
+      );
       return;
     }
 
-    _requestsSubscription?.cancel();
+    await _requestsSubscription?.cancel();
     _requestsSubscription = _streamRequestsUseCase(event.spotId).listen(
       (requests) {
         add(_RequestsUpdatedEvent(requests));
       },
       onError: (error) {
-        add(
-          _RequestsErrorEvent(
-            'Failed to stream requests. Please check if Realtime is enabled for the join_requests table in your Supabase Dashboard.',
-          ),
+        developer.log(
+          'Error in join requests stream: $error',
+          name: 'ManageRequestsBloc',
+          error: error,
         );
+        add(_RequestsErrorEvent(_resolveStreamErrorMessage(error)));
       },
     );
   }
@@ -114,26 +139,138 @@ class ManageRequestsBloc
     _RequestsErrorEvent event,
     Emitter<ManageRequestsState> emit,
   ) {
-    emit(ManageRequestsError(message: event.message));
+    final currentState = state;
+    if (currentState is ManageRequestsLoaded) {
+      emit(
+        ManageRequestsActionError(
+          message: event.message,
+          previousState: currentState,
+        ),
+      );
+    } else if (currentState is ManageRequestsActionError) {
+      emit(
+        ManageRequestsActionError(
+          message: event.message,
+          previousState: currentState.previousState,
+        ),
+      );
+    } else {
+      emit(ManageRequestsError(message: event.message));
+    }
   }
 
   Future<void> _onUpdateStatus(
     UpdateRequestStatusEvent event,
     Emitter<ManageRequestsState> emit,
   ) async {
+    final currentState = state is ManageRequestsLoaded
+        ? state as ManageRequestsLoaded
+        : (state is ManageRequestsActionError
+              ? (state as ManageRequestsActionError).previousState
+              : null);
+
     try {
       if (event.status == 'accepted') {
         await _manageRequestUseCase.accept(event.requestId);
+        if (_currentSpot != null) {
+          try {
+            _currentSpot = await _getSpotDetailsUseCase(_currentSpot!.id);
+          } catch (_) {}
+        }
       } else if (event.status == 'rejected') {
         await _manageRequestUseCase.reject(event.requestId);
       } else if (event.status == 'cancelled') {
         await _manageRequestUseCase.cancel(event.requestId);
       }
     } on PostgrestException catch (e) {
-      emit(ManageRequestsError(message: e.message));
+      final msg = _resolveErrorMessage(e);
+      if (currentState != null) {
+        emit(
+          ManageRequestsActionError(message: msg, previousState: currentState),
+        );
+      } else {
+        emit(ManageRequestsError(message: msg));
+      }
     } catch (e) {
-      emit(ManageRequestsError(message: 'An unexpected error occurred.'));
+      final msg = _resolveErrorMessage(e);
+      if (currentState != null) {
+        emit(
+          ManageRequestsActionError(message: msg, previousState: currentState),
+        );
+      } else {
+        emit(ManageRequestsError(message: msg));
+      }
     }
+  }
+
+  String _resolveStreamErrorMessage(Object error) {
+    final errStr = error.toString().toLowerCase();
+
+    if (error is SocketException ||
+        errStr.contains('socketexception') ||
+        errStr.contains('failed host lookup') ||
+        errStr.contains('network is unreachable') ||
+        errStr.contains('connection refused') ||
+        errStr.contains('connection reset')) {
+      return 'Network connection lost. Please check your internet connection.';
+    }
+
+    if (error is AuthException ||
+        errStr.contains('invalid claim') ||
+        errStr.contains('jwt expired')) {
+      return 'Authentication session expired. Please log in again.';
+    }
+
+    if (error is PostgrestException) {
+      if (error.code == '42501' ||
+          errStr.contains('permission denied') ||
+          errStr.contains('violates row-level security')) {
+        return 'Permission denied. You do not have permission to view these requests.';
+      }
+      return error.message;
+    }
+
+    if (error is FormatException ||
+        error is TypeError ||
+        errStr.contains('is not a subtype of type')) {
+      return 'Data parsing error occurred while reading join requests.';
+    }
+
+    if (errStr.contains('channel') ||
+        errStr.contains('realtime') ||
+        errStr.contains('websocket') ||
+        errStr.contains('subscription') ||
+        errStr.contains('closed')) {
+      return 'Realtime subscription interrupted. Please check if Realtime is enabled for the join_requests table in your Supabase Dashboard.';
+    }
+
+    return 'Failed to stream join requests. Please pull to refresh.';
+  }
+
+  String _resolveErrorMessage(Object error, {String? fallback}) {
+    final errStr = error.toString().toLowerCase();
+
+    if (error is SocketException ||
+        errStr.contains('socketexception') ||
+        errStr.contains('failed host lookup') ||
+        errStr.contains('network is unreachable')) {
+      return 'No internet connection. Please check your network and try again.';
+    }
+
+    if (error is AuthException) {
+      return 'Authentication required. Please log in again.';
+    }
+
+    if (error is PostgrestException) {
+      if (error.code == '42501' ||
+          errStr.contains('permission denied') ||
+          errStr.contains('violates row-level security')) {
+        return 'Permission denied. You do not have permission to perform this action.';
+      }
+      return error.message;
+    }
+
+    return fallback ?? 'An unexpected error occurred. Please try again.';
   }
 
   @override

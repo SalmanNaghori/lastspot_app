@@ -20,10 +20,8 @@ class AppRoutes {
   // Authenticated App Shell Tabs (Bottom Navigation)
   static const String home = '/home';
   static const String explore = '/explore';
-  static String exploreCategoryPath(String categoryId) => Uri(
-    path: explore,
-    queryParameters: {'category_id': categoryId},
-  ).toString();
+  static String exploreCategoryPath(String categoryId) =>
+      Uri(path: explore, queryParameters: {'category_id': categoryId}).toString();
   static const String create = '/create';
   static const String createSuccess = '/create-success';
   static const String activities = '/activities';
@@ -56,8 +54,7 @@ class AppRoutes {
       'is_conversation': 'true',
       'is_direct': isDirect.toString(),
       if (name?.trim().isNotEmpty == true) 'name': name!.trim(),
-      if (activityTitle?.trim().isNotEmpty == true)
-        'activity_title': activityTitle!.trim(),
+      if (activityTitle?.trim().isNotEmpty == true) 'activity_title': activityTitle!.trim(),
       if (requestId?.trim().isNotEmpty == true) 'request_id': requestId!.trim(),
       if (avatarUrl?.trim().isNotEmpty == true) 'avatar_url': avatarUrl!.trim(),
       if (category?.trim().isNotEmpty == true) 'category': category!.trim(),
@@ -66,10 +63,7 @@ class AppRoutes {
 
   static String activityGroupChatPath(String requestId, {String? title}) => Uri(
     path: chatPath(requestId),
-    queryParameters: {
-      'is_direct': 'false',
-      if (title?.trim().isNotEmpty == true) 'activity_title': title!.trim(),
-    },
+    queryParameters: {'is_direct': 'false', if (title?.trim().isNotEmpty == true) 'activity_title': title!.trim()},
   ).toString();
 
   static const String groupInfo = '/chat/:id/info';

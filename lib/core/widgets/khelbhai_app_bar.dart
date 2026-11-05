@@ -41,6 +41,58 @@ class KhelBhaiAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 }
 
+/// Sliver variant of [KhelBhaiAppBar] for use directly inside a [CustomScrollView].
+///
+/// Keeps brand alignment, logo, avatar, and live notifications synchronized
+/// across scrolling viewports without nested app bars.
+class SliverKhelBhaiAppBar extends StatelessWidget {
+  final VoidCallback? onNotificationTap;
+  final bool pinned;
+  final bool floating;
+  final bool snap;
+  final PreferredSizeWidget? bottom;
+
+  const SliverKhelBhaiAppBar({
+    super.key,
+    this.onNotificationTap,
+    this.pinned = true,
+    this.floating = false,
+    this.snap = false,
+    this.bottom,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SliverAppBar(
+      automaticallyImplyLeading: false,
+      pinned: pinned,
+      floating: floating,
+      snap: snap,
+      backgroundColor: context.backgroundColor,
+      surfaceTintColor: Colors.transparent,
+      elevation: 0,
+      scrolledUnderElevation: 0,
+      systemOverlayStyle: AppTheme.systemUiOverlayStyle(context),
+      centerTitle: false,
+      titleSpacing: Dimensions.r16.dynamicW,
+      toolbarHeight: kToolbarHeight,
+      title: const KhelBhaiLogo(),
+      actions: [
+        const UserProfileAvatar(),
+        Padding(
+          padding: EdgeInsets.only(right: Dimensions.r8.dynamicW),
+          child: NotificationActionButton(
+            onPressed:
+                onNotificationTap ??
+                () => context.push(AppRoutes.notifications),
+          ),
+        ),
+      ],
+      bottom: bottom,
+    );
+  }
+}
+
 /// Notification action with the unread count supplied by [NotificationsCubit].
 class NotificationActionButton extends StatelessWidget {
   final VoidCallback onPressed;

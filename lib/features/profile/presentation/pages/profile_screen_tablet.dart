@@ -174,16 +174,16 @@ class ProfileScreenTablet extends StatelessWidget {
                                   ),
                                 ],
                               ),
-                              const SizedBox(height: Dimensions.r32),
+                              SizedBox(height: Dimensions.r32.dynamicH),
                               Align(
                                 alignment: Alignment.centerLeft,
                                 child: TextButton(
                                   onPressed: () => _onLogout(context, loc),
                                   style: TextButton.styleFrom(
                                     foregroundColor: context.colorScheme.error,
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: Dimensions.r24,
-                                      vertical: Dimensions.r12,
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: Dimensions.r24.dynamicW,
+                                      vertical: Dimensions.r12.dynamicH,
                                     ),
                                   ),
                                   child: Text(loc.logout),

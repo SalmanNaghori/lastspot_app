@@ -15,11 +15,29 @@ class Authenticated extends AuthState {}
 
 class AuthProfileIncomplete extends AuthState {}
 
-class AuthSuspended extends AuthState {}
+class AuthSuspended extends AuthState {
+  final dynamic profile;
+  const AuthSuspended({this.profile});
 
-class AuthBanned extends AuthState {}
+  @override
+  List<Object?> get props => [profile];
+}
 
-class AuthDeleted extends AuthState {}
+class AuthBanned extends AuthState {
+  final dynamic profile;
+  const AuthBanned({this.profile});
+
+  @override
+  List<Object?> get props => [profile];
+}
+
+class AuthDeleted extends AuthState {
+  final dynamic profile;
+  const AuthDeleted({this.profile});
+
+  @override
+  List<Object?> get props => [profile];
+}
 
 /// The backend does not confirm this session/device pair. The session is
 /// cleared locally and interactive sign-in is required; the client cannot

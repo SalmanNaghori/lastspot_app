@@ -4,18 +4,21 @@ import 'package:lastspot_app/core/widgets/animation/widget_animation.dart';
 class HomeGreetingBanner extends StatelessWidget {
   final String? userName;
   final String? city;
+  final bool isCityError;
   final VoidCallback? onCityTap;
 
   const HomeGreetingBanner({
     super.key,
     this.userName,
     this.city,
+    this.isCityError = false,
     this.onCityTap,
   });
 
   @override
   Widget build(BuildContext context) {
     final loc = context.loc;
+    final colors = context.colorScheme;
     final type = Theme.of(context).textTheme;
     final name = userName?.trim().split(RegExp(r'\s+')).firstOrNull;
     final firstName = name == null || name.isEmpty ? loc.player : name;
@@ -47,6 +50,17 @@ class HomeGreetingBanner extends StatelessWidget {
               ),
             ),
             SizedBox(height: Dimensions.r2.dynamicH),
+            Text(
+              loc.homeHeroTagline,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: type.bodyMedium?.copyWith(
+                color: context.textSecondary,
+                fontSize: Dimensions.r13.dynamicSP,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            SizedBox(height: Dimensions.r4.dynamicH),
             Align(
               alignment: AlignmentDirectional.centerStart,
               child: Material(
@@ -66,23 +80,57 @@ class HomeGreetingBanner extends StatelessWidget {
                         ActivityMetadataIcon.location(
                           width: Dimensions.r18.dynamicW,
                           height: Dimensions.r18.dynamicH,
+                          fallbackColor: isCityError
+                              ? colors.error
+                              : colors.onSurfaceVariant,
                         ),
                         SizedBox(width: Dimensions.r6.dynamicW),
-                        Text(
-                          city ?? loc.selectCity,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            fontSize: Dimensions.r13.dynamicSP,
-                            fontWeight: FontWeight.w600,
-                            color: context.textPrimary,
+                        Flexible(
+                          child: Text(
+                            city ?? loc.selectCity,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              fontSize: Dimensions.r13.dynamicSP,
+                              fontWeight: FontWeight.w600,
+                              color: isCityError
+                                  ? colors.error
+                                  : context.textPrimary,
+                            ),
                           ),
                         ),
+                        if (isCityError) ...[
+                          SizedBox(width: Dimensions.r6.dynamicW),
+                          Container(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: Dimensions.r6.dynamicW,
+                              vertical: Dimensions.r2.dynamicH,
+                            ),
+                            decoration: BoxDecoration(
+                              color: colors.errorContainer,
+                              borderRadius: BorderRadius.circular(
+                                Dimensions.r4.dynamicR,
+                              ),
+                            ),
+                            child: Text(
+                              loc.homeCityRetryHint,
+                              style: TextStyle(
+                                fontSize: Dimensions.r10.dynamicSP,
+                                fontWeight: FontWeight.w700,
+                                color: colors.onErrorContainer,
+                              ),
+                            ),
+                          ),
+                        ],
                         SizedBox(width: Dimensions.r4.dynamicW),
                         Icon(
-                          Icons.keyboard_arrow_down_rounded,
+                          isCityError
+                              ? Icons.refresh_rounded
+                              : Icons.keyboard_arrow_down_rounded,
                           size: Dimensions.r18.dynamicH,
-                          color: context.textSecondary,
+                          color: isCityError
+                              ? colors.error
+                              : context.textSecondary,
                         ),
                       ],
                     ),

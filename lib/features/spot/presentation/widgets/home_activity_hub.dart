@@ -62,17 +62,15 @@ class HomeActivityHub extends StatelessWidget {
       primaryAction = onRetry;
     } else if (requests.isNotEmpty) {
       final request = requests.first;
-      activityTitle = request.request?.title ?? 'Activity';
-      badgeText = requests.length == 1
-          ? '1 request needs attention'
-          : '${requests.length} requests need attention';
+      activityTitle = request.request?.title ?? loc.navActivities;
+      badgeText = loc.homeActivityHubRequestsBadge(requests.length);
       message = loc.homeActivityHubPending(requests.length);
       icon = Icons.mark_email_unread_outlined;
       primaryLabel = loc.homeReviewRequests;
       primaryAction = () => onReviewRequests(request.requestId);
     } else if (joined != null) {
       activityTitle = joined.title;
-      badgeText = 'Joined activity';
+      badgeText = loc.homeActivityHubJoinedBadge;
       message = loc.homeActivityHubJoined;
       eventTime = _formatEventTime(joined.eventDateTime);
       icon = Icons.event_available_outlined;
@@ -84,7 +82,7 @@ class HomeActivityHub extends StatelessWidget {
       }
     } else if (hosted != null) {
       activityTitle = hosted.title;
-      badgeText = 'Hosting match';
+      badgeText = loc.homeActivityHubHostedBadge;
       message = loc.homeActivityHubHosted;
       eventTime = _formatEventTime(hosted.eventDateTime);
       icon = Icons.sports_outlined;
@@ -95,7 +93,9 @@ class HomeActivityHub extends StatelessWidget {
       eventTime = recommendation == null
           ? null
           : _formatEventTime(recommendation.eventDateTime);
-      badgeText = recommendation != null ? 'Suggested for you' : null;
+      badgeText = recommendation != null
+          ? loc.homeActivityHubSuggestedBadge
+          : null;
       message = recommendation == null
           ? loc.homeActivityHubEmpty
           : loc.homeActivityHubRecommendation;

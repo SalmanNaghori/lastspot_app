@@ -12,12 +12,16 @@ class ExploreNavigationService extends ChangeNotifier {
   String? _pendingCategoryId;
   String? _selectedCityId;
   String? _selectedCityName;
+  bool _pendingSearchFocus = false;
 
   /// Sentinel: explicitly request the "All" filter (clear category).
   static const String kSelectAll = '__all__';
 
   /// True when a pending category navigation is waiting to be consumed.
   bool get hasPendingNavigation => _pendingCategoryId != null;
+
+  /// True when search focus is requested on navigation to Explore.
+  bool get pendingSearchFocus => _pendingSearchFocus;
 
   /// The raw pending value (`null` = nothing pending, kSelectAll = clear filter).
   String? get pendingCategoryId => _pendingCategoryId;
@@ -38,6 +42,17 @@ class ExploreNavigationService extends ChangeNotifier {
   /// Called by Explore once the pending navigation has been applied.
   void consumePendingNavigation() {
     _pendingCategoryId = null;
+  }
+
+  /// Request navigation to Explore with auto-focus on the search field.
+  void navigateToSearch() {
+    _pendingSearchFocus = true;
+    notifyListeners();
+  }
+
+  /// Called by Explore once search focus has been requested.
+  void consumePendingSearchFocus() {
+    _pendingSearchFocus = false;
   }
 
   /// Synchronize selected city between Home and Explore.

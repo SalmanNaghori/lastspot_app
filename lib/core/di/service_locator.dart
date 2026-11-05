@@ -426,9 +426,7 @@ Future<void> setupServiceLocator() async {
   sl.registerSingleton<StreamUserMessagesUseCase>(
     StreamUserMessagesUseCase(sl<ChatRepository>()),
   );
-  sl.registerLazySingleton<ChatVisibilityTracker>(
-    () => ChatVisibilityTracker(),
-  );
+  sl.registerSingleton<ChatVisibilityTracker>(chatVisibilityTracker);
   sl.registerLazySingleton<ForegroundChatNotificationCoordinator>(
     () => ForegroundChatNotificationCoordinator(
       visibilityTracker: sl<ChatVisibilityTracker>(),

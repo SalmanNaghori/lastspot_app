@@ -173,7 +173,7 @@ class SupabaseSpotDataSourceImpl implements SpotRemoteDataSource {
     final userIds = list.map((e) => e['user_id']).toSet().toList();
     final profilesResponse = await _client
         .from('profiles')
-        .select('id, full_name, avatar_url, created_at')
+        .select()
         .inFilter('id', userIds);
 
     final profilesMap = {for (var p in profilesResponse) p['id']: p};
@@ -207,9 +207,7 @@ class SupabaseSpotDataSourceImpl implements SpotRemoteDataSource {
             final userIds = list.map((e) => e['user_id']).toSet().toList();
             final profilesResponse = await _client
                 .from('profiles')
-                .select(
-                  'id, full_name, avatar_url, bio, city, sports_interests, rating',
-                )
+                .select()
                 .inFilter('id', userIds);
 
             final profilesMap = {for (var p in profilesResponse) p['id']: p};
@@ -224,22 +222,43 @@ class SupabaseSpotDataSourceImpl implements SpotRemoteDataSource {
                       json['profiles'] = profile;
                     }
                     return JoinRequestModel.fromJson(json);
-                  } catch (err) {
+                  } catch (err, st) {
                     developer.log(
-                      'Error parsing stream join request: $err',
+                      'Error parsing stream join request (id: ${e['id']}): $err',
                       name: 'SpotRemoteDataSource',
+                      error: err,
+                      stackTrace: st,
                     );
+                    try {
+                      return JoinRequestModel.fromJson(
+                        Map<String, dynamic>.from(e),
+                      );
+                    } catch (_) {
+                      return null;
+                    }
+                  }
+                })
+                .whereType<JoinRequestModel>()
+                .toList();
+          } catch (e, st) {
+            developer.log(
+              'Error in streamPendingRequests asyncMap: $e',
+              name: 'SpotRemoteDataSource',
+              error: e,
+              stackTrace: st,
+            );
+            return list
+                .map((e) {
+                  try {
+                    return JoinRequestModel.fromJson(
+                      Map<String, dynamic>.from(e),
+                    );
+                  } catch (_) {
                     return null;
                   }
                 })
                 .whereType<JoinRequestModel>()
                 .toList();
-          } catch (e) {
-            developer.log(
-              'Error in streamPendingRequests asyncMap: $e',
-              name: 'SpotRemoteDataSource',
-            );
-            return [];
           }
         });
   }

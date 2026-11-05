@@ -1,6 +1,9 @@
 import 'package:lastspot_app/core/base_import.dart';
 
 import '../bloc/activities_bloc.dart';
+import '../../../../core/widgets/khelbhai_app_bar.dart';
+import '../../../../core/widgets/shell_bottom_spacer.dart';
+import '../../../../core/widgets/sliver_pinned_header_delegate.dart';
 import '../bloc/activities_state.dart';
 import '../bloc/activities_event.dart';
 import '../widgets/activities_list_section.dart';
@@ -53,7 +56,6 @@ class _ActivitiesScreenMobileState extends State<ActivitiesScreenMobile> {
 
     return Scaffold(
       backgroundColor: context.backgroundColor,
-      appBar: const KhelBhaiAppBar(),
       body: SafeArea(
         top: false,
         child: RefreshIndicator(
@@ -95,38 +97,46 @@ class _ActivitiesScreenMobileState extends State<ActivitiesScreenMobile> {
                     return CustomScrollView(
                       physics: const AlwaysScrollableScrollPhysics(),
                       slivers: [
+                        const SliverKhelBhaiAppBar(pinned: true),
+                        SliverPersistentHeader(
+                          pinned: true,
+                          delegate: SliverPinnedHeaderDelegate(
+                            height: Dimensions.r56.dynamicH,
+                            backgroundColor: context.backgroundColor,
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: Dimensions.r16.dynamicW,
+                                vertical: Dimensions.r4.dynamicH,
+                              ),
+                              child: CustomSegmentedControl(
+                                selectedIndex: tabIndex,
+                                onTabChanged: _onTabChanged,
+                                tabs: [
+                                  loc.tabMyActivitiesCount(
+                                    state.hosted.length.toString(),
+                                  ),
+                                  loc.tabJoinedCount(
+                                    state.joined.length.toString(),
+                                  ),
+                                  loc.tabRequestsCount(
+                                    state.receivedRequests.length.toString(),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
                         SliverToBoxAdapter(
                           child: Padding(
                             padding: EdgeInsets.symmetric(
                               horizontal: Dimensions.r16.dynamicW,
-                              vertical: Dimensions.r12.dynamicH,
+                              vertical: Dimensions.r8.dynamicH,
                             ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                CustomSegmentedControl(
-                                  selectedIndex: tabIndex,
-                                  onTabChanged: _onTabChanged,
-                                  tabs: [
-                                    loc.tabMyActivitiesCount(
-                                      state.hosted.length.toString(),
-                                    ),
-                                    loc.tabJoinedCount(
-                                      state.joined.length.toString(),
-                                    ),
-                                    loc.tabRequestsCount(
-                                      state.receivedRequests.length.toString(),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(height: Dimensions.r16.dynamicH),
-                                Text(
-                                  loc.manageActivitiesDesc,
-                                  style: context.bodySmall?.copyWith(
-                                    color: context.textSecondary,
-                                  ),
-                                ),
-                              ],
+                            child: Text(
+                              loc.manageActivitiesDesc,
+                              style: context.bodySmall?.copyWith(
+                                color: context.textSecondary,
+                              ),
                             ),
                           ),
                         ),
@@ -173,9 +183,7 @@ class _ActivitiesScreenMobileState extends State<ActivitiesScreenMobile> {
                                 state.isRefreshing,
                           ),
                         ],
-                        SliverToBoxAdapter(
-                          child: SizedBox(height: Dimensions.r32.dynamicH),
-                        ),
+                        const SliverShellBottomSpacer(),
                       ],
                     );
                   },

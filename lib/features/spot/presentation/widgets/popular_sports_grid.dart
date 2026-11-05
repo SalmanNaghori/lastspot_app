@@ -81,21 +81,39 @@ class _PopularSportsGridState extends State<PopularSportsGrid> {
               return SizedBox(
                 height: Dimensions.r140.dynamicH + Dimensions.r20.dynamicH,
                 child: Center(
-                  child: Container(
-                    width: Dimensions.r120.dynamicW,
-                    height: Dimensions.r140.dynamicH,
-                    decoration: BoxDecoration(
-                      color: context.isDarkMode
-                          ? context.surfaceContainer
-                          : AppColor.surfaceContainerLight,
-                      borderRadius: BorderRadius.circular(
-                        Dimensions.r20.dynamicR,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Opacity(
+                        opacity: 0.4,
+                        child: Transform.scale(
+                          scale: 0.82,
+                          child: AppShimmerBox(
+                            width: Dimensions.r100.dynamicW,
+                            height: Dimensions.r120.dynamicH,
+                            borderRadius: Dimensions.r20.dynamicR,
+                          ),
+                        ),
                       ),
-                      border: Border.all(
-                        color: context.borderColor.withValues(alpha: 0.6),
-                        width: 1,
+                      SizedBox(width: Dimensions.r8.dynamicW),
+                      AppShimmerBox(
+                        width: Dimensions.r120.dynamicW,
+                        height: Dimensions.r140.dynamicH,
+                        borderRadius: Dimensions.r20.dynamicR,
                       ),
-                    ),
+                      SizedBox(width: Dimensions.r8.dynamicW),
+                      Opacity(
+                        opacity: 0.4,
+                        child: Transform.scale(
+                          scale: 0.82,
+                          child: AppShimmerBox(
+                            width: Dimensions.r100.dynamicW,
+                            height: Dimensions.r120.dynamicH,
+                            borderRadius: Dimensions.r20.dynamicR,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               );

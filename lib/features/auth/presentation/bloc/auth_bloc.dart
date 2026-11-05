@@ -47,6 +47,56 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   bool _isValidatingSession = false;
   Timer? _sessionRetryTimer;
   int _sessionRetryAttempt = 0;
+  StreamSubscription<List<Map<String, dynamic>>>? _profileRealtimeSubscription;
+
+  void _subscribeToProfileChanges(String userId) {
+    try {
+      _profileRealtimeSubscription?.cancel();
+      _profileRealtimeSubscription = _supabaseClient
+          .from('profiles')
+          .stream(primaryKey: ['id'])
+          .eq('id', userId)
+          .listen(
+            (data) {
+              if (data.isNotEmpty && !isClosed) {
+                final row = data.first;
+                final deletedAt = row['deleted_at'];
+                final statusStr = row['status'];
+                final expiresAtStr = row['status_expires_at'];
+
+                if (deletedAt != null || statusStr == 'banned') {
+                  add(AuthCheckRequested());
+                } else if (statusStr == 'suspended') {
+                  final expiresAt = expiresAtStr != null
+                      ? DateTime.tryParse(expiresAtStr)
+                      : null;
+                  final isExpired =
+                      expiresAt != null && expiresAt.isBefore(DateTime.now());
+                  if (!isExpired) {
+                    add(AuthCheckRequested());
+                  }
+                }
+              }
+            },
+            onError: (err) {
+              log(
+                'Profile realtime subscription error: $err',
+                name: 'AuthBloc',
+              );
+              if (err.toString().contains('Realtime is enabled') ||
+                  err.toString().contains('channelError')) {
+                _profileRealtimeSubscription?.cancel();
+                _profileRealtimeSubscription = null;
+              }
+            },
+          );
+    } catch (e) {
+      log(
+        'Could not subscribe to profile realtime stream: $e',
+        name: 'AuthBloc',
+      );
+    }
+  }
 
   void _scheduleSessionRetry() {
     _sessionRetryTimer?.cancel();
@@ -155,6 +205,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   @override
   Future<void> close() async {
     _cancelSessionRetry();
+    await _profileRealtimeSubscription?.cancel();
     await _supabaseAuthSubscription.cancel();
     await _recoveryLinkSubscription.cancel();
     await super.close();
@@ -226,6 +277,23 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       switch (status) {
         case AccountSessionStatus.active:
           _cancelSessionRetry();
+          final profile = await _getProfileUseCase(userId);
+          if (profile != null) {
+            if (profile.deletedAt != null) {
+              emit(AuthDeleted(profile: profile));
+              return;
+            }
+            if (profile.status == AccountStatus.banned) {
+              emit(AuthBanned(profile: profile));
+              return;
+            }
+            if (profile.status == AccountStatus.suspended &&
+                !profile.isSuspensionExpired) {
+              emit(AuthSuspended(profile: profile));
+              return;
+            }
+          }
+          _subscribeToProfileChanges(userId);
           if (wasProfileIncomplete) {
             emit(AuthProfileIncomplete());
           } else if (state is! Authenticated) {
@@ -657,19 +725,23 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       }
 
       if (profile.deletedAt != null) {
-        emit(AuthDeleted());
-        return;
-      }
-
-      if (profile.status == AccountStatus.suspended) {
-        emit(AuthSuspended());
+        emit(AuthDeleted(profile: profile));
         return;
       }
 
       if (profile.status == AccountStatus.banned) {
-        emit(AuthBanned());
+        emit(AuthBanned(profile: profile));
         return;
       }
+
+      if (profile.status == AccountStatus.suspended) {
+        if (!profile.isSuspensionExpired) {
+          emit(AuthSuspended(profile: profile));
+          return;
+        }
+      }
+
+      _subscribeToProfileChanges(userId);
 
       // Use the authoritative DB flag — set to true by ProfileCubit.saveProfile()
       if (!profile.isProfileCompleted) {

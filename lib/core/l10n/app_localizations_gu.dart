@@ -1332,6 +1332,32 @@ class AppLocalizationsGu extends AppLocalizations {
   String get yourActivityHub => 'તમારું પ્રવૃત્તિ હબ';
 
   @override
+  String get homeHeroTagline => 'આજે તમે શું રમી રહ્યા છો?';
+
+  @override
+  String homeActivityHubRequestsBadge(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count વિનંતીઓ પર ધ્યાન આપવાની જરૂર છે',
+      one: '1 વિનંતી પર ધ્યાન આપવાની જરૂર છે',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get homeActivityHubJoinedBadge => 'જોડાયેલ પ્રવૃત્તિ';
+
+  @override
+  String get homeActivityHubHostedBadge => 'મેચનું આયોજન';
+
+  @override
+  String get homeActivityHubSuggestedBadge => 'તમારા માટે સૂચવેલ';
+
+  @override
+  String get homeCityRetryHint => 'ફરી પ્રયાસ કરવા માટે ટેપ કરો';
+
+  @override
   String homeActivityHubPending(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,

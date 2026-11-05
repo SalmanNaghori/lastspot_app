@@ -177,6 +177,9 @@ class AppAssets {
   static AssetGenImage get priceTag3dGen => Assets.icons.priceTag3d;
   static String get priceTag3d => Assets.icons.priceTag3d.path;
 
+  /// Pigment sampled from the KhelBhai Sunset Orange price tag for theme consistency.
+  static const priceTagSourceColor = Color(0xFFF46A35);
+
   static AssetGenImage get arrowForward3dGen => Assets.icons.arrowForward3d;
   static String get arrowForward3d => Assets.icons.arrowForward3d.path;
 

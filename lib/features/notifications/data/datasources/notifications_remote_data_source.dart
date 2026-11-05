@@ -25,29 +25,62 @@ class NotificationsRemoteDataSourceImpl
     required int limit,
     int? offset,
   }) async {
-    final query = _supabaseClient
+    var query = _supabaseClient
         .from('notifications')
         .select()
+        .neq('type', 'chat_message')
+        .neq('type', 'chat')
         .order('created_at', ascending: false)
         .limit(limit);
 
     if (offset != null) {
-      query.range(offset, offset + limit - 1);
+      query = query.range(offset, offset + limit - 1);
     }
 
     final response = await query;
-    return response.map((e) => NotificationModel.fromJson(e)).toList();
+    return response
+        .map((e) => NotificationModel.fromJson(e))
+        .where((n) => n.type != 'chat_message' && n.type != 'chat')
+        .toList();
   }
 
   @override
   Future<int> getUnreadNotificationCount() async {
-    final response = await _supabaseClient.rpc('get_unread_notification_count');
-    return response as int;
+    try {
+      final response = await _supabaseClient
+          .from('notifications')
+          .select('id')
+          .eq('is_read', false)
+          .neq('type', 'chat_message')
+          .neq('type', 'chat')
+          .count(CountOption.exact);
+      return response.count;
+    } catch (_) {
+      try {
+        final response = await _supabaseClient.rpc(
+          'get_unread_notification_count',
+        );
+        return response as int;
+      } catch (_) {
+        return 0;
+      }
+    }
   }
 
   @override
   Future<void> markAllNotificationsRead() async {
-    await _supabaseClient.rpc('mark_all_notifications_read');
+    try {
+      await _supabaseClient
+          .from('notifications')
+          .update({'is_read': true})
+          .eq('is_read', false)
+          .neq('type', 'chat_message')
+          .neq('type', 'chat');
+    } catch (_) {
+      try {
+        await _supabaseClient.rpc('mark_all_notifications_read');
+      } catch (_) {}
+    }
   }
 
   @override

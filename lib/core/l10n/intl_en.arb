@@ -569,6 +569,19 @@
   "turnSoundOn": "Turn sound on",
   "goToHome": "Go to Home",
   "yourActivityHub": "Your Activity Hub",
+  "homeHeroTagline": "What are you playing today?",
+  "homeActivityHubRequestsBadge": "{count, plural, one{1 request needs attention} other{{count} requests need attention}}",
+  "@homeActivityHubRequestsBadge": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "homeActivityHubJoinedBadge": "Joined activity",
+  "homeActivityHubHostedBadge": "Hosting match",
+  "homeActivityHubSuggestedBadge": "Suggested for you",
+  "homeCityRetryHint": "Tap to retry",
   "homeActivityHubPending": "{count, plural, one{You have 1 pending join request to review.} other{You have {count} pending join requests to review.}}",
   "@homeActivityHubPending": {
     "placeholders": {
