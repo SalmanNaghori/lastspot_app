@@ -55,7 +55,7 @@ class _CompactSpotCardState extends State<CompactSpotCard> {
           borderRadius: AppRadius.xlBorderRadius,
           side: BorderSide(color: colors.outlineVariant),
         ),
-        clipBehavior: Clip.antiAlias,
+        clipBehavior: Clip.none,
         child: InkWell(
           onTap: _handleTap,
           child: Padding(

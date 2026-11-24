@@ -3,7 +3,6 @@ import '../../../../core/services/explore_navigation_service.dart';
 import '../bloc/home_cubit.dart';
 import '../bloc/home_state.dart';
 import '../../../auth/presentation/bloc/profile_cubit.dart';
-import '../../../../core/widgets/khelbhai_app_bar.dart';
 import '../../../../core/widgets/shell_bottom_spacer.dart';
 import '../widgets/home_greeting_banner.dart';
 import '../widgets/popular_sports_grid.dart';
@@ -13,6 +12,12 @@ import '../../../categories/domain/entities/category.dart';
 import '../../domain/entities/request_entity.dart';
 import '../widgets/home_activity_hub.dart';
 import '../widgets/home_activity_feed.dart';
+import '../../../achievements/domain/entities/achievement_entity.dart';
+import '../../../achievements/presentation/bloc/achievements_cubit.dart';
+import '../../../achievements/presentation/bloc/achievements_state.dart';
+import '../../../achievements/presentation/widgets/achievement_celebration_dialog.dart';
+import '../../../achievements/presentation/widgets/achievements_carousel.dart';
+import '../../../auth/domain/repositories/auth_repository.dart';
 
 /// Primary Home screen for KhelBhai.
 ///
@@ -118,7 +123,45 @@ class _HomeScreenState extends State<HomeScreen> {
     context.go(AppRoutes.explore);
   }
 
-  void _onCreateActivityTap() => context.push(AppRoutes.create);
+  Future<void> _onCreateActivityTap() async {
+    await context.push(AppRoutes.create);
+    if (mounted) {
+      _onRefresh();
+    }
+  }
+
+  void _onHomeSuccessForAchievements(HomeSuccess state) {
+    final profileState = context.read<ProfileCubit>().state;
+    final userId = profileState is ProfileLoaded
+        ? profileState.profile.id
+        : sl<AuthRepository>().getCurrentUserId() ?? '';
+    if (userId.isNotEmpty) {
+      context.read<AchievementsCubit>().loadAchievements(
+        userId: userId,
+        userActivities: state.userActivities,
+        categories: state.categories,
+      );
+    }
+  }
+
+  void _onNewlyUnlockedAchievement(AchievementEntity achievement) {
+    final profileState = context.read<ProfileCubit>().state;
+    final userId = profileState is ProfileLoaded
+        ? profileState.profile.id
+        : sl<AuthRepository>().getCurrentUserId() ?? '';
+    AchievementCelebrationDialog.show(
+      context: context,
+      achievement: achievement,
+      onContinue: () {
+        if (userId.isNotEmpty) {
+          context.read<AchievementsCubit>().acknowledgeCelebration(
+            userId: userId,
+            achievementId: achievement.id,
+          );
+        }
+      },
+    );
+  }
 
   Future<void> _onRefresh() async {
     final state = context.read<HomeCubit>().state;
@@ -177,13 +220,38 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final loc = context.loc;
 
-    return BlocListener<ProfileCubit, ProfileState>(
-      listenWhen: (previous, current) =>
-          current is ProfileLoaded || current is ProfileError,
-      listener: (context, state) {
-        if (state is ProfileLoaded) _loadHomeForProfile(state);
-        if (state is ProfileError) _loadHomeWithoutProfile();
-      },
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<ProfileCubit, ProfileState>(
+          listenWhen: (previous, current) =>
+              current is ProfileLoaded || current is ProfileError,
+          listener: (context, state) {
+            if (state is ProfileLoaded) _loadHomeForProfile(state);
+            if (state is ProfileError) _loadHomeWithoutProfile();
+          },
+        ),
+        BlocListener<HomeCubit, HomeState>(
+          listener: (context, state) {
+            if (state is HomeSuccess) {
+              _onHomeSuccessForAchievements(state);
+            }
+          },
+        ),
+        BlocListener<AchievementsCubit, AchievementsState>(
+          listenWhen: (previous, current) =>
+              current is AchievementsLoaded &&
+              current.newlyUnlockedAchievement != null &&
+              (previous is! AchievementsLoaded ||
+                  previous.newlyUnlockedAchievement?.id !=
+                      current.newlyUnlockedAchievement?.id),
+          listener: (context, state) {
+            if (state is AchievementsLoaded &&
+                state.newlyUnlockedAchievement != null) {
+              _onNewlyUnlockedAchievement(state.newlyUnlockedAchievement!);
+            }
+          },
+        ),
+      ],
       child: AnnotatedRegion<SystemUiOverlayStyle>(
         value: AppTheme.systemUiOverlayStyle(context),
         child: Scaffold(
@@ -230,6 +298,16 @@ class _HomeScreenState extends State<HomeScreen> {
                         children: [
                           SizedBox(height: Dimensions.r8.dynamicH),
                           BlocBuilder<ProfileCubit, ProfileState>(
+                            buildWhen: (previous, current) {
+                              if (previous is ProfileLoaded &&
+                                  current is ProfileLoaded) {
+                                return previous.profile.fullName !=
+                                        current.profile.fullName ||
+                                    previous.profile.city !=
+                                        current.profile.city;
+                              }
+                              return previous != current;
+                            },
                             builder: (context, profileState) {
                               final userName = profileState is ProfileLoaded
                                   ? profileState.profile.fullName
@@ -363,6 +441,8 @@ class _HomeScreenState extends State<HomeScreen> {
                               onRetry: _onRefresh,
                             ),
                           ],
+                          SizedBox(height: Dimensions.r16.dynamicH),
+                          const AchievementsCarousel(),
                           SizedBox(height: Dimensions.r16.dynamicH),
                         ],
                       ),

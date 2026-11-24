@@ -1606,4 +1606,132 @@ class AppLocalizationsGu extends AppLocalizations {
 
   @override
   String get verifiedEmail => 'ચકાસાયેલ';
+
+  @override
+  String get achievementsSectionTitle => 'તમારી સિદ્ધિઓ';
+
+  @override
+  String get achievementsSectionSubtitle => 'રમતો બનાવતા રહો, આગળ વધતા રહો!';
+
+  @override
+  String get achievementCricketChampion => 'ક્રિકેટ ચેમ્પિયન';
+
+  @override
+  String get achievementCricketChampionDesc => '5 ક્રિકેટ પ્રવૃત્તિઓ બનાવો';
+
+  @override
+  String get achievementFootballStar => 'ફૂટબોલ સ્ટાર';
+
+  @override
+  String get achievementFootballStarDesc => '5 ફૂટબોલ પ્રવૃત્તિઓ બનાવો';
+
+  @override
+  String get achievementEventOrganizer => 'ઇવેન્ટ ઓર્ગેનાઇઝર';
+
+  @override
+  String get achievementEventOrganizerDesc => '5 રમતગમત ઇવેન્ટ્સ બનાવો';
+
+  @override
+  String get achievementBadmintonPro => 'બેડમિન્ટન પ્રો';
+
+  @override
+  String get achievementBadmintonProDesc => '5 બેડમિન્ટન પ્રવૃત્તિઓ બનાવો';
+
+  @override
+  String get achievementActivityCreator => 'એક્ટિવિટી ક્રિએટર';
+
+  @override
+  String get achievementActivityCreatorDesc => 'કુલ 10 પ્રવૃત્તિઓ બનાવો';
+
+  @override
+  String get achievementUnlocked => 'સિદ્ધિ અનલૉક થઈ!';
+
+  @override
+  String get achievementOneMoreToUnlock =>
+      'અનલૉક કરવા માટે 1 વધુ પ્રવૃત્તિ બનાવો!';
+
+  @override
+  String achievementXMoreToUnlock(int count) {
+    return 'અનલૉક કરવા માટે $count વધુ પ્રવૃત્તિઓ બનાવો!';
+  }
+
+  @override
+  String get achievementStatusUnlocked => 'અનલૉક';
+
+  @override
+  String get achievementStatusInProgress => 'ચાલુ છે';
+
+  @override
+  String get achievementRewardMilestone => 'માઇલસ્ટોન';
+
+  @override
+  String get achievementDetailsTitle => 'સિદ્ધિની વિગત';
+
+  @override
+  String get achievementCelebrationTitle => 'સિદ્ધિ અનલૉક થઈ!';
+
+  @override
+  String get achievementCelebrationSubtitle =>
+      'ઉત્કૃષ્ટ કામગીરી! તમે એક નવો માઇલસ્ટોન પાર કર્યો છે.';
+
+  @override
+  String get achievementCelebrationContinue => 'આગળ વધો';
+
+  @override
+  String get achievementRewardGoldTrophy => 'ગોલ્ડ ટ્રોફી';
+
+  @override
+  String get achievementRewardStarBadge => 'સ્ટાર બેજ';
+
+  @override
+  String get achievementRewardHostBadge => 'હોસ્ટ બેજ';
+
+  @override
+  String get achievementRewardAceBadge => 'એસ બેજ';
+
+  @override
+  String get achievementRewardCreatorTrophy => 'માસ્ટર ક્રિએટર ટ્રોફી';
+
+  @override
+  String get viewProfile => 'પ્રોફાઇલ જુઓ';
+
+  @override
+  String get tabAll => 'બધા';
+
+  @override
+  String get tabPending => 'બાકી';
+
+  @override
+  String get tabAccepted => 'સ્વીકૃત';
+
+  @override
+  String get tabRejected => 'નકારેલ';
+
+  @override
+  String get requestAcceptedSuccess => 'વિનંતી સ્વીકારાઈ';
+
+  @override
+  String get requestRejectedSuccess => 'વિનંતી નકારાઈ';
+
+  @override
+  String playersConfirmed(int current, int total) {
+    return '$current / $total ખેલાડીઓ પુષ્ટિ થયેલ';
+  }
+
+  @override
+  String get noRequestsInTab => 'આ ટેબમાં કોઈ વિનંતીઓ મળી નથી.';
+
+  @override
+  String get activityFullMessage =>
+      'આ પ્રવૃત્તિ પહેલેથી જ ભરેલી છે. કોઈ સ્પોટ બાકી નથી.';
+
+  @override
+  String get confirmedParticipant => 'પુષ્ટિ થયેલ સહભાગી';
+
+  @override
+  String get requestRejectedStatus => 'વિનંતી નકારાઈ';
+
+  @override
+  String get swipeHint =>
+      'સ્વીકારવા માટે જમણે સ્વાઇપ કરો · નકારવા માટે ડાબે સ્વાઇપ કરો';
 }

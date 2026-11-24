@@ -89,9 +89,7 @@ class SportsCategoryPerspectiveCard extends StatelessWidget {
             child: InkWell(
               onTap: onTap,
               borderRadius: BorderRadius.circular(cardRadius),
-              child: AnimatedContainer(
-                duration: const Duration(milliseconds: 200),
-                curve: Curves.easeOutCubic,
+              child: Container(
                 width: width,
                 height: height,
                 padding: EdgeInsets.symmetric(
@@ -201,6 +199,8 @@ class SportsCategoryPerspectiveCard extends StatelessWidget {
         width: imageWidth,
         height: imageHeight,
         fit: BoxFit.contain,
+        cacheWidth: 160,
+        cacheHeight: 160,
         errorBuilder: (context, error, stackTrace) {
           return Icon(
             Icons.sports,

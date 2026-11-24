@@ -665,5 +665,62 @@
   "onboardingSlide4Desc": "Chat with teammates, coordinate plans, and get ready to play.",
   "onboardingReadyHeading": "Ready, Bhai? Let's Play!",
   "completedMatches": "Completed Matches",
-  "verifiedEmail": "Verified"
+  "verifiedEmail": "Verified",
+  "achievementsSectionTitle": "Your Achievements",
+  "achievementsSectionSubtitle": "Keep creating. Keep achieving!",
+  "achievementCricketChampion": "Cricket Champion",
+  "achievementCricketChampionDesc": "Create 5 Cricket activities",
+  "achievementFootballStar": "Football Star",
+  "achievementFootballStarDesc": "Create 5 Football activities",
+  "achievementEventOrganizer": "Event Organizer",
+  "achievementEventOrganizerDesc": "Create 5 Community Events",
+  "achievementBadmintonPro": "Badminton Pro",
+  "achievementBadmintonProDesc": "Create 5 Badminton activities",
+  "achievementActivityCreator": "Activity Creator",
+  "achievementActivityCreatorDesc": "Create 10 activities overall",
+  "achievementUnlocked": "Achievement Unlocked!",
+  "achievementOneMoreToUnlock": "1 more activity to unlock!",
+  "achievementXMoreToUnlock": "{count} more activities to unlock!",
+  "@achievementXMoreToUnlock": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "achievementStatusUnlocked": "Unlocked",
+  "achievementStatusInProgress": "In Progress",
+  "achievementRewardMilestone": "Milestone",
+  "achievementDetailsTitle": "Achievement Details",
+  "achievementCelebrationTitle": "Achievement Unlocked!",
+  "achievementCelebrationSubtitle": "Incredible job! You've reached a new sports milestone.",
+  "achievementCelebrationContinue": "Continue",
+  "achievementRewardGoldTrophy": "Gold Trophy",
+  "achievementRewardStarBadge": "Star Badge",
+  "achievementRewardHostBadge": "Host Badge",
+  "achievementRewardAceBadge": "Ace Badge",
+  "achievementRewardCreatorTrophy": "Master Creator Trophy",
+  "viewProfile": "View Profile",
+  "tabAll": "All",
+  "tabPending": "Pending",
+  "tabAccepted": "Accepted",
+  "tabRejected": "Rejected",
+  "requestAcceptedSuccess": "Join request accepted",
+  "requestRejectedSuccess": "Join request rejected",
+  "playersConfirmed": "{current} / {total} players confirmed",
+  "@playersConfirmed": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "noRequestsInTab": "No requests found in this tab.",
+  "activityFullMessage": "This activity is already full. No available spots remaining.",
+  "confirmedParticipant": "Confirmed Participant",
+  "requestRejectedStatus": "Request Rejected",
+  "swipeHint": "Swipe right to accept · Swipe left to reject"
 }

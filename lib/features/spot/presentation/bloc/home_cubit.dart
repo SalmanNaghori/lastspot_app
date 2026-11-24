@@ -249,6 +249,7 @@ class HomeCubit extends Cubit<HomeState> {
             ..sort((a, b) => a.sortOrder.compareTo(b.sortOrder)),
           cities: [...cities]
             ..sort((a, b) => a.displayOrder.compareTo(b.displayOrder)),
+          userActivities: userActivities,
           selectedCityId: cityId,
           pendingJoinRequests: pendingRequests,
           upcomingJoinedActivity: joinedActivity,

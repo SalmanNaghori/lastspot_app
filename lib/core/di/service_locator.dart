@@ -118,6 +118,14 @@ import '../../features/chat/domain/usecases/send_chat_message_usecase.dart';
 import '../../features/chat/domain/usecases/stream_chat_messages_usecase.dart';
 import '../../features/chat/domain/usecases/stream_user_messages_usecase.dart';
 import '../../features/chat/presentation/bloc/chat_cubit.dart';
+
+// Achievements
+import '../../features/achievements/data/datasources/achievements_local_datasource.dart';
+import '../../features/achievements/data/repositories/achievements_repository_impl.dart';
+import '../../features/achievements/domain/repositories/achievements_repository.dart';
+import '../../features/achievements/domain/usecases/get_user_achievements_usecase.dart';
+import '../../features/achievements/domain/usecases/mark_achievement_celebrated_usecase.dart';
+import '../../features/achievements/presentation/bloc/achievements_cubit.dart';
 import '../../features/chat/presentation/bloc/conversations_cubit.dart';
 import '../services/chat_visibility_tracker.dart';
 import '../services/foreground_chat_notification_coordinator.dart';
@@ -187,6 +195,10 @@ Future<void> setupServiceLocator() async {
     SupabaseCategoryDataSourceImpl(client: sl<SupabaseClient>()),
   );
 
+  sl.registerSingleton<AchievementsLocalDataSource>(
+    AchievementsLocalDataSourceImpl(sl<SharedPrefsUtil>()),
+  );
+
   // ── Repositories ──────────────────────────────────────
   sl.registerSingleton<AuthRepository>(
     AuthRepositoryImpl(remoteDataSource: sl<AuthRemoteDataSource>()),
@@ -225,6 +237,10 @@ Future<void> setupServiceLocator() async {
       remoteDataSource: sl<SpotRemoteDataSource>(),
       supabaseClient: sl<SupabaseClient>(),
     ),
+  );
+
+  sl.registerSingleton<AchievementsRepository>(
+    AchievementsRepositoryImpl(sl<AchievementsLocalDataSource>()),
   );
 
   // ── Use Cases ─────────────────────────────────────────
@@ -277,6 +293,14 @@ Future<void> setupServiceLocator() async {
     ),
   );
 
+  // Achievements
+  sl.registerFactory(
+    () => AchievementsCubit(
+      getUserAchievementsUseCase: sl<GetUserAchievementsUseCase>(),
+      markAchievementCelebratedUseCase: sl<MarkAchievementCelebratedUseCase>(),
+    ),
+  );
+
   // Explore
   sl.registerFactory(() => ExploreBloc(spotRepository: sl()));
 
@@ -303,6 +327,13 @@ Future<void> setupServiceLocator() async {
 
   sl.registerSingleton<GetActiveCitiesUseCase>(
     GetActiveCitiesUseCase(sl<CityRepository>()),
+  );
+
+  sl.registerSingleton<GetUserAchievementsUseCase>(
+    GetUserAchievementsUseCase(sl<AchievementsRepository>()),
+  );
+  sl.registerSingleton<MarkAchievementCelebratedUseCase>(
+    MarkAchievementCelebratedUseCase(sl<AchievementsRepository>()),
   );
 
   sl.registerLazySingleton<CityCubit>(

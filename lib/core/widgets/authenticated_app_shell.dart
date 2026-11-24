@@ -54,7 +54,6 @@ class _AuthenticatedAppShellState extends State<AuthenticatedAppShell>
 
     _newNotifSub = _notificationsCubit.onNewNotification.listen((notif) {
       if (!mounted) return;
-      final feedback = context.read<InAppFeedbackManager>();
       final data = Map<String, dynamic>.from(notif.data)
         ..putIfAbsent('type', () => notif.type);
       if (InAppFeedbackManager.isChatMessage(data, type: notif.type)) {
@@ -117,11 +116,6 @@ class _AuthenticatedAppShellState extends State<AuthenticatedAppShell>
       precacheImage(Assets.navigation.chats3d.provider(), context);
     }
   }
-
-  List<String> _notificationEventKeys(Map<String, dynamic> data) => [
-    for (final key in const ['event_id', 'notification_id', 'message_id', 'id'])
-      if (data[key]?.toString().trim().isNotEmpty == true) 'event:${data[key]}',
-  ];
 
   DateTime? _pausedAt;
   DateTime? _lastVerifiedAt;

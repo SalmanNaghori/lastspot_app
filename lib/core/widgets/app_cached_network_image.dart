@@ -49,15 +49,32 @@ class AppCachedNetworkImage extends StatelessWidget {
     if (safeUrl == null || safeUrl.isEmpty) {
       content = _buildErrorWidget(context);
     } else {
+      final dpr = MediaQuery.maybeDevicePixelRatioOf(context) ?? 2.5;
+      int? effectiveMemWidth = memCacheWidth;
+      int? effectiveMemHeight = memCacheHeight;
+
+      if (effectiveMemWidth == null &&
+          width != null &&
+          width! > 0 &&
+          !width!.isInfinite) {
+        effectiveMemWidth = (width! * dpr).round().clamp(64, 1080);
+      }
+      if (effectiveMemHeight == null &&
+          height != null &&
+          height! > 0 &&
+          !height!.isInfinite) {
+        effectiveMemHeight = (height! * dpr).round().clamp(64, 1080);
+      }
+
       content = CachedNetworkImage(
         imageUrl: safeUrl,
         width: width,
         height: height,
         fit: fit,
-        memCacheWidth: memCacheWidth,
-        memCacheHeight: memCacheHeight,
-        maxWidthDiskCache: maxWidthDiskCache ?? memCacheWidth,
-        maxHeightDiskCache: maxHeightDiskCache ?? memCacheHeight,
+        memCacheWidth: effectiveMemWidth,
+        memCacheHeight: effectiveMemHeight,
+        maxWidthDiskCache: maxWidthDiskCache ?? effectiveMemWidth,
+        maxHeightDiskCache: maxHeightDiskCache ?? effectiveMemHeight,
         fadeInDuration: AppMotion.duration(context, AppMotion.standard),
         fadeOutDuration: AppMotion.duration(context, AppMotion.quick),
         placeholder: (context, url) =>

@@ -1,7 +1,6 @@
 import 'package:lastspot_app/core/base_import.dart';
 
 import '../bloc/activities_bloc.dart';
-import '../../../../core/widgets/khelbhai_app_bar.dart';
 import '../../../../core/widgets/shell_bottom_spacer.dart';
 import '../../../../core/widgets/sliver_pinned_header_delegate.dart';
 import '../bloc/activities_state.dart';
@@ -155,6 +154,8 @@ class _ActivitiesScreenMobileState extends State<ActivitiesScreenMobile> {
                               horizontalPadding: Dimensions.r16.dynamicW,
                               isLoading:
                                   state.hosted.isEmpty && state.isRefreshing,
+                              isHosted: true,
+                              receivedRequests: state.receivedRequests,
                             ),
                         ] else if (tabIndex == 1) ...[
                           if (state.joined.isEmpty && !state.isRefreshing)

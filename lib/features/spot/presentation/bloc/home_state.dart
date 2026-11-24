@@ -19,6 +19,7 @@ class HomeSuccess extends HomeState {
   final List<RequestEntity> comingUp;
   final List<CategoryEntity> categories;
   final List<CityEntity> cities;
+  final List<RequestEntity> userActivities;
   final String? selectedCityId;
   final int unreadNotifications;
   final List<JoinRequestEntity> pendingJoinRequests;
@@ -40,6 +41,7 @@ class HomeSuccess extends HomeState {
     required this.comingUp,
     required this.categories,
     required this.cities,
+    this.userActivities = const [],
     this.selectedCityId,
     this.unreadNotifications = 0,
     this.pendingJoinRequests = const [],
@@ -66,6 +68,7 @@ class HomeSuccess extends HomeState {
     comingUp,
     categories,
     cities,
+    userActivities,
     selectedCityId,
     unreadNotifications,
     pendingJoinRequests,
@@ -86,6 +89,7 @@ class HomeSuccess extends HomeState {
     List<RequestEntity>? comingUp,
     List<CategoryEntity>? categories,
     List<CityEntity>? cities,
+    List<RequestEntity>? userActivities,
     String? selectedCityId,
     int? unreadNotifications,
     List<JoinRequestEntity>? pendingJoinRequests,
@@ -105,6 +109,7 @@ class HomeSuccess extends HomeState {
       comingUp: comingUp ?? this.comingUp,
       categories: categories ?? this.categories,
       cities: cities ?? this.cities,
+      userActivities: userActivities ?? this.userActivities,
       selectedCityId: selectedCityId ?? this.selectedCityId,
       unreadNotifications: unreadNotifications ?? this.unreadNotifications,
       pendingJoinRequests: pendingJoinRequests ?? this.pendingJoinRequests,

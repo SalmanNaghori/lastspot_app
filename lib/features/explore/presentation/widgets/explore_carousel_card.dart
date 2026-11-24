@@ -104,7 +104,7 @@ class ExploreCarouselCard extends StatelessWidget {
             width: Dimensions.w1,
           ),
         ),
-        clipBehavior: Clip.antiAlias,
+        clipBehavior: Clip.none,
         elevation: 0,
         child: InkWell(
           onTap: onTap,

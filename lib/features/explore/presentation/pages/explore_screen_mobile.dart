@@ -240,9 +240,11 @@ class _ExploreScreenMobileState extends State<ExploreScreenMobile> {
       final query = state.searchQuery!.trim().toLowerCase();
 
       final categoryState = context.read<CategoryBloc>().state;
-      List<dynamic> categories = [];
+      final categoryLookup = <String, String>{};
       if (categoryState is CategoryLoaded) {
-        categories = categoryState.categories;
+        for (final cat in categoryState.categories) {
+          categoryLookup[cat.id] = cat.name.toLowerCase();
+        }
       }
 
       filtered = filtered.where((post) {
@@ -250,14 +252,8 @@ class _ExploreScreenMobileState extends State<ExploreScreenMobile> {
         final descMatch =
             post.description?.toLowerCase().contains(query) ?? false;
         final locMatch = post.locationName.toLowerCase().contains(query);
-
-        bool catMatch = false;
-        for (var cat in categories) {
-          if (cat.id == post.categoryId) {
-            catMatch = cat.name.toLowerCase().contains(query);
-            break;
-          }
-        }
+        final catName = categoryLookup[post.categoryId];
+        final catMatch = catName != null && catName.contains(query);
 
         return titleMatch || descMatch || locMatch || catMatch;
       });

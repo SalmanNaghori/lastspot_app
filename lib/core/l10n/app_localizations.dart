@@ -3051,6 +3051,246 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Verified'**
   String get verifiedEmail;
+
+  /// No description provided for @achievementsSectionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Achievements'**
+  String get achievementsSectionTitle;
+
+  /// No description provided for @achievementsSectionSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep creating. Keep achieving!'**
+  String get achievementsSectionSubtitle;
+
+  /// No description provided for @achievementCricketChampion.
+  ///
+  /// In en, this message translates to:
+  /// **'Cricket Champion'**
+  String get achievementCricketChampion;
+
+  /// No description provided for @achievementCricketChampionDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Create 5 Cricket activities'**
+  String get achievementCricketChampionDesc;
+
+  /// No description provided for @achievementFootballStar.
+  ///
+  /// In en, this message translates to:
+  /// **'Football Star'**
+  String get achievementFootballStar;
+
+  /// No description provided for @achievementFootballStarDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Create 5 Football activities'**
+  String get achievementFootballStarDesc;
+
+  /// No description provided for @achievementEventOrganizer.
+  ///
+  /// In en, this message translates to:
+  /// **'Event Organizer'**
+  String get achievementEventOrganizer;
+
+  /// No description provided for @achievementEventOrganizerDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Create 5 Community Events'**
+  String get achievementEventOrganizerDesc;
+
+  /// No description provided for @achievementBadmintonPro.
+  ///
+  /// In en, this message translates to:
+  /// **'Badminton Pro'**
+  String get achievementBadmintonPro;
+
+  /// No description provided for @achievementBadmintonProDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Create 5 Badminton activities'**
+  String get achievementBadmintonProDesc;
+
+  /// No description provided for @achievementActivityCreator.
+  ///
+  /// In en, this message translates to:
+  /// **'Activity Creator'**
+  String get achievementActivityCreator;
+
+  /// No description provided for @achievementActivityCreatorDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Create 10 activities overall'**
+  String get achievementActivityCreatorDesc;
+
+  /// No description provided for @achievementUnlocked.
+  ///
+  /// In en, this message translates to:
+  /// **'Achievement Unlocked!'**
+  String get achievementUnlocked;
+
+  /// No description provided for @achievementOneMoreToUnlock.
+  ///
+  /// In en, this message translates to:
+  /// **'1 more activity to unlock!'**
+  String get achievementOneMoreToUnlock;
+
+  /// No description provided for @achievementXMoreToUnlock.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} more activities to unlock!'**
+  String achievementXMoreToUnlock(int count);
+
+  /// No description provided for @achievementStatusUnlocked.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlocked'**
+  String get achievementStatusUnlocked;
+
+  /// No description provided for @achievementStatusInProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'In Progress'**
+  String get achievementStatusInProgress;
+
+  /// No description provided for @achievementRewardMilestone.
+  ///
+  /// In en, this message translates to:
+  /// **'Milestone'**
+  String get achievementRewardMilestone;
+
+  /// No description provided for @achievementDetailsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Achievement Details'**
+  String get achievementDetailsTitle;
+
+  /// No description provided for @achievementCelebrationTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Achievement Unlocked!'**
+  String get achievementCelebrationTitle;
+
+  /// No description provided for @achievementCelebrationSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Incredible job! You\'ve reached a new sports milestone.'**
+  String get achievementCelebrationSubtitle;
+
+  /// No description provided for @achievementCelebrationContinue.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue'**
+  String get achievementCelebrationContinue;
+
+  /// No description provided for @achievementRewardGoldTrophy.
+  ///
+  /// In en, this message translates to:
+  /// **'Gold Trophy'**
+  String get achievementRewardGoldTrophy;
+
+  /// No description provided for @achievementRewardStarBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'Star Badge'**
+  String get achievementRewardStarBadge;
+
+  /// No description provided for @achievementRewardHostBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'Host Badge'**
+  String get achievementRewardHostBadge;
+
+  /// No description provided for @achievementRewardAceBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'Ace Badge'**
+  String get achievementRewardAceBadge;
+
+  /// No description provided for @achievementRewardCreatorTrophy.
+  ///
+  /// In en, this message translates to:
+  /// **'Master Creator Trophy'**
+  String get achievementRewardCreatorTrophy;
+
+  /// No description provided for @viewProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'View Profile'**
+  String get viewProfile;
+
+  /// No description provided for @tabAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get tabAll;
+
+  /// No description provided for @tabPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending'**
+  String get tabPending;
+
+  /// No description provided for @tabAccepted.
+  ///
+  /// In en, this message translates to:
+  /// **'Accepted'**
+  String get tabAccepted;
+
+  /// No description provided for @tabRejected.
+  ///
+  /// In en, this message translates to:
+  /// **'Rejected'**
+  String get tabRejected;
+
+  /// No description provided for @requestAcceptedSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Join request accepted'**
+  String get requestAcceptedSuccess;
+
+  /// No description provided for @requestRejectedSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Join request rejected'**
+  String get requestRejectedSuccess;
+
+  /// No description provided for @playersConfirmed.
+  ///
+  /// In en, this message translates to:
+  /// **'{current} / {total} players confirmed'**
+  String playersConfirmed(int current, int total);
+
+  /// No description provided for @noRequestsInTab.
+  ///
+  /// In en, this message translates to:
+  /// **'No requests found in this tab.'**
+  String get noRequestsInTab;
+
+  /// No description provided for @activityFullMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'This activity is already full. No available spots remaining.'**
+  String get activityFullMessage;
+
+  /// No description provided for @confirmedParticipant.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirmed Participant'**
+  String get confirmedParticipant;
+
+  /// No description provided for @requestRejectedStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Request Rejected'**
+  String get requestRejectedStatus;
+
+  /// No description provided for @swipeHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Swipe right to accept · Swipe left to reject'**
+  String get swipeHint;
 }
 
 class _AppLocalizationsDelegate

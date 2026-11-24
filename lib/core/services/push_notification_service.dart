@@ -127,7 +127,7 @@ class PushNotificationService {
           payload: {
             ...data,
             'title': title,
-            if (body != null) 'body': body,
+            'body': ?body,
             if (targetId != null) 'request_id': targetId.toString(),
           },
         );

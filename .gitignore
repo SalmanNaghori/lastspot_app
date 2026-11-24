@@ -37,7 +37,6 @@ migrate_working_dir/
 
 # FVM (Flutter Version Management)
 # Keep fvm_config.json to ensure team consistency; ignore cached SDKs
-.fvm/*
 !.fvm/fvm_config.json
 
 # ------------------------------------------------------------------------------
@@ -131,7 +130,6 @@ test/**
 !test/features/spot/presentation/pages/spot_details_scroll_test.dart
 !test/features/spot/presentation/pages/create_spot_insets_test.dart
 
-
 <!-- reposeed:begin -->
 # Keep the shared Graphify graph in Git; exclude machine-local state.
 graphify-out/.graphify_*
@@ -143,3 +141,6 @@ graphify-out/memory/
 graphify-out/reflections/
 graphify-out/[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]/
 <!-- reposeed:end -->
+
+# FVM Version Cache
+.fvm/

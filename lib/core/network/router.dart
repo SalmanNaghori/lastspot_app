@@ -13,6 +13,7 @@ import '../../features/auth/presentation/pages/profile_setup_screen.dart';
 import '../../features/auth/presentation/pages/account_status_screen.dart';
 import '../../features/spot/presentation/pages/home_screen.dart';
 import '../../features/spot/presentation/bloc/home_cubit.dart';
+import '../../features/achievements/presentation/bloc/achievements_cubit.dart';
 import '../../features/spot/presentation/pages/create_spot_screen.dart';
 import '../../features/spot/presentation/pages/create_spot_success_screen.dart';
 import '../../features/spot/presentation/pages/preview_spot_screen.dart';
@@ -131,8 +132,11 @@ final GoRouter appRouter = GoRouter(
           routes: [
             GoRoute(
               path: AppRoutes.home,
-              builder: (context, state) => BlocProvider(
-                create: (context) => sl<HomeCubit>(),
+              builder: (context, state) => MultiBlocProvider(
+                providers: [
+                  BlocProvider(create: (context) => sl<HomeCubit>()),
+                  BlocProvider(create: (context) => sl<AchievementsCubit>()),
+                ],
                 child: const HomeScreen(),
               ),
             ),

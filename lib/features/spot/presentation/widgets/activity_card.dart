@@ -67,7 +67,7 @@ class _ActivityCardState extends State<ActivityCard> {
               borderRadius: AppRadius.xxlBorderRadius,
               side: BorderSide(color: colors.outlineVariant),
             ),
-            clipBehavior: Clip.antiAlias,
+            clipBehavior: Clip.none,
             child: InkWell(
               onTap: _handleTap,
               onHighlightChanged: (value) => setState(() => _isPressed = value),

@@ -137,8 +137,8 @@ class ForegroundChatNotificationCoordinator {
         ...data,
         'conversation_id': conversationId,
         'type': 'chat_message',
-        if (requestId != null) 'request_id': requestId,
-        if (senderId != null) 'sender_id': senderId,
+        'request_id': ?requestId,
+        'sender_id': ?senderId,
       },
     );
   }

@@ -1,24 +1,25 @@
-# Graph Report - lastspot_app  (2026-10-27)
+# Graph Report - lastspot_app  (2026-11-24)
 
 ## Corpus Check
-- 606 files · ~791,343 words
+- 644 files · ~290,394 words
 - Verdict: corpus is large enough that graph structure adds value.
+- Unclassified: 64 file(s) not represented in the graph (top: .rules 21, .xml 11, (none) 9)
 
 ## Summary
-- 9617 nodes · 12178 edges · 481 communities (448 shown, 33 thin omitted)
-- Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS · INFERRED: 4 edges (avg confidence: 0.85)
+- 10267 nodes · 13166 edges · 509 communities (471 shown, 38 thin omitted)
+- Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS · INFERRED: 11 edges (avg confidence: 0.94)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `25e6f245`
+- Built from commit: `e2dfbe33`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
 ## Community Hubs (Navigation)
 - sports_category_perspective_carousel.dart
 - auth_event.dart
-- ExploreBloc
-- custom_app_bar.dart
+- ../../../../core/utils/result.dart
+- home_activity_hub.dart
 - String?
 - SettingsCubit
 - app_localizations.dart
@@ -32,22 +33,21 @@
 - assets.gen.dart
 - app_localizations_gu.dart
 - auth_bloc.dart
-- package:flutter/material.dart
-- home_activity_feed.dart
-- router.dart
-- report_entity.dart
-- profile_repository_impl.dart
+- widget_extension.dart
 - ValueChanged
+- router.dart
+- Equatable
+- achievements_state.dart
+- achievement_detail_bottom_sheet.dart
 - in_app_feedback_manager.dart
 - app_keyboard_dismissal_test.dart
 - spot_repository.dart
-- static const
+- home_activity_feed.dart
 - create_spot_success_screen.dart
 - app_routes.dart
 - chat_screen_mobile.dart
 - ============================================================
-- base_import.dart
-- app_cached_network_image.dart
+- app_asset_image.dart
 - project-understanding/SKILL.md
 - shared_prefs_util.dart
 - references/agent.md
@@ -61,27 +61,27 @@
 - spot_photo_viewer.dart
 - api_endpoints.dart
 - startup_state.dart
-- app_asset_image.dart
-- group_info_screen_tablet.dart
-- Equatable
+- dependencies
+- ../../../categories/domain/entities/category.dart
+- List
 - dart:io
 - account_session_service.dart
 - app_localizations_hi.dart
 - list_extension.dart
-- ActivitiesBloc
-- spot_remote_datasource.dart
-- docs/adr/README.md
+- activities_screen_mobile.dart
+- package:supabase_flutter/supabase_flutter.dart
+- ADR-0004: Declarative Routing with go_router
 - authenticated_app_shell.dart
 - chat_conversation_entity.dart
 - profile_setup_screen.dart
-- ../../../../core/utils/result.dart
+- ExploreBloc
 - rules-overlay.md
 - home_screen.dart
 - startup_bloc.dart
 - ConversationsCubit
 - env_banner.dart
 - explore_perspective_carousel.dart
-- What You Must Do When Invoked
+- home_cubit.dart
 - app_text_field.dart
 - category_model.dart
 - agent.md — Flutter Architecture Governance: Master Entry Point
@@ -91,24 +91,24 @@
 - create_spot_screen.dart
 - explore_screen_mobile.dart
 - user_device_model.dart
-- core/base_import.dart
+- custom_app_bar.dart
 - notifications_screen_mobile.dart
-- profile_cubit.dart
+- ProfileCubit
 - spot_details_bloc.dart
-- selection_bottom_sheet.dart
+- State
 - AuthBloc
 - app_settings_model.dart
 - Definition of Done — Checklist
-- explore_carousel_card.dart
-- category_repository_impl.dart
+- CategoryBloc
+- achievement_celebration_dialog.dart
 - profile_sports_step.dart
-- activities_screen_tablet.dart
+- 3. Implementation Details & Code Changes
 - Security checklist
 - Standard
 - Standard
 - chat/presentation/pages/chat_screen.dart
 - onboarding_screen_mobile.dart
-- app_spacing.dart
+- glowing_circular_progress.dart
 - AppRoutes.spotDetailsPath
 - explore_state.dart
 - request_entity.dart
@@ -116,44 +116,44 @@
 - Standard
 - Standard
 - user_profile.dart
-- app_shimmer.dart
+- presentation/widgets/activity_card.dart
 - chat_message_model.dart
-- login_screen.dart
+- forgot_password_screen.dart
 - Standard
 - AppDelegate
-- activities_screen.dart
-- onboarding_screen.dart
-- profile_completion_step.dart
+- my_sports_space_cubit.dart
+- spot_repository_impl.dart
+- manage_requests_screen.dart
 - image_service.dart
 - spot_details_gallery.dart
-- spot_hero_image.dart
+- presentation/widgets/activity_card.dart
 - chat_visibility_tracker.dart
 - guardrails/README.md
 - Standard
 - Standard
 - Standard
 - Standard
-- RequestEntity
+- notifications_list_cubit.dart
 - city_model.dart
 - home_state.dart
-- conversations_cubit.dart
+- notifications_repository.dart
 - theme_extension.dart
 - app_env.dart
 - SOP: Configuration
 - SOP: Error Handling
 - Architecture Map — LastSpot (`lastspot_app`)
-- activities_list_section.dart
-- onboarding_slide_data.dart
+- spot_details_screen_mobile.dart
+- activity_empty_state.dart
 - chat_state.dart
 - 4. Mandatory workflow
 - Inline reference notes removed from sop/ (verbatim originals)
 - SOP: Project Structure
 - SOP: Repository
 - SOP: State Management
-- explore_event.dart
+- explore_filter_bottom_sheet.dart
 - profile_city_step.dart
 - activities_state.dart
-- AppRoutes.home
+- spot_remote_datasource.dart
 - app_utils.dart
 - sports_journey_section.dart
 - Project-Specific Rules (greenfield stub)
@@ -167,24 +167,24 @@
 - verify-prototype.mjs
 - map_extension.dart
 - app_constants.dart
-- presentation/widgets/activity_card.dart
+- app_cached_network_image.dart
 - chat_text_formatter.dart
 - recommended_spot_card.dart
-- ../base_import.dart
+- app_cached_network_image.dart
 - Codebase Audit Report
 - SOP: Persistence, Caching and Offline
-- device_remote_datasource.dart
+- dart:async
 - create_spot_screen_mobile.dart
-- DateTime
+- achievements_repository_impl.dart
 - app_string.dart
-- notifications_screen.dart
+- KhelBhai — Flutter Profile Mode Testing & Benchmarking Guide
 - app_radius.dart
 - my_sports_space_state.dart
-- app_empty_state.dart
+- profile_repository_impl.dart
 - static const String
 - notification_model.dart
-- State
-- sports_category_perspective_card.dart
+- KhelBhai — Flutter 3.50 Staged Migration Plan
+- compact_activity_card.dart
 - profile_stats.dart
 - join_request_model.dart
 - user_avatar.dart
@@ -194,52 +194,52 @@
 - SOP: Living Documentation
 - SOP: Theming and Responsive Layout
 - chat_conversation_model.dart
-- chat_composer_bar.dart
-- report_screen_mobile.dart
-- compact_spot_card.dart
-- activities_bloc.dart
+- chat_message_bubble.dart
+- report_screen_tablet.dart
+- app_button.dart
+- profile_screen_mobile.dart
 - chat_participant_model.dart
-- files
+- .agents/skills/flutter-workflow/assets/project/dependency-inventory.md
 - request_image_model.dart
 - Stack-specific rule lines generalised in rules/ (verbatim originals)
-- sop/README.md
+- SOP: Forms and Validation
 - SOP: Observability — Logging, Crash Reporting, Analytics
 - SOP: Platform Integration — Permissions, Push Notifications, Native Code
-- dart:async
-- VoidCallback
-- chat_message_bubble.dart
-- ADR-0001: Feature-First Clean Architecture Structure (Stay)
+- sports_category_perspective_card.dart
+- core/base_import.dart
+- ActivitiesBloc
+- achievement_entity.dart
 - LastSpot Project Rules
 - request_model.dart
 - city_selection_bottom_sheet.dart
-- app_datetime_field.dart
-- requests_tab_section.dart
-- profile_screen_mobile.dart
+- 5. Test Scenarios & Execution Procedures
+- activities_list_section.dart
+- foreground_chat_notification_coordinator.dart
 - popular_sports_grid.dart
-- CityCubit
+- debug_json_formatter.dart
 - Project-Specific Rules — LastSpot
-- Feature catalogue — LastSpot
+- Architecture Map (as implemented)
 - 4. Traced flows
-- widget_animation.dart
-- app_loading.dart
-- app_button.dart
+- String get
+- StatelessWidget
+- VoidCallback
 - join_request_entity.dart
-- activity_empty_state.dart
+- ManageRequestsBloc
 - StatelessWidget
 - PR review checklist (reviewer)
 - app_motion.dart
-- report_screen.dart
+- sop/README.md
 - .agents/skills/flutter-workflow/assets/adr/TEMPLATE.md
-- sports_summary_card.dart
-- ReportCubit
+- device_remote_datasource.dart
+- local_notification_service.dart
 - ADR-NNNN: <Title>
-- Dependency Inventory — `pubspec.yaml`
+- app_validators.dart
 - Project-Specific Rules
-- ADR-0002: Dependency Injection via GetIt Service Locator
+- conversations_state.dart
 - chat_repository_impl.dart
 - reset_password_screen.dart
-- onboarding_screen_test.dart
-- spot_details_screen_mobile.dart
+- 4. Deep-Dive Evaluations by Domain
+- spot_details_content.dart
 - KhelBhai
 - ADR-0001: Layer-first project structure
 - ADR-0002: get_it service locator with ordered registration modules
@@ -249,57 +249,63 @@
 - ADR-0006: Hive for structured cache, AES-wrapped GetStorage for session
 - ADR-0007: GlobalEventBus for realtime and cross-feature updates
 - ADR-0008: Environment configuration via --dart-define-from-file
-- ADR-0005: Supabase Gateway and Result Boundary Pattern
+- KhelBhai — Performance Baseline Report (Profile Mode)
 - ADR-NNNN: <Title>
-- flutter/features.md
-- signup_screen.dart
-- graphify reference: extra exports and benchmark
+- Back navigation and keyboard UX
+- StatefulWidget
+- app_shimmer.dart
 - Use test-driven development
-- notifications_list_cubit.dart
-- ADR-0008: Compile-Time Environment Configuration and AppConstants
-- context_extensions.dart
-- report_repository_impl.dart
+- supabase_config.dart
+- app_empty_state.dart
+- T
+- package:flutter_bloc/flutter_bloc.dart
 - my_sports_space_screen_mobile.dart
-- report_screen_tablet.dart
+- chat_composer_bar.dart
 - force_update_screen.dart
-- result.dart
+- app_error_state.dart
 - manifest.json
 - Operating guidelines for AI-assisted development
 - Review code changes
 - assets/.github/pull_request_template.md
 - [Unreleased]
-- auth_remote_datasource.dart
+- achievements_local_datasource.dart
 - Guardrails: Security
-- supabase_config.dart
+- chat_message_entity.dart
 - navigation_focus_observer.dart
 - khelbhai_back_button.dart
-- home_greeting_banner.dart
+- SOP: Code Quality
 - LastSpot design system — 14 October 2026
-- bool get
+- city_list_tile.dart
 - .github/pull_request_template.md
-- Adopt the Flutter workflow in a project or AI IDE
-- app_validators.dart
-- .agents/skills/flutter-workflow/agents/openai.yaml
+- ADR-0001: Feature-First Clean Architecture Structure (Stay)
+- SOP: Git and Pull Requests
+- files
 - CORE USER JOURNEY
 - Diagnose bugs systematically
 - Guardrails: AI-Assisted Development
 - Flutter pipeline in RepoSeed
 - currency_input_formatter.dart
 - Changelog
+- .agents/skills/flutter-workflow/assets/project/README.md
 - ADR 0001: Use Freezed for Immutable State and Data Classes
 - LastSpot design refresh — 9 October 2026
 - 1. Classification & Findings
-- package:supabase_flutter/supabase_flutter.dart
+- report_screen_mobile.dart
+- activities_bloc.dart
+- fcm_token_util.dart
+- notification_entity.dart
 - Managed Graphify integration
 - FLOW 1 — AUTHENTICATION
 - Architecture Compliance Check
-- home_cubit.dart
+- manage_join_request_card.dart
 - Guardrails: Architecture, Structure, Dependency Injection
-- graphify reference: query, path, explain
+- references/agent.md
 - Apply Ponytail minimalism
 - Write implementation plans
-- notification_entity.dart
-- API & Backend Integration
+- sport_filter_chips.dart
+- result.dart
+- main.dart
+- 2. Implemented Code Improvements
 - Flutter project agent conventions
 - Project-local agent context
 - FLOW 4 — CREATE ACTIVITY
@@ -311,21 +317,26 @@
 - Verify before completion
 - AppLocalizations
 - network_exceptions.dart
+- freezed
 - Feature catalogue
 - Rule Exception Request
 - Guardrails: Performance and Async
 - Guardrails: CI, Release, Store and Runtime Controls
 - Guardrails: UI
-- graphify reference: add a URL and watch a folder
-- graphify reference: commit hook and native CLAUDE.md integration
-- graphify reference: incremental update and cluster-only
+- interface
+- interface
+- interface
 - index.ts
 - lastspot_bottom_navigation_bar.dart
+- interface
 - .agents/skills/flutter-workflow/assets/.github/copilot-instructions.md
 - .agents/skills/flutter-workflow/assets/.github/pull_request_template.md
-- .agents/skills/flutter-workflow/assets/project/dependency-inventory.md
+- interface
+- spot_details_screen_tablet.dart
+- analysis_options.yaml
 - .agents/skills/flutter-workflow/assets/project/features.md
 - .agents/skills/flutter-workflow/assets/project/project-rules.md
+- Contributing
 - .agents/skills/flutter-workflow/assets/project/remediation-backlog.md
 - .agents/skills/flutter-workflow/assets/templates/AGENTS.md
 - .agents/skills/flutter-workflow/assets/templates/CHANGELOG.md
@@ -349,7 +360,7 @@
 - .agents/skills/flutter-workflow/references/guardrails/dependencies.md
 - .agents/skills/flutter-workflow/references/guardrails/documentation.md
 - .agents/skills/flutter-workflow/references/guardrails/localization.md
-- .agents/skills/flutter-workflow/references/guardrails/networking.md
+- interface
 - .agents/skills/flutter-workflow/references/guardrails/observability.md
 - .agents/skills/flutter-workflow/references/guardrails/performance.md
 - .agents/skills/flutter-workflow/references/guardrails/persistence.md
@@ -399,7 +410,7 @@
 - .agents/skills/flutter-workflow/references/rules/security.rules
 - .agents/skills/flutter-workflow/references/rules/state.rules
 - .agents/skills/flutter-workflow/references/rules/testing.rules
-- .agents/skills/flutter-workflow/references/rules/ui.rules
+- interface
 - .agents/skills/flutter-workflow/references/sop/accessibility.md
 - .agents/skills/flutter-workflow/references/sop/architecture.md
 - .agents/skills/flutter-workflow/references/sop/async-programming.md
@@ -439,56 +450,70 @@
 - Flutter workflow standards
 - documentation.md
 - Remediation Backlog (discovered, NOT applied)
-- graphify reference: GitHub clone and cross-repo merge
-- graphify reference: transcribe video and audio
+- interface
+- sliver_pinned_header_delegate.dart
 - MainActivity.kt
 - Key Features
 - Platform support
-- rules/graphify.md
+- interface
 - project/audit-report.md
 - project/dependency-inventory.md
 - project/remediation-backlog.md
 - templates/AGENTS.md
 - CLAUDE.md
 - reference/README.md
-- extraction-spec.md
+- interface
 - ponytail-audit/SKILL.md
 - ponytail-debt/SKILL.md
 - ponytail-gain/SKILL.md
 - ponytail-help/SKILL.md
 - ponytail-review/SKILL.md
-- workflows/graphify.md
-- ../../../chat/presentation/pages/chat_screen.dart
+- interface
 - flutter/dependency-inventory.md
 - flutter/remediation-backlog.md
 - LaunchImage.imageset/README.md
 - AppColor
 - SemanticColors
 - PONYTAIL.md
-- bool?
-- List
-- Configuration & Environment Variables
-- Contributing
-- IDE Configurations (VS Code & Android Studio)
+- interface
+- category_bloc.dart
+- interface
+- interface
+- interface
+- profile_details_step.dart
+- interface
 - splash_branding_view.dart
+- interface
 - .agents/skills/flutter-workflow/assets/project/audit-report.md
-- ../../features/spot/presentation/widgets/activity_card.dart
-- Architecture Map (as implemented)
+- T
+- .agents/skills/flutter-workflow/references/guardrails/README.md
+- .agents/skills/flutter-workflow/references/sop/naming-conventions.md
+- _SportsCategoryPerspectiveCarouselState
 - Contributing to LastSpot
 - sport_filter_chips.dart
+- KhelBhai — Flutter 3.50 Performance Comparison & Projections
 - .agents/skills/flutter-workflow/assets/project/architecture-map.md
 - export_launcher_icons.sh
+- onboarding_screen_test.dart
+- startup_bloc.dart
+- ADR-0003: State Management with flutter_bloc and ValueNotifier
 - Build & Release
 - Getting Started
+- notifications_repository_impl.dart
 - Troubleshooting
 - Testing & Quality Assurance
+- CityCubit
+- report_screen.dart
 - .agents/skills/flutter-workflow/assets/.cursor/rules/flutter-ai.mdc
+- ReportCubit
+- achievements_cubit.dart
 - Running the Application
-- Push Notifications & Realtime Messaging
+- StatefulWidget
+- NotificationsCubit
+- received_request_card.dart
 - build_apk_with_banner.sh
-- base_repository.dart
-- Release checklist
-- SpotDetailsBloc
+- ValueNotifier
+- mark_achievement_celebrated_usecase.dart
 - .agents/skills/flutter-workflow/assets/adr/README.md
 
 ## God Nodes (most connected - your core abstractions)
@@ -496,141 +521,137 @@
 2. `AuthBloc` - 72 edges
 3. `============================================================` - 44 edges
 4. `Evidence and status notes moved out of the universal kit` - 36 edges
-5. `renderScreen()` - 34 edges
-6. `ProfileCubit` - 33 edges
-7. `ActivitiesBloc` - 30 edges
-8. `ExploreBloc` - 27 edges
-9. `icon()` - 26 edges
-10. `RequestEntity` - 26 edges
+5. `ProfileCubit` - 35 edges
+6. `renderScreen()` - 34 edges
+7. `dependencies` - 32 edges
+8. `ActivitiesBloc` - 30 edges
+9. `ExploreBloc` - 27 edges
+10. `icon()` - 26 edges
 
 ## Surprising Connections (you probably didn't know these)
-- `_onSave` --references--> `ProfileCubit`  [EXTRACTED]
-  lib/features/profile/presentation/pages/edit_profile_screen.dart → lib/features/auth/presentation/bloc/profile_cubit.dart
-- `initState` --references--> `ProfileCubit`  [EXTRACTED]
-  lib/features/spot/presentation/pages/home_screen.dart → lib/features/auth/presentation/bloc/profile_cubit.dart
-- `_submit` --references--> `ReportCubit`  [EXTRACTED]
-  lib/features/reports/presentation/pages/report_screen_mobile.dart → lib/features/reports/presentation/bloc/report_cubit.dart
-- `_submit` --references--> `ReportCubit`  [EXTRACTED]
-  lib/features/reports/presentation/pages/report_screen_tablet.dart → lib/features/reports/presentation/bloc/report_cubit.dart
-- `build` --references--> `CreateSpotBloc`  [EXTRACTED]
-  lib/features/spot/presentation/pages/preview_spot_screen.dart → lib/features/spot/presentation/bloc/create_spot_bloc.dart
+- `3. Branches and Commits` --references--> `main()`  [INFERRED]
+  CONTRIBUTING.md → .agents/skills/flutter-workflow/scripts/check_compliance.py
+- `FLOW 9 — NOTIFICATIONS` --references--> `notifications()`  [INFERRED]
+  .agents/rules/lastspot_master_spec.md → docs/design/lastspot/prototype.js
+- `Core Tables` --references--> `notifications()`  [INFERRED]
+  README.md → docs/design/lastspot/prototype.js
+- `Prepare and attach` --references--> `render()`  [INFERRED]
+  .agents/skills/project-understanding/references/diagrams.md → docs/design/lastspot/prototype.js
+- `Development Guidelines` --references--> `main()`  [INFERRED]
+  README.md → .agents/skills/flutter-workflow/scripts/check_compliance.py
 
 ## Import Cycles
 - None detected.
 
-## Communities (481 total, 33 thin omitted)
+## Communities (509 total, 38 thin omitted)
 
 ### Community 0 - "sports_category_perspective_carousel.dart"
 Cohesion: 0.05
-Nodes (43): all, _animateToPage, _animController, build, _buildItems, cardHeight, cardWidth, carouselHeight (+35 more)
+Nodes (39): all, _animateToPage, _animController, build, _buildItems, cardHeight, cardWidth, carouselHeight (+31 more)
 
 ### Community 1 - "auth_event.dart"
-Cohesion: 0.13
-Nodes (21): _onAppResumed, AuthCheckRequested, AuthEvent, AuthRecoveryExchangeFailed, AuthRecoveryLinkDetected, AuthRecoverySessionEstablished, AuthSessionValidationRequested, email (+13 more)
-
-### Community 2 - "ExploreBloc"
 Cohesion: 0.12
-Nodes (31): explore_event.dart, explore_state.dart, ExploreBloc, _limit, _onApplyFilters, _onCategorySelected, _onCitySelected, _onClearFilters (+23 more)
+Nodes (22): _onAppResumed, AuthCheckRequested, AuthEvent, AuthLoginRequested, AuthProfileCompleted, AuthRecoveryExchangeFailed, AuthRecoveryLinkDetected, AuthRecoverySessionEstablished (+14 more)
 
-### Community 3 - "custom_app_bar.dart"
-Cohesion: 0.05
-Nodes (39): EditableTextTapOutsideIntent, AppKeyboardDismissal, build, child, actions, build, dashboard, defaultAppBar (+31 more)
+### Community 2 - "../../../../core/utils/result.dart"
+Cohesion: 0.04
+Nodes (41): AuthRepositoryImpl, AuthRepository, getCurrentUserId, resendOtp, sendPasswordResetEmail, signIn, signOut, signUp (+33 more)
+
+### Community 3 - "home_activity_hub.dart"
+Cohesion: 0.08
+Nodes (18): build, ChatDateChip, date, _formatDate, build, conversation, ConversationTile, onTap (+10 more)
 
 ### Community 4 - "String?"
-Cohesion: 0.07
-Nodes (28): explore_screen_mobile.dart, explore_screen_tablet.dart, capitalizeFirst, capitalizeFirstOrEmpty, hexToColor, ifEmpty, isEqualIgnoreCase, isNotNullOrEmpty (+20 more)
+Cohesion: 0.05
+Nodes (37): capitalizeFirst, capitalizeFirstOrEmpty, hexToColor, ifEmpty, isEqualIgnoreCase, isNotNullOrEmpty, isNullOrEmpty, orDash (+29 more)
 
 ### Community 5 - "SettingsCubit"
 Cohesion: 0.06
-Nodes (40): ../bloc/settings_cubit.dart, ../bloc/settings_state.dart, ../../../../core/theme/app_color.dart, ../../../../core/utils/shared_prefs_util.dart, interactive_settings_tile.dart, AppThemeColor, _prefs, SettingsCubit (+32 more)
+Nodes (30): AppThemeColor, _prefs, SettingsCubit, updateAppThemeColor, updateLocale, updateThemeMode, appThemeColor, copyWith (+22 more)
 
 ### Community 6 - "app_localizations.dart"
 Cohesion: 0.00
-Nodes (499): app_localizations_en.dart, app_localizations_gu.dart, app_localizations_hi.dart, aboutSection, accept, acceptTerms, acceptTermsError, accountBannedDesc (+491 more)
+Nodes (540): aboutSection, accept, acceptTerms, acceptTermsError, accountBannedDesc, accountBannedTitle, accountDeletedDesc, accountDeletedTitle (+532 more)
 
 ### Community 7 - "dimensions.dart"
 Cohesion: 0.00
-Nodes (443): double get, backButtonEdgeDepth, backButtonSurfaceSize, detailsGalleryRatio, detailsImageCacheWidth, detailsMaxWidth, detailsSidebarWidth, detailsTabletBreakpoint (+435 more)
+Nodes (440): backButtonEdgeDepth, backButtonSurfaceSize, detailsGalleryRatio, detailsImageCacheWidth, detailsMaxWidth, detailsSidebarWidth, detailsTabletBreakpoint, detailsWideBreakpoint (+432 more)
 
 ### Community 8 - "app_localizations_en.dart"
 Cohesion: 0.00
-Nodes (486): aboutSection, accept, acceptTerms, acceptTermsError, accountBannedDesc, accountBannedTitle, accountDeletedDesc, accountDeletedTitle (+478 more)
+Nodes (532): aboutSection, accept, acceptTerms, acceptTermsError, accountBannedDesc, accountBannedTitle, accountDeletedDesc, accountDeletedTitle (+524 more)
 
 ### Community 9 - "app_assets.dart"
 Cohesion: 0.02
-Nodes (116): AppAssets, arrowForward3d, arrowForward3dGen, badminton, badmintonGen, basketball, basketballGen, calendar3d (+108 more)
+Nodes (115): AppAssets, arrowForward3d, arrowForward3dGen, badminton, badmintonGen, basketball, basketballGen, calendar3d (+107 more)
 
 ### Community 10 - "app_color.dart"
 Cohesion: 0.02
-Nodes (99): Color get, ColorScheme get, accent, accentColor, accentDark, accentHighlight, accentLight, backgroundColor (+91 more)
+Nodes (94): accent, accentColor, accentDark, accentHighlight, accentLight, backgroundColor, backgroundDark, backgroundLight (+86 more)
 
 ### Community 11 - "date_formats.dart"
 Cohesion: 0.02
-Nodes (86): DateFormat, changeDateFormat, checkCurrentDate, convertToUTC, currentDate, dateFormatDD, dateFormatDDMMM, dateFormatDDMMMMEEEE (+78 more)
+Nodes (85): changeDateFormat, checkCurrentDate, convertToUTC, currentDate, dateFormatDD, dateFormatDDMMM, dateFormatDDMMMMEEEE, dateFormatDDMMYY (+77 more)
 
 ### Community 12 - "service_locator.dart"
 Cohesion: 0.03
-Nodes (79): core/network/router.dart, core/services/account_session_service.dart, core/services/password_recovery_link_monitor.dart, core/widgets/app_keyboard_dismissal.dart, core/widgets/env_banner.dart, ../../features/auth/data/datasources/auth_remote_datasource.dart, ../../features/auth/data/datasources/profile_remote_datasource.dart, ../../features/auth/data/repositories/auth_repository_impl.dart (+71 more)
+Nodes (5): setupServiceLocator, sharedPreferences, sl, SharedPrefsUtil, SharedPrefsUtilImpl
 
 ### Community 13 - "prototype.js"
-Cohesion: 0.09
-Nodes (72): activities, activitiesScreen(), activityCard(), activityList(), authScreen(), avatar(), b(), back() (+64 more)
+Cohesion: 0.07
+Nodes (82): Dependency Inventory — `pubspec.yaml`, Dev, Firebase / platform, Media, Networking, Overrides, State, DI, functional, codegen, Storage (+74 more)
 
 ### Community 14 - "assets.gen.dart"
 Cohesion: 0.03
-Nodes (77): AssetGenImage get, activities3d, activityCreatedSuccess, activityCreatedVictory, anCongratulationScreen, anEmptyChatList, animation, anNoData (+69 more)
+Nodes (73): activities3d, activityCreatedSuccess, activityCreatedVictory, anCongratulationScreen, anEmptyChatList, animation, anNoData, anSplashScreen (+65 more)
 
 ### Community 15 - "app_localizations_gu.dart"
 Cohesion: 0.00
-Nodes (487): app_localizations.dart, aboutSection, accept, acceptTerms, acceptTermsError, accountBannedDesc, accountBannedTitle, accountDeletedDesc (+479 more)
+Nodes (532): aboutSection, accept, acceptTerms, acceptTermsError, accountBannedDesc, accountBannedTitle, accountDeletedDesc, accountDeletedTitle (+524 more)
 
 ### Community 16 - "auth_bloc.dart"
 Cohesion: 0.04
-Nodes (54): auth_event.dart, auth_state.dart, ../../../../core/network/password_recovery_config.dart, ../../domain/usecases/check_auth_status_usecase.dart, ../../domain/usecases/login_usecase.dart, ../../domain/usecases/logout_usecase.dart, ../../domain/usecases/register_device_usecase.dart, ../../domain/usecases/resend_otp_usecase.dart (+46 more)
+Nodes (44): _accountSessionService, _activateFreshSession, _cancelSessionRetry, _checkAuthStatusUseCase, close, _getProfileUseCase, _handleUserSession, _handleValidationStatus (+36 more)
 
-### Community 17 - "package:flutter/material.dart"
-Cohesion: 0.15
-Nodes (11): CenterExtension, marginAll, marginOnly, onTap, paddingAll, paddingOnly, paddingSymmetric, toCenter (+3 more)
+### Community 17 - "widget_extension.dart"
+Cohesion: 0.22
+Nodes (8): CenterExtension, marginAll, marginOnly, onTap, paddingAll, paddingOnly, paddingSymmetric, toCenter
 
-### Community 18 - "home_activity_feed.dart"
-Cohesion: 0.05
-Nodes (34): ../../../categories/domain/entities/category.dart, compact_spot_card.dart, home_section_header.dart, build, categories, categorySlug, ExploreFilterBar, ExploreFilterChip (+26 more)
+### Community 18 - "ValueChanged"
+Cohesion: 0.06
+Nodes (28): build, _buildTab, CustomSegmentedControl, height, onTabChanged, selectedIndex, tabs, build (+20 more)
 
-### Community 19 - "router.dart"
-Cohesion: 0.04
-Nodes (50): app_routes.dart, ../../features/activities/presentation/pages/activities_screen.dart, ../../features/auth/domain/repositories/auth_repository.dart, ../../features/auth/presentation/pages/account_status_screen.dart, ../../features/auth/presentation/pages/forgot_password_screen.dart, ../../features/auth/presentation/pages/login_screen.dart, ../../features/auth/presentation/pages/profile_setup_screen.dart, ../../features/auth/presentation/pages/reset_password_screen.dart (+42 more)
-
-### Community 20 - "report_entity.dart"
+### Community 20 - "Equatable"
 Cohesion: 0.14
 Nodes (13): adminNote, createdAt, description, id, messageId, props, reason, reportedUserId (+5 more)
 
-### Community 21 - "profile_repository_impl.dart"
-Cohesion: 0.12
-Nodes (17): class ProfileRepositoryImpl extends, ../datasources/profile_remote_datasource.dart, ../../domain/entities/user_profile.dart, ../../domain/repositories/profile_repository.dart, _client, getProfile, getProfileStats, ProfileRemoteDataSource (+9 more)
+### Community 21 - "achievements_state.dart"
+Cohesion: 0.19
+Nodes (13): AchievementsCubit, achievements, AchievementsError, AchievementsInitial, AchievementsLoaded, AchievementsLoading, AchievementsState, copyWith (+5 more)
 
-### Community 22 - "ValueChanged"
-Cohesion: 0.05
-Nodes (36): ../bloc/home_state.dart, AppFilterChip, build, groupValue, label, onSelected, value, build (+28 more)
+### Community 22 - "achievement_detail_bottom_sheet.dart"
+Cohesion: 0.10
+Nodes (16): AchievementEntity, achievement, AchievementCard, build, _getLocalizedTitle, _getStatusSubtitle, _onCardTapped, achievement (+8 more)
 
 ### Community 23 - "in_app_feedback_manager.dart"
 Cohesion: 0.04
 Nodes (46): _activeConversationId, _activeMessageConversationId, _activeMessageGeneration, _activeMessageIsPersistent, _activeMessageRequestId, _activeRequestId, activityNameFrom, appFeedbackManager (+38 more)
 
 ### Community 24 - "app_keyboard_dismissal_test.dart"
-Cohesion: 0.10
-Nodes (20): AnimatedContainer, AnimatedScale, EditableText, package:flutter/semantics.dart, package:flutter_test/flutter_test.dart, package:go_router/go_router.dart, package:lastspot_app/core/l10n/app_localizations.dart, package:lastspot_app/core/services/navigation_focus_observer.dart (+12 more)
+Cohesion: 0.08
+Nodes (4): AppTypography, app, main, main
 
 ### Community 25 - "spot_repository.dart"
 Cohesion: 0.04
-Nodes (51): ../entities/join_request_entity.dart, ../entities/request_entity.dart, acceptJoinRequest, cancelJoinRequest, createRequest, getConfirmedPlayers, getExploreRequests, getFeedRequests (+43 more)
+Nodes (48): acceptJoinRequest, cancelJoinRequest, createRequest, getConfirmedPlayers, getExploreRequests, getFeedRequests, getReceivedJoinRequests, getSentJoinRequests (+40 more)
 
-### Community 26 - "static const"
-Cohesion: 0.29
-Nodes (6): build, currentStep, ProfileStepIndicator, _stepLabels, totalSteps, static const
+### Community 26 - "home_activity_feed.dart"
+Cohesion: 0.10
+Nodes (18): activity, build, categories, compact, HomeActivityFeed, HomeActivityFeedItem, HomeActivityFeedSection, HomeActivityFeedSectionHeader (+10 more)
 
 ### Community 27 - "create_spot_success_screen.dart"
-Cohesion: 0.14
-Nodes (14): AudioPlayer, _audioPlayer, build, CreateSpotSuccessScreen, _CreateSpotSuccessScreenState, createState, dispose, _homeTimer (+6 more)
+Cohesion: 0.09
+Nodes (14): BaseRepository, _formatData, _logError, _audioPlayer, build, CreateSpotSuccessScreen, _CreateSpotSuccessScreenState, createState (+6 more)
 
 ### Community 28 - "app_routes.dart"
 Cohesion: 0.05
@@ -638,19 +659,15 @@ Nodes (41): accountStatus, activities, activityGroupChatPath, AppRoutes, chat, c
 
 ### Community 29 - "chat_screen_mobile.dart"
 Cohesion: 0.06
-Nodes (44): ChatCubit, avatarUrl, build, category, ChatScreenMobile, _ChatScreenMobileState, createState, dispose (+36 more)
+Nodes (37): ChatCubit, avatarUrl, build, category, ChatScreenMobile, _ChatScreenMobileState, createState, dispose (+29 more)
 
 ### Community 30 - "============================================================"
 Cohesion: 0.05
 Nodes (41): ============================================================, ACCESSIBILITY, ACTIVITY CARD, APP SETTINGS, ARCHITECTURE, BACKEND REPLACEMENT, BOTTOM NAVIGATION, CONSTANTS & UTILITIES (+33 more)
 
-### Community 31 - "base_import.dart"
-Cohesion: 0.04
-Nodes (49): constants/app_assets.dart, constants/app_constants.dart, constants/date_formats.dart, ../di/service_locator.dart, extension/date_extension.dart, extension/enum_extension.dart, extension/list_extension.dart, extension/map_extension.dart (+41 more)
-
-### Community 32 - "app_cached_network_image.dart"
-Cohesion: 0.07
-Nodes (28): int?, _AnimatedImageError, _AnimatedImagePlaceholder, backgroundColor, borderRadius, build, _buildErrorWidget, errorWidget (+20 more)
+### Community 32 - "app_asset_image.dart"
+Cohesion: 0.06
+Nodes (28): AppAssetImage, assetPath, borderRadius, build, _buildFallback, cacheHeight, cacheWidth, color (+20 more)
 
 ### Community 33 - "project-understanding/SKILL.md"
 Cohesion: 0.06
@@ -658,143 +675,143 @@ Nodes (30): Compounding knowledge, What this is not, What to do about it, When t
 
 ### Community 34 - "shared_prefs_util.dart"
 Cohesion: 0.06
-Nodes (36): appThemeColor, clear, containsKey, getAppThemeColor, getBool, getDouble, getInt, getLocale (+28 more)
+Nodes (32): appThemeColor, clear, containsKey, getAppThemeColor, getBool, getDouble, getInt, getLocale (+24 more)
 
 ### Community 35 - "references/agent.md"
-Cohesion: 0.06
-Nodes (26): Project profile (active), Required files, This project (fill in), Greenfield vs brownfield, Templates, 1. Inventory (facts only), 2. Ask once, 3. Pattern drift (counts with evidence) (+18 more)
+Cohesion: 0.05
+Nodes (32): ADR-0002: Dependency Injection via GetIt Service Locator, Alternatives Considered, Consequences, Context, Decision, Evidence, Problem, ADR-0005: Supabase Gateway and Result Boundary Pattern (+24 more)
 
 ### Community 36 - "Evidence and status notes moved out of the universal kit"
 Cohesion: 0.06
 Nodes (36): Evidence and status notes moved out of the universal kit, From `checklists/architecture-compliance.md`, From `checklists/definition-of-done.md`, From `checklists/greenfield-kickoff.md`, From `guardrails/ai-development.md`, From `guardrails/architecture.md`, From `guardrails/dependencies.md`, From `guardrails/networking.md` (+28 more)
 
 ### Community 37 - "push_notification_service.dart"
-Cohesion: 0.03
-Nodes (71): @pragma, chat_visibility_tracker.dart, core/di/service_locator.dart, core/network/supabase_config.dart, core/services/push_notification_service.dart, dart:collection, dart:convert, ../../features/auth/data/datasources/device_remote_datasource.dart (+63 more)
+Cohesion: 0.09
+Nodes (13): dispose, _fcm, feedbackManager, _firebaseMessagingBackgroundHandler, _foregroundMessages, initialize, initializeApp, _initialized (+5 more)
 
 ### Community 38 - "create_spot_bloc.dart"
 Cohesion: 0.09
-Nodes (34): ../../domain/usecases/create_spot_usecase.dart, ../../domain/usecases/update_spot_usecase.dart, _cachedCategories, categories, categoryId, cityId, CreateSpotBloc, CreateSpotCategoriesError (+26 more)
+Nodes (32): _cachedCategories, categories, categoryId, cityId, CreateSpotBloc, CreateSpotCategoriesError, CreateSpotCategoriesLoaded, CreateSpotCategoriesLoading (+24 more)
 
 ### Community 39 - "manage_requests_bloc.dart"
 Cohesion: 0.07
-Nodes (42): ../bloc/manage_requests_bloc.dart, ../../domain/usecases/manage_join_request_usecase.dart, ../../domain/usecases/stream_spot_join_requests_usecase.dart, close, _currentSpot, _getSpotDetailsUseCase, LoadPendingRequestsEvent, ManageRequestsBloc (+34 more)
+Nodes (25): acceptedRequests, activeProcessingId, allRequests, close, copyWith, _currentSpot, _getSpotDetailsUseCase, _manageRequestUseCase (+17 more)
 
 ### Community 40 - "spot_repository_impl.dart"
-Cohesion: 0.03
-Nodes (57): BaseRepository, ../../../../core/network/api_endpoints.dart, ../../../../core/network/base/base_repository.dart, ../datasources/auth_remote_datasource.dart, ../datasources/city_remote_datasource.dart, ../datasources/device_remote_datasource.dart, ../datasources/spot_remote_datasource.dart, ../../domain/repositories/auth_repository.dart (+49 more)
+Cohesion: 0.04
+Nodes (31): getCurrentUserId, _remoteDataSource, resendOtp, sendPasswordResetEmail, signIn, signOut, signUp, updatePassword (+23 more)
 
 ### Community 41 - "edit_profile_screen.dart"
-Cohesion: 0.10
-Nodes (21): _bioController, build, createState, dispose, EditProfileScreen, _EditProfileScreenState, _emailController, _formKey (+13 more)
+Cohesion: 0.07
+Nodes (22): _bioController, build, createState, dispose, EditProfileScreen, _EditProfileScreenState, _emailController, _formKey (+14 more)
 
 ### Community 42 - "chat_cubit.dart"
 Cohesion: 0.03
-Nodes (65): chat_state.dart, ../../domain/usecases/get_chat_messages_usecase.dart, ../../domain/usecases/get_or_create_direct_chat_usecase.dart, ../../domain/usecases/get_or_create_group_chat_usecase.dart, ../../domain/usecases/mark_chat_read_usecase.dart, ../../domain/usecases/send_chat_message_usecase.dart, ../../domain/usecases/stream_chat_messages_usecase.dart, ../entities/chat_conversation_entity.dart (+57 more)
+Nodes (55): ChatRepository, getMessages, getMyConversations, getOrCreateDirectChat, getOrCreateGroupChat, markAsRead, sendMessage, streamMessages (+47 more)
 
 ### Community 43 - "spot_photo_viewer.dart"
 Cohesion: 0.06
-Nodes (32): ../../../../core/constants/dimensions.dart, ../../../../core/l10n/app_localizations.dart, ../../../../core/theme/app_motion.dart, ../../../../core/theme/app_spacing.dart, ../../../../core/widgets/app_cached_network_image.dart, ../../../../core/widgets/dialogs/app_dialog.dart, build, _controller (+24 more)
+Nodes (25): build, _controller, createState, didUpdateWidget, dispose, imageUrl, initialPage, initState (+17 more)
 
 ### Community 44 - "api_endpoints.dart"
 Cohesion: 0.06
 Nodes (32): ApiEndpoints, authResendOtp, authResetPassword, authSignIn, authSignOut, authSignUp, authVerifyOtp, bucketProfiles (+24 more)
 
 ### Community 45 - "startup_state.dart"
-Cohesion: 0.08
-Nodes (30): error, initial, loading, maintenanceMode, success, updateRequired, _Error, _Initial (+22 more)
-
-### Community 46 - "app_asset_image.dart"
-Cohesion: 0.05
-Nodes (41): BlendMode?, BorderRadius?, BorderSide?, Clip, Color?, AppAssetImage, assetPath, borderRadius (+33 more)
-
-### Community 47 - "group_info_screen_tablet.dart"
 Cohesion: 0.12
-Nodes (15): group_info_screen_mobile.dart, build, confirmedPlayers, currentUserId, GroupInfoScreenTablet, onBack, post, activity (+7 more)
+Nodes (29): error, initial, loading, maintenanceMode, success, updateRequired, _Error, _Initial (+21 more)
 
-### Community 48 - "Equatable"
-Cohesion: 0.11
-Nodes (18): ../../domain/entities/request_image_entity.dart, Equatable, CategoryEvent, LoadCategoriesEvent, props, ReportEntity, RequestImageModel, createdAt (+10 more)
+### Community 46 - "dependencies"
+Cohesion: 0.04
+Nodes (47): dependencies, audioplayers, cached_network_image, cupertino_icons, device_info_plus, equatable, firebase_core, firebase_messaging (+39 more)
+
+### Community 47 - "../../../categories/domain/entities/category.dart"
+Cohesion: 0.19
+Nodes (8): AchievementsRepositoryImpl, AchievementsRepository, calculateAchievements, getCelebratedAchievementIds, markAchievementCelebrated, call, GetUserAchievementsUseCase, _repository
+
+### Community 48 - "List"
+Cohesion: 0.10
+Nodes (18): ListExtension, description, icon, id, isActive, name, props, slug (+10 more)
 
 ### Community 49 - "dart:io"
-Cohesion: 0.09
-Nodes (23): dart:io, ../entities/user_profile.dart, getProfile, getProfileStats, ProfileRepository, updateProfile, uploadAvatar, call (+15 more)
+Cohesion: 0.11
+Nodes (17): ProfileRepositoryImpl, ProfileRepository, call, GetProfileStatsUseCase, _repository, call, GetProfileUseCase, _repository (+9 more)
 
 ### Community 50 - "account_session_service.dart"
 Cohesion: 0.07
-Nodes (28): dart:math, Future, installation_id_service.dart, AccountSessionService, AccountSessionStatus, activateFreshSession, _classifyError, clearLocalSession (+20 more)
+Nodes (24): AccountSessionService, AccountSessionStatus, activateFreshSession, _classifyError, clearLocalSession, _client, installationId, _installationIdService (+16 more)
 
 ### Community 51 - "app_localizations_hi.dart"
 Cohesion: 0.00
-Nodes (486): aboutSection, accept, acceptTerms, acceptTermsError, accountBannedDesc, accountBannedTitle, accountDeletedDesc, accountDeletedTitle (+478 more)
+Nodes (532): aboutSection, accept, acceptTerms, acceptTermsError, accountBannedDesc, accountBannedTitle, accountDeletedDesc, accountDeletedTitle (+524 more)
 
 ### Community 52 - "list_extension.dart"
 Cohesion: 0.06
-Nodes (30): avg, chunk, flatten, groupBy, groupByKey, hasKey, hasValue, latest (+22 more)
+Nodes (28): avg, chunk, flatten, groupBy, groupByKey, hasKey, hasValue, latest (+20 more)
 
-### Community 53 - "ActivitiesBloc"
-Cohesion: 0.24
-Nodes (15): ActivitiesBloc, ActivitiesEvent, CancelJoinRequestEvent, joinRequestId, LoadActivitiesEvent, props, RefreshActivitiesEvent, _onRefresh (+7 more)
+### Community 53 - "activities_screen_mobile.dart"
+Cohesion: 0.12
+Nodes (15): RefreshActivitiesEvent, ActivitiesScreenMobile, _ActivitiesScreenMobileState, build, createState, dispose, _onRefresh, _selectedTab (+7 more)
 
-### Community 54 - "spot_remote_datasource.dart"
-Cohesion: 0.10
-Nodes (20): acceptJoinRequest, cancelJoinRequest, _client, createRequest, getConfirmedPlayers, getExploreRequests, getFeedRequests, getReceivedJoinRequests (+12 more)
+### Community 54 - "package:supabase_flutter/supabase_flutter.dart"
+Cohesion: 0.04
+Nodes (45): clear, detectSessionInUri, instance, isPending, _isRecoveryCallback, _lastWasMalformed, _linkEvents, PasswordRecoveryLinkMonitor (+37 more)
 
-### Community 55 - "docs/adr/README.md"
-Cohesion: 0.06
-Nodes (25): ADR-0003: State Management with flutter_bloc and ValueNotifier, Alternatives Considered, Consequences, Context, Decision, Evidence, Problem, ADR-0004: Declarative Routing with go_router (+17 more)
+### Community 55 - "ADR-0004: Declarative Routing with go_router"
+Cohesion: 0.25
+Nodes (7): ADR-0004: Declarative Routing with go_router, Alternatives Considered, Consequences, Context, Decision, Evidence, Problem
 
 ### Community 56 - "authenticated_app_shell.dart"
-Cohesion: 0.05
-Nodes (40): features/auth/presentation/bloc/auth_bloc.dart, ../../features/auth/presentation/bloc/auth_event.dart, features/auth/presentation/bloc/auth_state.dart, ../../features/chat/presentation/bloc/conversations_cubit.dart, ../../features/chat/presentation/bloc/conversations_state.dart, ../../features/notifications/presentation/bloc/notifications_cubit.dart, ../../features/notifications/presentation/bloc/notifications_state.dart, _briefInactivityThreshold (+32 more)
+Cohesion: 0.07
+Nodes (18): _briefInactivityThreshold, build, _conversationsCubit, createState, didChangeAppLifecycleState, didChangeDependencies, dispose, _getSelectedIndex (+10 more)
 
 ### Community 57 - "chat_conversation_entity.dart"
-Cohesion: 0.09
-Nodes (24): ChatConversationEntity, ChatConversationEntity, _, displayAvatarUrl, _ChatConversationEntity, _, getDirectActivitySubtitle, getPreviewMessage (+16 more)
+Cohesion: 0.14
+Nodes (23): ChatConversationEntity, _, displayAvatarUrl, _ChatConversationEntity, _, getDirectActivitySubtitle, getPreviewMessage, getTitle (+15 more)
 
 ### Community 58 - "profile_setup_screen.dart"
 Cohesion: 0.07
-Nodes (30): ../bloc/profile_cubit.dart, ../../../categories/presentation/bloc/category_event.dart, ../../../../core/utils/image_cropper_helper.dart, AuthProfileCompleted, _bioController, build, _buildContent, _buildCurrentStep (+22 more)
+Nodes (21): _bioController, build, _buildContent, _buildCurrentStep, createState, _currentStep, dispose, _formKey (+13 more)
 
-### Community 59 - "../../../../core/utils/result.dart"
-Cohesion: 0.06
-Nodes (37): ../../../../core/utils/result.dart, AuthRepository, getCurrentUserId, resendOtp, sendPasswordResetEmail, signIn, signOut, signUp (+29 more)
+### Community 59 - "ExploreBloc"
+Cohesion: 0.09
+Nodes (36): ExploreBloc, _limit, _onApplyFilters, _onCategorySelected, _onCitySelected, _onClearFilters, _onLoadExplorePosts, _onSearchQueryChanged (+28 more)
 
 ### Community 60 - "rules-overlay.md"
 Cohesion: 0.07
 Nodes (27): From architecture.rules, From bloc.rules, From dependency.rules, From error.rules, From flutter.rules, From naming.rules, From networking.rules, From performance.rules (+19 more)
 
 ### Community 61 - "home_screen.dart"
-Cohesion: 0.07
-Nodes (36): ../../../auth/presentation/bloc/profile_cubit.dart, ../bloc/home_cubit.dart, ChangeNotifier, ../../../cities/presentation/widgets/city_selection_bottom_sheet.dart, ../../../../core/services/explore_navigation_service.dart, ExploreNavigationService, _onExploreActivities, _onExploreActivities (+28 more)
+Cohesion: 0.06
+Nodes (25): ExploreNavigationService, _onExploreActivities, _onExploreActivities, _onFindGame, _onFindGame, HomeCubit, createState, dispose (+17 more)
 
 ### Community 62 - "startup_bloc.dart"
-Cohesion: 0.15
-Nodes (19): _onInitialCheckRequested, _onUpdateSkipped, _prefs, StartupBloc, _supabaseClient, props, StartupEvent, StartupInitialCheckRequested (+11 more)
+Cohesion: 0.30
+Nodes (10): StartupBloc, props, StartupEvent, StartupInitialCheckRequested, StartupUpdateSkipped, version, initState, _onMaybeLaterPressed (+2 more)
 
 ### Community 63 - "ConversationsCubit"
-Cohesion: 0.10
-Nodes (26): ../bloc/conversations_cubit.dart, chats_screen_mobile.dart, chats_screen_tablet.dart, conversations_tab_view.dart, ../../domain/entities/chat_conversation_entity.dart, ConversationsCubit, conversations, ConversationsError (+18 more)
+Cohesion: 0.09
+Nodes (22): InAppFeedbackManager, ConversationsCubit, didChangeDependencies, build, ChatsScreen, build, ChatsScreenMobile, _onRefresh (+14 more)
 
 ### Community 64 - "env_banner.dart"
 Cohesion: 0.12
-Nodes (17): ../constants/app_string.dart, build, child, _collapseTab, createState, dispose, EnvBanner, _EnvBannerState (+9 more)
+Nodes (14): build, child, _collapseTab, createState, dispose, EnvBanner, _EnvBannerState, _getLabel (+6 more)
 
 ### Community 65 - "explore_perspective_carousel.dart"
 Cohesion: 0.12
-Nodes (17): class, build, createState, _currentPage, didUpdateWidget, dispose, ExplorePerspectiveCarousel, _ExplorePerspectiveCarouselState (+9 more)
+Nodes (16): build, createState, _currentPage, didUpdateWidget, dispose, ExplorePerspectiveCarousel, _ExplorePerspectiveCarouselState, _handleCardTap (+8 more)
 
-### Community 66 - "What You Must Do When Invoked"
-Cohesion: 0.08
-Nodes (25): For /graphify add and --watch, For /graphify query, For the commit hook and native CLAUDE.md integration, For --update and --cluster-only, /graphify, Honesty Rules, Interpreter guard for subcommands, Managed AST-only policy (+17 more)
+### Community 66 - "home_cubit.dart"
+Cohesion: 0.05
+Nodes (25): getProfile, getProfileStats, updateProfile, uploadAvatar, build, existingProfile, fullName, isLoading (+17 more)
 
 ### Community 67 - "app_text_field.dart"
 Cohesion: 0.08
-Nodes (25): FormFieldValidator, AppTextField, build, controller, enabled, errorText, hintText, inputFormatters (+17 more)
+Nodes (21): AppTextField, build, controller, enabled, errorText, hintText, inputFormatters, isPassword (+13 more)
 
 ### Community 68 - "category_model.dart"
-Cohesion: 0.06
-Nodes (33): abstract class CategoryModel extends, CategoryModel, CategoryModel, fromJson, _, Equatable, _CategoryModel, fromJson (+25 more)
+Cohesion: 0.13
+Nodes (22): CategoryModel, fromJson, _, Equatable, _CategoryModel, fromJson, _, props (+14 more)
 
 ### Community 69 - "agent.md — Flutter Architecture Governance: Master Entry Point"
 Cohesion: 0.08
@@ -802,139 +819,139 @@ Nodes (23): 1. Purpose, 2. What is where, 3. Hierarchy and conflict resolution, 
 
 ### Community 70 - "splash_screen.dart"
 Cohesion: 0.10
-Nodes (19): AnimationController, ../../../auth/presentation/bloc/auth_bloc.dart, ../../../auth/presentation/bloc/auth_event.dart, ../../../auth/presentation/bloc/auth_state.dart, ../bloc/startup_bloc.dart, ../bloc/startup_event.dart, ../bloc/startup_state.dart, _animController (+11 more)
+Nodes (9): _animController, build, createState, dispose, _fadeAnimation, _onStartupStateChanged, _scaleAnimation, _showSoftUpdateDialog (+1 more)
 
 ### Community 71 - "app_theme.dart"
 Cohesion: 0.06
-Nodes (31): app_color.dart, app_radius.dart, app_spacing.dart, app_typography.dart, AppTheme, badminton, badmintonDark, badmintonLight (+23 more)
+Nodes (26): AppTheme, badminton, badmintonDark, badmintonLight, basketballDark, basketballLight, _buildTheme, CategoryColors (+18 more)
 
 ### Community 72 - "group_info_screen.dart"
 Cohesion: 0.11
-Nodes (18): group_info_screen_tablet.dart, build, _confirmedPlayers, createState, currentUserId, _errorMessage, getConfirmedPlayersUseCase, getSpotDetailsUseCase (+10 more)
+Nodes (15): build, _confirmedPlayers, createState, currentUserId, _errorMessage, getConfirmedPlayersUseCase, getSpotDetailsUseCase, GroupInfoScreen (+7 more)
 
 ### Community 73 - "create_spot_screen.dart"
 Cohesion: 0.08
-Nodes (26): create_spot_screen_tablet.dart, build, CreateSpotScreen, _CreateSpotScreenState, createState, descriptionController, dispose, eventDate (+18 more)
+Nodes (22): build, CreateSpotScreen, _CreateSpotScreenState, createState, descriptionController, dispose, eventDate, eventTime (+14 more)
 
 ### Community 74 - "explore_screen_mobile.dart"
 Cohesion: 0.11
-Nodes (17): ../bloc/explore_bloc.dart, ../bloc/explore_event.dart, ../../../categories/presentation/bloc/category_bloc.dart, ../../../categories/presentation/bloc/category_state.dart, ../../../../core/widgets/sports_category_perspective_carousel.dart, FocusNode, createState, _debounce (+9 more)
+Nodes (11): _checkPendingSearchFocus, createState, _debounce, dispose, _exploreNavService, initialCategoryId, _onClearSearchTap, _onExploreNavChanged (+3 more)
 
 ### Community 75 - "user_device_model.dart"
-Cohesion: 0.09
-Nodes (24): 0, copy, fromJson, UserDeviceModel, fromJson, _UserDeviceModel, _normalizeDeviceJson, _toInt (+16 more)
+Cohesion: 0.14
+Nodes (23): 0, copy, fromJson, UserDeviceModel, fromJson, _UserDeviceModel, _normalizeDeviceJson, _toInt (+15 more)
 
-### Community 76 - "core/base_import.dart"
-Cohesion: 0.04
-Nodes (44): chat_avatar.dart, core/base_import.dart, avatarUrl, build, category, isDirect, onBack, onGroupInfoTap (+36 more)
+### Community 76 - "custom_app_bar.dart"
+Cohesion: 0.06
+Nodes (28): actions, build, dashboard, defaultAppBar, isDashboard, onNotificationTap, preferredSize, showProfileAvatar (+20 more)
 
 ### Community 77 - "notifications_screen_mobile.dart"
-Cohesion: 0.13
-Nodes (21): ../bloc/notifications_list_state.dart, NotificationsListCubit, copyWith, hasReachedMax, message, notifications, NotificationsListError, NotificationsListInitial (+13 more)
+Cohesion: 0.10
+Nodes (20): NotificationsListCubit, copyWith, hasReachedMax, message, notifications, NotificationsListError, NotificationsListInitial, NotificationsListLoaded (+12 more)
 
-### Community 78 - "profile_cubit.dart"
-Cohesion: 0.06
-Nodes (41): ../../domain/entities/profile_stats.dart, ../../domain/usecases/get_profile_stats_usecase.dart, ../../domain/usecases/get_profile_usecase.dart, ../../domain/usecases/update_profile_usecase.dart, ../../domain/usecases/upload_avatar_usecase.dart, ../../../../features/auth/domain/entities/user_profile.dart, ../../features/auth/presentation/bloc/profile_cubit.dart, build (+33 more)
+### Community 78 - "ProfileCubit"
+Cohesion: 0.07
+Nodes (30): build, _buildAvatarContent, _computeInitials, _handleTap, onTap, profile, size, UserProfileAvatar (+22 more)
 
 ### Community 79 - "spot_details_bloc.dart"
-Cohesion: 0.07
-Nodes (30): ../../domain/usecases/get_confirmed_players_usecase.dart, ../../domain/usecases/get_spot_details_usecase.dart, ../../domain/usecases/get_user_join_request_usecase.dart, ../../domain/usecases/join_spot_usecase.dart, _authRepository, confirmedPlayers, _getConfirmedPlayersUseCase, _getSpotDetailsUseCase (+22 more)
+Cohesion: 0.08
+Nodes (33): _authRepository, confirmedPlayers, _getConfirmedPlayersUseCase, _getSpotDetailsUseCase, _getUserJoinRequestUseCase, initialSpot, isHost, _joinSpotUseCase (+25 more)
 
-### Community 80 - "selection_bottom_sheet.dart"
-Cohesion: 0.09
-Nodes (22): AppBottomSheet, _isSheetOpen, build, _buildContent, createState, dispose, emptyMessage, errorMessage (+14 more)
+### Community 80 - "State"
+Cohesion: 0.11
+Nodes (18): build, _buildContent, createState, dispose, emptyMessage, errorMessage, hasError, isLoading (+10 more)
 
 ### Community 81 - "AuthBloc"
-Cohesion: 0.14
-Nodes (32): AuthBloc, AuthLogoutRequested, AuthBanned, AuthDeleted, Authenticated, AuthError, AuthInitial, AuthLoading (+24 more)
+Cohesion: 0.19
+Nodes (25): AuthBloc, AuthBanned, AuthDeleted, Authenticated, AuthError, AuthInitial, AuthLoading, AuthOtpSent (+17 more)
 
 ### Community 82 - "app_settings_model.dart"
-Cohesion: 0.08
-Nodes (23): affectedVersions, AppSettingsModel, blockedVersions, estimatedEndTime, fromJson, globalMaintenance, globalMessage, globalTitle (+15 more)
+Cohesion: 0.09
+Nodes (22): affectedVersions, AppSettingsModel, blockedVersions, estimatedEndTime, fromJson, globalMaintenance, globalMessage, globalTitle (+14 more)
 
 ### Community 83 - "Definition of Done — Checklist"
 Cohesion: 0.09
 Nodes (21): 10. Scope and documentation, 11. Compliance, 1. Structure and naming, 2. Reuse, 3. Dependencies, 4. Architecture, 5. UI states and separation, 6. Error handling and async (+13 more)
 
-### Community 84 - "explore_carousel_card.dart"
+### Community 84 - "CategoryBloc"
 Cohesion: 0.10
-Nodes (26): Bloc, CategoryBloc, categories, CategoryError, CategoryInitial, CategoryLoaded, CategoryLoading, CategoryState (+18 more)
+Nodes (21): CategoryBloc, categories, CategoryError, CategoryInitial, CategoryLoaded, CategoryLoading, CategoryState, message (+13 more)
 
-### Community 85 - "category_repository_impl.dart"
+### Community 85 - "achievement_celebration_dialog.dart"
 Cohesion: 0.12
-Nodes (15): class CategoryRepositoryImpl extends, ../datasources/category_remote_datasource.dart, ../../domain/entities/category.dart, ../../domain/repositories/category_repository.dart, ../entities/category.dart, BaseRepository, CategoryRepositoryImpl, getActiveCategories (+7 more)
+Nodes (16): achievement, AchievementCelebrationDialog, _AchievementCelebrationDialogState, _badgeAnimController, build, createState, dispose, _getLocalizedDesc (+8 more)
 
 ### Community 86 - "profile_sports_step.dart"
 Cohesion: 0.12
-Nodes (17): build, categories, createState, dispose, _groups, initState, _onClearSearch, _onGroupSelected (+9 more)
+Nodes (16): build, categories, createState, dispose, _groups, initState, _onClearSearch, _onGroupSelected (+8 more)
 
-### Community 87 - "activities_screen_tablet.dart"
-Cohesion: 0.13
-Nodes (17): ../bloc/activities_state.dart, ActivitiesScreenMobile, _ActivitiesScreenMobileState, build, createState, dispose, _selectedTab, ActivitiesScreenTablet (+9 more)
+### Community 87 - "3. Implementation Details & Code Changes"
+Cohesion: 0.10
+Nodes (20): 1. Executive Summary, 2. Identified Bottlenecks & Root Causes, 3. Implementation Details & Code Changes, 4. Verification & Comparative Analysis, 5. Test Suite & Static Analysis Results, Algorithmic & Architectural Improvements, Bottleneck 1: Unconstrained Image Memory Allocations, Bottleneck 2: Excessive GPU `saveLayer` Passes (Anti-Alias Clipping) (+12 more)
 
 ### Community 88 - "Security checklist"
 Cohesion: 0.09
 Nodes (19): 1. Recover known context, 2. Ask only material questions, 3. Return confirmed context, Clarify before building, 0. Check for credential exposure, 1. Establish the request, 2. Resolve gaps with clarify-before-building, 3. Compose one grounded brief (+11 more)
 
 ### Community 89 - "Standard"
-Cohesion: 0.09
-Nodes (21): Anti-patterns, Comments and documentation (UNIVERSAL), Complexity (RECOMMENDED), Dead code (UNIVERSAL), Duplication (UNIVERSAL), Examples, Exceptions, Formatting (UNIVERSAL, HIGH) (+13 more)
+Cohesion: 0.17
+Nodes (12): Comments and documentation (UNIVERSAL), Complexity (RECOMMENDED), Dead code (UNIVERSAL), Duplication (UNIVERSAL), Formatting (UNIVERSAL, HIGH), Generated code (UNIVERSAL), `// ignore:` (UNIVERSAL), Imports (UNIVERSAL) (+4 more)
 
 ### Community 90 - "Standard"
-Cohesion: 0.09
-Nodes (21): Anti-patterns, Design tokens (UNIVERSAL, HIGH), Dialogs / sheets (UNIVERSAL), Examples, Exceptions, Forms (RECOMMENDED), Images and icons (UNIVERSAL), Lists (UNIVERSAL) (+13 more)
+Cohesion: 0.15
+Nodes (13): Design tokens (UNIVERSAL, HIGH), Dialogs / sheets (UNIVERSAL), Forms (RECOMMENDED), Images and icons (UNIVERSAL), Lists (UNIVERSAL), Responsive (RECOMMENDED), Screen and widget paths (UNIVERSAL), Screen template (UNIVERSAL) (+5 more)
 
 ### Community 91 - "chat/presentation/pages/chat_screen.dart"
-Cohesion: 0.07
-Nodes (33): ../bloc/chat_cubit.dart, ../bloc/chat_state.dart, ../bloc/conversations_state.dart, chat_screen_mobile.dart, chat_screen_tablet.dart, core/services/in_app_feedback_manager.dart, InAppFeedbackManager, activityTitle (+25 more)
+Cohesion: 0.10
+Nodes (16): activityTitle, build, category, ChatScreen, _ChatScreenState, createState, dispose, _feedbackManager (+8 more)
 
 ### Community 92 - "onboarding_screen_mobile.dart"
-Cohesion: 0.09
-Nodes (25): build, currentPage, onAdvance, onBack, OnboardingScreenMobile, onPageChanged, onSignIn, onSkip (+17 more)
+Cohesion: 0.05
+Nodes (35): build, createState, _currentPage, dispose, _finishOnboarding, _isFinishing, build, currentPage (+27 more)
 
-### Community 93 - "app_spacing.dart"
-Cohesion: 0.17
-Nodes (11): AppSpacing, lg, md, mdLg, sm, smLg, xl, xs (+3 more)
+### Community 93 - "glowing_circular_progress.dart"
+Cohesion: 0.12
+Nodes (15): KhelBhaiBackArrowPainter, build, child, GlowingCircularProgress, _GlowingCircularProgressPainter, isUnlocked, paint, primaryGradientEnd (+7 more)
 
 ### Community 94 - "AppRoutes.spotDetailsPath"
-Cohesion: 0.22
-Nodes (11): handleNotificationTap, _onConversationTap, _onSpotTap, _onNotificationTap, _onActivityTap, build, build, _onSpotTap (+3 more)
+Cohesion: 0.16
+Nodes (11): handleNotificationTap, build, _onSpotTap, _onNotificationTap, _onActivityTap, build, build, _onSpotTap (+3 more)
 
 ### Community 95 - "explore_state.dart"
 Cohesion: 0.11
 Nodes (21): categoryId, cityId, clearCategory, clearFilters, clearSearch, copyWith, dateFilter, ExploreError (+13 more)
 
 ### Community 96 - "request_entity.dart"
-Cohesion: 0.06
-Nodes (31): ../../../auth/domain/entities/user_profile.dart, build, GroupInfoParticipantTile, isCurrentUser, isHost, profile, build, onEditProfile (+23 more)
+Cohesion: 0.09
+Nodes (20): categoryId, cityId, createdAt, currentParticipants, description, eventDateTime, hostProfile, id (+12 more)
 
 ### Community 97 - "Standard"
 Cohesion: 0.10
 Nodes (20): Anti-patterns, Concurrency (RECOMMENDED), Consuming (UNIVERSAL), Cross-Bloc communication (UNIVERSAL), Cubit methods (UNIVERSAL), Debounce / throttle (UNIVERSAL), Dependencies (UNIVERSAL, HIGH), Emit safety (UNIVERSAL, HIGH) (+12 more)
 
 ### Community 98 - "Standard"
-Cohesion: 0.10
-Nodes (20): Anti-patterns, Architecture-changing PRs (UNIVERSAL, HIGH), Branches (UNIVERSAL), Code review (UNIVERSAL), Commits (UNIVERSAL, HIGH), Dependency PRs (UNIVERSAL), Examples, Exceptions (+12 more)
+Cohesion: 0.17
+Nodes (12): Architecture-changing PRs (UNIVERSAL, HIGH), Branches (UNIVERSAL), Code review (UNIVERSAL), Commits (UNIVERSAL, HIGH), Dependency PRs (UNIVERSAL), Generated files (UNIVERSAL), Merge (RECOMMENDED), Pull request template (UNIVERSAL, HIGH) (+4 more)
 
 ### Community 99 - "Standard"
 Cohesion: 0.10
 Nodes (20): Anti-patterns, Connectivity and offline (OPTIONAL; see `persistence-and-offline.md`), Endpoints (UNIVERSAL), Examples, Exceptions, Gateway (UNIVERSAL; type recorded in PR-D1), Interceptor chain (UNIVERSAL pattern), Layering (UNIVERSAL, HIGH) (+12 more)
 
 ### Community 100 - "user_profile.dart"
-Cohesion: 0.06
-Nodes (34): @freezed, @JsonSerializable, UserProfileLocationExtension, AccountStatus, cleanBio, cleanEmail, fromJson, UserProfile (+26 more)
+Cohesion: 0.09
+Nodes (32): UserProfileLocationExtension, AccountStatus, cleanBio, cleanEmail, fromJson, UserProfile, displayName, formattedCity (+24 more)
 
-### Community 101 - "app_shimmer.dart"
-Cohesion: 0.08
-Nodes (24): EdgeInsetsGeometry?, actionLabel, AppSectionHeader, build, onActionTap, padding, subtitle, title (+16 more)
+### Community 101 - "presentation/widgets/activity_card.dart"
+Cohesion: 0.10
+Nodes (16): ActivityCard, _ActivityCardState, build, categoryIcon, categoryName, createState, _handleTap, heroTagPrefix (+8 more)
 
 ### Community 102 - "chat_message_model.dart"
-Cohesion: 0.07
-Nodes (29): abstract class, ChatMessageModel, ChatMessageModel, _ChatMessageModel, fromJson, ChatMessageEntity, content, conversationId (+21 more)
+Cohesion: 0.17
+Nodes (18): ChatMessageModel, _ChatMessageModel, fromJson, _, ChatMessageModelPatterns, class, hash, id (+10 more)
 
-### Community 103 - "login_screen.dart"
-Cohesion: 0.11
-Nodes (20): ../bloc/auth_bloc.dart, ../bloc/auth_event.dart, ../bloc/auth_state.dart, FormState, AccountStatusScreen, isTablet, state, build (+12 more)
+### Community 103 - "forgot_password_screen.dart"
+Cohesion: 0.08
+Nodes (23): AccountStatusContent, AccountStatusScreen, isTablet, state, build, _buildContent, createState, dispose (+15 more)
 
 ### Community 104 - "Standard"
 Cohesion: 0.10
@@ -942,35 +959,35 @@ Nodes (19): Anti-patterns, Bloc/Cubit test template (UNIVERSAL), Examples, Excep
 
 ### Community 105 - "AppDelegate"
 Cohesion: 0.11
-Nodes (14): Any, Flutter, FlutterAppDelegate, FlutterImplicitEngineBridge, FlutterImplicitEngineDelegate, FlutterSceneDelegate, AppDelegate, Bool (+6 more)
+Nodes (6): Flutter, AppDelegate, SceneDelegate, RunnerTests, UIKit, XCTest
 
-### Community 106 - "activities_screen.dart"
-Cohesion: 0.20
-Nodes (9): activities_screen_mobile.dart, activities_screen_tablet.dart, ../bloc/activities_bloc.dart, ../bloc/activities_event.dart, ActivitiesScreen, build, request, request (+1 more)
+### Community 106 - "my_sports_space_cubit.dart"
+Cohesion: 0.15
+Nodes (6): ActivitiesScreen, build, _authRepository, _getProfileUseCase, loadDashboard, _spotRepository
 
-### Community 107 - "onboarding_screen.dart"
-Cohesion: 0.12
-Nodes (17): build, createState, _currentPage, dispose, _finishOnboarding, _isFinishing, _onAdvancePressed, _onBackPressed (+9 more)
+### Community 107 - "spot_repository_impl.dart"
+Cohesion: 0.10
+Nodes (17): acceptJoinRequest, cancelJoinRequest, createRequest, getConfirmedPlayers, getExploreRequests, getFeedRequests, getReceivedJoinRequests, getSentJoinRequests (+9 more)
 
-### Community 108 - "profile_completion_step.dart"
-Cohesion: 0.12
-Nodes (15): ../../../cities/domain/entities/city_entity.dart, File, build, existingProfile, fullName, isLoading, onEnterApp, ProfileCompletionStep (+7 more)
+### Community 108 - "manage_requests_screen.dart"
+Cohesion: 0.11
+Nodes (14): build, _buildFilterTabs, _buildScaffold, createState, dispose, initState, _onAcceptRequest, _onMessageRequest (+6 more)
 
 ### Community 109 - "image_service.dart"
 Cohesion: 0.11
-Nodes (18): ImagePicker, compressImage, ImageService, pickAndCompressMultipleImages, pickAndCompressSingleImage, _picker, pickImageFromCamera, pickMultipleImages (+10 more)
+Nodes (11): compressImage, ImageService, pickAndCompressMultipleImages, pickAndCompressSingleImage, _picker, pickImageFromCamera, pickMultipleImages, pickSingleImage (+3 more)
 
 ### Community 110 - "spot_details_gallery.dart"
-Cohesion: 0.13
-Nodes (15): build, _controller, createState, didUpdateWidget, dispose, heroTag, _openViewer, _page (+7 more)
-
-### Community 111 - "spot_hero_image.dart"
 Cohesion: 0.14
-Nodes (13): explore_carousel_card.dart, build, ExploreCarouselSkeleton, build, heroTagPrefix, isUrgent, perPersonLabel, spot (+5 more)
+Nodes (12): build, _controller, createState, didUpdateWidget, dispose, heroTag, _openViewer, _page (+4 more)
+
+### Community 111 - "presentation/widgets/activity_card.dart"
+Cohesion: 0.08
+Nodes (20): build, ExploreCarouselSkeleton, build, categoryIcon, categoryName, CompactSpotCard, _CompactSpotCardState, createState (+12 more)
 
 ### Community 112 - "chat_visibility_tracker.dart"
 Cohesion: 0.07
-Nodes (26): AppLifecycleState, AppLifecycleState get, class ChatVisibilityTracker extends, int get, _activeChatType, _activeConversationId, _activeRequestId, _activeTabIndex (+18 more)
+Nodes (23): _activeChatType, _activeConversationId, _activeRecipientUserId, _activeRequestId, _activeTabIndex, _appLifecycleState, didChangeAppLifecycleState, didPop (+15 more)
 
 ### Community 113 - "guardrails/README.md"
 Cohesion: 0.11
@@ -992,29 +1009,29 @@ Nodes (18): Anti-patterns, Deep links (UNIVERSAL, HIGH), Definitions (UNIVERSAL)
 Cohesion: 0.11
 Nodes (18): Anti-patterns, Build and release (UNIVERSAL, HIGH), Deep links and notifications (UNIVERSAL), Dependencies (UNIVERSAL), Examples, Exceptions, Local persistence (UNIVERSAL), Logging (UNIVERSAL, HIGH) (+10 more)
 
-### Community 118 - "RequestEntity"
-Cohesion: 0.08
-Nodes (27): ../bloc/create_spot_bloc.dart, create_spot_screen.dart, create_spot_screen_mobile.dart, ../../domain/entities/request_entity.dart, ../../domain/policies/spot_participation_policy.dart, RequestEntity, CreateSpotFormState, blocState (+19 more)
+### Community 118 - "notifications_list_cubit.dart"
+Cohesion: 0.10
+Nodes (13): close, _copyWithIsRead, deleteNotification, deleteUseCase, fetchNotifications, getNotificationsUseCase, _limit, markAllAsRead (+5 more)
 
 ### Community 119 - "city_model.dart"
-Cohesion: 0.05
-Nodes (44): abstract class CityModel extends, CityModel, ../../../../core/extension/string_extension.dart, ../../domain/entities/city_entity.dart, CityModel, fromJson, _, Equatable (+36 more)
+Cohesion: 0.13
+Nodes (23): CityModel, fromJson, _, Equatable, _CityModel, fromJson, _, _intFromJson (+15 more)
 
 ### Community 120 - "home_state.dart"
 Cohesion: 0.08
-Nodes (28): canOpenJoinedGroupChat, categories, cities, comingUp, copyWith, hasActivityHubError, hasCategoriesError, hasCitiesError (+20 more)
+Nodes (29): canOpenJoinedGroupChat, categories, cities, comingUp, copyWith, hasActivityHubError, hasCategoriesError, hasCitiesError (+21 more)
 
-### Community 121 - "conversations_cubit.dart"
-Cohesion: 0.11
-Nodes (17): @visibleForTesting, conversations_state.dart, ../../../../core/services/chat_visibility_tracker.dart, ../../domain/usecases/get_my_conversations_usecase.dart, ../../domain/usecases/stream_user_messages_usecase.dart, close, _currentUserId, _getMyConversationsUseCase (+9 more)
+### Community 121 - "notifications_repository.dart"
+Cohesion: 0.08
+Nodes (23): NotificationsRepositoryImpl, deleteNotification, getNotifications, getUnreadNotificationCount, markAllNotificationsRead, markNotificationRead, NotificationsRepository, subscribeToNotifications (+15 more)
 
 ### Community 122 - "theme_extension.dart"
 Cohesion: 0.11
-Nodes (18): bodyLarge, bodyMedium, bodySmall, displayLarge, displayMedium, displaySmall, headlineLarge, headlineMedium (+10 more)
+Nodes (16): bodyLarge, bodyMedium, bodySmall, displayLarge, displayMedium, displaySmall, headlineLarge, headlineMedium (+8 more)
 
 ### Community 123 - "app_env.dart"
 Cohesion: 0.11
-Nodes (18): EnvironmentType get, apiBaseUrl, AppEnv, AppEnvironment, appName, bannerLabel, current, environment (+10 more)
+Nodes (16): apiBaseUrl, AppEnv, AppEnvironment, appName, bannerLabel, current, environment, EnvironmentType (+8 more)
 
 ### Community 124 - "SOP: Configuration"
 Cohesion: 0.11
@@ -1028,13 +1045,13 @@ Nodes (17): Anti-patterns, Catch discipline (UNIVERSAL, HIGH), Examples, Excepti
 Cohesion: 0.11
 Nodes (16): ADR-0007: Realtime Messaging via Supabase Realtime Channels, Alternatives Considered, Consequences, Context, Decision, Evidence, Problem, 1. Directory Tree & Orientation (+8 more)
 
-### Community 127 - "activities_list_section.dart"
-Cohesion: 0.14
-Nodes (13): activity_shimmer_card.dart, compact_activity_card.dart, activities, ActivitiesListSection, build, horizontalPadding, isLoading, _buildScaffold (+5 more)
+### Community 127 - "spot_details_screen_mobile.dart"
+Cohesion: 0.08
+Nodes (19): SpotDetailsLoaded, build, heroTag, onBack, onRetry, SpotDetailsScreenMobile, state, compact (+11 more)
 
-### Community 128 - "onboarding_slide_data.dart"
-Cohesion: 0.14
-Nodes (12): ../../../../gen/assets.gen.dart, description, fallbackIcon, image, OnboardingSlideData, readyHeading, tagline, title (+4 more)
+### Community 128 - "activity_empty_state.dart"
+Cohesion: 0.06
+Nodes (26): actionText, ActivityEmptyState, build, imageAsset, imageGen, message, onAction, title (+18 more)
 
 ### Community 129 - "chat_state.dart"
 Cohesion: 0.14
@@ -1060,9 +1077,9 @@ Nodes (16): Anti-patterns, Caching (OPTIONAL), Contract (UNIVERSAL, HIGH), Data 
 Cohesion: 0.12
 Nodes (16): Anti-patterns, Choosing an approach (UNIVERSAL, HIGH), Cross-feature and realtime updates (RECOMMENDED, HIGH), Examples, Exceptions, How each situation is represented (UNIVERSAL), Pagination contract (UNIVERSAL, HIGH), Principles (+8 more)
 
-### Community 135 - "explore_event.dart"
-Cohesion: 0.08
-Nodes (26): ../bloc/explore_state.dart, categoryId, cityId, dateFilter, participantsFilter, priceFilter, props, query (+18 more)
+### Community 135 - "explore_filter_bottom_sheet.dart"
+Cohesion: 0.11
+Nodes (17): ExploreDateFilter, ExploreParticipantsFilter, ExplorePriceFilter, _apply, build, createState, _dateFilter, dispose (+9 more)
 
 ### Community 136 - "profile_city_step.dart"
 Cohesion: 0.15
@@ -1070,19 +1087,19 @@ Nodes (13): build, cities, createState, dispose, hasError, isLoading, onNext, on
 
 ### Community 137 - "activities_state.dart"
 Cohesion: 0.14
-Nodes (17): ActivitiesActionMessage, ActivitiesError, ActivitiesInitial, ActivitiesLoaded, ActivitiesLoading, ActivitiesState, copyWith, hosted (+9 more)
+Nodes (16): ActivitiesActionMessage, ActivitiesError, ActivitiesInitial, ActivitiesLoaded, ActivitiesLoading, ActivitiesState, copyWith, hosted (+8 more)
 
-### Community 138 - "AppRoutes.home"
-Cohesion: 0.22
-Nodes (13): build, build, _onAuthStateChanged, build, _buildContent, _goHome, _onAuthStateChanged, build (+5 more)
+### Community 138 - "spot_remote_datasource.dart"
+Cohesion: 0.10
+Nodes (18): acceptJoinRequest, cancelJoinRequest, _client, createRequest, getConfirmedPlayers, getExploreRequests, getFeedRequests, getReceivedJoinRequests (+10 more)
 
 ### Community 139 - "app_utils.dart"
 Cohesion: 0.09
-Nodes (22): AppUtils, computeInitials, displayLocation, formatCityAndState, formatCurrency, formatDate, formatDateTime, formatTime (+14 more)
+Nodes (21): AppUtils, computeInitials, displayLocation, formatCityAndState, formatCurrency, formatDate, formatDateTime, formatTime (+13 more)
 
 ### Community 140 - "sports_journey_section.dart"
 Cohesion: 0.14
-Nodes (13): activeTabNotifier, build, currentUserId, _getFilteredActivities, hostedActivities, joinedActivities, onFindGame, onHostGame (+5 more)
+Nodes (12): activeTabNotifier, build, currentUserId, _getFilteredActivities, hostedActivities, joinedActivities, onFindGame, onHostGame (+4 more)
 
 ### Community 141 - "Project-Specific Rules (greenfield stub)"
 Cohesion: 0.12
@@ -1117,20 +1134,20 @@ Cohesion: 0.12
 Nodes (15): Anti-patterns, Branching for releases (RECOMMENDED), Exceptions, Feature flags and remote config (RECOMMENDED), Flavors / environments (UNIVERSAL), Forced and soft updates (UNIVERSAL for backend-coupled apps), Principles, Purpose (+7 more)
 
 ### Community 149 - "verify-prototype.mjs"
-Cohesion: 0.20
+Cohesion: 0.12
 Nodes (14): check(), checks, chrome, click(), command(), directory, evaluate(), exceptions (+6 more)
 
 ### Community 150 - "map_extension.dart"
 Cohesion: 0.14
-Nodes (13): dynamic get, K, diffValues, doesntHave, getBool, getDouble, getId, getInt (+5 more)
+Nodes (11): diffValues, doesntHave, getBool, getDouble, getId, getInt, getString, has (+3 more)
 
 ### Community 151 - "app_constants.dart"
 Cohesion: 0.10
-Nodes (19): AppConstants, appVersion, connectionTimeout, contactEmail, formatActivityDate, getAvailableSports, getMonthName, getStatusColor (+11 more)
+Nodes (16): AppConstants, appVersion, connectionTimeout, contactEmail, formatActivityDate, getAvailableSports, getMonthName, getStatusColor (+8 more)
 
-### Community 152 - "presentation/widgets/activity_card.dart"
-Cohesion: 0.15
-Nodes (13): ActivityCard, _ActivityCardState, build, categoryIcon, categoryName, createState, _handleTap, heroTagPrefix (+5 more)
+### Community 152 - "app_cached_network_image.dart"
+Cohesion: 0.06
+Nodes (27): _AnimatedImageError, _AnimatedImagePlaceholder, AppCachedNetworkImage, backgroundColor, borderRadius, build, _buildErrorWidget, errorWidget (+19 more)
 
 ### Community 153 - "chat_text_formatter.dart"
 Cohesion: 0.12
@@ -1138,11 +1155,11 @@ Nodes (16): _asciiWordCharacter, buildPreviewSpans, buildSpans, _canOpen, ChatTe
 
 ### Community 154 - "recommended_spot_card.dart"
 Cohesion: 0.15
-Nodes (13): build, createState, dispose, _formatDate, _formatTime, _getDisplayLocation, heroTagPrefix, _isPressed (+5 more)
+Nodes (12): build, createState, dispose, _formatDate, _formatTime, _getDisplayLocation, heroTagPrefix, _isPressed (+4 more)
 
-### Community 155 - "../base_import.dart"
-Cohesion: 0.03
-Nodes (58): ../base_import.dart, BoxFit, double?, ../../features/categories/domain/entities/category.dart, DynamicDimensions, NotificationPermissionDialog, requestPermissionWithDialog, ActivityMetadataIcon (+50 more)
+### Community 155 - "app_cached_network_image.dart"
+Cohesion: 0.05
+Nodes (34): ActivityMetadataIcon, ActivityMetadataType, arrowForward, build, calendar, fallbackColor, fit, height (+26 more)
 
 ### Community 156 - "Codebase Audit Report"
 Cohesion: 0.13
@@ -1152,61 +1169,57 @@ Nodes (14): 10. Error handling and logging, 11. Persistence and security, 12. Co
 Cohesion: 0.13
 Nodes (14): Anti-patterns, Cache policy (UNIVERSAL), Choosing storage (ND-6 — record in an ADR), Cleanup (UNIVERSAL), Exceptions, Layering (UNIVERSAL, HIGH), Migrations (UNIVERSAL, HIGH), Offline (UNIVERSAL when the app supports offline) (+6 more)
 
-### Community 158 - "device_remote_datasource.dart"
-Cohesion: 0.17
-Nodes (12): ../../../../core/services/installation_id_service.dart, DeviceInfoPlugin, _client, _deviceInfoPlugin, DeviceRemoteDataSource, _installationIdService, registerDevice, SupabaseDeviceDataSourceImpl (+4 more)
+### Community 158 - "dart:async"
+Cohesion: 0.18
+Nodes (9): deleteNotification, getNotifications, getUnreadNotificationCount, markAllNotificationsRead, markNotificationRead, NotificationsRemoteDataSource, NotificationsRemoteDataSourceImpl, subscribeToNotifications (+1 more)
 
 ### Community 159 - "create_spot_screen_mobile.dart"
-Cohesion: 0.09
-Nodes (22): ../../../cities/presentation/bloc/city_cubit.dart, ../../../cities/presentation/bloc/city_state.dart, blocState, build, CreateSpotScreenMobile, formState, isLoading, onPickImages (+14 more)
+Cohesion: 0.04
+Nodes (33): RequestEntity, CreateSpotFormState, blocState, build, CreateSpotScreenMobile, formState, isLoading, onPickImages (+25 more)
 
-### Community 160 - "DateTime"
-Cohesion: 0.15
-Nodes (11): DateTime, _calculateMonths, DateTimeExtensions, diffForHumans, _formatUnit, isTimeBeforeNow, build, ChatDateChip (+3 more)
+### Community 160 - "achievements_repository_impl.dart"
+Cohesion: 0.12
+Nodes (14): _buildAchievement, calculateAchievements, getCelebratedAchievementIds, idBadminton, idCreator, idCricket, idEvents, idFootball (+6 more)
 
 ### Community 161 - "app_string.dart"
 Cohesion: 0.09
 Nodes (22): allow, appName, appNamePrefix, appNameSuffix, AppString, appTagline, appTaglineGujarati, envBannerDebug (+14 more)
 
-### Community 162 - "notifications_screen.dart"
-Cohesion: 0.22
-Nodes (7): ../bloc/notifications_list_cubit.dart, build, NotificationsScreen, build, NotificationsScreenTablet, notifications_screen_mobile.dart, notifications_screen_tablet.dart
+### Community 162 - "KhelBhai — Flutter Profile Mode Testing & Benchmarking Guide"
+Cohesion: 0.11
+Nodes (17): 1. Overview, 1. Performance View, 2. Environment Setup & Prerequisites, 2. Memory View, 3. Running & Profiling on Android, 4. Running & Profiling on iOS, 5. Using Flutter DevTools, 6. Automated Profiling Checklist (+9 more)
 
 ### Community 163 - "app_radius.dart"
-Cohesion: 0.13
-Nodes (14): AppRadius, lg, lgBorderRadius, md, mdBorderRadius, pill, pillBorderRadius, sm (+6 more)
+Cohesion: 0.07
+Nodes (23): AppRadius, lg, lgBorderRadius, md, mdBorderRadius, pill, pillBorderRadius, sm (+15 more)
 
 ### Community 164 - "my_sports_space_state.dart"
 Cohesion: 0.07
-Nodes (32): ../bloc/my_sports_space_cubit.dart, ../bloc/my_sports_space_state.dart, ../../../../features/spot/domain/entities/join_request_entity.dart, ../../../../features/spot/domain/entities/request_entity.dart, MySportsSpaceCubit, allActivities, completedActivities, completedCount (+24 more)
+Nodes (26): MySportsSpaceCubit, allActivities, completedActivities, completedCount, copyWith, data, hostedActivities, hostedCount (+18 more)
 
-### Community 165 - "app_empty_state.dart"
-Cohesion: 0.18
-Nodes (12): actionLabel, AppEmptyState, build, EmptyState, imageGen, imageSize, message, onActionPressed (+4 more)
-
-### Community 166 - "static const String"
-Cohesion: 0.50
-Nodes (3): mobileRedirectUrl, PasswordRecoveryConfig, static const String
+### Community 165 - "profile_repository_impl.dart"
+Cohesion: 0.12
+Nodes (13): _client, getProfile, getProfileStats, ProfileRemoteDataSource, SupabaseProfileDataSourceImpl, updateProfile, uploadAvatar, BaseRepository (+5 more)
 
 ### Community 167 - "notification_model.dart"
-Cohesion: 0.06
-Nodes (34): ../../domain/entities/notification_entity.dart, copy, fromJson, NotificationModel, _, fromJson, _NotificationModel, _ (+26 more)
+Cohesion: 0.13
+Nodes (24): copy, fromJson, NotificationModel, _, fromJson, _NotificationModel, _, _normalizeNotificationJson (+16 more)
 
-### Community 168 - "State"
-Cohesion: 0.19
-Nodes (13): AuthenticatedAppShell, _AuthenticatedAppShellState, AuthLoginRequested, ForgotPasswordScreen, _ForgotPasswordScreenState, LoginScreen, _LoginScreenState, _onLogin (+5 more)
+### Community 168 - "KhelBhai — Flutter 3.50 Staged Migration Plan"
+Cohesion: 0.12
+Nodes (16): 1. Migration Strategy & Core Principles, 2. Phase-by-Phase Execution Roadmap, 3. Phase 1: Pre-Upgrade Baseline & Lockfile Protection, 4.1. Adopt `ResizeImage.useLogicalSize` in Image Pipeline, 4.2. Adopt `SliverClipRRect` on Feed Slivers, 4.3. Accessibility Polish on Swipe Gestures, 4. Phase 2: FVM SDK Transition, 5. Phase 3: Compilation & Platform Tooling Validation (+8 more)
 
-### Community 169 - "sports_category_perspective_card.dart"
-Cohesion: 0.15
-Nodes (12): build, _buildArtwork, height, isAll, isCenter, isSelected, name, onTap (+4 more)
+### Community 169 - "compact_activity_card.dart"
+Cohesion: 0.14
+Nodes (13): build, _buildInfoRow, CompactActivityCard, date, isFull, location, onChatTap, onManageTap (+5 more)
 
 ### Community 170 - "profile_stats.dart"
-Cohesion: 0.09
-Nodes (23): 0, fromJson, ProfileStats, fromJson, _ProfileStats, _normalizeJson, _toInt, ProfileStats (+15 more)
+Cohesion: 0.15
+Nodes (21): 0, fromJson, ProfileStats, fromJson, _ProfileStats, _normalizeJson, _toInt, _ (+13 more)
 
 ### Community 171 - "join_request_model.dart"
-Cohesion: 0.09
-Nodes (24): abstract class JoinRequestModel extends, JoinRequestModel, JoinRequestModel, _, Equatable, _JoinRequestModel, _, fromJson (+16 more)
+Cohesion: 0.13
+Nodes (21): JoinRequestModel, _, Equatable, _JoinRequestModel, _, fromJson, props, stringify (+13 more)
 
 ### Community 172 - "user_avatar.dart"
 Cohesion: 0.11
@@ -1233,44 +1246,44 @@ Cohesion: 0.14
 Nodes (13): Anti-patterns, Assets (UNIVERSAL), Dark mode (UNIVERSAL when supported), Exceptions, Principles, Purpose, Recommended implementation, Responsive layout (UNIVERSAL) (+5 more)
 
 ### Community 178 - "chat_conversation_model.dart"
-Cohesion: 0.07
-Nodes (32): ChatConversationModel, _chatTypeFromJson, ChatConversationModel, fromJson, null, _, _dateTimeFromJson, displayAvatarUrl (+24 more)
+Cohesion: 0.08
+Nodes (31): _chatTypeFromJson, ChatConversationModel, fromJson, null, _, _dateTimeFromJson, displayAvatarUrl, _ChatConversationModel (+23 more)
 
-### Community 179 - "chat_composer_bar.dart"
-Cohesion: 0.17
-Nodes (12): build, _canSend, ChatComposerBar, _ChatComposerBarState, _controller, createState, dispose, _handleSend (+4 more)
+### Community 179 - "chat_message_bubble.dart"
+Cohesion: 0.13
+Nodes (14): build, ChatMessageBubble, _ChatMessageBubbleState, _copyMessage, createState, didUpdateWidget, dispose, _disposeUrlRecognizers (+6 more)
 
-### Community 180 - "report_screen_mobile.dart"
-Cohesion: 0.17
+### Community 180 - "report_screen_tablet.dart"
+Cohesion: 0.15
 Nodes (12): build, createState, _descController, dispose, _reasons, reportedActivityId, reportedMessageId, reportedUserId (+4 more)
 
-### Community 181 - "compact_spot_card.dart"
-Cohesion: 0.17
-Nodes (12): build, categoryIcon, categoryName, CompactSpotCard, _CompactSpotCardState, createState, _handleTap, heroTagPrefix (+4 more)
+### Community 181 - "app_button.dart"
+Cohesion: 0.13
+Nodes (14): AppButton, AppButtonType, build, danger, icon, isFullWidth, isLoading, label (+6 more)
 
-### Community 182 - "activities_bloc.dart"
-Cohesion: 0.14
-Nodes (15): activities_event.dart, activities_state.dart, _authRepository, _fetchActivities, _handleActionError, _onAcceptJoinRequest, _onCancelJoinRequest, _onLoad (+7 more)
+### Community 182 - "profile_screen_mobile.dart"
+Cohesion: 0.16
+Nodes (9): AuthLogoutRequested, _onLogout, _onLogout, _onLogout, ProfileScreenMobile, state, _onLogout, ProfileScreenTablet (+1 more)
 
 ### Community 183 - "chat_participant_model.dart"
-Cohesion: 0.10
-Nodes (22): ChatParticipantModel, copy, ChatParticipantModel, fromJson, _ChatParticipantModel, fromJson, _normalizeParticipantJson, _ (+14 more)
+Cohesion: 0.15
+Nodes (21): copy, ChatParticipantModel, fromJson, _ChatParticipantModel, fromJson, _normalizeParticipantJson, _, ChatParticipantModelPatterns (+13 more)
 
-### Community 184 - "files"
-Cohesion: 0.14
-Nodes (14): mode, sha256, source, mode, sha256, source, mode, sha256 (+6 more)
+### Community 184 - ".agents/skills/flutter-workflow/assets/project/dependency-inventory.md"
+Cohesion: 0.50
+Nodes (4): mode, sha256, source, .agents/skills/flutter-workflow/assets/project/dependency-inventory.md
 
 ### Community 185 - "request_image_model.dart"
 Cohesion: 0.09
-Nodes (24): abstract class RequestImageModel extends, fromJson, _, _dateValue, Equatable, fromJson, _RequestImageModel, _ (+16 more)
+Nodes (28): ReportEntity, fromJson, RequestImageModel, _, _dateValue, Equatable, fromJson, _RequestImageModel (+20 more)
 
 ### Community 186 - "Stack-specific rule lines generalised in rules/ (verbatim originals)"
 Cohesion: 0.15
 Nodes (13): From rules/ai-agent.rules, From rules/bloc.rules, From rules/dependency.rules, From rules/error.rules, From rules/flutter.rules, From rules/naming.rules, From rules/networking.rules, From rules/performance.rules (+5 more)
 
-### Community 187 - "sop/README.md"
-Cohesion: 0.12
-Nodes (15): Anti-patterns, Exceptions, Inputs (UNIVERSAL), Principles, Purpose, Recommended implementation, Scope, SOP: Forms and Validation (+7 more)
+### Community 187 - "SOP: Forms and Validation"
+Cohesion: 0.15
+Nodes (12): Anti-patterns, Exceptions, Inputs (UNIVERSAL), Principles, Purpose, Recommended implementation, Scope, SOP: Forms and Validation (+4 more)
 
 ### Community 188 - "SOP: Observability — Logging, Crash Reporting, Analytics"
 Cohesion: 0.15
@@ -1280,89 +1293,89 @@ Nodes (12): Analytics (RECOMMENDED when the product needs it), Anti-patterns, Cr
 Cohesion: 0.15
 Nodes (12): Anti-patterns, Background and lifecycle (UNIVERSAL), Exceptions, Native code (UNIVERSAL), Permissions (UNIVERSAL, HIGH), Principles, Purpose, Push notifications (UNIVERSAL when used) (+4 more)
 
-### Community 190 - "dart:async"
-Cohesion: 0.18
-Nodes (11): dart:async, deleteNotification, getNotifications, getUnreadNotificationCount, markAllNotificationsRead, markNotificationRead, NotificationsRemoteDataSource, NotificationsRemoteDataSourceImpl (+3 more)
+### Community 190 - "sports_category_perspective_card.dart"
+Cohesion: 0.15
+Nodes (12): build, _buildArtwork, height, isAll, isCenter, isSelected, name, onTap (+4 more)
 
-### Community 191 - "VoidCallback"
-Cohesion: 0.05
-Nodes (38): build, _buildInfoRow, CompactActivityCard, date, isFull, location, onChatTap, onTap (+30 more)
+### Community 191 - "core/base_import.dart"
+Cohesion: 0.03
+Nodes (58): activityTitle, build, ChatWelcomeBanner, build, GroupInfoParticipantTile, isCurrentUser, isHost, profile (+50 more)
 
-### Community 192 - "chat_message_bubble.dart"
-Cohesion: 0.13
-Nodes (15): build, ChatMessageBubble, _ChatMessageBubbleState, _copyMessage, createState, didUpdateWidget, dispose, _disposeUrlRecognizers (+7 more)
-
-### Community 193 - "ADR-0001: Feature-First Clean Architecture Structure (Stay)"
+### Community 192 - "ActivitiesBloc"
 Cohesion: 0.25
-Nodes (8): ADR-0001: Feature-First Clean Architecture Structure (Stay), Alternatives Considered, Consequences, Context, Decision, Evidence, Problem, Review Trigger
+Nodes (16): ActivitiesBloc, AcceptJoinRequestEvent, ActivitiesEvent, CancelJoinRequestEvent, joinRequestId, LoadActivitiesEvent, props, RejectJoinRequestEvent (+8 more)
+
+### Community 193 - "achievement_entity.dart"
+Cohesion: 0.14
+Nodes (12): categorySlug, copyWith, currentProgress, descriptionKey, id, isCelebrated, isUnlocked, needsCelebration (+4 more)
 
 ### Community 194 - "LastSpot Project Rules"
 Cohesion: 0.15
 Nodes (12): 10. App Constants, 11. No Inline Function Execution Logic in Widget Tree, 1. Flutter Version Management (FVM), 2. Responsive Layout, 3. No Hardcoded Dimensions, 4. No Hardcoded Colors, 5. No Hardcoded Strings, 6. Architecture & State Management (+4 more)
 
 ### Community 195 - "request_model.dart"
-Cohesion: 0.07
-Nodes (30): abstract class RequestModel extends, RequestModel, _, _dateValue, _doubleValue, Equatable, _RequestModel, _ (+22 more)
+Cohesion: 0.10
+Nodes (27): RequestModel, _, _dateValue, _doubleValue, Equatable, _RequestModel, _, fromJson (+19 more)
 
 ### Community 196 - "city_selection_bottom_sheet.dart"
 Cohesion: 0.12
-Nodes (16): city_list_tile.dart, build, cities, CitySelectionBottomSheet, _CitySelectionBottomSheetState, createState, dispose, _getFilteredCities (+8 more)
+Nodes (15): build, cities, CitySelectionBottomSheet, _CitySelectionBottomSheetState, createState, dispose, _getFilteredCities, _handleCityTap (+7 more)
 
-### Community 197 - "app_datetime_field.dart"
-Cohesion: 0.17
-Nodes (11): AppDateTimeField, build, enabled, errorText, icon, label, onTap, pickDate (+3 more)
+### Community 197 - "5. Test Scenarios & Execution Procedures"
+Cohesion: 0.14
+Nodes (13): 1. Objectives & Scope, 2. Test Environment & Device Profile, 3. Profiling Tools & Measurement Protocol, 4. Key Performance Targets (SLOs), 5. Test Scenarios & Execution Procedures, Benchmark Hardware Profile, Flutter & Runtime Environment, KhelBhai — Mobile Performance Test Plan (Profile Mode) (+5 more)
 
-### Community 198 - "requests_tab_section.dart"
-Cohesion: 0.15
-Nodes (13): activity_empty_state.dart, build, createState, horizontalPadding, isLoading, receivedRequests, RequestsTabSection, _RequestsTabSectionState (+5 more)
+### Community 198 - "activities_list_section.dart"
+Cohesion: 0.08
+Nodes (18): build, _buildInfoRow, confirmedPlayers, currentUserId, GroupInfoScreenMobile, onBack, post, build (+10 more)
 
-### Community 199 - "profile_screen_mobile.dart"
-Cohesion: 0.27
-Nodes (10): state, state, package:lastspot_app/features/auth/presentation/bloc/auth_bloc.dart, package:lastspot_app/features/auth/presentation/bloc/auth_event.dart, package:lastspot_app/features/auth/presentation/bloc/profile_cubit.dart, ../widgets/profile_header.dart, ../widgets/profile_list_tile.dart, ../widgets/profile_section.dart (+2 more)
+### Community 199 - "foreground_chat_notification_coordinator.dart"
+Cohesion: 0.12
+Nodes (10): _cleanupOldMessageIds, _dedupWindow, ForegroundChatNotificationCoordinator, _handledMessageIds, handleIncomingChatNotification, localNotificationService, markChatReadUseCase, shouldShowForegroundNotification (+2 more)
 
 ### Community 200 - "popular_sports_grid.dart"
 Cohesion: 0.18
-Nodes (11): build, categories, createState, dispose, _onCarouselInteraction, onCategoryTap, onViewAll, PopularSportsGrid (+3 more)
+Nodes (10): build, categories, createState, dispose, _onCarouselInteraction, onCategoryTap, onViewAll, PopularSportsGrid (+2 more)
 
-### Community 201 - "CityCubit"
-Cohesion: 0.31
-Nodes (10): Cubit, CityCubit, cities, CityError, CityInitial, CityLoaded, CityLoading, CityState (+2 more)
+### Community 201 - "debug_json_formatter.dart"
+Cohesion: 0.12
+Nodes (11): DebugJsonFormatter, format, _isSensitiveKey, _redacted, _sensitiveKeyParts, _toJsonValue, build, currentStep (+3 more)
 
 ### Community 202 - "Project-Specific Rules — LastSpot"
 Cohesion: 0.18
 Nodes (10): A. Structure & Placement, B. Dependency Injection, C. State Management, D. Networking and Data, E. Routing, F. UI, Theming & Responsiveness, G. Security, H. Testing & Tooling (+2 more)
 
-### Community 203 - "Feature catalogue — LastSpot"
-Cohesion: 0.29
-Nodes (7): Feature catalogue — LastSpot, Features, Native splash and launcher icons, Retired, Shared back navigation and keyboard behavior, Shared header branding and location markers, Startup splash artwork
+### Community 203 - "Architecture Map (as implemented)"
+Cohesion: 0.11
+Nodes (14): 1. Layer / feature layout, 2. Composition root, 3. Vertical slice (one happy path), 4. Cross-cutting, 5. Key project types (used by guardrail checks), 6. Features, Architecture Map (as implemented), Feature catalogue — LastSpot (+6 more)
 
 ### Community 204 - "4. Traced flows"
 Cohesion: 0.17
 Nodes (11): 1. Layer layout, 2. Layer dependency rules (observed vs intended), 3. Composition root, 4. Traced flows, 5. Where responsibilities live (observed), Architecture Map (as implemented), Flow A — Orbit list (read + paginate + realtime patch), Flow B — Auth (phone → OTP → session) (+3 more)
 
-### Community 205 - "widget_animation.dart"
-Cohesion: 0.18
-Nodes (10): Duration, AnimationWrapper, build, child, duration, horizontalOffset, index, verticalOffset (+2 more)
+### Community 205 - "String get"
+Cohesion: 0.08
+Nodes (22): consumePendingNavigation, consumePendingSearchFocus, hasPendingNavigation, kSelectAll, navigateToCategory, navigateToSearch, _pendingCategoryId, _pendingSearchFocus (+14 more)
 
-### Community 206 - "app_loading.dart"
-Cohesion: 0.20
-Nodes (10): AppLoading, AppShimmerCardItem, AppShimmerListItem, build, LoadingState, message, shimmerCard, shimmerFeed (+2 more)
+### Community 206 - "StatelessWidget"
+Cohesion: 0.04
+Nodes (48): CustomAppBar, bottom, floating, KhelBhaiAppBar, NotificationActionButton, onNotificationTap, onPressed, pinned (+40 more)
 
-### Community 207 - "app_button.dart"
-Cohesion: 0.05
-Nodes (38): IconData, AppButton, AppButtonType, build, danger, icon, isFullWidth, isLoading (+30 more)
+### Community 207 - "VoidCallback"
+Cohesion: 0.03
+Nodes (55): AppDateTimeField, build, enabled, errorText, icon, label, onTap, pickDate (+47 more)
 
 ### Community 208 - "join_request_entity.dart"
-Cohesion: 0.08
-Nodes (23): ../../domain/entities/join_request_entity.dart, createdAt, id, JoinRequestEntity, JoinRequestStatus, message, props, request (+15 more)
+Cohesion: 0.11
+Nodes (15): _calculateMonths, DateTimeExtensions, diffForHumans, _formatUnit, isTimeBeforeNow, createdAt, id, JoinRequestStatus (+7 more)
 
-### Community 209 - "activity_empty_state.dart"
-Cohesion: 0.20
-Nodes (9): actionText, ActivityEmptyState, build, imageAsset, imageGen, message, onAction, title (+1 more)
+### Community 209 - "ManageRequestsBloc"
+Cohesion: 0.23
+Nodes (16): LoadPendingRequestsEvent, ManageRequestsActionError, ManageRequestsBloc, ManageRequestsError, ManageRequestsEvent, ManageRequestsInitial, ManageRequestsLoaded, ManageRequestsLoading (+8 more)
 
 ### Community 210 - "StatelessWidget"
 Cohesion: 0.03
-Nodes (82): AppSectionTitle, build, title, CustomAppBar, KhelBhaiAppBar, ActivityShimmerCard, ActivityShimmerRow, build (+74 more)
+Nodes (54): AppSectionTitle, build, title, build, RequestShimmerCard, build, TabPreviewRow, text (+46 more)
 
 ### Community 211 - "PR review checklist (reviewer)"
 Cohesion: 0.22
@@ -1372,57 +1385,57 @@ Nodes (8): 1. Intent and scope, 2. Design, 3. Correctness, 4. Tests, 5. Accessib
 Cohesion: 0.17
 Nodes (11): AppMotion, curve, dialogSlideOffset, dialogStartScale, duration, entrance, entranceOffset, pressedScale (+3 more)
 
-### Community 213 - "report_screen.dart"
-Cohesion: 0.22
-Nodes (8): ../bloc/report_cubit.dart, build, reportedActivityId, reportedMessageId, reportedUserId, ReportScreen, report_screen_mobile.dart, report_screen_tablet.dart
+### Community 213 - "sop/README.md"
+Cohesion: 0.15
+Nodes (11): Reading order, Reference implementation, Standard Operating Procedures (SOP), Anti-patterns, Examples, Exceptions, Principles, Purpose (+3 more)
 
 ### Community 214 - ".agents/skills/flutter-workflow/assets/adr/TEMPLATE.md"
 Cohesion: 0.50
 Nodes (4): mode, sha256, source, .agents/skills/flutter-workflow/assets/adr/TEMPLATE.md
 
-### Community 215 - "sports_summary_card.dart"
-Cohesion: 0.22
-Nodes (8): build, count, iconGen, isSelected, label, onTap, SportsSummaryCard, AssetGenImage
+### Community 215 - "device_remote_datasource.dart"
+Cohesion: 0.17
+Nodes (8): _client, _deviceInfoPlugin, DeviceRemoteDataSource, _installationIdService, registerDevice, SupabaseDeviceDataSourceImpl, unregisterDevice, updateFcmToken
 
-### Community 216 - "ReportCubit"
-Cohesion: 0.42
-Nodes (8): ReportCubit, message, props, ReportError, ReportInitial, ReportLoading, ReportState, ReportSuccess
+### Community 216 - "local_notification_service.dart"
+Cohesion: 0.13
+Nodes (8): _dedupDuration, initialize, LocalNotificationService, _localNotificationsPlugin, _pruneRecentKeys, _recentNotificationKeys, requestPermission, showNotification
 
 ### Community 217 - "ADR-NNNN: <Title>"
 Cohesion: 0.18
 Nodes (10): ADR-NNNN: <Title>, Alternatives considered, Consequences, Context, Decision, Evidence (for decisions reconstructed from code), Migration, Orientation fill-in (when this ADR is ADR-0001 for structure) (+2 more)
 
-### Community 218 - "Dependency Inventory — `pubspec.yaml`"
-Cohesion: 0.18
-Nodes (10): Dependency Inventory — `pubspec.yaml`, Dev, Firebase / platform, Media, Networking, Overrides, State, DI, functional, codegen, Storage (+2 more)
+### Community 218 - "app_validators.dart"
+Cohesion: 0.17
+Nodes (10): AppValidators, city, confirmPassword, email, _emailRegExp, fullName, password, price (+2 more)
 
 ### Community 219 - "Project-Specific Rules"
 Cohesion: 0.18
 Nodes (10): A. Structure (ADR-0001), B. Dependency injection (ADR-0002), C. State management (ADR-0003), D. Networking and data (ADR-0005), E. Routing (ADR-0004), F. UI, G. Security, H. Testing (+2 more)
 
-### Community 220 - "ADR-0002: Dependency Injection via GetIt Service Locator"
+### Community 220 - "conversations_state.dart"
 Cohesion: 0.25
-Nodes (7): ADR-0002: Dependency Injection via GetIt Service Locator, Alternatives Considered, Consequences, Context, Decision, Evidence, Problem
+Nodes (10): conversations, ConversationsError, ConversationsInitial, ConversationsLoaded, ConversationsLoading, ConversationsState, copyWith, isNetworkError (+2 more)
 
 ### Community 221 - "chat_repository_impl.dart"
-Cohesion: 0.08
-Nodes (25): ../datasources/chat_remote_datasource.dart, ../../domain/entities/chat_message_entity.dart, ../../domain/repositories/chat_repository.dart, ChatRemoteDataSource, _client, getMessages, getMyConversations, getOrCreateDirectChat (+17 more)
+Cohesion: 0.05
+Nodes (32): ChatRemoteDataSource, _client, getMessages, getMyConversations, getOrCreateDirectChat, getOrCreateGroupChat, markAsRead, sendMessage (+24 more)
 
 ### Community 222 - "reset_password_screen.dart"
 Cohesion: 0.15
-Nodes (14): PasswordRecoveryUpdateRequested, build, _confirmPasswordController, createState, dispose, _formKey, _passwordController, ResetPasswordInvalidLink (+6 more)
+Nodes (12): build, _confirmPasswordController, createState, dispose, _formKey, _passwordController, ResetPasswordInvalidLink, ResetPasswordScreen (+4 more)
 
-### Community 223 - "onboarding_screen_test.dart"
-Cohesion: 0.18
-Nodes (10): Locale, package:lastspot_app/features/startup/presentation/pages/onboarding_screen.dart, package:lastspot_app/features/startup/presentation/widgets/onboarding_action_buttons.dart, package:lastspot_app/features/startup/presentation/widgets/onboarding_page_indicator.dart, package:lastspot_app/features/startup/presentation/widgets/onboarding_slide_item.dart, package:lastspot_app/features/startup/presentation/widgets/onboarding_top_bar.dart, _buildWrapper, locale (+2 more)
+### Community 223 - "4. Deep-Dive Evaluations by Domain"
+Cohesion: 0.14
+Nodes (13): 1. Executive Summary & Audit Context, 2. Current Project Environment Baseline, 3. Flutter 3.50 Feature Classification Matrix, 4.1. Scrolling Experience & Slivers, 4.2. Image Loading, Decoding & Memory Footprint, 4.3. Impeller & GPU Pipeline on Android and iOS, 4.4. iOS Touch Event Dispatching & Gestures, 4.5. Android Platform Views & Hybrid Composition++ (+5 more)
 
-### Community 224 - "spot_details_screen_mobile.dart"
-Cohesion: 0.07
-Nodes (29): ../bloc/spot_details_bloc.dart, SpotDetailsLoaded, build, heroTag, onBack, onRetry, SpotDetailsScreenMobile, state (+21 more)
+### Community 224 - "spot_details_content.dart"
+Cohesion: 0.05
+Nodes (29): activities, ActivitiesListSection, horizontalPadding, isHosted, isLoading, receivedRequests, build, createState (+21 more)
 
 ### Community 225 - "KhelBhai"
-Cohesion: 0.11
-Nodes (18): Adding or Modifying Strings, Authentication & Security, Color Tokens, Core Capabilities, Development Guidelines, Dismissible EnvBanner, Features, Key Dependencies (+10 more)
+Cohesion: 0.07
+Nodes (29): Adding or Modifying Strings, Android Studio / IntelliJ (`.idea/runConfigurations/`), API & Backend Integration, Atomic RPC Functions, Authentication & Security, Color Tokens, Configuration & Environment Variables, Core Capabilities (+21 more)
 
 ### Community 226 - "ADR-0001: Layer-first project structure"
 Cohesion: 0.20
@@ -1456,65 +1469,65 @@ Nodes (9): ADR-0007: GlobalEventBus for realtime and cross-feature updates, Alte
 Cohesion: 0.20
 Nodes (9): ADR-0008: Environment configuration via --dart-define-from-file, Alternatives considered, Consequences, Context, Decision, Evidence, Migration, Problem (+1 more)
 
-### Community 234 - "ADR-0005: Supabase Gateway and Result Boundary Pattern"
-Cohesion: 0.25
-Nodes (7): ADR-0005: Supabase Gateway and Result Boundary Pattern, Alternatives Considered, Consequences, Context, Decision, Evidence, Problem
+### Community 234 - "KhelBhai — Performance Baseline Report (Profile Mode)"
+Cohesion: 0.18
+Nodes (10): 1. Executive Summary, 2. Benchmark Environment & Hardware Specifications, 3. App Startup Latency (Baseline), 4. Memory Footprint Breakdown (Baseline), 5. Frame Rendering & Scrolling Performance (Baseline), 6. Screen-by-Screen Baseline Findings, Cold Startup Breakdown, KhelBhai — Performance Baseline Report (Profile Mode) (+2 more)
 
 ### Community 235 - "ADR-NNNN: <Title>"
 Cohesion: 0.20
 Nodes (10): ADR-NNNN: <Title>, Alternatives considered, Consequences, Context, Decision, Evidence (for decisions reconstructed from code), Migration, Orientation fill-in (when this ADR is ADR-0001 for structure) (+2 more)
 
-### Community 236 - "flutter/features.md"
-Cohesion: 0.20
-Nodes (5): Back navigation and keyboard UX, Compliance review, Flow audit, Implementation and reuse, Verification
+### Community 236 - "Back navigation and keyboard UX"
+Cohesion: 0.33
+Nodes (6): Back navigation and keyboard UX, Compliance review, Flow audit, Implementation and reuse, Scroll and inset follow-up (2026-11-04), Verification
 
-### Community 237 - "signup_screen.dart"
-Cohesion: 0.15
-Nodes (14): AuthSignupRequested, _confirmPasswordController, createState, dispose, _emailController, _formKey, _nameController, _obscureConfirmPassword (+6 more)
+### Community 237 - "StatefulWidget"
+Cohesion: 0.09
+Nodes (21): build, build, _onAuthStateChanged, build, _buildContent, _confirmPasswordController, createState, dispose (+13 more)
 
-### Community 238 - "graphify reference: extra exports and benchmark"
-Cohesion: 0.22
-Nodes (8): graphify reference: extra exports and benchmark, Step 6b - Wiki (only if --wiki flag), Step 7 - Neo4j export (only if --neo4j or --neo4j-push flag), Step 7a - FalkorDB export (only if --falkordb or --falkordb-push flag), Step 7b - SVG export (only if --svg flag), Step 7c - GraphML export (only if --graphml flag), Step 7d - MCP server (only if --mcp flag), Step 8 - Token reduction benchmark (only if total_words > 5000)
+### Community 238 - "app_shimmer.dart"
+Cohesion: 0.04
+Nodes (38): AnimationWrapper, build, child, duration, horizontalOffset, index, verticalOffset, AppKeyboardDismissal (+30 more)
 
 ### Community 239 - "Use test-driven development"
 Cohesion: 0.22
 Nodes (8): Establish the seam, Finish with broader evidence, Green, Keep tests trustworthy, Red, Refactor, Run one vertical slice, Use test-driven development
 
-### Community 240 - "notifications_list_cubit.dart"
-Cohesion: 0.03
-Nodes (62): ../../data/models/notification_model.dart, ../../domain/usecases/delete_notification_usecase.dart, ../../domain/usecases/get_notifications_usecase.dart, ../../domain/usecases/get_unread_notification_count_usecase.dart, ../../domain/usecases/mark_all_notifications_read_usecase.dart, ../../domain/usecases/mark_notification_read_usecase.dart, ../../domain/usecases/subscribe_to_notifications_usecase.dart, ../entities/notification_entity.dart (+54 more)
+### Community 240 - "supabase_config.dart"
+Cohesion: 0.20
+Nodes (5): client, initialize, supabaseAnonKey, SupabaseConfig, supabaseUrl
 
-### Community 241 - "ADR-0008: Compile-Time Environment Configuration and AppConstants"
-Cohesion: 0.25
-Nodes (7): ADR-0008: Compile-Time Environment Configuration and AppConstants, Alternatives Considered, Consequences, Context, Decision, Evidence, Problem
-
-### Community 242 - "context_extensions.dart"
+### Community 241 - "app_empty_state.dart"
 Cohesion: 0.18
-Nodes (11): AppLocalizations get, BuildContext, AppTextThemeExtension, ThemeColors, GoRouterNavigationExtension, _lastPushTime, loc, LocalizationExtension (+3 more)
+Nodes (12): actionLabel, AppEmptyState, build, EmptyState, imageGen, imageSize, message, onActionPressed (+4 more)
 
-### Community 243 - "report_repository_impl.dart"
+### Community 242 - "T"
+Cohesion: 0.17
+Nodes (8): AppTextThemeExtension, ThemeColors, GoRouterNavigationExtension, _lastPushTime, loc, LocalizationExtension, requestBack, safeGo
+
+### Community 243 - "package:flutter_bloc/flutter_bloc.dart"
 Cohesion: 0.14
-Nodes (11): ../datasources/report_remote_datasource.dart, ../../domain/repositories/report_repository.dart, remoteDataSource, ReportRepositoryImpl, submitReport, ReportRepository, submitReport, call (+3 more)
+Nodes (8): remoteDataSource, ReportRepositoryImpl, submitReport, ReportRepository, submitReport, call, repository, SubmitReportUseCase
 
 ### Community 244 - "my_sports_space_screen_mobile.dart"
-Cohesion: 0.04
-Nodes (59): _goBranch, initState, build, _onCreateActivity, _onCreateActivity, _onNotificationsTap, build, createState (+51 more)
+Cohesion: 0.05
+Nodes (40): _goBranch, build, _onCreateActivity, _onCreateActivity, _onNotificationsTap, build, createState, dispose (+32 more)
 
-### Community 245 - "report_screen_tablet.dart"
-Cohesion: 0.15
-Nodes (13): ../bloc/report_state.dart, build, createState, _descController, dispose, _reasons, reportedActivityId, reportedMessageId (+5 more)
+### Community 245 - "chat_composer_bar.dart"
+Cohesion: 0.17
+Nodes (11): build, _canSend, ChatComposerBar, _ChatComposerBarState, _controller, createState, dispose, _handleSend (+3 more)
 
 ### Community 246 - "force_update_screen.dart"
-Cohesion: 0.20
-Nodes (9): ../../data/models/app_settings_model.dart, VersionMessage, build, ForceUpdateContent, ForceUpdateScreen, isTablet, messageData, storeUrl (+1 more)
+Cohesion: 0.22
+Nodes (7): VersionMessage, build, ForceUpdateContent, ForceUpdateScreen, isTablet, messageData, storeUrl
 
-### Community 247 - "result.dart"
-Cohesion: 0.46
-Nodes (7): E, exception, Failure, Result, Success, value, S
+### Community 247 - "app_error_state.dart"
+Cohesion: 0.22
+Nodes (9): actionLabel, AppErrorState, build, ErrorState, isNetwork, message, network, onRetry (+1 more)
 
 ### Community 248 - "manifest.json"
-Cohesion: 0.22
-Nodes (8): antigravity, flutter, generatedAt, generator, platforms, profiles, schemaVersion, stacks
+Cohesion: 0.29
+Nodes (6): generatedAt, generator, platforms, profiles, schemaVersion, stacks
 
 ### Community 249 - "Operating guidelines for AI-assisted development"
 Cohesion: 0.22
@@ -1532,53 +1545,53 @@ Nodes (7): Architectural impact, Checklist, Dependencies, Pre-existing violation
 Cohesion: 0.25
 Nodes (7): Added, Changed, Changelog, Fixed, Removed, Security, [Unreleased]
 
-### Community 253 - "auth_remote_datasource.dart"
-Cohesion: 0.17
-Nodes (12): AuthRemoteDataSource, _client, getCurrentUserId, _mapOtpType, resendOtp, sendPasswordResetEmail, signIn, signOut (+4 more)
+### Community 253 - "achievements_local_datasource.dart"
+Cohesion: 0.33
+Nodes (6): AchievementsLocalDataSource, AchievementsLocalDataSourceImpl, getCelebratedAchievementIds, _getKey, markAchievementCelebrated, _sharedPrefsUtil
 
 ### Community 254 - "Guardrails: Security"
 Cohesion: 0.25
 Nodes (7): Build and release, Guardrails: Security, Inputs, Logging and telemetry, Network, Secrets and configuration, Tokens and storage
 
-### Community 255 - "supabase_config.dart"
-Cohesion: 0.20
-Nodes (9): ../config/app_env.dart, client, initialize, supabaseAnonKey, SupabaseConfig, supabaseUrl, ../services/password_recovery_link_monitor.dart, static String get (+1 more)
+### Community 255 - "chat_message_entity.dart"
+Cohesion: 0.22
+Nodes (8): ChatMessageEntity, content, conversationId, createdAt, deletedAt, id, senderId, senderName
 
 ### Community 256 - "navigation_focus_observer.dart"
-Cohesion: 0.29
-Nodes (6): NavigatorObserver, didPop, didPush, didReplace, NavigationFocusObserver, package:flutter/widgets.dart
+Cohesion: 0.22
+Nodes (6): ChatVisibilityTracker, NavigatorObserver, didPop, didPush, didReplace, NavigationFocusObserver
 
 ### Community 257 - "khelbhai_back_button.dart"
-Cohesion: 0.10
-Nodes (20): ../buttons/app_button.dart, ../constants/dimensions.dart, CustomPainter, ../../l10n/app_localizations.dart, AppDialog, showConfirmation, _activate, build (+12 more)
+Cohesion: 0.12
+Nodes (12): AppDialog, showConfirmation, _activate, build, createState, KhelBhaiBackButton, _KhelBhaiBackButtonState, leading (+4 more)
 
-### Community 258 - "home_greeting_banner.dart"
-Cohesion: 0.29
-Nodes (6): build, city, HomeGreetingBanner, onCityTap, userName, package:lastspot_app/core/widgets/animation/widget_animation.dart
+### Community 258 - "SOP: Code Quality"
+Cohesion: 0.25
+Nodes (7): Anti-patterns, Examples, Exceptions, Purpose, Recommended implementation, Scope, SOP: Code Quality
 
 ### Community 259 - "LastSpot design system — 14 October 2026"
 Cohesion: 0.25
 Nodes (7): Color tokens, Identity, LastSpot design system — 14 October 2026, Layout and components, Responsive and platform behavior, Source mapping, Typography
 
-### Community 260 - "bool get"
-Cohesion: 0.09
-Nodes (20): bool get, consumePendingNavigation, hasPendingNavigation, kSelectAll, navigateToCategory, _pendingCategoryId, _selectedCityId, _selectedCityName (+12 more)
+### Community 260 - "city_list_tile.dart"
+Cohesion: 0.29
+Nodes (5): build, city, CityListTile, isSelected, onTap
 
 ### Community 261 - ".github/pull_request_template.md"
 Cohesion: 0.25
 Nodes (7): Architectural impact, Checklist, Dependencies, Pre-existing violations observed, Screenshots / recordings, Type, What and why
 
-### Community 262 - "Adopt the Flutter workflow in a project or AI IDE"
-Cohesion: 0.40
-Nodes (5): A. Greenfield (recommended), Adopt the Flutter workflow in a project or AI IDE, B. Existing app (not greenfield), C. What is universal vs not, D. Strip checklist (other AI account)
+### Community 262 - "ADR-0001: Feature-First Clean Architecture Structure (Stay)"
+Cohesion: 0.22
+Nodes (8): ADR-0001: Feature-First Clean Architecture Structure (Stay), Alternatives Considered, Consequences, Context, Decision, Evidence, Problem, Review Trigger
 
-### Community 263 - "app_validators.dart"
-Cohesion: 0.17
-Nodes (11): AppValidators, city, confirmPassword, email, _emailRegExp, fullName, password, price (+3 more)
+### Community 263 - "SOP: Git and Pull Requests"
+Cohesion: 0.25
+Nodes (7): Anti-patterns, Examples, Exceptions, Principles, Purpose, Scope, SOP: Git and Pull Requests
 
-### Community 264 - ".agents/skills/flutter-workflow/agents/openai.yaml"
-Cohesion: 0.50
-Nodes (4): mode, sha256, source, .agents/skills/flutter-workflow/agents/openai.yaml
+### Community 264 - "files"
+Cohesion: 0.14
+Nodes (14): mode, sha256, source, mode, sha256, source, mode, sha256 (+6 more)
 
 ### Community 265 - "CORE USER JOURNEY"
 Cohesion: 0.29
@@ -1598,11 +1611,15 @@ Nodes (7): Authority and applicability, Entry and scope, File ownership and sync
 
 ### Community 269 - "currency_input_formatter.dart"
 Cohesion: 0.33
-Nodes (5): CurrencyInputFormatter, formatEditUpdate, symbol, package:flutter/services.dart, TextInputFormatter
+Nodes (3): CurrencyInputFormatter, formatEditUpdate, symbol
 
 ### Community 270 - "Changelog"
 Cohesion: 0.29
 Nodes (6): [1.0.3+1] — 2026-10-14, Added, Baseline, Changelog, Fixed, [Unreleased]
+
+### Community 271 - ".agents/skills/flutter-workflow/assets/project/README.md"
+Cohesion: 0.50
+Nodes (4): mode, sha256, source, .agents/skills/flutter-workflow/assets/project/README.md
 
 ### Community 272 - "ADR 0001: Use Freezed for Immutable State and Data Classes"
 Cohesion: 0.29
@@ -1616,9 +1633,21 @@ Nodes (6): Compliance review, Delivered, Files and reuse, Follow-up for map and 
 Cohesion: 0.29
 Nodes (6): 1. Classification & Findings, 2. Quantitative Pattern Audit, Codebase Audit Report — LastSpot (`lastspot_app`), LEGACY / PATTERN DRIFT, PROJECT-SPECIFIC (Conventions & Stack Choices), UNIVERSAL (Architecture & Principles)
 
-### Community 278 - "package:supabase_flutter/supabase_flutter.dart"
-Cohesion: 0.08
-Nodes (26): ../datasources/notifications_remote_data_source.dart, ../../domain/repositories/notifications_repository.dart, CategoryRemoteDataSource, _client, getActiveCategories, SupabaseCategoryDataSourceImpl, CityRemoteDataSource, _client (+18 more)
+### Community 275 - "report_screen_mobile.dart"
+Cohesion: 0.17
+Nodes (12): build, createState, _descController, dispose, _reasons, reportedActivityId, reportedMessageId, reportedUserId (+4 more)
+
+### Community 276 - "activities_bloc.dart"
+Cohesion: 0.17
+Nodes (9): _authRepository, _fetchActivities, _handleActionError, _onAcceptJoinRequest, _onCancelJoinRequest, _onLoad, _onRefresh, _onRejectJoinRequest (+1 more)
+
+### Community 277 - "fcm_token_util.dart"
+Cohesion: 0.17
+Nodes (7): PushNotificationService, deleteToken, FcmTokenUtil, getToken, onTokenRefresh, NotificationPermissionDialog, requestPermissionWithDialog
+
+### Community 278 - "notification_entity.dart"
+Cohesion: 0.17
+Nodes (10): MapExtension, body, createdAt, data, id, isRead, NotificationEntity, title (+2 more)
 
 ### Community 279 - "Managed Graphify integration"
 Cohesion: 0.29
@@ -1632,17 +1661,17 @@ Nodes (6): Device Registration, Flow, FLOW 1 — AUTHENTICATION, Login UI, Profi
 Cohesion: 0.33
 Nodes (5): Architecture Compliance Check, Mechanical checks (run from the Flutter application root), Output summary (attach to PR / agent report), Result matrix, Violation report format
 
-### Community 282 - "home_cubit.dart"
-Cohesion: 0.05
-Nodes (37): ../../../auth/domain/repositories/auth_repository.dart, ../../../auth/domain/usecases/get_profile_usecase.dart, ../../../auth/domain/usecases/update_user_city_usecase.dart, ../../../categories/domain/usecases/get_categories_usecase.dart, ../../../cities/domain/usecases/get_active_cities_usecase.dart, city_state.dart, ../../../../core/network/network_exceptions.dart, ../../domain/usecases/get_active_cities_usecase.dart (+29 more)
+### Community 282 - "manage_join_request_card.dart"
+Cohesion: 0.15
+Nodes (12): build, _buildCardBody, _buildStatusBadge, _buildSwipeBackground, isProcessing, ManageJoinRequestCard, onAccept, onMessage (+4 more)
 
 ### Community 283 - "Guardrails: Architecture, Structure, Dependency Injection"
 Cohesion: 0.33
 Nodes (5): Dependency injection, Exceptions, Guardrails: Architecture, Structure, Dependency Injection, Layer boundaries, Structure
 
-### Community 284 - "graphify reference: query, path, explain"
-Cohesion: 0.33
-Nodes (5): For /graphify explain, For /graphify path, graphify reference: query, path, explain, Step 0 — Constrained query expansion (REQUIRED before traversal), Step 1 — Traversal
+### Community 284 - "references/agent.md"
+Cohesion: 0.05
+Nodes (38): Project profile (active), Required files, This project (fill in), Greenfield vs brownfield, Templates, A. Greenfield (recommended), Adopt the Flutter workflow in a project or AI IDE, B. Existing app (not greenfield) (+30 more)
 
 ### Community 285 - "Apply Ponytail minimalism"
 Cohesion: 0.33
@@ -1652,13 +1681,21 @@ Nodes (5): Apply Ponytail minimalism, Climb the ladder, Keep the solution honest
 Cohesion: 0.33
 Nodes (5): Ground the plan in the repository, Review the plan, Shape reviewable work, Use this plan structure, Write implementation plans
 
-### Community 287 - "notification_entity.dart"
-Cohesion: 0.18
-Nodes (10): MapExtension, body, createdAt, data, id, isRead, title, type (+2 more)
+### Community 287 - "sport_filter_chips.dart"
+Cohesion: 0.17
+Nodes (11): build, categories, category, _getIconForCategory, iconData, isSelected, onCategorySelected, onTap (+3 more)
 
-### Community 289 - "API & Backend Integration"
-Cohesion: 0.67
-Nodes (3): API & Backend Integration, Atomic RPC Functions, Core Tables
+### Community 288 - "result.dart"
+Cohesion: 0.46
+Nodes (5): exception, Failure, Result, Success, value
+
+### Community 289 - "main.dart"
+Cohesion: 0.20
+Nodes (4): initialize, initializeApp, main, setupServiceLocator
+
+### Community 290 - "2. Implemented Code Improvements"
+Cohesion: 0.20
+Nodes (9): 1. Executive Implementation Summary, 2.1. Prepared Material / Cupertino Import Architecture, 2.2. Enhanced Accessibility Semantics for Swipe Gestures, 2.3. Prepared Image Pipeline for Logical Cache Sizing, 2.4. Comprehensive Test Coverage for State & Capacity, 2. Implemented Code Improvements, 3. Intentionally Deferred & Skipped Features, 4. Modified Files Summary (+1 more)
 
 ### Community 291 - "Flutter project agent conventions"
 Cohesion: 0.40
@@ -1677,8 +1714,8 @@ Cohesion: 0.40
 Nodes (4): Architectural Decision Records, Index, Rules, When an ADR is required
 
 ### Community 295 - "edit_profile_content.dart"
-Cohesion: 0.06
-Nodes (32): GlobalKey, bioController, build, existingProfile, formKey, nameController, onNext, onPickAvatar (+24 more)
+Cohesion: 0.12
+Nodes (15): bioController, build, EditProfileContent, emailController, formKey, nameController, onCityTap, onPickAvatar (+7 more)
 
 ### Community 296 - "Guardrails: Networking and Error Handling"
 Cohesion: 0.40
@@ -1689,20 +1726,24 @@ Cohesion: 0.40
 Nodes (5): Check variables, Files, Guardrails, Project overrides, Relationship to SOP and rules
 
 ### Community 298 - "check_compliance.py"
-Cohesion: 0.70
-Nodes (4): added_lines(), check(), git(), main()
+Cohesion: 0.19
+Nodes (8): Lints (RECOMMENDED; record the set in ND-12), Principles, Recommended implementation, added_lines(), check(), git(), main(), Development Guidelines
 
 ### Community 299 - "Verify before completion"
 Cohesion: 0.40
 Nodes (4): Build the evidence map, Handle limits honestly, Report evidence with the outcome, Verify before completion
 
 ### Community 300 - "AppLocalizations"
-Cohesion: 0.33
-Nodes (7): AppLocalizations, _AppLocalizationsDelegate, AppLocalizationsEn, AppLocalizationsGu, AppLocalizationsHi, of, LocalizationsDelegate
+Cohesion: 0.29
+Nodes (6): AppLocalizations, _AppLocalizationsDelegate, AppLocalizationsEn, AppLocalizationsGu, AppLocalizationsHi, of
 
 ### Community 301 - "network_exceptions.dart"
 Cohesion: 0.40
-Nodes (5): Exception, message, NoInternetException, ServerException, toString
+Nodes (4): message, NoInternetException, ServerException, toString
+
+### Community 302 - "freezed"
+Cohesion: 0.25
+Nodes (8): dev_dependencies, build_runner, flutter_gen_runner, flutter_lints, flutter_test, freezed, json_serializable, sdk
 
 ### Community 303 - "Feature catalogue"
 Cohesion: 0.50
@@ -1724,21 +1765,25 @@ Nodes (3): Continuous integration, Guardrails: CI, Release, Store and Runtime Co
 Cohesion: 0.50
 Nodes (3): Forms, Guardrails: UI, Theming and responsive layout
 
-### Community 308 - "graphify reference: add a URL and watch a folder"
-Cohesion: 0.50
-Nodes (3): For /graphify add, For --watch, graphify reference: add a URL and watch a folder
+### Community 308 - "interface"
+Cohesion: 0.29
+Nodes (6): interface, default_prompt, display_name, short_description, policy, allow_implicit_invocation
 
-### Community 309 - "graphify reference: commit hook and native CLAUDE.md integration"
-Cohesion: 0.50
-Nodes (3): For git commit hook, For native CLAUDE.md integration, graphify reference: commit hook and native CLAUDE.md integration
+### Community 309 - "interface"
+Cohesion: 0.29
+Nodes (6): interface, default_prompt, display_name, short_description, policy, allow_implicit_invocation
 
-### Community 310 - "graphify reference: incremental update and cluster-only"
-Cohesion: 0.50
-Nodes (3): For --cluster-only, For --update (incremental re-extraction), graphify reference: incremental update and cluster-only
+### Community 310 - "interface"
+Cohesion: 0.29
+Nodes (6): interface, default_prompt, display_name, short_description, policy, allow_implicit_invocation
 
 ### Community 312 - "lastspot_bottom_navigation_bar.dart"
-Cohesion: 0.06
-Nodes (31): app_cached_network_image.dart, lastspot_bottom_navigation_bar.dart, AppBottomNavigation, AppCachedNetworkImage, actionLabel, AppErrorState, build, ErrorState (+23 more)
+Cohesion: 0.10
+Nodes (17): AppBottomNavigation, badgeCount, build, chatsUnreadCount, fallbackIcon, iconGen, isSelected, isSpecialAction (+9 more)
+
+### Community 313 - "interface"
+Cohesion: 0.29
+Nodes (6): interface, default_prompt, display_name, short_description, policy, allow_implicit_invocation
 
 ### Community 314 - ".agents/skills/flutter-workflow/assets/.github/copilot-instructions.md"
 Cohesion: 0.50
@@ -1748,9 +1793,17 @@ Nodes (4): mode, sha256, source, .agents/skills/flutter-workflow/assets/.github/
 Cohesion: 0.50
 Nodes (4): mode, sha256, source, .agents/skills/flutter-workflow/assets/.github/pull_request_template.md
 
-### Community 318 - ".agents/skills/flutter-workflow/assets/project/dependency-inventory.md"
-Cohesion: 0.50
-Nodes (4): mode, sha256, source, .agents/skills/flutter-workflow/assets/project/dependency-inventory.md
+### Community 316 - "interface"
+Cohesion: 0.29
+Nodes (6): interface, default_prompt, display_name, short_description, policy, allow_implicit_invocation
+
+### Community 317 - "spot_details_screen_tablet.dart"
+Cohesion: 0.25
+Nodes (6): build, heroTag, onBack, onRetry, SpotDetailsScreenTablet, state
+
+### Community 318 - "analysis_options.yaml"
+Cohesion: 0.25
+Nodes (7): analyzer, errors, exclude, deprecated_member_use, include, linter, rules
 
 ### Community 319 - ".agents/skills/flutter-workflow/assets/project/features.md"
 Cohesion: 0.50
@@ -1759,6 +1812,10 @@ Nodes (4): mode, sha256, source, .agents/skills/flutter-workflow/assets/project/
 ### Community 320 - ".agents/skills/flutter-workflow/assets/project/project-rules.md"
 Cohesion: 0.50
 Nodes (4): mode, sha256, source, .agents/skills/flutter-workflow/assets/project/project-rules.md
+
+### Community 321 - "Contributing"
+Cohesion: 0.22
+Nodes (8): 1. Setup, 2. Where things go, 3. Branches and commits, 4. Pull requests, 5. Changing the rules, 6. Releases, 7. Help, Contributing
 
 ### Community 322 - ".agents/skills/flutter-workflow/assets/project/remediation-backlog.md"
 Cohesion: 0.50
@@ -1852,9 +1909,9 @@ Nodes (4): mode, sha256, source, .agents/skills/flutter-workflow/references/guar
 Cohesion: 0.50
 Nodes (4): mode, sha256, source, .agents/skills/flutter-workflow/references/guardrails/localization.md
 
-### Community 345 - ".agents/skills/flutter-workflow/references/guardrails/networking.md"
-Cohesion: 0.50
-Nodes (4): mode, sha256, source, .agents/skills/flutter-workflow/references/guardrails/networking.md
+### Community 345 - "interface"
+Cohesion: 0.40
+Nodes (4): interface, default_prompt, display_name, short_description
 
 ### Community 346 - ".agents/skills/flutter-workflow/references/guardrails/observability.md"
 Cohesion: 0.50
@@ -2052,9 +2109,9 @@ Nodes (4): mode, sha256, source, .agents/skills/flutter-workflow/references/rule
 Cohesion: 0.50
 Nodes (4): mode, sha256, source, .agents/skills/flutter-workflow/references/rules/testing.rules
 
-### Community 395 - ".agents/skills/flutter-workflow/references/rules/ui.rules"
-Cohesion: 0.50
-Nodes (4): mode, sha256, source, .agents/skills/flutter-workflow/references/rules/ui.rules
+### Community 395 - "interface"
+Cohesion: 0.40
+Nodes (4): interface, default_prompt, display_name, short_description
 
 ### Community 396 - ".agents/skills/flutter-workflow/references/sop/accessibility.md"
 Cohesion: 0.50
@@ -2197,52 +2254,112 @@ Cohesion: 0.50
 Nodes (4): .gitignore, mode, sha256, source
 
 ### Community 431 - "============================================================"
-Cohesion: 1.00
+Cohesion: 0.67
 Nodes (3): ============================================================, LASTSPOT MOBILE APP, MASTER FLOW-WISE PRODUCT, UX, UI & DEVELOPMENT SPECIFICATION
+
+### Community 435 - "interface"
+Cohesion: 0.40
+Nodes (4): interface, default_prompt, display_name, short_description
+
+### Community 436 - "sliver_pinned_header_delegate.dart"
+Cohesion: 0.18
+Nodes (8): backgroundColor, build, child, height, maxExtent, minExtent, shouldRebuild, SliverPinnedHeaderDelegate
 
 ### Community 438 - "Key Features"
 Cohesion: 0.17
 Nodes (12): 10. Community Safety & Moderation, 11. Multi-Environment & Dismissible EnvBanner, 1. Authentication & Session Management, 2. Startup, Versioning & Gating, 3. Sports & Category Discovery, 4. Activity Creation & Host Management, 5. Explore & Search, 6. Realtime Chat & Participant Communication (+4 more)
 
-### Community 469 - "List"
-Cohesion: 0.12
-Nodes (16): ListExtension, build, _buildInfoRow, confirmedPlayers, currentUserId, GroupInfoScreenMobile, onBack, post (+8 more)
+### Community 440 - "interface"
+Cohesion: 0.40
+Nodes (4): interface, default_prompt, display_name, short_description
 
-### Community 472 - "Configuration & Environment Variables"
-Cohesion: 0.67
-Nodes (3): Configuration & Environment Variables, Environment Definition Files, Environment Schema & Keys
+### Community 447 - "interface"
+Cohesion: 0.40
+Nodes (4): interface, default_prompt, display_name, short_description
 
-### Community 473 - "Contributing"
-Cohesion: 0.22
-Nodes (8): 1. Setup, 2. Where things go, 3. Branches and commits, 4. Pull requests, 5. Changing the rules, 6. Releases, 7. Help, Contributing
+### Community 453 - "interface"
+Cohesion: 0.40
+Nodes (4): interface, default_prompt, display_name, short_description
 
-### Community 474 - "IDE Configurations (VS Code & Android Studio)"
-Cohesion: 0.67
-Nodes (3): Android Studio / IntelliJ (`.idea/runConfigurations/`), IDE Configurations (VS Code & Android Studio), VS Code (`.vscode/`)
+### Community 468 - "interface"
+Cohesion: 0.40
+Nodes (4): interface, default_prompt, display_name, short_description
+
+### Community 469 - "category_bloc.dart"
+Cohesion: 0.15
+Nodes (5): call, GetCategoriesUseCase, _repository, _getCategoriesUseCase, _onLoadCategories
+
+### Community 470 - "interface"
+Cohesion: 0.40
+Nodes (4): interface, default_prompt, display_name, short_description
+
+### Community 471 - "interface"
+Cohesion: 0.40
+Nodes (4): interface, default_prompt, display_name, short_description
+
+### Community 472 - "interface"
+Cohesion: 0.40
+Nodes (4): interface, default_prompt, display_name, short_description
+
+### Community 473 - "profile_details_step.dart"
+Cohesion: 0.18
+Nodes (9): bioController, build, existingProfile, formKey, nameController, onNext, onPickAvatar, ProfileDetailsStep (+1 more)
+
+### Community 474 - "interface"
+Cohesion: 0.40
+Nodes (4): interface, default_prompt, display_name, short_description
 
 ### Community 475 - "splash_branding_view.dart"
 Cohesion: 0.33
-Nodes (5): Animation, build, fadeAnimation, scaleAnimation, SplashBrandingView
+Nodes (4): build, fadeAnimation, scaleAnimation, SplashBrandingView
+
+### Community 476 - "interface"
+Cohesion: 0.40
+Nodes (4): interface, default_prompt, display_name, short_description
 
 ### Community 477 - ".agents/skills/flutter-workflow/assets/project/audit-report.md"
 Cohesion: 0.50
 Nodes (4): mode, sha256, source, .agents/skills/flutter-workflow/assets/project/audit-report.md
 
-### Community 481 - "Architecture Map (as implemented)"
-Cohesion: 0.29
-Nodes (7): 1. Layer / feature layout, 2. Composition root, 3. Vertical slice (one happy path), 4. Cross-cutting, 5. Key project types (used by guardrail checks), 6. Features, Architecture Map (as implemented)
+### Community 478 - "T"
+Cohesion: 0.25
+Nodes (6): AppFilterChip, build, groupValue, label, onSelected, value
+
+### Community 480 - ".agents/skills/flutter-workflow/references/guardrails/README.md"
+Cohesion: 0.50
+Nodes (4): mode, sha256, source, .agents/skills/flutter-workflow/references/guardrails/README.md
+
+### Community 481 - ".agents/skills/flutter-workflow/references/sop/naming-conventions.md"
+Cohesion: 0.50
+Nodes (4): mode, sha256, source, .agents/skills/flutter-workflow/references/sop/naming-conventions.md
 
 ### Community 483 - "Contributing to LastSpot"
-Cohesion: 0.29
+Cohesion: 0.25
 Nodes (7): 1. Setup, 2. Where Things Go, 3. Branches and Commits, 4. Verification & Pull Requests, 5. Changing Architectural Rules, Contributing to LastSpot, Launcher artwork exports
 
 ### Community 484 - "sport_filter_chips.dart"
-Cohesion: 0.17
-Nodes (11): build, categories, category, _getIconForCategory, iconData, isSelected, onCategorySelected, onTap (+3 more)
+Cohesion: 0.04
+Nodes (39): DynamicDimensions, AppLoading, AppShimmerCardItem, AppShimmerListItem, build, LoadingState, message, shimmerCard (+31 more)
+
+### Community 485 - "KhelBhai — Flutter 3.50 Performance Comparison & Projections"
+Cohesion: 0.25
+Nodes (7): 1. Benchmarking Environment & Methodology, 2. Startup Latency Comparison, 3. Memory Footprint Comparison, 4. Frame Rendering & Scrolling Jank Percentiles, 5. iOS Touch & Gesture Responsiveness Evaluation, 6. Summary Performance Verdict, KhelBhai — Flutter 3.50 Performance Comparison & Projections
 
 ### Community 486 - ".agents/skills/flutter-workflow/assets/project/architecture-map.md"
 Cohesion: 0.50
 Nodes (4): mode, sha256, source, .agents/skills/flutter-workflow/assets/project/architecture-map.md
+
+### Community 488 - "onboarding_screen_test.dart"
+Cohesion: 0.18
+Nodes (4): _buildWrapper, locale, main, themeMode
+
+### Community 489 - "startup_bloc.dart"
+Cohesion: 0.20
+Nodes (4): _onInitialCheckRequested, _onUpdateSkipped, _prefs, _supabaseClient
+
+### Community 490 - "ADR-0003: State Management with flutter_bloc and ValueNotifier"
+Cohesion: 0.25
+Nodes (7): ADR-0003: State Management with flutter_bloc and ValueNotifier, Alternatives Considered, Consequences, Context, Decision, Evidence, Problem
 
 ### Community 491 - "Build & Release"
 Cohesion: 0.22
@@ -2252,6 +2369,10 @@ Nodes (9): Android APK (Standard Release), Android App Bundle (AAB for Google Pl
 Cohesion: 0.33
 Nodes (6): 1. Clone the Repository, 2. Install Flutter via FVM, 3. Install Dependencies, 4. Run Code Generation, 5. Generate Localization Files, Getting Started
 
+### Community 493 - "notifications_repository_impl.dart"
+Cohesion: 0.20
+Nodes (7): deleteNotification, getNotifications, getUnreadNotificationCount, markAllNotificationsRead, markNotificationRead, remoteDataSource, subscribeToNotifications
+
 ### Community 494 - "Troubleshooting"
 Cohesion: 0.40
 Nodes (5): 1. FVM Version Mismatch, 2. Code Generation Errors, 3. iOS Pod Installation Failures, 4. Localization Missing Keys, Troubleshooting
@@ -2260,53 +2381,73 @@ Nodes (5): 1. FVM Version Mismatch, 2. Code Generation Errors, 3. iOS Pod Instal
 Cohesion: 0.40
 Nodes (5): Check Code Formatting, Run Static Analysis, Run the Test Suite, Test Coverage Highlights, Testing & Quality Assurance
 
+### Community 496 - "CityCubit"
+Cohesion: 0.36
+Nodes (9): CityCubit, cities, CityError, CityInitial, CityLoaded, CityLoading, CityState, message (+1 more)
+
+### Community 497 - "report_screen.dart"
+Cohesion: 0.22
+Nodes (5): build, reportedActivityId, reportedMessageId, reportedUserId, ReportScreen
+
 ### Community 498 - ".agents/skills/flutter-workflow/assets/.cursor/rules/flutter-ai.mdc"
 Cohesion: 0.50
 Nodes (4): mode, sha256, source, .agents/skills/flutter-workflow/assets/.cursor/rules/flutter-ai.mdc
+
+### Community 499 - "ReportCubit"
+Cohesion: 0.42
+Nodes (8): ReportCubit, message, props, ReportError, ReportInitial, ReportLoading, ReportState, ReportSuccess
+
+### Community 500 - "achievements_cubit.dart"
+Cohesion: 0.25
+Nodes (4): acknowledgeCelebration, _getUserAchievementsUseCase, loadAchievements, _markAchievementCelebratedUseCase
 
 ### Community 501 - "Running the Application"
 Cohesion: 0.50
 Nodes (4): Device Selection, List Connected Devices, Run by Environment Target, Running the Application
 
-### Community 502 - "Push Notifications & Realtime Messaging"
-Cohesion: 0.67
-Nodes (3): Push Dispatch Architecture, Push Notifications & Realtime Messaging, Realtime Messaging
-
-### Community 564 - "base_repository.dart"
-Cohesion: 0.12
-Nodes (14): category_event.dart, category_state.dart, ../../../../core/constants/app_assets.dart, dart:developer, ../../domain/usecases/get_categories_usecase.dart, BaseRepository, _formatData, _logError (+6 more)
-
-### Community 598 - "Release checklist"
+### Community 502 - "StatefulWidget"
 Cohesion: 0.25
-Nodes (7): 1. Freeze, 2. Version and docs, 3. Quality gates, 4. Build and compliance, 5. Rollout, 6. After, Release checklist
+Nodes (7): AuthenticatedAppShell, _AuthenticatedAppShellState, ExploreScreenMobile, MySportsSpaceScreenMobile, _MySportsSpaceScreenMobileState, MySportsSpaceScreenTablet, _MySportsSpaceScreenTabletState
 
-### Community 625 - "SpotDetailsBloc"
-Cohesion: 0.15
-Nodes (20): LoadSpotDetailsEvent, RequestToJoinEvent, SpotDetailsBloc, SpotDetailsEvent, build, createState, heroTag, initialSpot (+12 more)
+### Community 503 - "NotificationsCubit"
+Cohesion: 0.43
+Nodes (7): NotificationsCubit, message, NotificationsError, NotificationsInitial, NotificationsLoaded, NotificationsState, unreadCount
+
+### Community 504 - "received_request_card.dart"
+Cohesion: 0.38
+Nodes (3): request, request, JoinRequestEntity
+
+### Community 506 - "ValueNotifier"
+Cohesion: 0.29
+Nodes (4): build, CreateSpotDatetimeSelector, dateNotifier, timeNotifier
+
+### Community 507 - "mark_achievement_celebrated_usecase.dart"
+Cohesion: 0.40
+Nodes (3): call, MarkAchievementCelebratedUseCase, _repository
 
 ### Community 699 - ".agents/skills/flutter-workflow/assets/adr/README.md"
 Cohesion: 0.50
 Nodes (4): mode, sha256, source, .agents/skills/flutter-workflow/assets/adr/README.md
 
 ## Knowledge Gaps
-- **7049 isolated node(s):** `schemaVersion`, `generator`, `generatedAt`, `antigravity`, `flutter` (+7044 more)
-  These have ≤1 connection - possible missing edges or undocumented components.
-- **33 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **5604 isolated node(s):** `XCTest`, `EnvironmentType`, `AppEnv`, `AppEnvironment`, `environment` (+5599 more)
+  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 7949 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
+- **38 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `CityCubit` connect `CityCubit` to `profile_setup_screen.dart`, `edit_profile_screen.dart`, `app_utils.dart`, `service_locator.dart`, `my_sports_space_screen_mobile.dart`, `home_cubit.dart`, `create_spot_screen_mobile.dart`?**
-  _High betweenness centrality (0.010) - this node is a cross-community bridge._
-- **Why does `RequestEntity` connect `RequestEntity` to `home_activity_feed.dart`, `presentation/widgets/activity_card.dart`, `recommended_spot_card.dart`, `create_spot_screen_mobile.dart`, `manage_requests_bloc.dart`, `spot_photo_viewer.dart`, `group_info_screen_tablet.dart`, `Equatable`, `compact_spot_card.dart`, `request_model.dart`, `group_info_screen.dart`, `create_spot_screen.dart`, `spot_details_bloc.dart`, `join_request_entity.dart`, `explore_carousel_card.dart`, `List`, `request_entity.dart`, `spot_details_gallery.dart`, `spot_hero_image.dart`, `SpotDetailsBloc`, `home_state.dart`?**
-  _High betweenness centrality (0.007) - this node is a cross-community bridge._
-- **What connects `schemaVersion`, `generator`, `generatedAt` to the rest of the system?**
-  _7049 weakly-connected nodes found - possible documentation gaps or missing edges._
+- **Why does `MapExtension` connect `notification_entity.dart` to `map_extension.dart`?**
+  _High betweenness centrality (0.016) - this node is a cross-community bridge._
+- **What connects `XCTest`, `EnvironmentType`, `AppEnv` to the rest of the system?**
+  _5604 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `sports_category_perspective_carousel.dart` be split into smaller, more focused modules?**
-  _Cohesion score 0.046511627906976744 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.04878048780487805 - nodes in this community are weakly interconnected._
+- **Why does `Result` connect `result.dart` to `home_cubit.dart`?**
+  _High betweenness centrality (0.008) - this node is a cross-community bridge._
 - **Should `auth_event.dart` be split into smaller, more focused modules?**
-  _Cohesion score 0.12554112554112554 - nodes in this community are weakly interconnected._
-- **Should `ExploreBloc` be split into smaller, more focused modules?**
-  _Cohesion score 0.11895161290322581 - nodes in this community are weakly interconnected._
-- **Should `custom_app_bar.dart` be split into smaller, more focused modules?**
-  _Cohesion score 0.045454545454545456 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.12 - nodes in this community are weakly interconnected._
+- **Why does `InAppFeedbackManager` connect `ConversationsCubit` to `navigation_focus_observer.dart`, `push_notification_service.dart`, `app_utils.dart`, `service_locator.dart`, `in_app_feedback_manager.dart`, `chat/presentation/pages/chat_screen.dart`?**
+  _High betweenness centrality (0.007) - this node is a cross-community bridge._
+- **Should `../../../../core/utils/result.dart` be split into smaller, more focused modules?**
+  _Cohesion score 0.0423728813559322 - nodes in this community are weakly interconnected._

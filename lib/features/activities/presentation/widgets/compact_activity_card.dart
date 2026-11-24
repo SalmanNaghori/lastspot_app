@@ -9,6 +9,8 @@ class CompactActivityCard extends StatelessWidget {
   final bool isFull;
   final VoidCallback onTap;
   final VoidCallback? onChatTap;
+  final VoidCallback? onManageTap;
+  final int pendingCount;
 
   const CompactActivityCard({
     super.key,
@@ -20,6 +22,8 @@ class CompactActivityCard extends StatelessWidget {
     this.isFull = false,
     required this.onTap,
     this.onChatTap,
+    this.onManageTap,
+    this.pendingCount = 0,
   });
 
   @override
@@ -132,6 +136,74 @@ class CompactActivityCard extends StatelessWidget {
                 ),
               ],
             ),
+            if (onManageTap != null) ...[
+              SizedBox(height: Dimensions.r12.dynamicH),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  InkWell(
+                    onTap: onManageTap,
+                    borderRadius: BorderRadius.circular(Dimensions.r8.dynamicR),
+                    child: Container(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: Dimensions.r10.dynamicW,
+                        vertical: Dimensions.r6.dynamicH,
+                      ),
+                      decoration: BoxDecoration(
+                        color: context.primaryColor.withValues(alpha: 0.1),
+                        borderRadius: BorderRadius.circular(
+                          Dimensions.r8.dynamicR,
+                        ),
+                        border: Border.all(
+                          color: context.primaryColor.withValues(alpha: 0.25),
+                        ),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(
+                            Icons.assignment_ind_outlined,
+                            size: Dimensions.r16.dynamicH,
+                            color: context.primaryColor,
+                          ),
+                          SizedBox(width: Dimensions.r6.dynamicW),
+                          Text(
+                            context.loc.manageMatchRequests,
+                            style: context.labelSmall?.copyWith(
+                              color: context.primaryColor,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                          if (pendingCount > 0) ...[
+                            SizedBox(width: Dimensions.r6.dynamicW),
+                            Container(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: Dimensions.r6.dynamicW,
+                                vertical: Dimensions.r2.dynamicH,
+                              ),
+                              decoration: BoxDecoration(
+                                color: context.primaryColor,
+                                borderRadius: BorderRadius.circular(
+                                  Dimensions.r10.dynamicR,
+                                ),
+                              ),
+                              child: Text(
+                                '$pendingCount',
+                                style: context.labelSmall?.copyWith(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 10,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
           ],
         ),
       ),

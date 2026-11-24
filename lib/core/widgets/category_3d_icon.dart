@@ -38,13 +38,14 @@ class Category3DIcon extends StatelessWidget {
     final effectiveHeight = height ?? size ?? Dimensions.r20.dynamicH;
     final assetGen = AppAssets.getCategoryGen(category);
 
+    final cacheSize = (effectiveWidth * 2.5).round().clamp(48, 160);
     final imageWidget = assetGen.image(
       width: effectiveWidth,
       height: effectiveHeight,
       fit: fit,
-      cacheWidth: 160,
-      cacheHeight: 160,
-      filterQuality: FilterQuality.high,
+      cacheWidth: cacheSize,
+      cacheHeight: cacheSize,
+      filterQuality: FilterQuality.medium,
       errorBuilder: (context, error, stackTrace) => Icon(
         AppAssets.getCategoryFallbackIcon(category),
         size: effectiveHeight * 0.85,

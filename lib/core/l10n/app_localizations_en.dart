@@ -1599,4 +1599,130 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get verifiedEmail => 'Verified';
+
+  @override
+  String get achievementsSectionTitle => 'Your Achievements';
+
+  @override
+  String get achievementsSectionSubtitle => 'Keep creating. Keep achieving!';
+
+  @override
+  String get achievementCricketChampion => 'Cricket Champion';
+
+  @override
+  String get achievementCricketChampionDesc => 'Create 5 Cricket activities';
+
+  @override
+  String get achievementFootballStar => 'Football Star';
+
+  @override
+  String get achievementFootballStarDesc => 'Create 5 Football activities';
+
+  @override
+  String get achievementEventOrganizer => 'Event Organizer';
+
+  @override
+  String get achievementEventOrganizerDesc => 'Create 5 Community Events';
+
+  @override
+  String get achievementBadmintonPro => 'Badminton Pro';
+
+  @override
+  String get achievementBadmintonProDesc => 'Create 5 Badminton activities';
+
+  @override
+  String get achievementActivityCreator => 'Activity Creator';
+
+  @override
+  String get achievementActivityCreatorDesc => 'Create 10 activities overall';
+
+  @override
+  String get achievementUnlocked => 'Achievement Unlocked!';
+
+  @override
+  String get achievementOneMoreToUnlock => '1 more activity to unlock!';
+
+  @override
+  String achievementXMoreToUnlock(int count) {
+    return '$count more activities to unlock!';
+  }
+
+  @override
+  String get achievementStatusUnlocked => 'Unlocked';
+
+  @override
+  String get achievementStatusInProgress => 'In Progress';
+
+  @override
+  String get achievementRewardMilestone => 'Milestone';
+
+  @override
+  String get achievementDetailsTitle => 'Achievement Details';
+
+  @override
+  String get achievementCelebrationTitle => 'Achievement Unlocked!';
+
+  @override
+  String get achievementCelebrationSubtitle =>
+      'Incredible job! You\'ve reached a new sports milestone.';
+
+  @override
+  String get achievementCelebrationContinue => 'Continue';
+
+  @override
+  String get achievementRewardGoldTrophy => 'Gold Trophy';
+
+  @override
+  String get achievementRewardStarBadge => 'Star Badge';
+
+  @override
+  String get achievementRewardHostBadge => 'Host Badge';
+
+  @override
+  String get achievementRewardAceBadge => 'Ace Badge';
+
+  @override
+  String get achievementRewardCreatorTrophy => 'Master Creator Trophy';
+
+  @override
+  String get viewProfile => 'View Profile';
+
+  @override
+  String get tabAll => 'All';
+
+  @override
+  String get tabPending => 'Pending';
+
+  @override
+  String get tabAccepted => 'Accepted';
+
+  @override
+  String get tabRejected => 'Rejected';
+
+  @override
+  String get requestAcceptedSuccess => 'Join request accepted';
+
+  @override
+  String get requestRejectedSuccess => 'Join request rejected';
+
+  @override
+  String playersConfirmed(int current, int total) {
+    return '$current / $total players confirmed';
+  }
+
+  @override
+  String get noRequestsInTab => 'No requests found in this tab.';
+
+  @override
+  String get activityFullMessage =>
+      'This activity is already full. No available spots remaining.';
+
+  @override
+  String get confirmedParticipant => 'Confirmed Participant';
+
+  @override
+  String get requestRejectedStatus => 'Request Rejected';
+
+  @override
+  String get swipeHint => 'Swipe right to accept · Swipe left to reject';
 }

@@ -40,8 +40,38 @@ class ManageRequestsLoading extends ManageRequestsState {}
 
 class ManageRequestsLoaded extends ManageRequestsState {
   final RequestEntity post;
-  final List<JoinRequestEntity> pendingRequests;
-  ManageRequestsLoaded({required this.post, required this.pendingRequests});
+  final List<JoinRequestEntity> allRequests;
+  final String? activeProcessingId;
+
+  ManageRequestsLoaded({
+    required this.post,
+    required this.allRequests,
+    this.activeProcessingId,
+  });
+
+  List<JoinRequestEntity> get pendingRequests =>
+      allRequests.where((r) => r.status == JoinRequestStatus.pending).toList();
+
+  List<JoinRequestEntity> get acceptedRequests =>
+      allRequests.where((r) => r.status == JoinRequestStatus.accepted).toList();
+
+  List<JoinRequestEntity> get rejectedRequests =>
+      allRequests.where((r) => r.status == JoinRequestStatus.rejected).toList();
+
+  ManageRequestsLoaded copyWith({
+    RequestEntity? post,
+    List<JoinRequestEntity>? allRequests,
+    String? activeProcessingId,
+    bool clearProcessing = false,
+  }) {
+    return ManageRequestsLoaded(
+      post: post ?? this.post,
+      allRequests: allRequests ?? this.allRequests,
+      activeProcessingId: clearProcessing
+          ? null
+          : (activeProcessingId ?? this.activeProcessingId),
+    );
+  }
 }
 
 class ManageRequestsError extends ManageRequestsState {
@@ -126,10 +156,14 @@ class ManageRequestsBloc
     Emitter<ManageRequestsState> emit,
   ) {
     if (_currentSpot != null) {
+      final activeId = state is ManageRequestsLoaded
+          ? (state as ManageRequestsLoaded).activeProcessingId
+          : null;
       emit(
         ManageRequestsLoaded(
           post: _currentSpot!,
-          pendingRequests: event.requests,
+          allRequests: event.requests,
+          activeProcessingId: activeId,
         ),
       );
     }
@@ -169,6 +203,27 @@ class ManageRequestsBloc
               ? (state as ManageRequestsActionError).previousState
               : null);
 
+    if (currentState == null) return;
+    if (currentState.activeProcessingId != null) return;
+
+    if (event.status == 'accepted') {
+      final remaining =
+          currentState.post.maxParticipants -
+          currentState.post.currentParticipants;
+      if (remaining <= 0) {
+        emit(
+          ManageRequestsActionError(
+            message:
+                'This activity is already full. No available spots remaining.',
+            previousState: currentState,
+          ),
+        );
+        return;
+      }
+    }
+
+    emit(currentState.copyWith(activeProcessingId: event.requestId));
+
     try {
       if (event.status == 'accepted') {
         await _manageRequestUseCase.accept(event.requestId);
@@ -182,24 +237,31 @@ class ManageRequestsBloc
       } else if (event.status == 'cancelled') {
         await _manageRequestUseCase.cancel(event.requestId);
       }
+
+      if (state is ManageRequestsLoaded) {
+        emit(
+          (state as ManageRequestsLoaded).copyWith(
+            clearProcessing: true,
+            post: _currentSpot,
+          ),
+        );
+      }
     } on PostgrestException catch (e) {
       final msg = _resolveErrorMessage(e);
-      if (currentState != null) {
-        emit(
-          ManageRequestsActionError(message: msg, previousState: currentState),
-        );
-      } else {
-        emit(ManageRequestsError(message: msg));
-      }
+      emit(
+        ManageRequestsActionError(
+          message: msg,
+          previousState: currentState.copyWith(clearProcessing: true),
+        ),
+      );
     } catch (e) {
       final msg = _resolveErrorMessage(e);
-      if (currentState != null) {
-        emit(
-          ManageRequestsActionError(message: msg, previousState: currentState),
-        );
-      } else {
-        emit(ManageRequestsError(message: msg));
-      }
+      emit(
+        ManageRequestsActionError(
+          message: msg,
+          previousState: currentState.copyWith(clearProcessing: true),
+        ),
+      );
     }
   }
 

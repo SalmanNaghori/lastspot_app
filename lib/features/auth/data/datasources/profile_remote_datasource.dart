@@ -53,7 +53,7 @@ class SupabaseProfileDataSourceImpl implements ProfileRemoteDataSource {
       if (profile.bio != null) 'bio': profile.bio,
       if (profile.city != null) 'city': profile.city,
       if (profile.cityId != null) 'city_id': profile.cityId,
-      if (profile.sportsInterests != null)
+      if (profile.sportsInterests.isNotEmpty)
         'sports_interests': profile.sportsInterests,
       'is_profile_completed': profile.isProfileCompleted,
       'updated_at': DateTime.now().toUtc().toIso8601String(),

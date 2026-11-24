@@ -200,7 +200,6 @@ class SupabaseSpotDataSourceImpl implements SpotRemoteDataSource {
         .from(ApiEndpoints.tableJoinRequests)
         .stream(primaryKey: ['id'])
         .eq('request_id', requestId)
-        .eq('status', 'pending')
         .asyncMap((list) async {
           if (list.isEmpty) return [];
           try {
@@ -376,18 +375,42 @@ class SupabaseSpotDataSourceImpl implements SpotRemoteDataSource {
 
   @override
   Future<void> acceptJoinRequest(String joinRequestId) async {
-    await _client.rpc(
-      'accept_join_request',
-      params: {'p_join_request_id': joinRequestId},
-    );
+    try {
+      await _client.rpc(
+        'accept_join_request',
+        params: {'p_join_request_id': joinRequestId},
+      );
+    } on PostgrestException catch (e) {
+      if (e.code == '42883' ||
+          e.message.toLowerCase().contains('does not exist')) {
+        await _client.rpc(
+          'update_request_status',
+          params: {'p_request_id': joinRequestId, 'p_status': 'accepted'},
+        );
+      } else {
+        rethrow;
+      }
+    }
   }
 
   @override
   Future<void> rejectJoinRequest(String joinRequestId) async {
-    await _client.rpc(
-      'reject_join_request',
-      params: {'p_join_request_id': joinRequestId},
-    );
+    try {
+      await _client.rpc(
+        'reject_join_request',
+        params: {'p_join_request_id': joinRequestId},
+      );
+    } on PostgrestException catch (e) {
+      if (e.code == '42883' ||
+          e.message.toLowerCase().contains('does not exist')) {
+        await _client.rpc(
+          'update_request_status',
+          params: {'p_request_id': joinRequestId, 'p_status': 'rejected'},
+        );
+      } else {
+        rethrow;
+      }
+    }
   }
 
   @override
